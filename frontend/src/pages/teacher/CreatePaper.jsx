@@ -109,6 +109,7 @@ function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn }) {
   );
 }
 
+
 // ── Step 1: Paper Type ────────────────────────────────────────────────────────
 
 function Step1({ value, onChange }) {
@@ -369,8 +370,19 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
   const MCQ_OPTIONS = ["A", "B", "C", "D"];
   const isType2 = form.type === "mcq_numerical" || form.type === "mcq_numerical_subjective";
 
-  const setMcqAnswer = (qid, val) =>
-    setForm({ ...form, mcqAnswers: { ...form.mcqAnswers, [qid]: val } });
+  // Toggle one option in/out of a question's answer set.
+  // Single answer:  click A         → stores "A"
+  // Multi answer:   click A then C  → stores "A,C"
+  // Deselect:       click A when "A,C" → stores "C"
+  const toggleMcqOption = (qid, opt) => {
+    const current = form.mcqAnswers[qid] || "";
+    const selected = current ? current.split(",") : [];
+    const next = selected.includes(opt)
+      ? selected.filter((o) => o !== opt)
+      : [...selected, opt].sort();
+    const newVal = next.join(",");
+    setForm({ ...form, mcqAnswers: { ...form.mcqAnswers, [qid]: newVal || undefined } });
+  };
 
   const setNumericalAnswer = (qid, patch) =>
     setForm({
@@ -454,38 +466,54 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
           uploadFn={uploadFn}
           onFile={(url) => setForm({ ...form, answerSheetRefUrl: url })}
         />
+
       </div>
 
       {/* ── MCQ answer grid ───────────────────────────────────────────────── */}
       <div>
-        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+        <h4 className="text-sm font-semibold text-gray-700 mb-1">
           MCQ Answers {form.answerKeyMode === "pdf" ? "(extracted — confirm or edit)" : "(enter manually)"}
         </h4>
+        <p className="text-xs text-gray-400 mb-3">
+          Click one option for a single answer. Click multiple to set multi-answer (e.g. A + C).
+          Over-filling earns zero marks.
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {Array.from({ length: form.mcqCount }, (_, i) => {
             const qid = `Q${i + 1}`;
             const marks = form.uniformMcqMarks
               ? form.mcqMarks
               : (form.mcqQuestionMarks[qid] ?? form.mcqMarks);
+            const selected = form.mcqAnswers[qid] ? form.mcqAnswers[qid].split(",") : [];
+            const isMulti = selected.length > 1;
             return (
-              <div key={qid} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+              <div key={qid} className={`flex items-center gap-2 rounded-lg px-3 py-2 border
+                ${isMulti ? "bg-amber-50 border-amber-200" : "bg-gray-50 border-transparent"}`}>
                 <span className="text-xs font-medium text-gray-500 w-8">{qid}</span>
                 <span className="text-xs text-gray-400 w-8">[{marks}m]</span>
                 <div className="flex gap-1">
-                  {MCQ_OPTIONS.map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => setMcqAnswer(qid, opt)}
-                      className={`w-8 h-8 rounded-lg text-sm font-semibold transition-colors
-                        ${form.mcqAnswers[qid] === opt
-                          ? "bg-indigo-600 text-white"
-                          : "bg-white border border-gray-300 text-gray-600 hover:border-indigo-300"}`}
-                    >
-                      {opt}
-                    </button>
-                  ))}
+                  {MCQ_OPTIONS.map((opt) => {
+                    const active = selected.includes(opt);
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => toggleMcqOption(qid, opt)}
+                        className={`w-8 h-8 rounded-lg text-sm font-semibold transition-colors
+                          ${active
+                            ? isMulti
+                              ? "bg-amber-500 text-white"
+                              : "bg-indigo-600 text-white"
+                            : "bg-white border border-gray-300 text-gray-600 hover:border-indigo-300"}`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
                 </div>
+                {isMulti && (
+                  <span className="text-xs text-amber-600 font-medium ml-auto">multi</span>
+                )}
               </div>
             );
           })}

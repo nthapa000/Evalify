@@ -19,7 +19,6 @@ from typing import Dict, Any
 from bson import ObjectId
 
 from app.db.mongodb import papers_col, submissions_col
-from app.db.mlflow_logger import log_evaluation_run
 from app.services.omr_engine import OMREngine
 from app.services.trocr_engine import TrOCREngine
 from app.services.pdf_utils import is_pdf, pdf_to_image, pdf_extract_text
@@ -55,7 +54,6 @@ async def evaluate_submission(submission_id: str) -> None:
 
         roll_no    = sub.get("roll_no", "?")
         sheet_type = sub.get("sheet_type", "omr")
-        # Support both legacy single-file and new multi-page submissions
         file_paths = sub.get("file_paths") or [sub.get("file_path", "")]
         mcq_count  = int(paper.get("mcqCount", 0))
 
@@ -116,6 +114,10 @@ async def evaluate_submission(submission_id: str) -> None:
 
         # 7. Log to MLflow ─────────────────────────────────────────────────────
         latency = round(time.time() - t0, 3)
+        try:
+            from app.db.mlflow_logger import log_evaluation_run
+        except Exception as _e:
+            log_evaluation_run = lambda **kw: None  # noqa: E731
         log_evaluation_run(
             submission_id = submission_id,
             paper_id      = str(paper["_id"]),
@@ -167,12 +169,11 @@ def _extract_answers_multi(
 
     for path in file_paths:
         answers, conf, eng = _extract_answers(path, sheet_type, mcq_count)
-        # Fill in only questions not yet answered by a previous page
         for q, a in answers.items():
             if q not in merged:
                 merged[q] = a
         confidences.append(conf)
-        engine_used = eng  # use last engine name
+        engine_used = eng
 
     avg_conf = sum(confidences) / len(confidences) if confidences else 0.0
     return merged, avg_conf, engine_used
@@ -197,14 +198,13 @@ def _extract_answers(
 
     if sheet_type == "omr":
         # ── OMR: OpenCV bubble detection ──────────────────────────────────────
-        # If student uploaded a PDF, render the first page to PNG first.
-        engine_used = "opencv_omr"
         proc_path = img_path
         if is_pdf(img_path):
             proc_path = pdf_to_image(img_path, dpi=200)
             print(f"  OMR: converted PDF → {proc_path}")
         answers = _omr.process_image(proc_path, mcq_count)
-        return answers, 1.0, engine_used
+        print(f"  OMR: detected answers = {answers}")
+        return answers, 1.0, "opencv_omr"
 
     elif sheet_type == "handwritten":
         # ── Handwritten: try text extraction first, fall back to TrOCR ────────
@@ -221,8 +221,8 @@ def _extract_answers(
                 img_path = pdf_to_image(img_path, dpi=200)
                 print(f"  Handwritten: PDF is scanned, converted → {img_path}")
 
-        engine_used = f"trocr_{_trocr.mode}"
-        text, confidence = _trocr.extract_text(img_path)
+        engine_used = f"ollama_{_trocr.mode}"
+        text, confidence = _trocr.extract_text(img_path, mcq_count)
         answers = _trocr.parse_mcq_results(text, mcq_count)
         return answers, confidence, engine_used
 
@@ -232,6 +232,18 @@ def _extract_answers(
 
 # ── Grading ───────────────────────────────────────────────────────────────────
 
+def _normalise_answer(ans: str | None) -> frozenset:
+    """
+    Convert an answer string to a frozenset of uppercase letters.
+    "A"   → frozenset({"A"})
+    "A,C" → frozenset({"A", "C"})
+    None  → frozenset()
+    """
+    if not ans:
+        return frozenset()
+    return frozenset(a.strip().upper() for a in ans.split(",") if a.strip())
+
+
 def _grade_mcq(
     extracted_answers:          Dict[str, str],
     answer_key:                 Dict[str, str],
@@ -239,10 +251,18 @@ def _grade_mcq(
     default_marks:              float,
     per_q_marks:                Dict[str, Any],
     negative_marking:           bool,
-    negative_marking_questions: list | None = None,  # None = apply to all questions
+    negative_marking_questions: list | None = None,
 ) -> tuple[float, int, list]:
     """
     Compare extracted answers against the answer key.
+    Supports single-answer ("A") and multi-answer ("A,C") keys.
+
+    Strict MCQ checking rules:
+      - Student must fill EXACTLY the correct set of bubbles.
+      - Over-filling (filling extra bubbles beyond the correct set) → wrong.
+      - Under-filling (filling fewer than the correct set) → wrong.
+      - Only an exact set match earns marks.
+
     Returns (total_mcq_score, correct_count, per_question_detail_list).
     """
     score         = 0.0
@@ -250,43 +270,55 @@ def _grade_mcq(
     detail        = []
 
     for i in range(1, mcq_count + 1):
-        q_id        = f"Q{i}"
-        student_ans = extracted_answers.get(q_id)
-        correct_ans = answer_key.get(q_id)
+        q_id = f"Q{i}"
 
-        # Per-question marks take priority; fall back to paper-level default
+        student_raw = extracted_answers.get(q_id)
+        correct_raw = answer_key.get(q_id)
+
+        student_set = _normalise_answer(student_raw)
+        correct_set = _normalise_answer(correct_raw)
+
         q_marks = float(per_q_marks.get(q_id, default_marks))
 
-        # Negative marking applies to this question when:
-        #   - negative_marking is globally on, AND
-        #   - either scope is "all" (negative_marking_questions is None)
-        #     or this specific question is in the per-question list
         apply_negative = negative_marking and (
             negative_marking_questions is None or q_id in negative_marking_questions
         )
 
-        if student_ans is None:
+        if not student_set:
             status = "unanswered"
             earned = 0.0
-        elif student_ans == correct_ans:
+        elif student_set == correct_set:
+            # Exact match — every correct bubble filled, no extra bubbles
             status = "correct"
             earned = q_marks
             correct_count += 1
         else:
-            status = "wrong"
+            # Determine why it's wrong for the detail record
+            if student_set > correct_set:
+                # Student filled all correct options PLUS extra ones → over-filled
+                status = "wrong_overfill"
+            elif student_set < correct_set:
+                # Student filled some but not all correct options → under-filled
+                status = "wrong_underfill"
+            else:
+                status = "wrong"
             earned = -(q_marks / 4) if apply_negative else 0.0
 
         score += earned
+
+        # Canonical display strings (sorted for consistency)
+        student_display = ",".join(sorted(student_set)) if student_set else None
+        correct_display = ",".join(sorted(correct_set)) if correct_set else None
+
         detail.append({
             "question":        q_id,
-            "student_answer":  student_ans,
-            "correct_answer":  correct_ans,
+            "student_answer":  student_display,
+            "correct_answer":  correct_display,
             "status":          status,
             "marks_available": q_marks,
             "marks_earned":    earned,
         })
 
-    # Clamp score to 0 (negative marking can't push total below 0)
     return max(0.0, score), correct_count, detail
 
 

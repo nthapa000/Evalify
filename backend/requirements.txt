@@ -1,5 +1,6 @@
 # ── Web framework ─────────────────────────────────────────────────────────────
 fastapi==0.111.0
+requests
 uvicorn[standard]==0.29.0
 python-multipart==0.0.9      # required for file upload (UploadFile)
 
@@ -11,6 +12,7 @@ mlflow
 transformers
 torch
 Pillow
+easyocr                      # GPU OCR for handwritten MCQ answer sheets
 
 # ── Database ──────────────────────────────────────────────────────────────────
 motor==3.4.0                  # async MongoDB driver (wraps PyMongo)

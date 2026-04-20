@@ -2,17 +2,21 @@
 # Logs metrics (scores, latency) and parameters (model versions, paper type).
 
 from __future__ import annotations
-import mlflow
 import os
 from typing import Dict, Any, Optional
 
-from app.config import settings
-
-# ── MLflow Configuration ───────────────────────────────────────────────────
-
-# Configure the tracking URI. Port 5000 is often occupied, so we check env or use 5005.
-TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI", "http://localhost:5005")
-mlflow.set_tracking_uri(TRACKING_URI)
+# MLflow is optional — if it fails to import (e.g. numpy/pyarrow conflict when
+# running outside the venv), evaluation still works; logging is just skipped.
+try:
+    import mlflow
+    _MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI", "http://localhost:5005")
+    mlflow.set_tracking_uri(_MLFLOW_TRACKING_URI)
+    _MLFLOW_OK = True
+except Exception as _mlflow_err:
+    _MLFLOW_OK = False
+    print(f"⚠️  MLflow unavailable (import failed: {_mlflow_err.__class__.__name__}). "
+          "Evaluation will run without experiment tracking. "
+          "Start the backend using backend/start.sh to enable MLflow.")
 
 def log_evaluation_run(
     submission_id: str,
@@ -35,8 +39,10 @@ def log_evaluation_run(
         artifacts: Optional dictionary of {artifact_name: file_path} to upload
         run_name: Optional display name for the run
     """
+    if not _MLFLOW_OK:
+        return  # skip silently when mlflow couldn't be imported
+
     try:
-        # Define experiment name based on paper type or general evalify
         experiment_name = f"evalify_{paper_type}"
         mlflow.set_experiment(experiment_name)
         

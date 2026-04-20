@@ -45,14 +45,11 @@ services:
     image: python:3.11-slim
     container_name: evalify-mlflow
     restart: unless-stopped
-    # Install mlflow at container start, then launch the server
-    command: >
-      sh -c "pip install --quiet mlflow==2.13.0 &&
-             mlflow server
-               --backend-store-uri sqlite:////mlflow/mlflow.db
-               --default-artifact-root /mlflow/artifacts
-               --host 0.0.0.0
-               --port 5000"
+    # GUNICORN_CMD_ARGS forces gunicorn to bind on all interfaces so Docker
+    # port-mapping (host:5005 → container:5000) works correctly.
+    environment:
+      GUNICORN_CMD_ARGS: "--bind 0.0.0.0:5000"
+    command: sh -c "pip install --quiet mlflow==2.13.0 && mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts --host 0.0.0.0 --port 5000"
     ports:
       - "5005:5000"   # MLflow UI remapped to 5005 (5000 often occupied)
     volumes:

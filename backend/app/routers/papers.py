@@ -40,12 +40,14 @@ def _paper_to_dict(doc: dict) -> dict:
 
 @router.post("", response_model=PaperOut)
 async def create_paper(body: PaperCreate, user: dict = Depends(require_teacher)):
-    """Create a new exam paper. Subject is locked to the teacher's assigned subject."""
+    """Create a new exam paper. Subject is locked to the teacher's assigned subject.
+    If an OMR template image is provided, bubble positions are extracted and stored."""
     doc = body.model_dump()
     doc["teacher_id"] = user["sub"]
-    doc["subject"] = user.get("subject", doc.get("subject", ""))
-    doc["createdAt"] = datetime.now(timezone.utc).isoformat()
+    doc["subject"]    = user.get("subject", doc.get("subject", ""))
+    doc["createdAt"]  = datetime.now(timezone.utc).isoformat()
     doc["resultCount"] = 0
+
     result = await papers_col().insert_one(doc)
     doc["_id"] = result.inserted_id
     return _paper_to_dict(doc)
@@ -91,49 +93,57 @@ async def available_papers(user: dict = Depends(get_current_user)):
 # ── POST /papers/files/upload — upload a PDF for a paper ─────────────────────
 # Registered BEFORE /{paper_id} so "files" is not matched as a paper ID.
 
+_ALLOWED_EXTENSIONS = {
+    ".pdf": "application/pdf",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+}
+
 @router.post("/files/upload")
 async def upload_paper_file(
     file: UploadFile = File(...),
     user: dict = Depends(require_teacher),
 ):
     """
-    Upload a PDF (question paper, answer key, or answer sheet reference).
-    Returns a persistent server URL to store in the paper document.
-    Max size: 20 MB.
+    Upload a PDF or image (JPEG/PNG) for a paper.
+    Accepts: question paper PDFs, answer key PDFs, blank OMR template images.
+    Returns a persistent server URL.  Max size: 20 MB.
     """
-    if not (file.filename or "").lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
+    fname = (file.filename or "").lower()
+    ext   = os.path.splitext(fname)[1]
+    if ext not in _ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail="Only PDF, JPEG, or PNG files are accepted.")
 
     content = await file.read()
     if len(content) > 20 * 1024 * 1024:
         raise HTTPException(status_code=413, detail="File too large. Maximum size is 20 MB.")
 
     os.makedirs(PAPER_UPLOAD_DIR, exist_ok=True)
-    file_id = str(ObjectId())
-    file_path = os.path.join(PAPER_UPLOAD_DIR, f"{file_id}.pdf")
+    file_id   = str(ObjectId())
+    file_path = os.path.join(PAPER_UPLOAD_DIR, f"{file_id}{ext}")
     with open(file_path, "wb") as fh:
         fh.write(content)
 
-    return {"url": f"/api/papers/files/{file_id}.pdf", "original_name": file.filename}
+    return {"url": f"/api/papers/files/{file_id}{ext}", "original_name": file.filename}
 
 
 # ── GET /papers/files/{filename} — serve an uploaded PDF ─────────────────────
 
 @router.get("/files/{filename}")
 async def serve_paper_file(filename: str):
-    """
-    Serve a previously uploaded paper PDF.
-    No auth required — files are named by unguessable UUID.
-    """
-    # Guard against path traversal
-    if not filename.endswith(".pdf") or "/" in filename or ".." in filename:
+    """Serve a previously uploaded paper PDF or image. No auth — named by unguessable UUID."""
+    if "/" in filename or ".." in filename:
         raise HTTPException(status_code=400, detail="Invalid filename.")
+    ext = os.path.splitext(filename)[1].lower()
+    if ext not in _ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail="Invalid file type.")
 
     file_path = os.path.join(PAPER_UPLOAD_DIR, filename)
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found.")
 
-    return FileResponse(file_path, media_type="application/pdf", filename=filename)
+    return FileResponse(file_path, media_type=_ALLOWED_EXTENSIONS[ext], filename=filename)
 
 
 class ExtractRequest(BaseModel):
