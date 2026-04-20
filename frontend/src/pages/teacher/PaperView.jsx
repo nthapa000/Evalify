@@ -95,14 +95,18 @@ export default function PaperView() {
                         </div>
                         {paper.config?.negativeMaking && (
                             <p className="text-xs text-red-500 mt-3 text-center">
-                                ⚠ Negative marking enabled: −{paper.config.marksDeducted ?? 0.5} per wrong MCQ answer
+                                ⚠ Negative marking: −{paper.config.marksDeducted ?? 0.5} per wrong answer
+                                {paper.config.negativeMarkingScope === "per_question" && paper.config.negativeMarkingQuestions?.length > 0
+                                    ? ` — applies to ${paper.config.negativeMarkingQuestions.join(", ")}`
+                                    : " — all questions"
+                                }
                             </p>
                         )}
                     </Card.Body>
                 </Card>
 
                 {/* Uploaded Documents */}
-                {(paper.questionPaperUrl || paper.answerKeyRefUrl) && (
+                {(paper.questionPaperUrl || paper.answerKeyRefUrl || paper.answerSheetRefUrl) && (
                     <Card>
                         <Card.Header>
                             <h2 className="text-base font-semibold text-gray-700">📎 Uploaded Documents</h2>
@@ -114,7 +118,7 @@ export default function PaperView() {
                                         <span className="text-2xl">📄</span>
                                         <div>
                                             <p className="text-sm font-medium text-gray-700">Question Paper (Reference)</p>
-                                            <p className="text-xs text-gray-400">Uploaded PDF for teacher/student reference</p>
+                                            <p className="text-xs text-gray-400">PDF reference for this exam paper</p>
                                         </div>
                                     </div>
                                     <button
@@ -136,6 +140,23 @@ export default function PaperView() {
                                     </div>
                                     <button
                                         onClick={() => window.open(paper.answerKeyRefUrl, "_blank")}
+                                        className="text-sm text-indigo-600 hover:underline font-medium"
+                                    >
+                                        View PDF ↗
+                                    </button>
+                                </div>
+                            )}
+                            {paper.answerSheetRefUrl && (
+                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-2xl">📋</span>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-700">Answer Sheet (Reference)</p>
+                                            <p className="text-xs text-gray-400">Teacher's completed answer sheet for reference</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => window.open(paper.answerSheetRefUrl, "_blank")}
                                         className="text-sm text-indigo-600 hover:underline font-medium"
                                     >
                                         View PDF ↗

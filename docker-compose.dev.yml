@@ -54,13 +54,13 @@ services:
                --host 0.0.0.0
                --port 5000"
     ports:
-      - "5000:5000"   # MLflow UI accessible at http://localhost:5000
+      - "5005:5000"   # MLflow UI remapped to 5005 (5000 often occupied)
     volumes:
       - mlflow-data:/mlflow   # persists experiment DB + uploaded artifacts
     networks:
       - evalify-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
       interval: 15s
       timeout: 5s
       retries: 5

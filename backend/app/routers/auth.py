@@ -40,9 +40,14 @@ async def teacher_login(body: TeacherLoginRequest):
     if not user or not pwd_ctx.verify(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password.")
 
-    # Build JWT payload
+    # Build JWT payload — include subject so papers router can enforce it
     token = _create_token(
-        payload={"sub": str(user["_id"]), "role": "teacher", "email": user["email"]},
+        payload={
+            "sub":     str(user["_id"]),
+            "role":    "teacher",
+            "email":   user["email"],
+            "subject": user.get("subject", ""),
+        },
         secret=settings.TEACHER_JWT_SECRET,
         expire_minutes=settings.TEACHER_JWT_EXPIRE_MINUTES,
     )
@@ -50,10 +55,11 @@ async def teacher_login(body: TeacherLoginRequest):
     return LoginResponse(
         token=token,
         user={
-            "id": str(user["_id"]),
-            "name": user["name"],
-            "email": user["email"],
-            "role": "teacher",
+            "id":      str(user["_id"]),
+            "name":    user["name"],
+            "email":   user["email"],
+            "role":    "teacher",
+            "subject": user.get("subject", ""),
         },
     )
 

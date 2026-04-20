@@ -1,9 +1,9 @@
-// useAuth.js — wraps the authStore with mock login/logout logic.
-// Phase 2: replace mockLoginTeacher/Student with real axios calls.
+// useAuth.js — handles login/logout using real API calls to the backend.
+// Phase 3: real JWT authentication.
 
 import { useState } from "react";
 import useAuthStore from "../store/authStore";
-import { mockLoginTeacher, mockLoginStudent } from "../utils/mockData";
+import api from "../services/api";
 import useToastStore from "../store/toastStore";
 
 export default function useAuth() {
@@ -14,12 +14,14 @@ export default function useAuth() {
   const loginTeacher = async (credentials) => {
     setLoading(true);
     try {
-      const { token: tok, user: u } = await mockLoginTeacher(credentials);
+      const res = await api.post("/auth/teacher/login", credentials);
+      const { token: tok, user: u } = res.data;
       setAuth(tok, u);
       addToast(`Welcome back, ${u.name}!`, "success");
       return true;
     } catch (err) {
-      addToast(err.message, "error");
+      const msg = err.response?.data?.detail || "Teacher login failed.";
+      addToast(msg, "error");
       return false;
     } finally {
       setLoading(false);
@@ -29,12 +31,14 @@ export default function useAuth() {
   const loginStudent = async (credentials) => {
     setLoading(true);
     try {
-      const { token: tok, user: u } = await mockLoginStudent(credentials);
+      const res = await api.post("/auth/student/login", credentials);
+      const { token: tok, user: u } = res.data;
       setAuth(tok, u);
       addToast(`Welcome, ${u.name}!`, "success");
       return true;
     } catch (err) {
-      addToast(err.message, "error");
+      const msg = err.response?.data?.detail || "Student login failed.";
+      addToast(msg, "error");
       return false;
     } finally {
       setLoading(false);

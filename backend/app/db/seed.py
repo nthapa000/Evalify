@@ -22,45 +22,55 @@ async def seed_users():
             "role": "teacher",
             "email": settings.TEACHER_DEFAULT_EMAIL,
             "name": "Prof. Ramesh Kumar",
+            "subject": "Computer Science",
             "password_hash": pwd_ctx.hash(settings.TEACHER_DEFAULT_PASSWORD),
             "created_at": datetime.now(timezone.utc),
         })
         print(f"🌱 Seeded teacher: {settings.TEACHER_DEFAULT_EMAIL}")
-    elif "PLACEHOLDER" in existing_teacher.get("password_hash", ""):
-        # Fix placeholder hash left by mongo-init.js
-        await col.update_one(
-            {"_id": existing_teacher["_id"]},
-            {"$set": {
-                "password_hash": pwd_ctx.hash(settings.TEACHER_DEFAULT_PASSWORD),
-                "name": "Prof. Ramesh Kumar",
-            }},
-        )
-        print(f"🔧 Fixed placeholder hash for teacher: {settings.TEACHER_DEFAULT_EMAIL}")
     else:
-        print(f"✓ Teacher already exists: {settings.TEACHER_DEFAULT_EMAIL}")
+        updates = {}
+        if "PLACEHOLDER" in existing_teacher.get("password_hash", ""):
+            updates["password_hash"] = pwd_ctx.hash(settings.TEACHER_DEFAULT_PASSWORD)
+            updates["name"] = "Prof. Ramesh Kumar"
+        if not existing_teacher.get("subject"):
+            updates["subject"] = "Computer Science"
+        if updates:
+            await col.update_one({"_id": existing_teacher["_id"]}, {"$set": updates})
+            print(f"🔧 Updated teacher record: {settings.TEACHER_DEFAULT_EMAIL}")
+        else:
+            print(f"✓ Teacher already exists: {settings.TEACHER_DEFAULT_EMAIL}")
 
-    # ── Seed Student ──────────────────────────────────────────────────────────
-    existing_student = await col.find_one({"roll_no": settings.SEED_STUDENT_ROLL})
-    if not existing_student:
-        await col.insert_one({
-            "role": "student",
-            "roll_no": settings.SEED_STUDENT_ROLL,
-            "name": "Aarav Sharma",
-            "subject": "Computer Science",
-            "password_hash": pwd_ctx.hash(settings.SEED_STUDENT_PASSWORD),
-            "created_at": datetime.now(timezone.utc),
-        })
-        print(f"🌱 Seeded student: {settings.SEED_STUDENT_ROLL}")
-    elif "PLACEHOLDER" in existing_student.get("password_hash", ""):
-        # Fix placeholder hash left by mongo-init.js
-        await col.update_one(
-            {"_id": existing_student["_id"]},
-            {"$set": {
-                "password_hash": pwd_ctx.hash(settings.SEED_STUDENT_PASSWORD),
-                "name": "Aarav Sharma",
+    # ── Seed Students ─────────────────────────────────────────────────────────
+    DEMO_STUDENTS = [
+        {"roll_no": "CS2025001", "name": "Aarav Sharma"},
+        {"roll_no": "CS2025002", "name": "Priya Patel"},
+        {"roll_no": "CS2025003", "name": "Rohit Verma"},
+        {"roll_no": "CS2025004", "name": "Ananya Singh"},
+        {"roll_no": "CS2025005", "name": "Vikram Nair"},
+        {"roll_no": "CS2025006", "name": "Sneha Reddy"},
+    ]
+
+    for s in DEMO_STUDENTS:
+        existing = await col.find_one({"roll_no": s["roll_no"]})
+        if not existing:
+            await col.insert_one({
+                "role": "student",
+                "roll_no": s["roll_no"],
+                "name": s["name"],
                 "subject": "Computer Science",
-            }},
-        )
-        print(f"🔧 Fixed placeholder hash for student: {settings.SEED_STUDENT_ROLL}")
-    else:
-        print(f"✓ Student already exists: {settings.SEED_STUDENT_ROLL}")
+                "password_hash": pwd_ctx.hash(settings.SEED_STUDENT_PASSWORD),
+                "created_at": datetime.now(timezone.utc),
+            })
+            print(f"🌱 Seeded student: {s['roll_no']} ({s['name']})")
+        elif "PLACEHOLDER" in existing.get("password_hash", ""):
+            await col.update_one(
+                {"_id": existing["_id"]},
+                {"$set": {
+                    "password_hash": pwd_ctx.hash(settings.SEED_STUDENT_PASSWORD),
+                    "name": s["name"],
+                    "subject": "Computer Science",
+                }},
+            )
+            print(f"🔧 Fixed placeholder hash for student: {s['roll_no']}")
+        else:
+            print(f"✓ Student already exists: {s['roll_no']} ({s['name']})")

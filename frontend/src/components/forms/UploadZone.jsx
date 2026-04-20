@@ -1,21 +1,31 @@
-// UploadZone.jsx — drag-and-drop image upload area.
-// Used on the answer-key step (teacher) and the submission page (student).
+// UploadZone.jsx — drag-and-drop file upload area.
+// Supports PDF, PNG, and JPG for student answer-sheet uploads.
 
 import { useState, useRef } from "react";
 
-export default function UploadZone({ onFileSelect, accept = "image/*", label = "Upload Image", hint = "PNG, JPG up to 10 MB" }) {
-  const [dragging, setDragging] = useState(false);
-  const [preview, setPreview] = useState(null);
-  const [fileName, setFileName] = useState("");
+export default function UploadZone({
+  onFileSelect,
+  accept = "application/pdf,image/png,image/jpeg",
+  label = "Upload Answer Sheet",
+  hint = "PDF, PNG, or JPG · Max 10 MB",
+}) {
+  const [dragging, setDragging]   = useState(false);
+  const [fileName, setFileName]   = useState("");
+  const [preview, setPreview]     = useState(null);
   const inputRef = useRef();
 
   const handleFile = (file) => {
     if (!file) return;
     setFileName(file.name);
-    // Create a local object URL for image preview
-    if (file.type.startsWith("image/")) {
+
+    const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+
+    if (!isPdf && file.type.startsWith("image/")) {
       setPreview(URL.createObjectURL(file));
+    } else {
+      setPreview(null);
     }
+
     onFileSelect?.(file);
   };
 
@@ -44,12 +54,18 @@ export default function UploadZone({ onFileSelect, accept = "image/*", label = "
         onChange={(e) => handleFile(e.target.files[0])}
       />
 
-      {preview ? (
-        // Show image thumbnail once a file is selected
+      {fileName ? (
         <div className="space-y-2">
-          <img src={preview} alt="preview" className="mx-auto max-h-48 rounded-lg object-contain" />
-          <p className="text-sm text-gray-500 truncate">{fileName}</p>
-          <p className="text-xs text-indigo-600 font-medium">Click to replace</p>
+          {preview ? (
+            <img src={preview} alt="preview" className="mx-auto max-h-48 rounded-lg object-contain" />
+          ) : (
+            /* PDF or non-image file — show icon instead of image preview */
+            <div className="mx-auto w-16 h-16 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center text-3xl">
+              📄
+            </div>
+          )}
+          <p className="text-sm font-medium text-gray-700 truncate px-4">{fileName}</p>
+          <p className="text-xs text-green-600 font-medium">✓ File selected — click to replace</p>
         </div>
       ) : (
         <div className="space-y-2">

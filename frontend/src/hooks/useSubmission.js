@@ -1,45 +1,52 @@
 // useSubmission.js — student-side data hook for submitting and checking results.
-// Phase 2: replace mock functions with api.post("/submissions") calls.
+// Phase 3: real API integration with multipart file uploads.
 
 import { useState, useEffect, useRef } from "react";
-import { mockGetAvailablePapers, mockSubmitAnswerSheet, mockGetSubmissionStatus, mockGetResult } from "../utils/mockData";
+import api from "../services/api";
 import useToastStore from "../store/toastStore";
-import useAuthStore from "../store/authStore";
 
-// List all papers available to the student with their submission status
+// List all papers available to the student
 export function useAvailablePapers() {
-  const { user } = useAuthStore();
-  const [papers, setPapers]   = useState([]);
+  const [papers, setPapers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToastStore();
 
   useEffect(() => {
-    if (!user?.id) return;
     setLoading(true);
-    mockGetAvailablePapers(user.id)
-      .then(setPapers)
-      .catch(() => addToast("Failed to load papers.", "error"))
+    api.get("/papers/available")
+      .then(res => setPapers(res.data))
+      .catch(() => addToast("Failed to load available papers.", "error"))
       .finally(() => setLoading(false));
-  }, [user?.id]);
+  }, [addToast]);
 
   return { papers, loading };
 }
 
 // Handle submission of an answer sheet image
+// sheetType: "omr" (bubble sheet) | "handwritten" (written answers)
 export function useSubmitAnswerSheet() {
-  const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const { addToast } = useToastStore();
 
-  const submit = async (paperId) => {
+  const submit = async (paperId, files, sheetType = "omr") => {
+    if (!files || files.length === 0) return null;
     setLoading(true);
+
+    // Multipart form — one or more files under "files" key
+    const formData = new FormData();
+    const fileList = Array.isArray(files) ? files : [files];
+    fileList.forEach((f) => formData.append("files", f));
+
     try {
-      // Phase 3+: pass the actual File object; here we only simulate
-      const sub = await mockSubmitAnswerSheet(paperId, user.id, user.name, user.roll_no);
-      addToast("Answer sheet submitted! Evaluating…", "info");
-      return sub;
+      const res = await api.post(
+        `/submissions?paper_id=${paperId}&sheet_type=${sheetType}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      addToast("Answer sheet submitted! AI evaluation started.", "info");
+      return res.data;
     } catch (e) {
-      addToast("Submission failed. Try again.", "error");
+      addToast("Submission failed. Check your connection or file size.", "error");
       return null;
     } finally {
       setLoading(false);
@@ -49,47 +56,59 @@ export function useSubmitAnswerSheet() {
   return { submit, loading };
 }
 
-// Poll submission status every 2s until it reaches "evaluated"
+// Poll submission status until it reaches "evaluated"
 export function useSubmissionStatus(submissionId) {
-  const [status, setStatus]   = useState("processing");
-  const [result, setResult]   = useState(null);
+  const [status, setStatus] = useState("loading");
+  const [result, setResult] = useState(null);
   const intervalRef = useRef();
+  const { addToast } = useToastStore();
 
   useEffect(() => {
     if (!submissionId) return;
+
     const poll = async () => {
       try {
-        const { status: s, result: r } = await mockGetSubmissionStatus(submissionId);
+        const res = await api.get(`/submissions/${submissionId}/status`);
+        const { status: s, result: r } = res.data;
         setStatus(s);
+
         if (s === "evaluated") {
           setResult(r);
-          clearInterval(intervalRef.current); // stop polling once done
+          clearInterval(intervalRef.current);
+        } else if (s === "error") {
+          addToast("Evaluation failed. Please try re-uploading.", "error");
+          clearInterval(intervalRef.current);
         }
-      } catch {
-        clearInterval(intervalRef.current);
+      } catch (err) {
+        // Only stop polling on hard 404s/auth errors
+        if (err.response?.status === 404) {
+          clearInterval(intervalRef.current);
+        }
       }
     };
-    poll();
+
+    poll(); // initial check
     intervalRef.current = setInterval(poll, 2000);
     return () => clearInterval(intervalRef.current);
-  }, [submissionId]);
+  }, [submissionId, addToast]);
 
   return { status, result };
 }
 
 // Fetch the full result object for a completed submission
 export function useResult(submissionId) {
-  const [data, setData]       = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToastStore();
 
   useEffect(() => {
     if (!submissionId) return;
-    mockGetResult(submissionId)
-      .then(setData)
-      .catch(() => addToast("Could not load result.", "error"))
+    setLoading(true);
+    api.get(`/results/${submissionId}`)
+      .then(res => setData(res.data))
+      .catch(() => addToast("Could not load result details.", "error"))
       .finally(() => setLoading(false));
-  }, [submissionId]);
+  }, [submissionId, addToast]);
 
   return { data, loading };
 }

@@ -1,8 +1,10 @@
 // student/Result.jsx — shows the evaluation result for a completed submission.
 // Displays: name, roll no, marks, average, highest, and section breakdown.
 
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useResult } from "../../hooks/useSubmission";
+import useAuthStore from "../../store/authStore";
 import PageWrapper from "../../components/layout/PageWrapper";
 import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
@@ -34,6 +36,25 @@ function ScoreCircle({ score, max }) {
 export default function Result() {
   const { submissionId } = useParams();
   const { data, loading } = useResult(submissionId);
+  const token = useAuthStore((s) => s.token);
+  const [fileLoading, setFileLoading] = useState(false);
+
+  const viewAnswerSheet = async () => {
+    setFileLoading(true);
+    try {
+      const res = await fetch(`/api/submissions/${submissionId}/file`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Failed to load file");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch {
+      alert("Could not load answer sheet.");
+    } finally {
+      setFileLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -109,6 +130,18 @@ export default function Result() {
           </div>
         </Card.Body>
       </Card>
+
+      {/* View answer sheet */}
+      <div className="mb-4">
+        <button
+          type="button"
+          onClick={viewAnswerSheet}
+          disabled={fileLoading}
+          className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-400 rounded-lg px-4 py-2 bg-indigo-50 hover:bg-indigo-100 transition-colors disabled:opacity-50"
+        >
+          📄 {fileLoading ? "Loading…" : "View My Answer Sheet"}
+        </button>
+      </div>
 
       {/* Section breakdown */}
       <Card>

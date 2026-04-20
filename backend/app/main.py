@@ -2,7 +2,9 @@
 # Registers all routers, configures CORS, and manages MongoDB lifecycle.
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 # Database lifecycle hooks
@@ -24,9 +26,20 @@ async def lifespan(app: FastAPI):
     await close_db()       # close Motor client
 
 
+# ── Validation error logger ───────────────────────────────────────────────────
+
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    print(f"❌ 422 Validation Error on {request.method} {request.url.path}")
+    print(f"   Errors: {exc.errors()}")
+    body = await request.body()
+    print(f"   Body: {body[:2000]}")
+    return JSONResponse(status_code=422, content={"detail": exc.errors()})
+
+
 # ── App instance ──────────────────────────────────────────────────────────────
 
 app = FastAPI(
+    exception_handlers={RequestValidationError: validation_exception_handler},
     title="Evalify API",
     version="0.2.0",
     description="Automated Handwritten Answer Sheet Evaluation System",

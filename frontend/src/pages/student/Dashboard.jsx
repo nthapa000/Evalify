@@ -8,23 +8,32 @@ import PageWrapper from "../../components/layout/PageWrapper";
 import Card from "../../components/ui/Card";
 import { SkeletonCard } from "../../components/ui/Skeleton";
 
-// All subjects that can have papers
-const ALL_SUBJECTS = [
-  { name: "Computer Science", icon: "💻", color: "bg-indigo-100 text-indigo-700" },
-  { name: "Mathematics",      icon: "📐", color: "bg-blue-100 text-blue-700" },
-  { name: "Physics",          icon: "⚛️",  color: "bg-purple-100 text-purple-700" },
-  { name: "Chemistry",        icon: "🧪", color: "bg-green-100 text-green-700" },
-];
+// Icon/color lookup for known subjects; unknown subjects get a default
+const SUBJECT_META = {
+  "Computer Science": { icon: "💻", color: "bg-indigo-100 text-indigo-700" },
+  "Mathematics":      { icon: "📐", color: "bg-blue-100 text-blue-700" },
+  "Physics":          { icon: "⚛️",  color: "bg-purple-100 text-purple-700" },
+  "Chemistry":        { icon: "🧪", color: "bg-green-100 text-green-700" },
+  "Biology":          { icon: "🧬", color: "bg-emerald-100 text-emerald-700" },
+  "English":          { icon: "📚", color: "bg-yellow-100 text-yellow-700" },
+  "History":          { icon: "🏛️",  color: "bg-orange-100 text-orange-700" },
+};
 
 export default function StudentDashboard() {
   const { user } = useAuthStore();
   const { papers, loading } = useAvailablePapers();
 
-  // Count available (not yet evaluated) papers per subject
+  // Count papers per subject and derive unique subject list from actual papers
   const paperCountBySubject = papers.reduce((acc, p) => {
-    acc[p.subject] = (acc[p.subject] ?? 0) + 1;
+    if (p.subject) acc[p.subject] = (acc[p.subject] ?? 0) + 1;
     return acc;
   }, {});
+
+  const DEFAULT_META = { icon: "📖", color: "bg-gray-100 text-gray-700" };
+  const activeSubjects = Object.keys(paperCountBySubject).map((name) => ({
+    name,
+    ...( SUBJECT_META[name] ?? DEFAULT_META ),
+  }));
 
   const pendingCount = papers.filter((p) => p.submissionStatus === "not_submitted").length;
 
@@ -43,7 +52,14 @@ export default function StudentDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-          : ALL_SUBJECTS.map((sub) => {
+          : activeSubjects.length === 0
+            ? (
+              <div className="col-span-4 text-center py-16 text-gray-400">
+                <p className="text-4xl mb-2">📭</p>
+                <p className="text-sm">No exam papers available yet.</p>
+              </div>
+            )
+            : activeSubjects.map((sub) => {
               const count = paperCountBySubject[sub.name] ?? 0;
               return (
                 <Link key={sub.name} to={`/student/subjects/${encodeURIComponent(sub.name)}`}>

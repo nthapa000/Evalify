@@ -1,17 +1,20 @@
 // teacher/CreatePaper.jsx — 5-step wizard to create an exam paper.
-// Step 1: type  | Step 2: details + per-Q marks + question paper PDF
-// Step 3: answer key (manual or PDF extract) + answer key reference PDF
-// Step 4: config | Step 5: review
+// Step 1: type
+// Step 2: details + marks (uniform default, per-Q optional) + question paper PDF upload
+// Step 3: answer key (manual or PDF extract) + answer sheet reference PDF upload
+// Step 4: configuration — negative marking with whole-paper or per-question scope
+// Step 5: review
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
 import PageWrapper from "../../components/layout/PageWrapper";
 import StepWizard from "../../components/forms/StepWizard";
 import RubricBuilder from "../../components/forms/RubricBuilder";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
-import { useCreatePaper } from "../../hooks/usePapers";
+import { useCreatePaper, useUploadPaperFile, useExtractAnswers } from "../../hooks/usePapers";
 import { paperTypeLabel } from "../../utils/formatters";
 
 const STEPS = ["Paper Type", "Details", "Answer Key", "Configuration", "Review"];
@@ -24,47 +27,50 @@ const PAPER_TYPES = [
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-// Returns the sum of all per-question marks for the MCQ section
 function mcqTotal(form) {
   return Array.from({ length: form.mcqCount }, (_, i) =>
-    form.mcqQuestionMarks[`Q${i + 1}`] ?? form.mcqMarks
+    form.uniformMcqMarks ? form.mcqMarks : (form.mcqQuestionMarks[`Q${i + 1}`] ?? form.mcqMarks)
   ).reduce((a, b) => a + b, 0);
 }
 
-// Returns the sum of all per-question marks for the Numerical section
 function numericalTotal(form) {
   return Array.from({ length: form.numericalCount }, (_, i) =>
-    form.numericalQuestionMarks[`N${i + 1}`] ?? form.numericalMarks
+    form.uniformNumericalMarks ? form.numericalMarks : (form.numericalQuestionMarks[`N${i + 1}`] ?? form.numericalMarks)
   ).reduce((a, b) => a + b, 0);
 }
 
-// Returns the sum of all per-question marks for the Subjective section
 function subjectiveTotal(form) {
   return Array.from({ length: form.subjectiveCount }, (_, i) =>
-    form.subjectiveQuestionMarks[`S${i + 1}`] ?? form.subjectiveMarks
+    form.uniformSubjectiveMarks ? form.subjectiveMarks : (form.subjectiveQuestionMarks[`S${i + 1}`] ?? form.subjectiveMarks)
   ).reduce((a, b) => a + b, 0);
 }
 
-// Mock: simulate reading answers from an uploaded PDF (2 s delay)
-async function mockExtractAnswersFromPdf(mcqCount) {
-  await new Promise((r) => setTimeout(r, 2000));
-  const opts = ["A", "B", "C", "D"];
-  const answers = {};
-  for (let i = 1; i <= mcqCount; i++) {
-    answers[`Q${i}`] = opts[Math.floor(Math.random() * 4)];
-  }
-  return answers;
-}
+// ── PDF upload zone ───────────────────────────────────────────────────────────
+// At module scope to avoid remounting on parent re-render.
+// If uploadFn is provided, the file is uploaded to the server; otherwise a
+// browser object URL is used (fallback for cases where upload is not needed).
 
-// ── PDF upload zone — inline to keep it small and avoid focus issues ──────────
-// Accepts a PDF file and calls onFile(file, objectUrl).
-// Must be at module scope to avoid remounting on parent re-render.
-function PdfUploadZone({ label, hint, currentUrl, onFile }) {
-  const handleChange = (e) => {
+function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn }) {
+  const [uploading, setUploading] = useState(false);
+
+  const handleChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    onFile(file, URL.createObjectURL(file));
-    e.target.value = "";              // allow re-selecting the same file
+    e.target.value = "";
+
+    if (uploadFn) {
+      setUploading(true);
+      const url = await uploadFn(file);
+      setUploading(false);
+      if (url) onFile(url);
+    } else {
+      onFile(URL.createObjectURL(file));
+    }
+  };
+
+  const openUrl = (url) => {
+    // Server URLs like /api/papers/files/xxx.pdf open via the Vite proxy
+    window.open(url, "_blank");
   };
 
   return (
@@ -72,27 +78,39 @@ function PdfUploadZone({ label, hint, currentUrl, onFile }) {
       <span className="text-2xl">📄</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-gray-700">{label}</p>
-        <p className="text-xs text-gray-400">{hint}</p>
+        <p className="text-xs text-gray-400 truncate">
+          {uploading ? "Uploading to server…" : currentUrl ? "Uploaded" : hint}
+        </p>
       </div>
-      {currentUrl && (
-        // Opens the uploaded PDF in a new browser tab
+      {currentUrl && !uploading && (
         <button
           type="button"
-          onClick={() => window.open(currentUrl, "_blank")}
+          onClick={() => openUrl(currentUrl)}
           className="text-xs text-indigo-600 hover:underline whitespace-nowrap"
         >
           View PDF
         </button>
       )}
-      <label className="cursor-pointer text-xs bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-gray-600 hover:border-indigo-400 hover:text-indigo-600 whitespace-nowrap">
+      {uploading && (
+        <span className="text-xs text-indigo-400 animate-pulse whitespace-nowrap">Saving…</span>
+      )}
+      <label className={`cursor-pointer text-xs bg-white border border-gray-300 rounded-lg px-3 py-1.5 whitespace-nowrap
+        ${uploading ? "opacity-50 cursor-not-allowed text-gray-400" : "text-gray-600 hover:border-indigo-400 hover:text-indigo-600"}`}>
         {currentUrl ? "Replace" : "Upload"}
-        <input type="file" accept="application/pdf" className="hidden" onChange={handleChange} />
+        <input
+          type="file"
+          accept="application/pdf"
+          className="hidden"
+          onChange={handleChange}
+          disabled={uploading}
+        />
       </label>
     </div>
   );
 }
 
 // ── Step 1: Paper Type ────────────────────────────────────────────────────────
+
 function Step1({ value, onChange }) {
   return (
     <div className="space-y-3">
@@ -117,17 +135,19 @@ function Step1({ value, onChange }) {
   );
 }
 
-// ── Shared text/number field — at module scope to prevent remount ─────────────
-function Field({ label, name, type = "text", min, placeholder, form, setForm }) {
+// ── Shared text/number input ──────────────────────────────────────────────────
+
+function Field({ label, name, type = "text", min, step, placeholder, form, setForm }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       <input
         type={type}
         min={min}
+        step={step}
         value={form[name]}
         onChange={(e) =>
-          setForm({ ...form, [name]: type === "number" ? parseInt(e.target.value) || 0 : e.target.value })
+          setForm({ ...form, [name]: type === "number" ? (parseFloat(e.target.value) || 0) : e.target.value })
         }
         placeholder={placeholder}
         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -136,78 +156,121 @@ function Field({ label, name, type = "text", min, placeholder, form, setForm }) 
   );
 }
 
-// ── Step 2: Paper Details + per-question marks + question paper PDF ───────────
-function Step2({ form, setForm }) {
+// ── Marks section — uniform toggle + optional per-question grid ───────────────
+// uniformKey: form field name for the toggle (e.g. "uniformMcqMarks")
+// defaultMarksKey: form field name for default marks (e.g. "mcqMarks")
+// countKey: form field name for question count (e.g. "mcqCount")
+// questionMarksKey: form field name for the per-Q map (e.g. "mcqQuestionMarks")
+// prefix: question ID prefix ("Q" | "N" | "S")
+// label: section label
+
+function MarksSection({ form, setForm, uniformKey, defaultMarksKey, countKey, questionMarksKey, prefix, label }) {
+  const count = form[countKey];
+  const defaultMark = form[defaultMarksKey];
+  const isUniform = form[uniformKey];
+
+  const applyDefaultToAll = () => {
+    const updated = {};
+    for (let i = 1; i <= count; i++) updated[`${prefix}${i}`] = defaultMark;
+    setForm({ ...form, [questionMarksKey]: updated });
+  };
+
+  const setQMark = (qid, val) =>
+    setForm({ ...form, [questionMarksKey]: { ...form[questionMarksKey], [qid]: Math.max(0, val) } });
+
+  return (
+    <div className="bg-gray-50 rounded-xl p-3 space-y-3">
+      {/* Header row: label + uniform toggle */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold text-gray-600">{label}</p>
+        <label className="flex items-center gap-2 cursor-pointer select-none">
+          <span className="text-xs text-gray-500">Custom per question</span>
+          <input
+            type="checkbox"
+            checked={!isUniform}
+            onChange={(e) => {
+              const customise = e.target.checked;
+              if (customise) applyDefaultToAll();  // seed grid from default
+              setForm({ ...form, [uniformKey]: !customise });
+            }}
+            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-400"
+          />
+        </label>
+      </div>
+
+      {/* Default marks input — always visible */}
+      <div>
+        <label className="block text-xs text-gray-500 mb-1">
+          {isUniform ? `Marks per ${label} question (all same)` : `Default marks (used when customising)`}
+        </label>
+        <input
+          type="number"
+          min="0"
+          step="0.5"
+          value={defaultMark}
+          onChange={(e) => {
+            const val = parseFloat(e.target.value) || 0;
+            const patch = { [defaultMarksKey]: val };
+            // If uniform, also reset the per-Q map so total stays consistent
+            if (isUniform) {
+              const updated = {};
+              for (let i = 1; i <= count; i++) updated[`${prefix}${i}`] = val;
+              patch[questionMarksKey] = updated;
+            }
+            setForm({ ...form, ...patch });
+          }}
+          className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        />
+      </div>
+
+      {/* Per-question grid — shown only when customising */}
+      {!isUniform && count > 0 && (
+        <>
+          <div className="flex justify-end">
+            <button type="button" onClick={applyDefaultToAll} className="text-xs text-indigo-600 hover:underline">
+              Reset all to default
+            </button>
+          </div>
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+            {Array.from({ length: count }, (_, i) => {
+              const qid = `${prefix}${i + 1}`;
+              return (
+                <div key={qid} className="flex flex-col items-center gap-1">
+                  <span className="text-xs text-gray-400">{qid}</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={form[questionMarksKey][qid] ?? defaultMark}
+                    onChange={(e) => setQMark(qid, parseFloat(e.target.value) || 0)}
+                    className="w-full text-center text-sm border border-gray-300 rounded-lg px-1 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ── Step 2: Paper Details ─────────────────────────────────────────────────────
+
+function Step2({ form, setForm, uploadFn }) {
   const isType2 = form.type === "mcq_numerical" || form.type === "mcq_numerical_subjective";
   const isType3 = form.type === "mcq_numerical_subjective";
 
-  // When MCQ count changes, grow/shrink the per-question marks map
-  const setMcqCount = (n) => {
+  const setCount = (countKey, marksKey, qMarksKey, prefix, n) => {
     const count = Math.max(1, n);
-    const updated = { ...form.mcqQuestionMarks };
+    const updated = { ...form[qMarksKey] };
     for (let i = 1; i <= count; i++) {
-      if (!updated[`Q${i}`]) updated[`Q${i}`] = form.mcqMarks;
-    }
-    // Remove entries beyond new count
-    Object.keys(updated).forEach((k) => {
-      if (parseInt(k.slice(1)) > count) delete updated[k];
-    });
-    setForm({ ...form, mcqCount: count, mcqQuestionMarks: updated });
-  };
-
-  // Update marks for one specific question
-  const setQMark = (qid, val) =>
-    setForm({ ...form, mcqQuestionMarks: { ...form.mcqQuestionMarks, [qid]: Math.max(0, val) } });
-
-  // Pressing "Apply to all" resets every Q to the current default marks value
-  const applyDefaultToAll = () => {
-    const updated = {};
-    for (let i = 1; i <= form.mcqCount; i++) updated[`Q${i}`] = form.mcqMarks;
-    setForm({ ...form, mcqQuestionMarks: updated });
-  };
-
-  // When Numerical count changes, grow/shrink the per-question marks map
-  const setNumericalCount = (n) => {
-    const count = Math.max(1, n);
-    const updated = { ...form.numericalQuestionMarks };
-    for (let i = 1; i <= count; i++) {
-      if (!updated[`N${i}`]) updated[`N${i}`] = form.numericalMarks;
+      if (updated[`${prefix}${i}`] === undefined) updated[`${prefix}${i}`] = form[marksKey];
     }
     Object.keys(updated).forEach((k) => {
-      if (parseInt(k.slice(1)) > count) delete updated[k];
+      if (parseInt(k.slice(prefix.length)) > count) delete updated[k];
     });
-    setForm({ ...form, numericalCount: count, numericalQuestionMarks: updated });
-  };
-
-  const setNumericalQMark = (qid, val) =>
-    setForm({ ...form, numericalQuestionMarks: { ...form.numericalQuestionMarks, [qid]: Math.max(0, val) } });
-
-  const applyNumericalDefaultToAll = () => {
-    const updated = {};
-    for (let i = 1; i <= form.numericalCount; i++) updated[`N${i}`] = form.numericalMarks;
-    setForm({ ...form, numericalQuestionMarks: updated });
-  };
-
-  // When Subjective count changes, grow/shrink the per-question marks map
-  const setSubjectiveCount = (n) => {
-    const count = Math.max(1, n);
-    const updated = { ...form.subjectiveQuestionMarks };
-    for (let i = 1; i <= count; i++) {
-      if (!updated[`S${i}`]) updated[`S${i}`] = form.subjectiveMarks;
-    }
-    Object.keys(updated).forEach((k) => {
-      if (parseInt(k.slice(1)) > count) delete updated[k];
-    });
-    setForm({ ...form, subjectiveCount: count, subjectiveQuestionMarks: updated });
-  };
-
-  const setSubjectiveQMark = (qid, val) =>
-    setForm({ ...form, subjectiveQuestionMarks: { ...form.subjectiveQuestionMarks, [qid]: Math.max(0, val) } });
-
-  const applySubjectiveDefaultToAll = () => {
-    const updated = {};
-    for (let i = 1; i <= form.subjectiveCount; i++) updated[`S${i}`] = form.subjectiveMarks;
-    setForm({ ...form, subjectiveQuestionMarks: updated });
+    setForm({ ...form, [countKey]: count, [qMarksKey]: updated });
   };
 
   const total =
@@ -218,167 +281,77 @@ function Step2({ form, setForm }) {
   return (
     <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
       <Field label="Paper Name" name="name" placeholder="e.g. CS101 Midterm 2026" form={form} setForm={setForm} />
-      <Field label="Subject" name="subject" placeholder="e.g. Computer Science" form={form} setForm={setForm} />
-
-      {/* Question paper PDF — uploaded for reference; not parsed */}
-      <PdfUploadZone
-        label="Question Paper (Reference PDF)"
-        hint="Optional — students and teacher can view this on the paper page"
-        currentUrl={form.questionPaperUrl}
-        onFile={(_, url) => setForm({ ...form, questionPaperUrl: url })}
-      />
-
-      {/* MCQ section */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* Controlled separately so we can sync mcqQuestionMarks on change */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">MCQ Questions</label>
-          <input
-            type="number" min="1"
-            value={form.mcqCount}
-            onChange={(e) => setMcqCount(parseInt(e.target.value) || 1)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Default Marks / MCQ</label>
-          <input
-            type="number" min="1"
-            value={form.mcqMarks}
-            onChange={(e) => setForm({ ...form, mcqMarks: parseInt(e.target.value) || 1 })}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          />
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+        <div className="flex items-center gap-2 border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-600">
+          <span className="font-medium text-gray-800">{form.subject || "—"}</span>
+          <span className="text-xs text-gray-400">(fixed to your assigned subject)</span>
         </div>
       </div>
 
-      {/* Per-question marks grid */}
-      {form.mcqCount > 0 && (
-        <div className="bg-gray-50 rounded-xl p-3 space-y-2">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold text-gray-600">Per-Question Marks (edit individually)</p>
-            <button
-              type="button"
-              onClick={applyDefaultToAll}
-              className="text-xs text-indigo-600 hover:underline"
-            >
-              Apply default to all
-            </button>
-          </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-            {Array.from({ length: form.mcqCount }, (_, i) => {
-              const qid = `Q${i + 1}`;
-              return (
-                <div key={qid} className="flex flex-col items-center gap-1">
-                  <span className="text-xs text-gray-400">{qid}</span>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.5"
-                    value={form.mcqQuestionMarks[qid] ?? form.mcqMarks}
-                    onChange={(e) => setQMark(qid, parseFloat(e.target.value) || 0)}
-                    className="w-full text-center text-sm border border-gray-300 rounded-lg px-1 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {/* Question Paper PDF — uploaded to server for persistent reference */}
+      <PdfUploadZone
+        label="Question Paper PDF (Reference)"
+        hint="Optional — stored on server, viewable from paper page"
+        currentUrl={form.questionPaperUrl}
+        uploadFn={uploadFn}
+        onFile={(url) => setForm({ ...form, questionPaperUrl: url })}
+      />
+
+      {/* MCQ count + marks */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">MCQ Questions</label>
+        <input
+          type="number" min="1"
+          value={form.mcqCount}
+          onChange={(e) => setCount("mcqCount", "mcqMarks", "mcqQuestionMarks", "Q", parseInt(e.target.value) || 1)}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        />
+      </div>
+      <MarksSection
+        form={form} setForm={setForm}
+        uniformKey="uniformMcqMarks" defaultMarksKey="mcqMarks"
+        countKey="mcqCount" questionMarksKey="mcqQuestionMarks"
+        prefix="Q" label="MCQ"
+      />
 
       {isType2 && (
         <>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Numerical Questions</label>
-              <input
-                type="number" min="1"
-                value={form.numericalCount}
-                onChange={(e) => setNumericalCount(parseInt(e.target.value) || 1)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Default Marks / Numerical</label>
-              <input
-                type="number" min="1"
-                value={form.numericalMarks}
-                onChange={(e) => setForm({ ...form, numericalMarks: parseInt(e.target.value) || 1 })}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Numerical Questions</label>
+            <input
+              type="number" min="1"
+              value={form.numericalCount}
+              onChange={(e) => setCount("numericalCount", "numericalMarks", "numericalQuestionMarks", "N", parseInt(e.target.value) || 1)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
           </div>
-          {form.numericalCount > 0 && (
-            <div className="bg-gray-50 rounded-xl p-3 space-y-2">
-              <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold text-gray-600">Per-Question Marks — Numerical (edit individually)</p>
-                <button type="button" onClick={applyNumericalDefaultToAll} className="text-xs text-indigo-600 hover:underline">Apply default to all</button>
-              </div>
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                {Array.from({ length: form.numericalCount }, (_, i) => {
-                  const qid = `N${i + 1}`;
-                  return (
-                    <div key={qid} className="flex flex-col items-center gap-1">
-                      <span className="text-xs text-gray-400">{qid}</span>
-                      <input
-                        type="number" min="0" step="0.5"
-                        value={form.numericalQuestionMarks[qid] ?? form.numericalMarks}
-                        onChange={(e) => setNumericalQMark(qid, parseFloat(e.target.value) || 0)}
-                        className="w-full text-center text-sm border border-gray-300 rounded-lg px-1 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <MarksSection
+            form={form} setForm={setForm}
+            uniformKey="uniformNumericalMarks" defaultMarksKey="numericalMarks"
+            countKey="numericalCount" questionMarksKey="numericalQuestionMarks"
+            prefix="N" label="Numerical"
+          />
         </>
       )}
+
       {isType3 && (
         <>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subjective Questions</label>
-              <input
-                type="number" min="1"
-                value={form.subjectiveCount}
-                onChange={(e) => setSubjectiveCount(parseInt(e.target.value) || 1)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Default Marks / Subjective</label>
-              <input
-                type="number" min="1"
-                value={form.subjectiveMarks}
-                onChange={(e) => setForm({ ...form, subjectiveMarks: parseInt(e.target.value) || 1 })}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Subjective Questions</label>
+            <input
+              type="number" min="1"
+              value={form.subjectiveCount}
+              onChange={(e) => setCount("subjectiveCount", "subjectiveMarks", "subjectiveQuestionMarks", "S", parseInt(e.target.value) || 1)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
           </div>
-          {form.subjectiveCount > 0 && (
-            <div className="bg-gray-50 rounded-xl p-3 space-y-2">
-              <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold text-gray-600">Per-Question Marks — Subjective (edit individually)</p>
-                <button type="button" onClick={applySubjectiveDefaultToAll} className="text-xs text-indigo-600 hover:underline">Apply default to all</button>
-              </div>
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                {Array.from({ length: form.subjectiveCount }, (_, i) => {
-                  const qid = `S${i + 1}`;
-                  return (
-                    <div key={qid} className="flex flex-col items-center gap-1">
-                      <span className="text-xs text-gray-400">{qid}</span>
-                      <input
-                        type="number" min="0" step="0.5"
-                        value={form.subjectiveQuestionMarks[qid] ?? form.subjectiveMarks}
-                        onChange={(e) => setSubjectiveQMark(qid, parseFloat(e.target.value) || 0)}
-                        className="w-full text-center text-sm border border-gray-300 rounded-lg px-1 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <MarksSection
+            form={form} setForm={setForm}
+            uniformKey="uniformSubjectiveMarks" defaultMarksKey="subjectiveMarks"
+            countKey="subjectiveCount" questionMarksKey="subjectiveQuestionMarks"
+            prefix="S" label="Subjective"
+          />
         </>
       )}
 
@@ -390,34 +363,36 @@ function Step2({ form, setForm }) {
   );
 }
 
-// ── Step 3: Answer Key — manual entry OR extract from PDF ─────────────────────
-function Step3({ form, setForm }) {
-  const [extracting, setExtracting] = useState(false);
+// ── Step 3: Answer Key ────────────────────────────────────────────────────────
+
+function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
   const MCQ_OPTIONS = ["A", "B", "C", "D"];
   const isType2 = form.type === "mcq_numerical" || form.type === "mcq_numerical_subjective";
 
   const setMcqAnswer = (qid, val) =>
     setForm({ ...form, mcqAnswers: { ...form.mcqAnswers, [qid]: val } });
-  const setNumericalAnswer = (qid, patch) =>
-    setForm({ ...form, numericalAnswers: { ...form.numericalAnswers, [qid]: { ...(form.numericalAnswers[qid] ?? {}), ...patch } } });
 
-  // Simulates reading MCQ answers from the uploaded answer key PDF
+  const setNumericalAnswer = (qid, patch) =>
+    setForm({
+      ...form,
+      numericalAnswers: { ...form.numericalAnswers, [qid]: { ...(form.numericalAnswers[qid] ?? {}), ...patch } },
+    });
+
   const handleExtract = async () => {
     if (!form.answerKeyPdfUrl) return;
-    setExtracting(true);
-    const answers = await mockExtractAnswersFromPdf(form.mcqCount);
-    setForm({ ...form, mcqAnswers: answers });
-    setExtracting(false);
+    const result = await extractFn(form.answerKeyPdfUrl, form.mcqCount);
+    if (result) {
+      setForm({ ...form, mcqAnswers: result.answers });
+    }
   };
 
   return (
     <div className="space-y-5 max-h-[60vh] overflow-y-auto pr-1">
 
-      {/* ── Answer Key PDF section ─────────────────────────────────────────── */}
+      {/* ── Answer key source ─────────────────────────────────────────────── */}
       <div className="space-y-3">
         <h4 className="text-sm font-semibold text-gray-700">Answer Key Source</h4>
 
-        {/* Mode toggle: manual vs PDF extract */}
         <div className="flex gap-2">
           {["manual", "pdf"].map((mode) => (
             <button
@@ -434,14 +409,15 @@ function Step3({ form, setForm }) {
           ))}
         </div>
 
-        {/* PDF upload + extract button */}
+        {/* PDF upload + extract (PDF mode only) */}
         {form.answerKeyMode === "pdf" && (
           <div className="space-y-2">
             <PdfUploadZone
               label="Answer Key PDF"
-              hint="Upload your answer key — we'll extract MCQ answers automatically"
+              hint="Upload your answer key — answers will be extracted automatically"
               currentUrl={form.answerKeyPdfUrl}
-              onFile={(_, url) => setForm({ ...form, answerKeyPdfUrl: url })}
+              uploadFn={uploadFn}
+              onFile={(url) => setForm({ ...form, answerKeyPdfUrl: url })}
             />
             <Button
               size="sm"
@@ -455,22 +431,32 @@ function Step3({ form, setForm }) {
             </Button>
             {Object.keys(form.mcqAnswers).length > 0 && !extracting && (
               <p className="text-xs text-green-600 font-medium text-center">
-                ✓ {Object.keys(form.mcqAnswers).length} answers extracted — review below
+                ✓ {Object.keys(form.mcqAnswers).length} answers extracted — review and edit below
               </p>
             )}
           </div>
         )}
 
-        {/* Reference copy of answer key PDF (separate from the extraction one) */}
+        {/* Answer Key Reference PDF — stored for archival viewing, not extraction */}
         <PdfUploadZone
           label="Answer Key Reference PDF (optional)"
-          hint="Stored alongside the paper for viewing later"
+          hint="Stored on server for teacher reference — not used for extraction"
           currentUrl={form.answerKeyRefUrl}
-          onFile={(_, url) => setForm({ ...form, answerKeyRefUrl: url })}
+          uploadFn={uploadFn}
+          onFile={(url) => setForm({ ...form, answerKeyRefUrl: url })}
+        />
+
+        {/* Physical Answer Sheet Reference — the teacher's filled sheet */}
+        <PdfUploadZone
+          label="Answer Sheet Reference PDF (optional)"
+          hint="Upload your completed answer sheet for future reference"
+          currentUrl={form.answerSheetRefUrl}
+          uploadFn={uploadFn}
+          onFile={(url) => setForm({ ...form, answerSheetRefUrl: url })}
         />
       </div>
 
-      {/* ── MCQ answer grid ────────────────────────────────────────────────── */}
+      {/* ── MCQ answer grid ───────────────────────────────────────────────── */}
       <div>
         <h4 className="text-sm font-semibold text-gray-700 mb-3">
           MCQ Answers {form.answerKeyMode === "pdf" ? "(extracted — confirm or edit)" : "(enter manually)"}
@@ -478,11 +464,12 @@ function Step3({ form, setForm }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {Array.from({ length: form.mcqCount }, (_, i) => {
             const qid = `Q${i + 1}`;
-            const marks = form.mcqQuestionMarks[qid] ?? form.mcqMarks;
+            const marks = form.uniformMcqMarks
+              ? form.mcqMarks
+              : (form.mcqQuestionMarks[qid] ?? form.mcqMarks);
             return (
               <div key={qid} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
                 <span className="text-xs font-medium text-gray-500 w-8">{qid}</span>
-                {/* Per-Q marks shown as a reminder */}
                 <span className="text-xs text-gray-400 w-8">[{marks}m]</span>
                 <div className="flex gap-1">
                   {MCQ_OPTIONS.map((opt) => (
@@ -505,7 +492,7 @@ function Step3({ form, setForm }) {
         </div>
       </div>
 
-      {/* ── Numerical answer grid ──────────────────────────────────────────── */}
+      {/* ── Numerical answer grid ─────────────────────────────────────────── */}
       {isType2 && (
         <div>
           <h4 className="text-sm font-semibold text-gray-700 mb-3">Numerical Answers</h4>
@@ -550,20 +537,23 @@ function Step3({ form, setForm }) {
 }
 
 // ── Step 4: Configuration ─────────────────────────────────────────────────────
+
 function Step4({ form, setForm }) {
   const isType3 = form.type === "mcq_numerical_subjective";
+  const cfg = form.config;
 
-  const toggleNegative = () =>
-    setForm({ ...form, config: { ...form.config, negativeMaking: !form.config.negativeMaking } });
+  const setConfig = (patch) => setForm({ ...form, config: { ...cfg, ...patch } });
 
-  const updateRubric = (i, rubric) => {
-    const rubrics = [...(form.subjectiveRubrics ?? [])];
-    rubrics[i] = rubric;
-    setForm({ ...form, subjectiveRubrics: rubrics });
+  const toggleNegativeQuestion = (qid) => {
+    const qs = cfg.negativeMarkingQuestions ?? [];
+    const next = qs.includes(qid) ? qs.filter((q) => q !== qid) : [...qs, qid];
+    setConfig({ negativeMarkingQuestions: next });
   };
 
   return (
-    <div className="space-y-5 max-h-[50vh] overflow-y-auto pr-1">
+    <div className="space-y-5 max-h-[55vh] overflow-y-auto pr-1">
+
+      {/* ── Negative marking toggle ───────────────────────────────────────── */}
       <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
         <div>
           <p className="text-sm font-medium text-gray-700">Negative Marking</p>
@@ -571,26 +561,101 @@ function Step4({ form, setForm }) {
         </div>
         <button
           type="button"
-          onClick={toggleNegative}
-          className={`w-12 h-6 rounded-full transition-colors relative ${form.config.negativeMaking ? "bg-indigo-600" : "bg-gray-300"}`}
+          onClick={() => setConfig({ negativeMaking: !cfg.negativeMaking })}
+          className={`w-12 h-6 rounded-full transition-colors relative ${cfg.negativeMaking ? "bg-indigo-600" : "bg-gray-300"}`}
         >
-          <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform
-            ${form.config.negativeMaking ? "translate-x-6 left-0.5" : "translate-x-0 left-0.5"}`} />
+          <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform
+            ${cfg.negativeMaking ? "translate-x-6" : "translate-x-0"}`} />
         </button>
       </div>
 
-      {form.config.negativeMaking && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Marks deducted per wrong answer</label>
-          <input
-            type="number" min="0.25" step="0.25"
-            value={form.config.marksDeducted ?? 0.5}
-            onChange={(e) => setForm({ ...form, config: { ...form.config, marksDeducted: parseFloat(e.target.value) } })}
-            className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          />
+      {cfg.negativeMaking && (
+        <div className="space-y-4 pl-1">
+          {/* Marks deducted */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Marks deducted per wrong answer</label>
+            <input
+              type="number" min="0.25" step="0.25"
+              value={cfg.marksDeducted ?? 0.5}
+              onChange={(e) => setConfig({ marksDeducted: parseFloat(e.target.value) || 0.25 })}
+              className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+          </div>
+
+          {/* Scope: all questions vs specific questions */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-700">Apply negative marking to:</p>
+            <div className="flex gap-2">
+              {[
+                { value: "all", label: "All MCQ Questions" },
+                { value: "per_question", label: "Specific Questions" },
+              ].map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setConfig({ negativeMarkingScope: opt.value, negativeMarkingQuestions: [] })}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
+                    ${cfg.negativeMarkingScope === opt.value
+                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Per-question checkboxes */}
+            {cfg.negativeMarkingScope === "per_question" && (
+              <div className="space-y-2">
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setConfig({ negativeMarkingQuestions: Array.from({ length: form.mcqCount }, (_, i) => `Q${i + 1}`) })}
+                    className="text-xs text-indigo-600 hover:underline"
+                  >
+                    Select all
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfig({ negativeMarkingQuestions: [] })}
+                    className="text-xs text-gray-500 hover:underline"
+                  >
+                    Clear all
+                  </button>
+                </div>
+                <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                  {Array.from({ length: form.mcqCount }, (_, i) => {
+                    const qid = `Q${i + 1}`;
+                    const checked = (cfg.negativeMarkingQuestions ?? []).includes(qid);
+                    return (
+                      <label
+                        key={qid}
+                        className={`flex flex-col items-center gap-1 p-2 rounded-lg border cursor-pointer transition-colors
+                          ${checked ? "border-red-300 bg-red-50" : "border-gray-200 bg-white hover:border-red-200"}`}
+                      >
+                        <span className="text-xs text-gray-500">{qid}</span>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleNegativeQuestion(qid)}
+                          className="rounded border-gray-300 text-red-500 focus:ring-red-400"
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+                {(cfg.negativeMarkingQuestions ?? []).length > 0 && (
+                  <p className="text-xs text-red-500">
+                    Negative marking applies to: {cfg.negativeMarkingQuestions.join(", ")}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
+      {/* ── Subjective question texts + rubrics (Type 3 only) ────────────── */}
       {isType3 && Array.from({ length: form.subjectiveCount }, (_, i) => (
         <div key={i}>
           <p className="text-xs text-gray-500 font-medium mb-1">Question Text for S{i + 1}</p>
@@ -604,7 +669,15 @@ function Step4({ form, setForm }) {
             placeholder="Enter the subjective question text..."
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 mb-2"
           />
-          <RubricBuilder questionIndex={i} value={form.subjectiveRubrics?.[i]} onChange={(r) => updateRubric(i, r)} />
+          <RubricBuilder
+            questionIndex={i}
+            value={form.subjectiveRubrics?.[i]}
+            onChange={(r) => {
+              const rubrics = [...(form.subjectiveRubrics ?? [])];
+              rubrics[i] = r;
+              setForm({ ...form, subjectiveRubrics: rubrics });
+            }}
+          />
         </div>
       ))}
     </div>
@@ -612,6 +685,7 @@ function Step4({ form, setForm }) {
 }
 
 // ── Step 5: Review ────────────────────────────────────────────────────────────
+
 function Step5({ form }) {
   const isType2 = form.type === "mcq_numerical" || form.type === "mcq_numerical_subjective";
   const isType3 = form.type === "mcq_numerical_subjective";
@@ -620,6 +694,8 @@ function Step5({ form }) {
     (isType2 ? numericalTotal(form) : 0) +
     (isType3 ? subjectiveTotal(form) : 0);
 
+  const cfg = form.config;
+
   const Row = ({ label, value }) => (
     <div className="flex justify-between py-2 border-b border-gray-100 last:border-0">
       <span className="text-sm text-gray-500">{label}</span>
@@ -627,24 +703,35 @@ function Step5({ form }) {
     </div>
   );
 
+  const negMarkingSummary = () => {
+    if (!cfg.negativeMaking) return "No";
+    const base = `Yes (−${cfg.marksDeducted ?? 0.5}/wrong)`;
+    if (cfg.negativeMarkingScope === "per_question") {
+      const qs = cfg.negativeMarkingQuestions ?? [];
+      return qs.length > 0 ? `${base} — ${qs.join(", ")}` : `${base} — no questions selected`;
+    }
+    return `${base} — all questions`;
+  };
+
   return (
     <div className="space-y-4">
       <div className="bg-gray-50 rounded-xl p-4">
         <Row label="Paper Name" value={form.name || "—"} />
         <Row label="Subject" value={form.subject || "—"} />
         <Row label="Type" value={paperTypeLabel(form.type)} />
-        <Row label="MCQ Questions" value={`${form.mcqCount} questions (varying marks) = ${mcqTotal(form)} marks`} />
-        {isType2 && <Row label="Numerical Questions" value={`${form.numericalCount} questions (varying marks) = ${numericalTotal(form)} marks`} />}
-        {isType3 && <Row label="Subjective Questions" value={`${form.subjectiveCount} questions (varying marks) = ${subjectiveTotal(form)} marks`} />}
+        <Row label="MCQ Questions" value={`${form.mcqCount} questions = ${mcqTotal(form)} marks`} />
+        {isType2 && <Row label="Numerical Questions" value={`${form.numericalCount} questions = ${numericalTotal(form)} marks`} />}
+        {isType3 && <Row label="Subjective Questions" value={`${form.subjectiveCount} questions = ${subjectiveTotal(form)} marks`} />}
         <Row label="Total Marks" value={<span className="text-indigo-600 font-bold">{total}</span>} />
-        <Row label="Negative Marking" value={form.config.negativeMaking ? `Yes (−${form.config.marksDeducted ?? 0.5}/wrong)` : "No"} />
+        <Row label="Negative Marking" value={negMarkingSummary()} />
         <Row label="MCQ Answers set" value={`${Object.keys(form.mcqAnswers).length} / ${form.mcqCount}`} />
         <Row label="Question Paper PDF" value={form.questionPaperUrl ? "✓ Uploaded" : "Not uploaded"} />
         <Row label="Answer Key PDF" value={(form.answerKeyPdfUrl || form.answerKeyRefUrl) ? "✓ Uploaded" : "Not uploaded"} />
+        <Row label="Answer Sheet PDF" value={form.answerSheetRefUrl ? "✓ Uploaded" : "Not uploaded"} />
       </div>
 
       {/* Quick links to review uploaded PDFs before saving */}
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-2">
         {form.questionPaperUrl && (
           <button type="button" onClick={() => window.open(form.questionPaperUrl, "_blank")}
             className="flex-1 text-xs text-indigo-600 border border-indigo-200 rounded-lg py-2 hover:bg-indigo-50">
@@ -657,6 +744,12 @@ function Step5({ form }) {
             📝 View Answer Key
           </button>
         )}
+        {form.answerSheetRefUrl && (
+          <button type="button" onClick={() => window.open(form.answerSheetRefUrl, "_blank")}
+            className="flex-1 text-xs text-indigo-600 border border-indigo-200 rounded-lg py-2 hover:bg-indigo-50">
+            📋 View Answer Sheet
+          </button>
+        )}
       </div>
 
       <p className="text-xs text-gray-400 text-center">Review above, then click "Create Paper" to save.</p>
@@ -664,53 +757,109 @@ function Step5({ form }) {
   );
 }
 
-// ── Main Wizard ───────────────────────────────────────────────────────────────
+// ── Initial form state ────────────────────────────────────────────────────────
+
 const INITIAL = {
   type: null,
   name: "",
   subject: "",
+  // MCQ
   mcqCount: 5,
-  mcqMarks: 2,                  // default marks; individual Q marks can differ
-  mcqQuestionMarks: {},         // { Q1: 2, Q2: 3, ... } — populated in Step 2
+  mcqMarks: 2,
+  mcqQuestionMarks: {},
+  uniformMcqMarks: true,         // true = all questions get same marks (default)
+  // Numerical
   numericalCount: 3,
   numericalMarks: 5,
-  numericalQuestionMarks: {},   // { N1: 5, N2: 3, ... } — populated in Step 2
+  numericalQuestionMarks: {},
+  uniformNumericalMarks: true,
+  // Subjective
   subjectiveCount: 2,
   subjectiveMarks: 10,
-  subjectiveQuestionMarks: {},  // { S1: 10, S2: 8, ... } — populated in Step 2
+  subjectiveQuestionMarks: {},
+  uniformSubjectiveMarks: true,
+  // Answers
   mcqAnswers: {},
   numericalAnswers: {},
   subjectiveQuestions: [],
   subjectiveRubrics: [],
-  config: { negativeMaking: false },
-  answerKeyMode: "manual",      // "manual" | "pdf"
-  questionPaperUrl: null,       // object URL for question paper PDF (reference)
-  answerKeyPdfUrl: null,        // object URL for the PDF used for extraction
-  answerKeyRefUrl: null,        // object URL for the answer key reference PDF
+  // Configuration
+  config: {
+    negativeMaking: false,
+    marksDeducted: 0.5,
+    negativeMarkingScope: "all",       // "all" | "per_question"
+    negativeMarkingQuestions: [],      // used when scope === "per_question"
+  },
+  // Answer key
+  answerKeyMode: "manual",
+  // Uploaded PDF server URLs (set by PdfUploadZone after upload)
+  questionPaperUrl: null,
+  answerKeyPdfUrl: null,
+  answerKeyRefUrl: null,
+  answerSheetRefUrl: null,
 };
 
+// ── Main Wizard ───────────────────────────────────────────────────────────────
+
 export default function CreatePaper() {
+  const { user } = useAuthStore();
+  const teacherSubject = user?.subject ?? "";
+
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState(INITIAL);
+  const [form, setForm] = useState({ ...INITIAL, subject: teacherSubject });
   const [success, setSuccess] = useState(false);
   const { createPaper, loading } = useCreatePaper();
+  const { upload: uploadFn } = useUploadPaperFile();
+  const { extract: extractFn, extracting } = useExtractAnswers();
   const navigate = useNavigate();
 
   const canNext = () => {
     if (step === 1) return !!form.type;
-    if (step === 2) return form.name.trim() && form.subject.trim() && form.mcqCount > 0;
+    if (step === 2) return form.name.trim() && form.mcqCount > 0;
     return true;
   };
 
   const handleSubmit = async () => {
     const isType2 = form.type === "mcq_numerical" || form.type === "mcq_numerical_subjective";
     const isType3 = form.type === "mcq_numerical_subjective";
+
+    // Materialise per-question marks when using uniform mode
+    let mcqQuestionMarks = form.mcqQuestionMarks;
+    if (form.uniformMcqMarks) {
+      mcqQuestionMarks = {};
+      for (let i = 1; i <= form.mcqCount; i++) mcqQuestionMarks[`Q${i}`] = form.mcqMarks;
+    }
+    let numericalQuestionMarks = form.numericalQuestionMarks;
+    if (form.uniformNumericalMarks) {
+      numericalQuestionMarks = {};
+      for (let i = 1; i <= form.numericalCount; i++) numericalQuestionMarks[`N${i}`] = form.numericalMarks;
+    }
+    let subjectiveQuestionMarks = form.subjectiveQuestionMarks;
+    if (form.uniformSubjectiveMarks) {
+      subjectiveQuestionMarks = {};
+      for (let i = 1; i <= form.subjectiveCount; i++) subjectiveQuestionMarks[`S${i}`] = form.subjectiveMarks;
+    }
+
     const totalMarks =
       mcqTotal(form) +
       (isType2 ? numericalTotal(form) : 0) +
       (isType3 ? subjectiveTotal(form) : 0);
 
-    const paper = await createPaper({ ...form, totalMarks, typeLabel: paperTypeLabel(form.type) });
+    // Strip UI-only toggle fields before sending to backend
+    const {
+      uniformMcqMarks, uniformNumericalMarks, uniformSubjectiveMarks,
+      ...paperData
+    } = form;
+
+    const paper = await createPaper({
+      ...paperData,
+      mcqQuestionMarks,
+      numericalQuestionMarks,
+      subjectiveQuestionMarks,
+      totalMarks,
+      typeLabel: paperTypeLabel(form.type),
+    });
+
     if (paper) setSuccess(true);
   };
 
@@ -726,13 +875,15 @@ export default function CreatePaper() {
           </Card.Header>
           <Card.Body>
             {step === 1 && <Step1 value={form.type} onChange={(t) => setForm({ ...form, type: t })} />}
-            {step === 2 && <Step2 form={form} setForm={setForm} />}
-            {step === 3 && <Step3 form={form} setForm={setForm} />}
+            {step === 2 && <Step2 form={form} setForm={setForm} uploadFn={uploadFn} />}
+            {step === 3 && <Step3 form={form} setForm={setForm} uploadFn={uploadFn} extractFn={extractFn} extracting={extracting} />}
             {step === 4 && <Step4 form={form} setForm={setForm} />}
             {step === 5 && <Step5 form={form} />}
           </Card.Body>
           <Card.Footer className="flex justify-between">
-            <Button variant="secondary" onClick={() => setStep((s) => s - 1)} disabled={step === 1}>← Back</Button>
+            <Button variant="secondary" onClick={() => setStep((s) => s - 1)} disabled={step === 1}>
+              ← Back
+            </Button>
             {step < 5
               ? <Button onClick={() => setStep((s) => s + 1)} disabled={!canNext()}>Next →</Button>
               : <Button onClick={handleSubmit} loading={loading}>Create Paper ✓</Button>
@@ -750,7 +901,7 @@ export default function CreatePaper() {
         <div className="text-center py-4">
           <div className="text-5xl mb-3">🎉</div>
           <p className="text-gray-700 font-medium">
-            You have successfully created an exam evaluation for <strong>{form.name}</strong>.
+            Successfully created <strong>{form.name}</strong>.
           </p>
           <p className="text-sm text-gray-500 mt-2">Students can now upload their answer sheets for evaluation.</p>
         </div>

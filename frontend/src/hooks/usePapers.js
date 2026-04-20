@@ -1,8 +1,8 @@
 // usePapers.js — data access hook for exam papers.
-// Phase 2: swap mock* functions for real api.get / api.post calls.
+// Phase 3: real API integration with Axios.
 
 import { useState, useEffect, useCallback } from "react";
-import { mockGetTeacherPapers, mockCreatePaper, mockDeletePaper, mockGetPaper, mockGetPaperResults } from "../utils/mockData";
+import api from "../services/api";
 import useToastStore from "../store/toastStore";
 
 // List all papers for the logged-in teacher
@@ -14,13 +14,14 @@ export function useTeacherPapers() {
   const fetch = useCallback(async () => {
     setLoading(true);
     try {
-      setPapers(await mockGetTeacherPapers());
+      const res = await api.get("/papers");
+      setPapers(res.data);
     } catch (e) {
       addToast("Failed to load papers.", "error");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [addToast]);
 
   useEffect(() => { fetch(); }, [fetch]);
   return { papers, loading, refetch: fetch };
@@ -34,9 +35,9 @@ export function useCreatePaper() {
   const createPaper = async (data) => {
     setLoading(true);
     try {
-      const paper = await mockCreatePaper(data);
+      const res = await api.post("/papers", data);
       addToast("Paper created successfully!", "success");
-      return paper;
+      return res.data;
     } catch (e) {
       addToast("Failed to create paper.", "error");
       return null;
@@ -57,13 +58,61 @@ export function usePaperResults(paperId) {
   useEffect(() => {
     if (!paperId) return;
     setLoading(true);
-    mockGetPaperResults(paperId)
-      .then(setData)
+    api.get(`/results/paper/${paperId}`)
+      .then(res => setData(res.data))
       .catch(() => addToast("Failed to load results.", "error"))
       .finally(() => setLoading(false));
-  }, [paperId]);
+  }, [paperId, addToast]);
 
   return { data, loading };
+}
+
+// Upload a PDF to the server — returns the persistent server URL or null
+export function useUploadPaperFile() {
+  const [uploading, setUploading] = useState(false);
+  const { addToast } = useToastStore();
+
+  const upload = async (file) => {
+    if (!file) return null;
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await api.post("/papers/files/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data.url;
+    } catch (e) {
+      addToast("Failed to upload PDF. Check file size (max 20 MB).", "error");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return { upload, uploading };
+}
+
+// Extract MCQ answers from an already-uploaded answer key PDF
+export function useExtractAnswers() {
+  const [extracting, setExtracting] = useState(false);
+  const { addToast } = useToastStore();
+
+  const extract = async (fileUrl, mcqCount) => {
+    if (!fileUrl || !mcqCount) return null;
+    setExtracting(true);
+    try {
+      const res = await api.post("/papers/extract-answers", { file_url: fileUrl, mcq_count: mcqCount });
+      return res.data;       // { answers, confidence, extracted_count, raw_text_preview }
+    } catch (e) {
+      addToast("Failed to extract answers from PDF.", "error");
+      return null;
+    } finally {
+      setExtracting(false);
+    }
+  };
+
+  return { extract, extracting };
 }
 
 // Fetch a single paper by ID (for PaperView page)
@@ -75,11 +124,11 @@ export function usePaperView(paperId) {
   useEffect(() => {
     if (!paperId) return;
     setLoading(true);
-    mockGetPaper(paperId)
-      .then(setPaper)
+    api.get(`/papers/${paperId}`)
+      .then(res => setPaper(res.data))
       .catch(() => addToast("Failed to load paper details.", "error"))
       .finally(() => setLoading(false));
-  }, [paperId]);
+  }, [paperId, addToast]);
 
   return { paper, loading };
 }
