@@ -1,13 +1,36 @@
 # main.py — FastAPI application entry-point.
-# Phase 0: bare app with CORS. Routers will be registered in Phase 2.
+# Registers all routers, configures CORS, and manages MongoDB lifecycle.
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# Database lifecycle hooks
+from app.db.mongodb import connect_db, close_db
+from app.db.seed import seed_users
+
+# Routers (one per domain)
+from app.routers import auth, papers, submissions, results
+
+
+# ── Lifespan: connect to Mongo on startup, disconnect on shutdown ────────────
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Runs on startup (before yield) and shutdown (after yield)."""
+    await connect_db()     # open Motor client
+    await seed_users()     # insert seed teacher + student if missing
+    yield
+    await close_db()       # close Motor client
+
+
+# ── App instance ──────────────────────────────────────────────────────────────
+
 app = FastAPI(
     title="Evalify API",
-    version="0.1.0",
+    version="0.2.0",
     description="Automated Handwritten Answer Sheet Evaluation System",
+    lifespan=lifespan,
 )
 
 # Allow the React dev server (port 5173) to reach this API during development.
@@ -20,8 +43,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Register routers under /api prefix ────────────────────────────────────────
+# This matches the frontend's Axios baseURL ("/api")
 
-@app.get("/health")
+app.include_router(auth.router,        prefix="/api")
+app.include_router(papers.router,      prefix="/api")
+app.include_router(submissions.router, prefix="/api")
+app.include_router(results.router,     prefix="/api")
+
+
+# ── Health check (used by Kubernetes liveness probes) ─────────────────────────
+
+@app.get("/api/health")
 async def health():
-    # Kubernetes liveness probe hits this endpoint
-    return {"status": "ok", "service": "evalify-backend"}
+    return {"status": "ok", "service": "evalify-backend", "version": "0.2.0"}
