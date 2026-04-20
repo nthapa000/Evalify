@@ -1,0 +1,68 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+venv/
+.venv/
+env/
+.env/
+
+# ── Node / Frontend ─────────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Environment / Secrets ────────────────────────────────────────────────────
+*.env
+!*.env.example          # keep example files in git
+.env.*
+!.env.example
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+*.dockerignore
+
+# ── ML / Model Weights ───────────────────────────────────────────────────────
+*.gguf
+*.bin
+*.safetensors
+models/
+*.pt
+*.pth
+*.onnx
+
+# ── DVC (data version control) ───────────────────────────────────────────────
+# DVC tracks data/model files; only commit .dvc pointer files
+/data/
+/models/
+.dvc/tmp/
+.dvc/cache/
+
+# ── MLflow ───────────────────────────────────────────────────────────────────
+mlruns/
+mlflow/mlruns/
+
+# ── IDE ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Test / Coverage ──────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/

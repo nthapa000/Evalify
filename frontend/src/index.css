@@ -1,0 +1,4 @@
+/* Tailwind base layers — must be imported before any component styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

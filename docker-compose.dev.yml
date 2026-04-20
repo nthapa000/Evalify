@@ -1,0 +1,66 @@
+# docker-compose.dev.yml
+# Phase 0 — spin up only MongoDB + MLflow for local development.
+# In later phases, backend / frontend / ml services will be added here.
+# Usage: docker compose -f docker-compose.dev.yml up -d
+
+# Shared network so all containers can resolve each other by service name
+networks:
+  evalify-net:
+    driver: bridge
+
+# Named volumes persist data across container restarts
+volumes:
+  mongo-data:       # MongoDB database files
+  mlflow-data:      # MLflow artifact store + sqlite DB
+
+services:
+
+  # ── MongoDB ─────────────────────────────────────────────────────────────────
+  # Stores: users, papers, submissions, results (document model)
+  mongodb:
+    image: mongo:7
+    container_name: evalify-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: evalify
+      MONGO_INITDB_ROOT_PASSWORD: evalify_dev_pass   # override in prod via secrets
+      MONGO_INITDB_DATABASE: evalify_db
+    ports:
+      - "27017:27017"   # expose to host so backend (running outside Docker in dev) can connect
+    volumes:
+      - mongo-data:/data/db
+      - ./backend/db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro  # seed script
+    networks:
+      - evalify-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── MLflow Tracking Server ───────────────────────────────────────────────────
+  # Logs OCR confidence, LLM grading scores, model versions per evaluation run
+  # Uses python:3.11-slim + mlflow install instead of ghcr.io (ghcr.io blocked on this server)
+  mlflow:
+    image: python:3.11-slim
+    container_name: evalify-mlflow
+    restart: unless-stopped
+    # Install mlflow at container start, then launch the server
+    command: >
+      sh -c "pip install --quiet mlflow==2.13.0 &&
+             mlflow server
+               --backend-store-uri sqlite:////mlflow/mlflow.db
+               --default-artifact-root /mlflow/artifacts
+               --host 0.0.0.0
+               --port 5000"
+    ports:
+      - "5000:5000"   # MLflow UI accessible at http://localhost:5000
+    volumes:
+      - mlflow-data:/mlflow   # persists experiment DB + uploaded artifacts
+    networks:
+      - evalify-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,6 @@
+# DVC ignores these paths when scanning for changed files
+.git
+__pycache__
+*.pyc
+node_modules
+frontend/dist

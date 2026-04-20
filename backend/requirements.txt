@@ -1,0 +1,25 @@
+# ── Web framework ─────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9      # required for file upload (UploadFile)
+
+# ── Database ──────────────────────────────────────────────────────────────────
+motor==3.4.0                  # async MongoDB driver (wraps PyMongo)
+pymongo==4.7.2
+
+# ── Auth ──────────────────────────────────────────────────────────────────────
+PyJWT==2.8.0
+bcrypt==4.1.3
+passlib[bcrypt]==1.7.4
+
+# ── Validation ────────────────────────────────────────────────────────────────
+pydantic==2.7.1
+pydantic-settings==2.2.1     # loads .env files into Settings models
+
+# ── MLOps ─────────────────────────────────────────────────────────────────────
+mlflow==2.13.0               # experiment tracking client
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest==8.2.0
+httpx==0.27.0                # async test client for FastAPI (TestClient uses it)
+pytest-asyncio==0.23.6

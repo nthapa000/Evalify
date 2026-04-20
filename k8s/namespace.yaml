@@ -1,0 +1,9 @@
+# namespace.yaml — isolates all Evalify workloads in the "evalify" namespace.
+# All subsequent K8s manifests use: namespace: evalify
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: evalify
+  labels:
+    app: evalify
