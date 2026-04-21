@@ -86,16 +86,16 @@ function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn }) {
         <button
           type="button"
           onClick={() => openUrl(currentUrl)}
-          className="text-xs text-indigo-600 hover:underline whitespace-nowrap"
+          className="text-xs text-green-600 hover:underline whitespace-nowrap"
         >
           View PDF
         </button>
       )}
       {uploading && (
-        <span className="text-xs text-indigo-400 animate-pulse whitespace-nowrap">Saving…</span>
+        <span className="text-xs text-green-400 animate-pulse whitespace-nowrap">Saving…</span>
       )}
       <label className={`cursor-pointer text-xs bg-white border border-gray-300 rounded-lg px-3 py-1.5 whitespace-nowrap
-        ${uploading ? "opacity-50 cursor-not-allowed text-gray-400" : "text-gray-600 hover:border-indigo-400 hover:text-indigo-600"}`}>
+        ${uploading ? "opacity-50 cursor-not-allowed text-gray-400" : "text-gray-600 hover:border-green-400 hover:text-green-600"}`}>
         {currentUrl ? "Replace" : "Upload"}
         <input
           type="file"
@@ -122,14 +122,14 @@ function Step1({ value, onChange }) {
           type="button"
           onClick={() => onChange(t.value)}
           className={`w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-4
-            ${value === t.value ? "border-indigo-500 bg-indigo-50" : "border-gray-200 hover:border-indigo-200"}`}
+            ${value === t.value ? "border-green-500 bg-green-50" : "border-gray-200 hover:border-green-200"}`}
         >
           <span className="text-2xl mt-0.5">{t.icon}</span>
           <div>
             <p className="font-semibold text-gray-800">{t.label}</p>
             <p className="text-xs text-gray-500 mt-0.5">{t.desc}</p>
           </div>
-          {value === t.value && <span className="ml-auto text-indigo-600 text-lg">✓</span>}
+          {value === t.value && <span className="ml-auto text-green-600 text-lg">✓</span>}
         </button>
       ))}
     </div>
@@ -151,7 +151,7 @@ function Field({ label, name, type = "text", min, step, placeholder, form, setFo
           setForm({ ...form, [name]: type === "number" ? (parseFloat(e.target.value) || 0) : e.target.value })
         }
         placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
       />
     </div>
   );
@@ -194,7 +194,7 @@ function MarksSection({ form, setForm, uniformKey, defaultMarksKey, countKey, qu
               if (customise) applyDefaultToAll();  // seed grid from default
               setForm({ ...form, [uniformKey]: !customise });
             }}
-            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-400"
+            className="rounded border-gray-300 text-green-600 focus:ring-green-400"
           />
         </label>
       </div>
@@ -220,7 +220,7 @@ function MarksSection({ form, setForm, uniformKey, defaultMarksKey, countKey, qu
             }
             setForm({ ...form, ...patch });
           }}
-          className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
         />
       </div>
 
@@ -228,7 +228,7 @@ function MarksSection({ form, setForm, uniformKey, defaultMarksKey, countKey, qu
       {!isUniform && count > 0 && (
         <>
           <div className="flex justify-end">
-            <button type="button" onClick={applyDefaultToAll} className="text-xs text-indigo-600 hover:underline">
+            <button type="button" onClick={applyDefaultToAll} className="text-xs text-green-600 hover:underline">
               Reset all to default
             </button>
           </div>
@@ -244,7 +244,7 @@ function MarksSection({ form, setForm, uniformKey, defaultMarksKey, countKey, qu
                     step="0.5"
                     value={form[questionMarksKey][qid] ?? defaultMark}
                     onChange={(e) => setQMark(qid, parseFloat(e.target.value) || 0)}
-                    className="w-full text-center text-sm border border-gray-300 rounded-lg px-1 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    className="w-full text-center text-sm border border-gray-300 rounded-lg px-1 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 </div>
               );
@@ -306,7 +306,7 @@ function Step2({ form, setForm, uploadFn }) {
           type="number" min="1"
           value={form.mcqCount}
           onChange={(e) => setCount("mcqCount", "mcqMarks", "mcqQuestionMarks", "Q", parseInt(e.target.value) || 1)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
         />
       </div>
       <MarksSection
@@ -324,7 +324,7 @@ function Step2({ form, setForm, uploadFn }) {
               type="number" min="1"
               value={form.numericalCount}
               onChange={(e) => setCount("numericalCount", "numericalMarks", "numericalQuestionMarks", "N", parseInt(e.target.value) || 1)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
           <MarksSection
@@ -344,7 +344,7 @@ function Step2({ form, setForm, uploadFn }) {
               type="number" min="1"
               value={form.subjectiveCount}
               onChange={(e) => setCount("subjectiveCount", "subjectiveMarks", "subjectiveQuestionMarks", "S", parseInt(e.target.value) || 1)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
           <MarksSection
@@ -356,9 +356,9 @@ function Step2({ form, setForm, uploadFn }) {
         </>
       )}
 
-      <div className="bg-indigo-50 rounded-lg p-3 text-sm">
+      <div className="bg-green-50 rounded-lg p-3 text-sm">
         <span className="text-gray-600">Total Marks: </span>
-        <span className="font-bold text-indigo-700">{total}</span>
+        <span className="font-bold text-green-700">{total}</span>
       </div>
     </div>
   );
@@ -413,7 +413,7 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
               onClick={() => setForm({ ...form, answerKeyMode: mode })}
               className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
                 ${form.answerKeyMode === mode
-                  ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                  ? "border-green-500 bg-green-50 text-green-700"
                   : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
             >
               {mode === "manual" ? "✏️ Enter Manually" : "📄 Upload PDF & Extract"}
@@ -503,8 +503,8 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
                           ${active
                             ? isMulti
                               ? "bg-amber-500 text-white"
-                              : "bg-indigo-600 text-white"
-                            : "bg-white border border-gray-300 text-gray-600 hover:border-indigo-300"}`}
+                              : "bg-green-600 text-white"
+                            : "bg-white border border-gray-300 text-gray-600 hover:border-green-300"}`}
                       >
                         {opt}
                       </button>
@@ -522,37 +522,100 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
 
       {/* ── Numerical answer grid ─────────────────────────────────────────── */}
       {isType2 && (
-        <div>
-          <h4 className="text-sm font-semibold text-gray-700 mb-3">Numerical Answers</h4>
-          <div className="space-y-2">
+        <div className="space-y-3">
+
+          {/* Convention guidance banner */}
+          <div className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-xs text-blue-800 space-y-1">
+            <p className="font-semibold">📋 Answer Sheet Convention for Students</p>
+            <p>Students write answers in two sections on their sheet, in this order:</p>
+            <ol className="list-decimal list-inside space-y-0.5 pl-1">
+              <li><strong>MCQ section first</strong> — circles / letters for Q1, Q2, Q3 …</li>
+              <li><strong>Numerical section after</strong> — numbers for N1, N2, N3 …</li>
+            </ol>
+            <p className="text-blue-600">
+              The system extracts them section by section — students do not need to write labels.
+            </p>
+          </div>
+
+          <h4 className="text-sm font-semibold text-gray-700">Numerical Answers</h4>
+          <p className="text-xs text-gray-400">
+            List every accepted form of each answer. Exact match against any one value earns full marks.
+            You are responsible for adding all valid variants (e.g. both <code>3</code> and <code>3.0</code>).
+          </p>
+
+          <div className="space-y-3">
             {Array.from({ length: form.numericalCount }, (_, i) => {
-              const qid = `N${i + 1}`;
-              const ans = form.numericalAnswers[qid] ?? { answer: "", tolerance_type: "range", tolerance_value: 0.1 };
+              const qid   = `N${i + 1}`;
+              const marks = form.uniformNumericalMarks
+                ? form.numericalMarks
+                : (form.numericalQuestionMarks[qid] ?? form.numericalMarks);
+              const ans     = form.numericalAnswers[qid] ?? { mode: "single", values: [""] };
+              const isMulti = ans.mode === "multiple";
+
+              const setMode = (mode) => {
+                const values = mode === "single"
+                  ? [ans.values[0] ?? ""]
+                  : (ans.values.length >= 2 ? ans.values : [...ans.values, ""]);
+                setNumericalAnswer(qid, { mode, values });
+              };
+              const setValue = (idx, val) => {
+                const next = [...ans.values];
+                next[idx] = val;
+                setNumericalAnswer(qid, { values: next });
+              };
+              const addValue    = () => setNumericalAnswer(qid, { values: [...ans.values, ""] });
+              const removeValue = (idx) => {
+                if (ans.values.length <= 1) return;
+                setNumericalAnswer(qid, { values: ans.values.filter((_, j) => j !== idx) });
+              };
+
               return (
-                <div key={qid} className="flex flex-wrap items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                  <span className="text-xs font-medium text-gray-500 w-6">{qid}</span>
-                  <input
-                    type="number" step="any" value={ans.answer}
-                    onChange={(e) => setNumericalAnswer(qid, { answer: e.target.value })}
-                    placeholder="Answer"
-                    className="w-24 text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                  />
-                  <select
-                    value={ans.tolerance_type}
-                    onChange={(e) => setNumericalAnswer(qid, { tolerance_type: e.target.value })}
-                    className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none"
-                  >
-                    <option value="exact">Exact</option>
-                    <option value="range">±Range</option>
-                    <option value="decimal_variants">Variants</option>
-                  </select>
-                  {ans.tolerance_type === "range" && (
-                    <input
-                      type="number" step="any" value={ans.tolerance_value}
-                      onChange={(e) => setNumericalAnswer(qid, { tolerance_value: parseFloat(e.target.value) })}
-                      placeholder="±"
-                      className="w-16 text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                    />
+                <div key={qid} className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-green-600 w-8">{qid}</span>
+                    <span className="text-xs text-gray-400">[{marks}m]</span>
+                    <select
+                      value={ans.mode}
+                      onChange={(e) => setMode(e.target.value)}
+                      className="ml-auto text-xs border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-green-400"
+                    >
+                      <option value="single">Single answer</option>
+                      <option value="multiple">Multiple accepted answers</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    {ans.values.map((val, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        {isMulti && (
+                          <span className="text-xs text-gray-400 w-4">{idx + 1}.</span>
+                        )}
+                        <input
+                          type="text"
+                          value={val}
+                          onChange={(e) => setValue(idx, e.target.value)}
+                          placeholder={isMulti ? `Accepted answer ${idx + 1}` : "Answer (e.g. 3.5)"}
+                          className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-green-400"
+                        />
+                        {isMulti && ans.values.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeValue(idx)}
+                            className="text-xs text-red-400 hover:text-red-600 px-1"
+                          >✕</button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {isMulti && (
+                    <button
+                      type="button"
+                      onClick={addValue}
+                      className="text-xs text-green-500 hover:text-green-700 font-medium"
+                    >
+                      + Add accepted answer
+                    </button>
                   )}
                 </div>
               );
@@ -590,7 +653,7 @@ function Step4({ form, setForm }) {
         <button
           type="button"
           onClick={() => setConfig({ negativeMaking: !cfg.negativeMaking })}
-          className={`w-12 h-6 rounded-full transition-colors relative ${cfg.negativeMaking ? "bg-indigo-600" : "bg-gray-300"}`}
+          className={`w-12 h-6 rounded-full transition-colors relative ${cfg.negativeMaking ? "bg-green-600" : "bg-gray-300"}`}
         >
           <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform
             ${cfg.negativeMaking ? "translate-x-6" : "translate-x-0"}`} />
@@ -606,7 +669,7 @@ function Step4({ form, setForm }) {
               type="number" min="0.25" step="0.25"
               value={cfg.marksDeducted ?? 0.5}
               onChange={(e) => setConfig({ marksDeducted: parseFloat(e.target.value) || 0.25 })}
-              className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
@@ -624,7 +687,7 @@ function Step4({ form, setForm }) {
                   onClick={() => setConfig({ negativeMarkingScope: opt.value, negativeMarkingQuestions: [] })}
                   className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
                     ${cfg.negativeMarkingScope === opt.value
-                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                      ? "border-green-500 bg-green-50 text-green-700"
                       : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
                 >
                   {opt.label}
@@ -639,7 +702,7 @@ function Step4({ form, setForm }) {
                   <button
                     type="button"
                     onClick={() => setConfig({ negativeMarkingQuestions: Array.from({ length: form.mcqCount }, (_, i) => `Q${i + 1}`) })}
-                    className="text-xs text-indigo-600 hover:underline"
+                    className="text-xs text-green-600 hover:underline"
                   >
                     Select all
                   </button>
@@ -695,7 +758,7 @@ function Step4({ form, setForm }) {
               setForm({ ...form, subjectiveQuestions: qs });
             }}
             placeholder="Enter the subjective question text..."
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 mb-2"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 mb-2"
           />
           <RubricBuilder
             questionIndex={i}
@@ -750,9 +813,15 @@ function Step5({ form }) {
         <Row label="MCQ Questions" value={`${form.mcqCount} questions = ${mcqTotal(form)} marks`} />
         {isType2 && <Row label="Numerical Questions" value={`${form.numericalCount} questions = ${numericalTotal(form)} marks`} />}
         {isType3 && <Row label="Subjective Questions" value={`${form.subjectiveCount} questions = ${subjectiveTotal(form)} marks`} />}
-        <Row label="Total Marks" value={<span className="text-indigo-600 font-bold">{total}</span>} />
+        <Row label="Total Marks" value={<span className="text-green-600 font-bold">{total}</span>} />
         <Row label="Negative Marking" value={negMarkingSummary()} />
         <Row label="MCQ Answers set" value={`${Object.keys(form.mcqAnswers).length} / ${form.mcqCount}`} />
+        {isType2 && (
+          <Row
+            label="Numerical Answers set"
+            value={`${Object.values(form.numericalAnswers).filter(a => (a.values ?? []).some(v => v.trim())).length} / ${form.numericalCount}`}
+          />
+        )}
         <Row label="Question Paper PDF" value={form.questionPaperUrl ? "✓ Uploaded" : "Not uploaded"} />
         <Row label="Answer Key PDF" value={(form.answerKeyPdfUrl || form.answerKeyRefUrl) ? "✓ Uploaded" : "Not uploaded"} />
         <Row label="Answer Sheet PDF" value={form.answerSheetRefUrl ? "✓ Uploaded" : "Not uploaded"} />
@@ -762,19 +831,19 @@ function Step5({ form }) {
       <div className="flex flex-wrap gap-2">
         {form.questionPaperUrl && (
           <button type="button" onClick={() => window.open(form.questionPaperUrl, "_blank")}
-            className="flex-1 text-xs text-indigo-600 border border-indigo-200 rounded-lg py-2 hover:bg-indigo-50">
+            className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
             📄 View Question Paper
           </button>
         )}
         {(form.answerKeyPdfUrl || form.answerKeyRefUrl) && (
           <button type="button" onClick={() => window.open(form.answerKeyRefUrl || form.answerKeyPdfUrl, "_blank")}
-            className="flex-1 text-xs text-indigo-600 border border-indigo-200 rounded-lg py-2 hover:bg-indigo-50">
+            className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
             📝 View Answer Key
           </button>
         )}
         {form.answerSheetRefUrl && (
           <button type="button" onClick={() => window.open(form.answerSheetRefUrl, "_blank")}
-            className="flex-1 text-xs text-indigo-600 border border-indigo-200 rounded-lg py-2 hover:bg-indigo-50">
+            className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
             📋 View Answer Sheet
           </button>
         )}
@@ -873,6 +942,15 @@ export default function CreatePaper() {
       (isType2 ? numericalTotal(form) : 0) +
       (isType3 ? subjectiveTotal(form) : 0);
 
+    // Convert numerical answers from UI format { mode, values } to backend list format ["3","3.0"]
+    const numericalAnswers = {};
+    for (const [qid, ans] of Object.entries(form.numericalAnswers)) {
+      const values = (ans.values ?? [ans.answer ?? ""])
+        .map((v) => String(v).trim())
+        .filter(Boolean);
+      if (values.length > 0) numericalAnswers[qid] = values;
+    }
+
     // Strip UI-only toggle fields before sending to backend
     const {
       uniformMcqMarks, uniformNumericalMarks, uniformSubjectiveMarks,
@@ -883,6 +961,7 @@ export default function CreatePaper() {
       ...paperData,
       mcqQuestionMarks,
       numericalQuestionMarks,
+      numericalAnswers,
       subjectiveQuestionMarks,
       totalMarks,
       typeLabel: paperTypeLabel(form.type),

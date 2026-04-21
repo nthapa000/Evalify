@@ -1,5 +1,4 @@
 // student/SubjectPage.jsx — lists all exam papers for one subject.
-// Shows submission status (not submitted / processing / evaluated) for each paper.
 
 import { useParams, Link } from "react-router-dom";
 import { useAvailablePapers } from "../../hooks/useSubmission";
@@ -21,13 +20,12 @@ export default function SubjectPage() {
   const decodedSubject = decodeURIComponent(subject);
   const { papers, loading } = useAvailablePapers();
 
-  // Filter to the current subject only
   const subjectPapers = papers.filter((p) => p.subject === decodedSubject);
 
   return (
     <PageWrapper>
-      <Link to="/student/dashboard" className="text-sm text-indigo-600 hover:underline mb-4 inline-block">
-        ← Back to Dashboard
+      <Link to="/student/dashboard" className="text-sm text-green-600 hover:underline mb-4 inline-block">
+        &larr; Back to Dashboard
       </Link>
 
       <div className="flex items-center justify-between mb-6">
@@ -41,7 +39,6 @@ export default function SubjectPage() {
         </div>
       ) : subjectPapers.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
-          <p className="text-5xl mb-3">📭</p>
           <p className="text-lg font-medium">No papers available for {decodedSubject}</p>
         </div>
       ) : (
@@ -60,8 +57,8 @@ export default function SubjectPage() {
                 </div>
 
                 <div className="mt-3 flex gap-4 text-sm text-gray-500">
-                  <span>📊 {paper.totalMarks} marks</span>
-                  <span>📅 {formatDate(paper.createdAt)}</span>
+                  <span>{paper.totalMarks} marks</span>
+                  <span>{formatDate(paper.createdAt)}</span>
                 </div>
               </Card.Body>
               <Card.Footer className="flex gap-2">
@@ -72,7 +69,7 @@ export default function SubjectPage() {
                 )}
                 {paper.submissionStatus === "processing" && (
                   <Button size="sm" variant="secondary" disabled className="flex-1">
-                    ⏳ Evaluating…
+                    Evaluating…
                   </Button>
                 )}
                 {paper.submissionStatus === "evaluated" && (

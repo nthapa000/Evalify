@@ -1,5 +1,4 @@
 // Badge.jsx — small status pill.
-// variant maps to a Tailwind color scheme.
 
 const VARIANTS = {
   success: "bg-green-100 text-green-700",
@@ -7,7 +6,7 @@ const VARIANTS = {
   error:   "bg-red-100   text-red-700",
   info:    "bg-blue-100  text-blue-700",
   neutral: "bg-gray-100  text-gray-600",
-  indigo:  "bg-indigo-100 text-indigo-700",
+  indigo:  "bg-green-100 text-green-700",
 };
 
 export default function Badge({ children, variant = "neutral", className = "" }) {

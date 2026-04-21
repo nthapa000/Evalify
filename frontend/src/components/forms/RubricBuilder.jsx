@@ -53,7 +53,7 @@ export default function RubricBuilder({ questionIndex, value, onChange }) {
             onChange={(e) => setConceptInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addConcept())}
             placeholder="Type concept and press Enter"
-            className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-400"
           />
           <Button size="sm" variant="secondary" type="button" onClick={addConcept}>Add</Button>
         </div>
@@ -63,11 +63,11 @@ export default function RubricBuilder({ questionIndex, value, onChange }) {
             <span
               key={c}
               className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium
-                ${rubric.mandatory_concepts.includes(c) ? "bg-indigo-100 text-indigo-700" : "bg-gray-200 text-gray-600"}`}
+                ${rubric.mandatory_concepts.includes(c) ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}
             >
               {c}
               {/* M = toggle mandatory; * = remove */}
-              <button type="button" onClick={() => toggleMandatory(c)} title="Toggle mandatory" className="hover:text-indigo-900">
+              <button type="button" onClick={() => toggleMandatory(c)} title="Toggle mandatory" className="hover:text-green-900">
                 {rubric.mandatory_concepts.includes(c) ? "★" : "☆"}
               </button>
               <button type="button" onClick={() => removeConcept(c)} className="hover:text-red-500">×</button>
@@ -86,7 +86,7 @@ export default function RubricBuilder({ questionIndex, value, onChange }) {
           step="0.5"
           value={rubric.marks_per_concept}
           onChange={(e) => update({ marks_per_concept: parseFloat(e.target.value) || 1 })}
-          className="w-24 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-24 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
       </div>
 
@@ -98,7 +98,7 @@ export default function RubricBuilder({ questionIndex, value, onChange }) {
           value={rubric.model_answer}
           onChange={(e) => update({ model_answer: e.target.value })}
           placeholder="Write the ideal answer here..."
-          className="w-full text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"
+          className="w-full text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"
         />
       </div>
     </div>

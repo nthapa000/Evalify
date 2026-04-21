@@ -1,5 +1,4 @@
 // student/Result.jsx — shows the evaluation result for a completed submission.
-// Displays: name, roll no, marks, average, highest, and section breakdown.
 
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -11,15 +10,14 @@ import Badge from "../../components/ui/Badge";
 import Skeleton from "../../components/ui/Skeleton";
 import { formatPercent, gradeFromPercent } from "../../utils/formatters";
 
-// Circular score chart using CSS (no chart library needed)
 function ScoreCircle({ score, max }) {
-  const pct = max > 0 ? (score / max) * 100 : 0;
+  const pct   = max > 0 ? (score / max) * 100 : 0;
   const grade = gradeFromPercent(pct);
-  const color = pct >= 80 ? "text-green-600" : pct >= 50 ? "text-indigo-600" : "text-red-500";
+  const color = pct >= 80 ? "text-green-600" : pct >= 50 ? "text-green-500" : "text-red-500";
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-32 h-32 rounded-full border-8 border-indigo-100 flex flex-col items-center justify-center">
+      <div className="w-32 h-32 rounded-full border-8 border-green-100 flex flex-col items-center justify-center">
         <span className={`text-3xl font-bold ${color}`}>{score}</span>
         <span className="text-xs text-gray-400">/ {max}</span>
       </div>
@@ -47,7 +45,7 @@ export default function Result() {
       });
       if (!res.ok) throw new Error("Failed to load file");
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      const url  = URL.createObjectURL(blob);
       window.open(url, "_blank");
     } catch {
       alert("Could not load answer sheet.");
@@ -72,10 +70,9 @@ export default function Result() {
     return (
       <PageWrapper>
         <div className="text-center py-20 text-gray-400">
-          <p className="text-5xl mb-3">❓</p>
           <p className="text-lg font-medium">Result not available yet.</p>
-          <Link to="/student/dashboard" className="text-sm text-indigo-600 hover:underline mt-2 inline-block">
-            ← Back to Dashboard
+          <Link to="/student/dashboard" className="text-sm text-green-600 hover:underline mt-2 inline-block">
+            &larr; Back to Dashboard
           </Link>
         </div>
       </PageWrapper>
@@ -88,20 +85,17 @@ export default function Result() {
 
   return (
     <PageWrapper>
-      <Link to="/student/dashboard" className="text-sm text-indigo-600 hover:underline mb-4 inline-block">
-        ← Back to Dashboard
+      <Link to="/student/dashboard" className="text-sm text-green-600 hover:underline mb-4 inline-block">
+        &larr; Back to Dashboard
       </Link>
 
       <h1 className="text-2xl font-bold text-gray-800 mb-6">{paper_name} — Result</h1>
 
-      {/* Score hero card */}
       <Card className="mb-6">
         <Card.Body>
           <div className="flex flex-col md:flex-row items-center gap-8">
-            {/* Score circle */}
             <ScoreCircle score={result.totalScore} max={result.maxScore} />
 
-            {/* Student info + stats */}
             <div className="flex-1 space-y-3 text-center md:text-left">
               <div>
                 <p className="text-xl font-bold text-gray-800">{student_name}</p>
@@ -109,8 +103,8 @@ export default function Result() {
               </div>
 
               <div className="grid grid-cols-3 gap-3 mt-4">
-                <div className="bg-indigo-50 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold text-indigo-600">{result.totalScore}/{result.maxScore}</p>
+                <div className="bg-green-50 rounded-xl p-3 text-center">
+                  <p className="text-lg font-bold text-green-600">{result.totalScore}/{result.maxScore}</p>
                   <p className="text-xs text-gray-500">Your Score</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-3 text-center">
@@ -131,19 +125,17 @@ export default function Result() {
         </Card.Body>
       </Card>
 
-      {/* View answer sheet */}
       <div className="mb-4">
         <button
           type="button"
           onClick={viewAnswerSheet}
           disabled={fileLoading}
-          className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-400 rounded-lg px-4 py-2 bg-indigo-50 hover:bg-indigo-100 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm text-green-600 hover:text-green-800 border border-green-200 hover:border-green-400 rounded-lg px-4 py-2 bg-green-50 hover:bg-green-100 transition-colors disabled:opacity-50"
         >
-          📄 {fileLoading ? "Loading…" : "View My Answer Sheet"}
+          {fileLoading ? "Loading…" : "View My Answer Sheet"}
         </button>
       </div>
 
-      {/* Section breakdown */}
       <Card>
         <Card.Header>
           <h2 className="text-base font-semibold text-gray-700">Section Breakdown</h2>
@@ -167,7 +159,7 @@ export default function Result() {
           )}
           <div className="flex justify-between items-center py-2 font-bold">
             <span className="text-gray-800">Total</span>
-            <span className="text-indigo-600">{result.totalScore} / {result.maxScore}</span>
+            <span className="text-green-600">{result.totalScore} / {result.maxScore}</span>
           </div>
         </Card.Body>
       </Card>

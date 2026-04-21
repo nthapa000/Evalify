@@ -1,14 +1,20 @@
-# evaluator.py — Orchestrates answer-sheet evaluation for MCQ papers.
+# evaluator.py — Orchestrates answer-sheet evaluation for all paper types.
+#
+# Paper types handled:
+#   mcq                        → Type 1 (OMR or handwritten MCQ)
+#   mcq_numerical              → Type 2 (handwritten MCQ + Numerical)
+#   mcq_numerical_subjective   → Type 3 (future)
 #
 # Flow (triggered as a FastAPI BackgroundTask):
 #   1. Load submission + paper from MongoDB.
 #   2. Choose engine based on submission's `sheet_type`:
 #        "omr"         → OMREngine   (OpenCV bubble detection)
-#        "handwritten" → TrOCREngine (Handwriting OCR)
-#   3. Extract answers from the uploaded image file.
-#   4. Grade extracted answers against the paper's answer key.
-#   5. Persist ResultSummary into the submission document.
-#   6. Log metrics to MLflow.
+#        "handwritten" → OllamaEngine (vision model extraction)
+#   3. Extract answers from the uploaded image file(s).
+#   4. Grade MCQ section.
+#   5. Grade Numerical section (Type 2+).
+#   6. Persist ResultSummary into the submission document.
+#   7. Log metrics to MLflow (includes Ollama latency).
 
 from __future__ import annotations
 import os
@@ -20,63 +26,58 @@ from bson import ObjectId
 
 from app.db.mongodb import papers_col, submissions_col
 from app.services.omr_engine import OMREngine
-from app.services.trocr_engine import TrOCREngine
+from app.services.ollama_engine import OllamaEngine
 from app.services.pdf_utils import is_pdf, pdf_to_image, pdf_extract_text
 from app.services.pdf_extractor import _parse_answers as parse_mcq_text
 
-# ── Singleton engines (instantiated once per process) ─────────────────────────
-# Avoids reloading OpenCV / TrOCR model on every request.
-_omr   = OMREngine()
-_trocr = TrOCREngine()
+# ── Singleton engines ─────────────────────────────────────────────────────────
+_omr    = OMREngine()
+_ollama = OllamaEngine()
 
 
 # ── Main evaluation entry-point ───────────────────────────────────────────────
 
 async def evaluate_submission(submission_id: str) -> None:
-    """
-    Background task: evaluate one submission and persist the result.
-    Called by submissions router after the file is saved.
-    """
+    """Background task: evaluate one submission and persist the result."""
     t0 = time.time()
 
     try:
-        # 1. Fetch submission ──────────────────────────────────────────────────
         sub = await submissions_col().find_one({"_id": ObjectId(submission_id)})
         if not sub:
             print(f"❌ Evaluator: submission {submission_id} not found")
             return
 
-        # 2. Fetch associated paper ────────────────────────────────────────────
         paper = await papers_col().find_one({"_id": ObjectId(sub["paper_id"])})
         if not paper:
             await _set_error(sub["_id"], "Paper not found in database")
             return
 
-        roll_no    = sub.get("roll_no", "?")
-        sheet_type = sub.get("sheet_type", "omr")
-        file_paths = sub.get("file_paths") or [sub.get("file_path", "")]
-        mcq_count  = int(paper.get("mcqCount", 0))
+        roll_no         = sub.get("roll_no", "?")
+        sheet_type      = sub.get("sheet_type", "omr")
+        file_paths      = sub.get("file_paths") or [sub.get("file_path", "")]
+        paper_type      = paper.get("type", "mcq")
+        mcq_count       = int(paper.get("mcqCount", 0))
+        numerical_count = int(paper.get("numericalCount", 0)) if "numerical" in paper_type else 0
 
-        print(
-            f"🔄 Evaluator: [{roll_no}] paper='{paper['name']}' "
-            f"sheet_type={sheet_type} mcq_count={mcq_count} pages={len(file_paths)}"
+        _print_header(roll_no, paper['name'], paper_type, sheet_type,
+                      mcq_count, numerical_count, len(file_paths))
+
+        # ── Extract answers ───────────────────────────────────────────────────
+        extracted, confidence, engine_used, ollama_latency = _extract_answers_multi(
+            file_paths, sheet_type, mcq_count, numerical_count
         )
+        _print_extracted(extracted, mcq_count, numerical_count)
 
-        # 3. Extract answers — process each page, merge results ───────────────
-        extracted, confidence, engine_used = _extract_answers_multi(
-            file_paths, sheet_type, mcq_count
-        )
-
-        # 4. Grade MCQ section ─────────────────────────────────────────────────
-        cfg = paper.get("config", {})
-        negative_marking = cfg.get("negativeMaking", False)   # note: stored as "negativeMaking"
-        # Determine which questions have negative marking (None = all)
-        neg_questions = None
+        # ── Grade MCQ ─────────────────────────────────────────────────────────
+        cfg              = paper.get("config", {})
+        negative_marking = cfg.get("negativeMaking", False)
+        neg_questions    = None
         if negative_marking and cfg.get("negativeMarkingScope") == "per_question":
             neg_questions = cfg.get("negativeMarkingQuestions", [])
 
+        mcq_answers = {k: v for k, v in extracted.items() if k.startswith("Q")}
         mcq_score, correct_count, mcq_detail = _grade_mcq(
-            extracted_answers          = extracted,
+            extracted_answers          = mcq_answers,
             answer_key                 = paper.get("mcqAnswers", {}),
             mcq_count                  = mcq_count,
             default_marks              = float(paper.get("mcqMarks", 1)),
@@ -85,15 +86,35 @@ async def evaluate_submission(submission_id: str) -> None:
             negative_marking_questions = neg_questions,
         )
 
-        # 5. Build result summary ──────────────────────────────────────────────
-        max_score = float(paper.get("totalMarks", mcq_count))
-        pct       = round((mcq_score / max_score) * 100, 1) if max_score > 0 else 0.0
+        # ── Grade Numerical (Type 2+) ─────────────────────────────────────────
+        numerical_score  = 0.0
+        numerical_detail = []
+        if numerical_count > 0:
+            num_answers = {k: v for k, v in extracted.items() if k.startswith("N")}
+            numerical_score, numerical_detail = _grade_numerical(
+                extracted_numerical = num_answers,
+                answer_key          = paper.get("numericalAnswers", {}),
+                numerical_count     = numerical_count,
+                default_marks       = float(paper.get("numericalMarks", 1)),
+                per_q_marks         = paper.get("numericalQuestionMarks", {}),
+            )
+
+        # ── Print grading table ───────────────────────────────────────────────
+        _print_grading_table(mcq_detail, numerical_detail)
+
+        # ── Build result ──────────────────────────────────────────────────────
+        total_score = mcq_score + numerical_score
+        max_score   = float(paper.get("totalMarks", mcq_count + numerical_count))
+        pct         = round((total_score / max_score) * 100, 1) if max_score > 0 else 0.0
+
+        _print_score_summary(mcq_score, numerical_score, total_score, max_score, pct,
+                             engine_used, ollama_latency, confidence)
 
         result = {
             "mcqScore":        mcq_score,
-            "numericalScore":  0.0,
+            "numericalScore":  numerical_score,
             "subjectiveScore": 0.0,
-            "totalScore":      mcq_score,
+            "totalScore":      total_score,
             "maxScore":        max_score,
             "percentage":      pct,
             "engine":          engine_used,
@@ -101,45 +122,46 @@ async def evaluate_submission(submission_id: str) -> None:
             "sheetType":       sheet_type,
         }
 
-        # 6. Persist to MongoDB ────────────────────────────────────────────────
+        # ── Persist ───────────────────────────────────────────────────────────
         await submissions_col().update_one(
             {"_id": sub["_id"]},
             {"$set": {
-                "status":      "evaluated",
-                "result":      result,
-                "mcqDetail":   mcq_detail,
-                "evaluatedAt": datetime.now(timezone.utc).isoformat(),
+                "status":          "evaluated",
+                "result":          result,
+                "mcqDetail":       mcq_detail,
+                "numericalDetail": numerical_detail,
+                "evaluatedAt":     datetime.now(timezone.utc).isoformat(),
             }}
         )
 
-        # 7. Log to MLflow ─────────────────────────────────────────────────────
+        # ── MLflow logging ────────────────────────────────────────────────────
         latency = round(time.time() - t0, 3)
         try:
             from app.db.mlflow_logger import log_evaluation_run
-        except Exception as _e:
+        except Exception:
             log_evaluation_run = lambda **kw: None  # noqa: E731
+
         log_evaluation_run(
             submission_id = submission_id,
             paper_id      = str(paper["_id"]),
-            paper_type    = paper.get("type", "mcq"),
+            paper_type    = paper_type,
             metrics = {
-                "score":          mcq_score,
-                "max_score":      max_score,
-                "accuracy":       correct_count / mcq_count if mcq_count > 0 else 0,
-                "latency_s":      latency,
-                "ocr_confidence": confidence,
+                "mcq_score":          mcq_score,
+                "numerical_score":    numerical_score,
+                "total_score":        total_score,
+                "max_score":          max_score,
+                "accuracy":           correct_count / mcq_count if mcq_count > 0 else 0,
+                "eval_latency_s":     latency,
+                "ollama_latency_s":   ollama_latency,
+                "ocr_confidence":     confidence,
             },
             params = {
-                "engine":         engine_used,
-                "sheet_type":     sheet_type,
-                "mcq_count":      mcq_count,
-                "trocr_mode":     _trocr.mode,
+                "engine":           engine_used,
+                "sheet_type":       sheet_type,
+                "mcq_count":        mcq_count,
+                "numerical_count":  numerical_count,
+                "ollama_mode":      _ollama.mode,
             },
-        )
-
-        print(
-            f"✅ Evaluator: [{roll_no}] done — "
-            f"score={mcq_score}/{max_score} ({pct}%) engine={engine_used} t={latency}s"
         )
 
     except Exception as exc:
@@ -151,32 +173,35 @@ async def evaluate_submission(submission_id: str) -> None:
             pass
 
 
-# ── Multi-page wrapper ────────────────────────────────────────────────────────
+# ── Multi-page extraction wrapper ─────────────────────────────────────────────
 
 def _extract_answers_multi(
     file_paths: list,
     sheet_type: str,
     mcq_count: int,
-) -> tuple[Dict[str, str], float, str]:
+    numerical_count: int = 0,
+) -> tuple[Dict[str, str], float, str, float]:
     """
-    Process one or more image pages and merge extracted answers.
+    Process one or more image pages, merge results.
     Later pages fill in questions not found on earlier pages.
-    Returns (merged_answers, avg_confidence, engine_used).
+    Returns (merged_answers, avg_confidence, engine_used, total_ollama_latency).
     """
     merged: Dict[str, str] = {}
     confidences = []
     engine_used = ""
+    total_ollama_latency = 0.0
 
     for path in file_paths:
-        answers, conf, eng = _extract_answers(path, sheet_type, mcq_count)
+        answers, conf, eng, latency = _extract_answers(path, sheet_type, mcq_count, numerical_count)
         for q, a in answers.items():
             if q not in merged:
                 merged[q] = a
         confidences.append(conf)
         engine_used = eng
+        total_ollama_latency += latency
 
     avg_conf = sum(confidences) / len(confidences) if confidences else 0.0
-    return merged, avg_conf, engine_used
+    return merged, avg_conf, engine_used, total_ollama_latency
 
 
 # ── Engine dispatch ───────────────────────────────────────────────────────────
@@ -185,57 +210,51 @@ def _extract_answers(
     img_path: str,
     sheet_type: str,
     mcq_count: int,
-) -> tuple[Dict[str, str], float, str]:
+    numerical_count: int = 0,
+) -> tuple[Dict[str, str], float, str, float]:
     """
-    Route to the correct engine based on sheet_type.
-    Returns (extracted_answers, confidence, engine_name).
-    Raises ValueError with a human-readable message on failure.
+    Route to the correct engine. Returns (answers, confidence, engine_name, ollama_latency).
+    For MCQ+Numerical papers, answers contains both Q1..Qn and N1..Nm keys.
     """
-    file_exists = img_path and os.path.exists(img_path)
-
-    if not file_exists:
+    if not img_path or not os.path.exists(img_path):
         raise ValueError(f"Answer sheet file not found at '{img_path}'")
 
     if sheet_type == "omr":
-        # ── OMR: OpenCV bubble detection ──────────────────────────────────────
         proc_path = img_path
         if is_pdf(img_path):
             proc_path = pdf_to_image(img_path, dpi=200)
             print(f"  OMR: converted PDF → {proc_path}")
         answers = _omr.process_image(proc_path, mcq_count)
         print(f"  OMR: detected answers = {answers}")
-        return answers, 1.0, "opencv_omr"
+        return answers, 1.0, "opencv_omr", 0.0
 
     elif sheet_type == "handwritten":
-        # ── Handwritten: try text extraction first, fall back to TrOCR ────────
         if is_pdf(img_path):
             raw_text = pdf_extract_text(img_path)
             if raw_text.strip():
-                # PDF has selectable text (typed / digital sheet) — parse directly
                 answers = parse_mcq_text(raw_text, mcq_count)
-                engine_used = "pdf_text_extract"
-                print(f"  Handwritten: PDF has text, extracted {len(answers)} answers directly")
-                return answers, 1.0, engine_used
-            else:
-                # Scanned/image PDF — render to PNG and run TrOCR
-                img_path = pdf_to_image(img_path, dpi=200)
-                print(f"  Handwritten: PDF is scanned, converted → {img_path}")
+                print(f"  Handwritten: PDF text extracted {len(answers)} answers")
+                return answers, 1.0, "pdf_text_extract", 0.0
+            img_path = pdf_to_image(img_path, dpi=200)
+            print(f"  Handwritten: scanned PDF → {img_path}")
 
-        engine_used = f"ollama_{_trocr.mode}"
-        text, confidence = _trocr.extract_text(img_path, mcq_count)
-        answers = _trocr.parse_mcq_results(text, mcq_count)
-        return answers, confidence, engine_used
+        if numerical_count > 0:
+            answers, conf, latency = _ollama.extract_mcq_numerical(
+                img_path, mcq_count, numerical_count
+            )
+            return answers, conf, f"ollama_{_ollama.mode}_mcq_numerical", latency
+        else:
+            answers, conf, latency = _ollama.extract_mcq(img_path, mcq_count)
+            return answers, conf, f"ollama_{_ollama.mode}", latency
 
     else:
         raise ValueError(f"Unknown sheet_type '{sheet_type}'. Must be 'omr' or 'handwritten'.")
 
 
-# ── Grading ───────────────────────────────────────────────────────────────────
+# ── MCQ grading ───────────────────────────────────────────────────────────────
 
-def _normalise_answer(ans: str | None) -> frozenset:
+def _normalise_mcq_answer(ans: str | None) -> frozenset:
     """
-    Convert an answer string to a frozenset of uppercase letters.
-    "A"   → frozenset({"A"})
     "A,C" → frozenset({"A", "C"})
     None  → frozenset()
     """
@@ -254,16 +273,9 @@ def _grade_mcq(
     negative_marking_questions: list | None = None,
 ) -> tuple[float, int, list]:
     """
-    Compare extracted answers against the answer key.
-    Supports single-answer ("A") and multi-answer ("A,C") keys.
-
-    Strict MCQ checking rules:
-      - Student must fill EXACTLY the correct set of bubbles.
-      - Over-filling (filling extra bubbles beyond the correct set) → wrong.
-      - Under-filling (filling fewer than the correct set) → wrong.
-      - Only an exact set match earns marks.
-
-    Returns (total_mcq_score, correct_count, per_question_detail_list).
+    Exact-set MCQ grading.
+    Rules: over-fill → wrong, under-fill → wrong, exact match → correct.
+    Returns (total_score, correct_count, detail_list).
     """
     score         = 0.0
     correct_count = 0
@@ -271,16 +283,11 @@ def _grade_mcq(
 
     for i in range(1, mcq_count + 1):
         q_id = f"Q{i}"
+        student_set = _normalise_mcq_answer(extracted_answers.get(q_id))
+        correct_set = _normalise_mcq_answer(answer_key.get(q_id))
+        q_marks     = float(per_q_marks.get(q_id, default_marks))
 
-        student_raw = extracted_answers.get(q_id)
-        correct_raw = answer_key.get(q_id)
-
-        student_set = _normalise_answer(student_raw)
-        correct_set = _normalise_answer(correct_raw)
-
-        q_marks = float(per_q_marks.get(q_id, default_marks))
-
-        apply_negative = negative_marking and (
+        apply_neg = negative_marking and (
             negative_marking_questions is None or q_id in negative_marking_questions
         )
 
@@ -288,32 +295,24 @@ def _grade_mcq(
             status = "unanswered"
             earned = 0.0
         elif student_set == correct_set:
-            # Exact match — every correct bubble filled, no extra bubbles
             status = "correct"
             earned = q_marks
             correct_count += 1
+        elif student_set > correct_set:
+            status = "wrong_overfill"
+            earned = -(q_marks / 4) if apply_neg else 0.0
+        elif student_set < correct_set:
+            status = "wrong_underfill"
+            earned = -(q_marks / 4) if apply_neg else 0.0
         else:
-            # Determine why it's wrong for the detail record
-            if student_set > correct_set:
-                # Student filled all correct options PLUS extra ones → over-filled
-                status = "wrong_overfill"
-            elif student_set < correct_set:
-                # Student filled some but not all correct options → under-filled
-                status = "wrong_underfill"
-            else:
-                status = "wrong"
-            earned = -(q_marks / 4) if apply_negative else 0.0
+            status = "wrong"
+            earned = -(q_marks / 4) if apply_neg else 0.0
 
         score += earned
-
-        # Canonical display strings (sorted for consistency)
-        student_display = ",".join(sorted(student_set)) if student_set else None
-        correct_display = ",".join(sorted(correct_set)) if correct_set else None
-
         detail.append({
             "question":        q_id,
-            "student_answer":  student_display,
-            "correct_answer":  correct_display,
+            "student_answer":  ",".join(sorted(student_set)) if student_set else None,
+            "correct_answer":  ",".join(sorted(correct_set)) if correct_set else None,
             "status":          status,
             "marks_available": q_marks,
             "marks_earned":    earned,
@@ -322,12 +321,155 @@ def _grade_mcq(
     return max(0.0, score), correct_count, detail
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ── Numerical grading ─────────────────────────────────────────────────────────
+
+def _grade_numerical(
+    extracted_numerical: Dict[str, str],
+    answer_key:          Dict[str, Any],
+    numerical_count:     int,
+    default_marks:       float,
+    per_q_marks:         Dict[str, Any],
+) -> tuple[float, list]:
+    """
+    Exact-match numerical grading.
+
+    answer_key values can be:
+      list  — ["3", "3.0", "3.00"]  (multiple accepted answers)
+      str   — "3.5"                  (single accepted answer, legacy)
+      dict  — old tolerance format   (graceful fallback: uses "answer" field)
+
+    A student answer earns full marks if it exactly matches (after stripping
+    whitespace) any one value in the accepted list.
+    Returns (total_score, detail_list).
+    """
+    score  = 0.0
+    detail = []
+
+    for i in range(1, numerical_count + 1):
+        n_id          = f"N{i}"
+        student_raw   = str(extracted_numerical.get(n_id, "")).strip()
+        accepted_raw  = answer_key.get(n_id, [])
+        q_marks       = float(per_q_marks.get(n_id, default_marks))
+
+        # Normalise accepted answers to a list of stripped strings
+        if isinstance(accepted_raw, list):
+            accepted = [str(v).strip() for v in accepted_raw if str(v).strip()]
+        elif isinstance(accepted_raw, dict):
+            # Backwards compat with old tolerance format
+            accepted = [str(accepted_raw.get("answer", "")).strip()]
+        else:
+            accepted = [str(accepted_raw).strip()]
+        accepted = [a for a in accepted if a]
+
+        if not student_raw:
+            status = "unanswered"
+            earned = 0.0
+        elif student_raw in accepted:
+            status = "correct"
+            earned = q_marks
+        else:
+            status = "wrong"
+            earned = 0.0
+
+        score += earned
+        detail.append({
+            "question":         n_id,
+            "student_answer":   student_raw or None,
+            "accepted_answers": accepted,
+            "status":           status,
+            "marks_available":  q_marks,
+            "marks_earned":     earned,
+        })
+
+    return score, detail
+
+
+# ── Terminal print helpers ────────────────────────────────────────────────────
+
+_W = 72  # table width
+
+def _print_header(roll_no, paper_name, paper_type, sheet_type,
+                  mcq_count, numerical_count, pages):
+    print()
+    print("═" * _W)
+    print(f"  EVALUATION  │  Student: {roll_no}  │  Paper: {paper_name}")
+    print(f"  Type: {paper_type}  │  Sheet: {sheet_type}  │  "
+          f"MCQ: {mcq_count}  Numerical: {numerical_count}  Pages: {pages}")
+    print("═" * _W)
+
+
+def _print_extracted(extracted: Dict[str, str], mcq_count: int, numerical_count: int):
+    print()
+    print("  ── Extracted Answers (raw from Ollama / OMR) ──")
+    # MCQ row
+    mcq_parts = [f"Q{i}={extracted.get(f'Q{i}', '—')}" for i in range(1, mcq_count + 1)]
+    for chunk in _chunks(mcq_parts, 8):
+        print("  MCQ │ " + "  ".join(f"{p:<8}" for p in chunk))
+    # Numerical row
+    if numerical_count > 0:
+        num_parts = [f"N{i}={extracted.get(f'N{i}', '—')}" for i in range(1, numerical_count + 1)]
+        for chunk in _chunks(num_parts, 8):
+            print("  NUM │ " + "  ".join(f"{p:<12}" for p in chunk))
+
+
+def _print_grading_table(mcq_detail: list, numerical_detail: list):
+    print()
+    print("  ── Grading Breakdown ──")
+    print(f"  {'Q':<5} {'Student':<12} {'Correct':<18} {'Status':<18} {'Marks'}")
+    print("  " + "─" * (_W - 2))
+
+    STATUS_ICON = {
+        "correct":          "✅",
+        "wrong":            "❌",
+        "wrong_overfill":   "⚠️  over-fill",
+        "wrong_underfill":  "⚠️  under-fill",
+        "unanswered":       "○  blank",
+    }
+
+    for d in mcq_detail:
+        icon    = STATUS_ICON.get(d["status"], d["status"])
+        student = d["student_answer"] or "—"
+        correct = d["correct_answer"] or "—"
+        earned  = f"+{d['marks_earned']:.1f}" if d["marks_earned"] > 0 else (
+                  f"{d['marks_earned']:.1f}" if d["marks_earned"] < 0 else "0"
+        )
+        print(f"  {d['question']:<5} {student:<12} {correct:<18} {icon:<18} {earned}/{d['marks_available']:.1f}")
+
+    if numerical_detail:
+        print("  " + "─" * (_W - 2))
+        for d in numerical_detail:
+            icon      = STATUS_ICON.get(d["status"], d["status"])
+            student   = d["student_answer"] or "—"
+            accepted  = ", ".join(d["accepted_answers"]) if d["accepted_answers"] else "—"
+            earned    = f"+{d['marks_earned']:.1f}" if d["marks_earned"] > 0 else "0"
+            print(f"  {d['question']:<5} {student:<12} {accepted:<18} {icon:<18} {earned}/{d['marks_available']:.1f}")
+
+    print("  " + "─" * (_W - 2))
+
+
+def _print_score_summary(mcq_score, numerical_score, total_score, max_score, pct,
+                         engine, ollama_latency, confidence):
+    print(f"  MCQ Score      : {mcq_score}")
+    if numerical_score > 0 or numerical_score == 0:
+        print(f"  Numerical Score: {numerical_score}")
+    print(f"  Total          : {total_score} / {max_score}  ({pct}%)")
+    print(f"  Engine         : {engine}")
+    if ollama_latency > 0:
+        print(f"  Ollama latency : {ollama_latency:.1f}s   Confidence: {confidence:.2f}")
+    print("═" * _W)
+    print()
+
+
+def _chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+
+# ── Error helper ──────────────────────────────────────────────────────────────
 
 async def _set_error(sub_id, message: str) -> None:
-    """Mark a submission as errored in MongoDB."""
     await submissions_col().update_one(
         {"_id": sub_id},
         {"$set": {"status": "error", "error": message}}
     )
-    print(f"❌ Evaluator: marked submission {sub_id} as error — {message}")
+    print(f"❌ Evaluator: marked {sub_id} as error — {message}")

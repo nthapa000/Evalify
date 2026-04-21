@@ -43,7 +43,7 @@ export default function UploadZone({
       onClick={() => inputRef.current?.click()}
       className={`
         cursor-pointer rounded-xl border-2 border-dashed p-6 text-center transition-colors
-        ${dragging ? "border-indigo-400 bg-indigo-50" : "border-gray-300 hover:border-indigo-300 hover:bg-gray-50"}
+        ${dragging ? "border-green-400 bg-green-50" : "border-gray-300 hover:border-green-300 hover:bg-gray-50"}
       `}
     >
       <input
@@ -69,7 +69,7 @@ export default function UploadZone({
         </div>
       ) : (
         <div className="space-y-2">
-          <div className="mx-auto w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-2xl">📄</div>
+          <div className="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-2xl">📄</div>
           <p className="text-sm font-medium text-gray-700">{label}</p>
           <p className="text-xs text-gray-400">Drag & drop or click to browse</p>
           <p className="text-xs text-gray-400">{hint}</p>

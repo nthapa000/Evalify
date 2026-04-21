@@ -23,7 +23,7 @@ export default function PaperResults() {
   return (
     <PageWrapper>
       {/* Back link */}
-      <Link to="/teacher/dashboard" className="text-sm text-indigo-600 hover:underline mb-4 inline-block">
+      <Link to="/teacher/dashboard" className="text-sm text-green-600 hover:underline mb-4 inline-block">
         ← Back to Dashboard
       </Link>
 
@@ -42,7 +42,7 @@ export default function PaperResults() {
           ].map((s) => (
             <Card key={s.label} className="text-center">
               <Card.Body>
-                <p className="text-2xl font-bold text-indigo-600">{s.value}</p>
+                <p className="text-2xl font-bold text-green-600">{s.value}</p>
                 <p className="text-xs text-gray-500 mt-1">{s.label}</p>
               </Card.Body>
             </Card>

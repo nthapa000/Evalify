@@ -12,7 +12,7 @@ const ICONS = {
 const COLORS = {
   success: "bg-green-600",
   error:   "bg-red-600",
-  info:    "bg-indigo-600",
+  info:    "bg-green-600",
 };
 
 export default function ToastContainer() {

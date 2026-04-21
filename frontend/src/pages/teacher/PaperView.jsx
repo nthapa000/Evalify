@@ -49,7 +49,7 @@ export default function PaperView() {
 
     return (
         <PageWrapper>
-            <Link to="/teacher/dashboard" className="text-sm text-indigo-600 hover:underline mb-4 inline-block">
+            <Link to="/teacher/dashboard" className="text-sm text-green-600 hover:underline mb-4 inline-block">
                 ← Back to Dashboard
             </Link>
 
@@ -72,8 +72,8 @@ export default function PaperView() {
                     </Card.Header>
                     <Card.Body>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                            <div className="bg-indigo-50 rounded-lg py-3">
-                                <p className="text-2xl font-bold text-indigo-600">{paper.totalMarks}</p>
+                            <div className="bg-green-50 rounded-lg py-3">
+                                <p className="text-2xl font-bold text-green-600">{paper.totalMarks}</p>
                                 <p className="text-xs text-gray-500 mt-1">Total Marks</p>
                             </div>
                             <div className="bg-gray-50 rounded-lg py-3">
@@ -123,7 +123,7 @@ export default function PaperView() {
                                     </div>
                                     <button
                                         onClick={() => window.open(paper.questionPaperUrl, "_blank")}
-                                        className="text-sm text-indigo-600 hover:underline font-medium"
+                                        className="text-sm text-green-600 hover:underline font-medium"
                                     >
                                         View PDF ↗
                                     </button>
@@ -140,7 +140,7 @@ export default function PaperView() {
                                     </div>
                                     <button
                                         onClick={() => window.open(paper.answerKeyRefUrl, "_blank")}
-                                        className="text-sm text-indigo-600 hover:underline font-medium"
+                                        className="text-sm text-green-600 hover:underline font-medium"
                                     >
                                         View PDF ↗
                                     </button>
@@ -157,7 +157,7 @@ export default function PaperView() {
                                     </div>
                                     <button
                                         onClick={() => window.open(paper.answerSheetRefUrl, "_blank")}
-                                        className="text-sm text-indigo-600 hover:underline font-medium"
+                                        className="text-sm text-green-600 hover:underline font-medium"
                                     >
                                         View PDF ↗
                                     </button>
@@ -189,7 +189,7 @@ export default function PaperView() {
                                                         key={opt}
                                                         className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center
                               ${answer === opt
-                                                                ? "bg-indigo-600 text-white"
+                                                                ? "bg-green-600 text-white"
                                                                 : "bg-white border border-gray-200 text-gray-300"}`}
                                                     >
                                                         {opt}

@@ -1,15 +1,29 @@
 // authStore.js — Zustand store for authentication state.
-// Token is kept in memory only (not localStorage) to prevent XSS token theft.
-// Phase 0: stub; login/logout actions implemented in Phase 2.
+// Token is persisted in localStorage so page refreshes don't log the user out.
 
 import { create } from "zustand";
 
-const useAuthStore = create((set) => ({
-  token: null,       // JWT string; null = not logged in
-  user: null,        // { id, role, name, email/roll_no }
+const _token = localStorage.getItem("evalify_token");
+const _user  = (() => {
+  try { return JSON.parse(localStorage.getItem("evalify_user") || "null"); }
+  catch { return null; }
+})();
 
-  setAuth: (token, user) => set({ token, user }),
-  clearAuth: () => set({ token: null, user: null }),
+const useAuthStore = create((set) => ({
+  token: _token,
+  user:  _user,
+
+  setAuth: (token, user) => {
+    localStorage.setItem("evalify_token", token);
+    localStorage.setItem("evalify_user", JSON.stringify(user));
+    set({ token, user });
+  },
+
+  clearAuth: () => {
+    localStorage.removeItem("evalify_token");
+    localStorage.removeItem("evalify_user");
+    set({ token: null, user: null });
+  },
 }));
 
 export default useAuthStore;

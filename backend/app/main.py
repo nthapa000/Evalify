@@ -26,7 +26,7 @@ if not sys.executable.startswith(os.path.dirname(_VENV_PYTHON)):
     print("⚠️  WARNING: Backend is NOT running from the project venv!")
     print(f"   Current Python: {sys.executable}")
     print(f"   Expected venv:  {_VENV_PYTHON}")
-    print("   → TrOCR (GPU), MLflow, and other ML features will NOT work.")
+    print("   → Ollama (GPU), MLflow, and other ML features will NOT work.")
     print("   → Run the backend with:  cd backend && bash start.sh")
     print("=" * 70)
 

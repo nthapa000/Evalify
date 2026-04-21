@@ -1,32 +1,29 @@
 // Sidebar.jsx — left navigation panel with role-based links.
-// Teacher and student see different menu items.
 
 import { NavLink } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
 
-// NavLink applies `isActive` class automatically when the route matches
-function SideLink({ to, icon, label }) {
+function SideLink({ to, label }) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors
-         ${isActive ? "bg-indigo-50 text-indigo-700" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"}`
+        `flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-colors
+         ${isActive ? "bg-green-50 text-green-700 border-l-2 border-green-600" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"}`
       }
     >
-      <span className="text-lg leading-none">{icon}</span>
       {label}
     </NavLink>
   );
 }
 
 const TEACHER_LINKS = [
-  { to: "/teacher/dashboard",       icon: "🏠", label: "Dashboard" },
-  { to: "/teacher/papers/create",   icon: "📝", label: "Create Paper" },
+  { to: "/teacher/dashboard",       label: "Dashboard" },
+  { to: "/teacher/papers/create",   label: "Create Paper" },
 ];
 
 const STUDENT_LINKS = [
-  { to: "/student/dashboard",       icon: "🏠", label: "Dashboard" },
+  { to: "/student/dashboard",       label: "Dashboard" },
 ];
 
 export default function Sidebar() {
@@ -41,7 +38,6 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Role badge at bottom */}
       <div className="mt-auto px-4 pb-2">
         <p className="text-xs text-gray-400 uppercase tracking-wide font-medium capitalize">
           {user?.role ?? ""}

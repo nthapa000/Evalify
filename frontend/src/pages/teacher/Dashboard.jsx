@@ -1,5 +1,4 @@
 // teacher/Dashboard.jsx — lists all exam papers created by the teacher.
-// Shows skeleton cards while loading; each card links to results view.
 
 import { Link } from "react-router-dom";
 import { useTeacherPapers } from "../../hooks/usePapers";
@@ -10,7 +9,6 @@ import Button from "../../components/ui/Button";
 import { SkeletonCard } from "../../components/ui/Skeleton";
 import { formatDate, paperTypeLabel } from "../../utils/formatters";
 
-// Badge variant per paper type
 const TYPE_VARIANT = {
   mcq: "indigo",
   mcq_numerical: "info",
@@ -18,6 +16,8 @@ const TYPE_VARIANT = {
 };
 
 function PaperCard({ paper }) {
+  const totalQuestions = (paper.mcqCount ?? 0) + (paper.numericalCount ?? 0);
+
   return (
     <Card className="hover:shadow-md transition-shadow">
       <Card.Body>
@@ -37,11 +37,11 @@ function PaperCard({ paper }) {
             <p className="text-xs text-gray-400">Total Marks</p>
           </div>
           <div className="bg-gray-50 rounded-lg py-2">
-            <p className="text-lg font-bold text-gray-800">{paper.mcqCount}</p>
+            <p className="text-lg font-bold text-gray-800">{totalQuestions}</p>
             <p className="text-xs text-gray-400">Questions</p>
           </div>
           <div className="bg-gray-50 rounded-lg py-2">
-            <p className="text-lg font-bold text-indigo-600">{paper.resultCount}</p>
+            <p className="text-lg font-bold text-green-600">{paper.resultCount}</p>
             <p className="text-xs text-gray-400">Results</p>
           </div>
         </div>
@@ -65,7 +65,6 @@ export default function TeacherDashboard() {
 
   return (
     <PageWrapper>
-      {/* Page header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">My Papers</h1>
@@ -76,15 +75,12 @@ export default function TeacherDashboard() {
         </Link>
       </div>
 
-      {/* Paper grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {loading
           ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
           : papers.length === 0
             ? (
-              // Empty state
               <div className="col-span-3 text-center py-20 text-gray-400">
-                <p className="text-5xl mb-3">📋</p>
                 <p className="text-lg font-medium">No papers yet</p>
                 <p className="text-sm mt-1">Click "Create Paper" to add your first exam.</p>
               </div>
