@@ -158,11 +158,15 @@ async def evaluate_submission(submission_id: str) -> None:
         # ── MLflow logging ────────────────────────────────────────────────────
         latency = round(time.time() - t0, 3)
         try:
-            from app.db.mlflow_logger import log_evaluation_run
+            from app.db.mlflow_logger import log_evaluation_run, register_model_version
         except Exception:
-            log_evaluation_run = lambda **kw: None  # noqa: E731
+            log_evaluation_run   = lambda **kw: None  # noqa: E731
+            register_model_version = lambda **kw: None  # noqa: E731
 
-        log_evaluation_run(
+        from app.services.ollama_engine import OLLAMA_MODEL as _VISION_MODEL
+        from app.services.subjective_grader import OLLAMA_LLM_MODEL as _LLM_MODEL
+
+        run_id = log_evaluation_run(
             submission_id = submission_id,
             paper_id      = str(paper["_id"]),
             paper_type    = paper_type,
@@ -179,14 +183,38 @@ async def evaluate_submission(submission_id: str) -> None:
                 "ocr_confidence":     confidence,
             },
             params = {
+                # ── Pipeline configuration ────────────────────────────────────
                 "engine":            engine_used,
                 "sheet_type":        sheet_type,
+                "ollama_mode":       _ollama.mode,
+                # ── Model versions ────────────────────────────────────────────
+                # Every run records exactly which model produced the scores,
+                # making results reproducible when models are upgraded.
+                "vision_model":      _VISION_MODEL,   # OCR / answer extraction
+                "grader_model":      _LLM_MODEL,      # subjective grading LLM
+                # ── Question counts ───────────────────────────────────────────
                 "mcq_count":         mcq_count,
                 "numerical_count":   numerical_count,
                 "subjective_count":  subjective_count,
-                "ollama_mode":       _ollama.mode,
             },
         )
+
+        # Register the vision model in the MLflow Model Registry so its
+        # lifecycle (Staging → Production → Archived) can be managed in the UI.
+        if run_id and _ollama.mode == "real":
+            register_model_version(
+                model_name   = "evalify-vision-ocr",
+                run_id       = run_id,
+                description  = f"Vision OCR model: {_VISION_MODEL}",
+                tags         = {"ollama_tag": _VISION_MODEL, "engine": engine_used},
+            )
+            if subjective_count > 0:
+                register_model_version(
+                    model_name   = "evalify-subjective-grader",
+                    run_id       = run_id,
+                    description  = f"Subjective grader model: {_LLM_MODEL}",
+                    tags         = {"ollama_tag": _LLM_MODEL},
+                )
 
     except Exception as exc:
         import traceback
