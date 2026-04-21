@@ -111,6 +111,103 @@ The frontend will start on `http://localhost:5173`
 
 ---
 
+## 📊 MLflow — ML Experiment Tracking
+
+MLflow tracks every evaluation run automatically — no manual steps needed once it is running.
+
+### URL
+
+| Service | URL |
+|---------|-----|
+| **MLflow UI** | http://localhost:5005 |
+
+### Start MLflow (Docker)
+
+MLflow is started automatically as part of the dev Docker Compose setup:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d
+```
+
+To start **only** the MLflow container:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d mlflow
+```
+
+To verify it is running:
+
+```bash
+docker ps | grep mlflow
+# or
+curl http://localhost:5005/health   # should return: OK
+```
+
+### Restart if the container goes down
+
+```bash
+docker run -d \
+  -p 5005:5000 \
+  -v mlflow_data:/mlflow \
+  ghcr.io/mlflow/mlflow \
+  mlflow server \
+    --backend-store-uri sqlite:////mlflow/mlflow.db \
+    --default-artifact-root /mlflow/artifacts \
+    --host 0.0.0.0 --port 5000
+```
+
+### Experiments
+
+One experiment is created per paper type automatically on the first evaluation:
+
+| Experiment | Paper Type |
+|---|---|
+| `evalify_mcq` | Type 1 — MCQ only |
+| `evalify_mcq_numerical` | Type 2 — MCQ + Numerical |
+| `evalify_mcq_numerical_subjective` | Type 3 — MCQ + Numerical + Subjective |
+
+### What is logged per evaluation run
+
+**Metrics:**
+
+| Metric | Description |
+|---|---|
+| `mcq_score` | Marks earned in MCQ section |
+| `numerical_score` | Marks earned in Numerical section |
+| `subjective_score` | Marks earned in Subjective section (LLM graded) |
+| `total_score` | Combined score |
+| `max_score` | Maximum possible marks |
+| `accuracy` | Fraction of MCQ correct |
+| `eval_latency_s` | Total evaluation time (seconds) |
+| `ollama_latency_s` | Ollama OCR extraction time |
+| `llm_latency_s` | LLM grading time (Type 3 only) |
+| `ocr_confidence` | OCR extraction confidence score |
+
+**Parameters:**
+
+| Param | Description |
+|---|---|
+| `submission_id` | MongoDB submission ID |
+| `paper_id` | MongoDB paper ID |
+| `engine` | Engine used (`opencv_omr`, `ollama_vision`, etc.) |
+| `sheet_type` | `omr` or `handwritten` |
+| `mcq_count` / `numerical_count` / `subjective_count` | Question counts |
+| `ollama_mode` | `vision` or `stub` |
+
+### Configuration
+
+The tracking URI defaults to `http://localhost:5005`. Override with an environment variable:
+
+```bash
+export MLFLOW_TRACKING_URI=http://localhost:5005
+```
+
+Or edit it in [backend/app/db/mlflow_logger.py](backend/app/db/mlflow_logger.py) (line 12).
+
+> **Note:** If MLflow is unreachable, evaluation still runs normally — logging is silently skipped with a `⚠️ MLflow unavailable` warning in the backend log.
+
+---
+
 ## 🔐 Default Credentials
 
 ### Teacher Login
@@ -229,6 +326,12 @@ docker logs evalify-mongo
 
 # View MLflow logs
 docker logs evalify-mlflow
+
+# Open MLflow UI (already running at http://localhost:5005)
+# List experiments via API
+curl -s "http://localhost:5005/api/2.0/mlflow/experiments/search" \
+  -X POST -H "Content-Type: application/json" \
+  -d '{"max_results": 100}'
 
 # Access MongoDB shell
 docker exec -it evalify-mongo mongosh -u evalify -p evalify_dev_pass --authenticationDatabase admin
