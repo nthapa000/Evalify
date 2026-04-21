@@ -1,35 +1,46 @@
-# docker-compose.dev.yml
-# Phase 0 — spin up only MongoDB + MLflow for local development.
-# In later phases, backend / frontend / ml services will be added here.
-# Usage: docker compose -f docker-compose.dev.yml up -d
+# docker-compose.dev.yml — Full Evalify dev stack.
+#
+# Services:
+#   mongodb   — document store              → localhost:27017
+#   mlflow    — experiment tracking UI      → http://localhost:5005
+#   backend   — FastAPI + ML pipeline       → http://localhost:47823
+#   frontend  — React SPA (nginx)           → http://localhost:5173
+#
+# Ollama runs on the HOST (needs GPU). The backend container reaches it via
+# host.docker.internal which maps to the host machine on Linux through
+# extra_hosts: host.docker.internal:host-gateway.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up -d          # start all
+#   docker compose -f docker-compose.dev.yml up --build -d  # rebuild images
+#   docker compose -f docker-compose.dev.yml logs -f        # follow logs
+#   docker compose -f docker-compose.dev.yml down           # stop & remove
 
-# Shared network so all containers can resolve each other by service name
 networks:
   evalify-net:
     driver: bridge
 
-# Named volumes persist data across container restarts
 volumes:
-  mongo-data:       # MongoDB database files
-  mlflow-data:      # MLflow artifact store + sqlite DB
+  mongo-data:         # MongoDB database files
+  mlflow-data:        # MLflow artifact store + sqlite DB
+  backend-uploads:    # Uploaded PDFs and answer sheet images
 
 services:
 
-  # ── MongoDB ─────────────────────────────────────────────────────────────────
-  # Stores: users, papers, submissions, results (document model)
+  # ── MongoDB ──────────────────────────────────────────────────────────────────
   mongodb:
     image: mongo:7
     container_name: evalify-mongo
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: evalify
-      MONGO_INITDB_ROOT_PASSWORD: evalify_dev_pass   # override in prod via secrets
+      MONGO_INITDB_ROOT_PASSWORD: evalify_dev_pass
       MONGO_INITDB_DATABASE: evalify_db
     ports:
-      - "27017:27017"   # expose to host so backend (running outside Docker in dev) can connect
+      - "27017:27017"
     volumes:
       - mongo-data:/data/db
-      - ./backend/db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro  # seed script
+      - ./backend/db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - evalify-net
     healthcheck:
@@ -38,26 +49,90 @@ services:
       timeout: 5s
       retries: 5
 
-  # ── MLflow Tracking Server ───────────────────────────────────────────────────
-  # Logs OCR confidence, LLM grading scores, model versions per evaluation run
-  # Uses python:3.11-slim + mlflow install instead of ghcr.io (ghcr.io blocked on this server)
+  # ── MLflow Tracking Server ────────────────────────────────────────────────────
   mlflow:
     image: python:3.11-slim
     container_name: evalify-mlflow
     restart: unless-stopped
-    # GUNICORN_CMD_ARGS forces gunicorn to bind on all interfaces so Docker
-    # port-mapping (host:5005 → container:5000) works correctly.
     environment:
       GUNICORN_CMD_ARGS: "--bind 0.0.0.0:5000"
-    command: sh -c "pip install --quiet mlflow==2.13.0 && mlflow server --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts --host 0.0.0.0 --port 5000"
+    command: >
+      sh -c "pip install --quiet mlflow==2.13.0 &&
+             mlflow server
+               --backend-store-uri sqlite:////mlflow/mlflow.db
+               --default-artifact-root /mlflow/artifacts
+               --host 0.0.0.0 --port 5000"
     ports:
-      - "5005:5000"   # MLflow UI remapped to 5005 (5000 often occupied)
+      - "5005:5000"
     volumes:
-      - mlflow-data:/mlflow   # persists experiment DB + uploaded artifacts
+      - mlflow-data:/mlflow
     networks:
       - evalify-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
-      interval: 15s
-      timeout: 5s
+      test: ["CMD", "python3", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 20s
+      timeout: 10s
+      start_period: 60s
       retries: 5
+
+  # ── FastAPI Backend ───────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: evalify-backend:dev
+    container_name: evalify-backend
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      # Database
+      MONGO_URI: mongodb://evalify:evalify_dev_pass@mongodb:27017/evalify_db?authSource=admin
+      MONGO_DB_NAME: evalify_db
+      # MLflow — internal container port (5000), not the host-mapped 5005
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      # Ollama runs on HOST with GPU — reached via host-gateway alias
+      OLLAMA_HOST: http://host.docker.internal:11434
+      OLLAMA_TIMEOUT: "300"
+      OLLAMA_TIMEOUT_SUBJECTIVE: "180"
+      # CORS — allow both local Vite dev server and Docker nginx frontend
+      CORS_ORIGINS: "http://localhost:5173,http://localhost,http://localhost:47823"
+    env_file:
+      - teacher_credentials.env
+      - student_credentials.env
+    # Maps host.docker.internal → host machine IP on Linux
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "47823:8000"    # also accessible directly for debugging / API docs
+    volumes:
+      - backend-uploads:/app/uploads
+    networks:
+      - evalify-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s
+      retries: 5
+
+  # ── React Frontend (nginx) ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # /api is proxied by nginx to the backend — no hard-coded backend URL needed
+        VITE_API_BASE_URL: /api
+    image: evalify-frontend:dev
+    container_name: evalify-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "5173:80"       # React app at http://localhost:5173
+    networks:
+      - evalify-net

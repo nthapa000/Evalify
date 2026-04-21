@@ -75,11 +75,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Allow the React dev server (port 5173) to reach this API during development.
-# In production, replace origins with the actual frontend domain.
+# CORS origins — comma-separated list from CORS_ORIGINS env var.
+# Default covers local dev (Vite) and Docker nginx on port 80/5173.
+_cors_origins = [
+    o.strip()
+    for o in os.environ.get(
+        "CORS_ORIGINS", "http://localhost:5173,http://localhost"
+    ).split(",")
+    if o.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
