@@ -19,16 +19,19 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 # ── Venv guard: warn loudly if not running from the project venv ─────────────
-_VENV_PYTHON = os.path.join(os.path.dirname(__file__), "..", "venv", "bin", "python3")
-_VENV_PYTHON = os.path.normpath(_VENV_PYTHON)
-if not sys.executable.startswith(os.path.dirname(_VENV_PYTHON)):
-    print("=" * 70)
-    print("⚠️  WARNING: Backend is NOT running from the project venv!")
-    print(f"   Current Python: {sys.executable}")
-    print(f"   Expected venv:  {_VENV_PYTHON}")
-    print("   → Ollama (GPU), MLflow, and other ML features will NOT work.")
-    print("   → Run the backend with:  cd backend && bash start.sh")
-    print("=" * 70)
+# Skip this check inside Docker (/.dockerenv exists in containers)
+_in_docker = os.path.exists("/.dockerenv")
+if not _in_docker:
+    _VENV_PYTHON = os.path.join(os.path.dirname(__file__), "..", "venv", "bin", "python3")
+    _VENV_PYTHON = os.path.normpath(_VENV_PYTHON)
+    if not sys.executable.startswith(os.path.dirname(_VENV_PYTHON)):
+        print("=" * 70)
+        print("⚠️  WARNING: Backend is NOT running from the project venv!")
+        print(f"   Current Python: {sys.executable}")
+        print(f"   Expected venv:  {_VENV_PYTHON}")
+        print("   → Ollama (GPU), MLflow, and other ML features will NOT work.")
+        print("   → Run the backend with:  cd backend && bash start.sh")
+        print("=" * 70)
 
 # Database lifecycle hooks
 from app.db.mongodb import connect_db, close_db

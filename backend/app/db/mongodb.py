@@ -10,14 +10,36 @@ _client: AsyncIOMotorClient | None = None
 _db: AsyncIOMotorDatabase | None = None
 
 
-async def connect_db():
-    """Open the Motor client. Called once during FastAPI lifespan startup."""
+async def connect_db(max_retries: int = 10, delay_s: float = 5.0):
+    """Open the Motor client and wait for MongoDB to become reachable.
+
+    Retries up to max_retries times with delay_s between attempts.
+    This makes the backend resilient to MongoDB starting slower than the
+    backend container (common in Docker Compose).
+    """
+    import asyncio
+    from pymongo.errors import ServerSelectionTimeoutError
+
     global _client, _db
-    _client = AsyncIOMotorClient(settings.MONGO_URI)
+    _client = AsyncIOMotorClient(settings.MONGO_URI, serverSelectionTimeoutMS=5000)
     _db = _client[settings.MONGO_DB_NAME]
-    # Verify we can talk to Mongo (raises ServerSelectionTimeoutError if not)
-    await _client.admin.command("ping")
-    print(f"✅ Connected to MongoDB: {settings.MONGO_DB_NAME}")
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            await _client.admin.command("ping")
+            print(f"✅ Connected to MongoDB: {settings.MONGO_DB_NAME}")
+            return
+        except ServerSelectionTimeoutError as exc:
+            if attempt == max_retries:
+                raise RuntimeError(
+                    f"MongoDB unreachable after {max_retries} attempts. "
+                    f"Last error: {exc}"
+                ) from exc
+            print(
+                f"⏳ MongoDB not ready (attempt {attempt}/{max_retries}), "
+                f"retrying in {delay_s}s…"
+            )
+            await asyncio.sleep(delay_s)
 
 
 async def close_db():

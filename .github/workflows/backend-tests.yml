@@ -1,0 +1,52 @@
+name: Backend Tests
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "backend/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "backend/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        env:
+          MONGO_INITDB_ROOT_USERNAME: evalify
+          MONGO_INITDB_ROOT_PASSWORD: evalify_dev_pass
+          MONGO_INITDB_DATABASE: evalify_db
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval \"db.adminCommand('ping')\""
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: backend
+        env:
+          MONGO_URI: mongodb://evalify:evalify_dev_pass@localhost:27017/evalify_db?authSource=admin
+          TEACHER_JWT_SECRET: ci_teacher_secret_minimum_32_characters
+          STUDENT_JWT_SECRET: ci_student_secret_minimum_32_characters
+        run: pytest tests/ -v --tb=short
