@@ -1,5 +1,5 @@
 # Evalify — Automated Handwritten Answer Sheet Evaluation System
-
+----
 A web-based platform that automates evaluation of handwritten exam answer sheets using computer vision, OCR, and LLM models.
 
 ## 🎯 Project Overview
