@@ -151,6 +151,12 @@ class ExtractRequest(BaseModel):
     mcq_count: int  # number of MCQ questions to look for
 
 
+class ExtractRubricRequest(BaseModel):
+    detailed_answer_url: str   # server URL of the detailed answer PDF
+    grade_rubric_url:    str   # server URL of the grade rubric PDF
+    subjective_count:    int   # number of subjective questions to extract
+
+
 # ── POST /papers/extract-answers — extract MCQ answers from an uploaded PDF ───
 # Registered BEFORE /{paper_id} so "extract-answers" is not matched as a paper ID.
 
@@ -183,6 +189,43 @@ async def extract_answers(
         "confidence": round(confidence, 3),
         "extracted_count": len(answers),
         "raw_text_preview": raw_text[:500] if raw_text else "",
+    }
+
+
+# ── POST /papers/extract-rubric — extract rubric from teacher PDFs ───────────
+
+@router.post("/extract-rubric")
+async def extract_rubric(
+    body: ExtractRubricRequest,
+    user: dict = Depends(require_teacher),
+):
+    """
+    Extract per-question model answers and rubric concepts from two uploaded PDFs.
+    Returns subjective_questions (list) and subjective_rubrics (list) ready to store.
+    """
+    if body.subjective_count < 1:
+        raise HTTPException(status_code=400, detail="subjective_count must be at least 1.")
+
+    def _resolve(url: str) -> str:
+        filename = url.rstrip("/").split("/")[-1]
+        path = os.path.join(PAPER_UPLOAD_DIR, filename)
+        return path
+
+    detailed_path = _resolve(body.detailed_answer_url)
+    rubric_path   = _resolve(body.grade_rubric_url)
+
+    from app.services.rubric_extractor import extract_rubric_from_pdfs
+    subj_questions, subj_rubrics, subj_templates, warning = extract_rubric_from_pdfs(
+        detailed_answer_path = detailed_path,
+        grade_rubric_path    = rubric_path,
+        subjective_count     = body.subjective_count,
+    )
+
+    return {
+        "subjective_questions":        subj_questions,
+        "subjective_rubrics":          subj_rubrics,
+        "subjective_prompt_templates": subj_templates,
+        "warning":                     warning,
     }
 
 

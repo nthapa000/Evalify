@@ -29,6 +29,7 @@ from app.services.omr_engine import OMREngine
 from app.services.ollama_engine import OllamaEngine
 from app.services.pdf_utils import is_pdf, pdf_to_image, pdf_extract_text
 from app.services.pdf_extractor import _parse_answers as parse_mcq_text
+from app.services.subjective_grader import grade_subjective_question, grade_with_template
 
 # ── Singleton engines ─────────────────────────────────────────────────────────
 _omr    = OMREngine()
@@ -52,21 +53,22 @@ async def evaluate_submission(submission_id: str) -> None:
             await _set_error(sub["_id"], "Paper not found in database")
             return
 
-        roll_no         = sub.get("roll_no", "?")
-        sheet_type      = sub.get("sheet_type", "omr")
-        file_paths      = sub.get("file_paths") or [sub.get("file_path", "")]
-        paper_type      = paper.get("type", "mcq")
-        mcq_count       = int(paper.get("mcqCount", 0))
-        numerical_count = int(paper.get("numericalCount", 0)) if "numerical" in paper_type else 0
+        roll_no          = sub.get("roll_no", "?")
+        sheet_type       = sub.get("sheet_type", "omr")
+        file_paths       = sub.get("file_paths") or [sub.get("file_path", "")]
+        paper_type       = paper.get("type", "mcq")
+        mcq_count        = int(paper.get("mcqCount", 0))
+        numerical_count  = int(paper.get("numericalCount", 0)) if "numerical" in paper_type else 0
+        subjective_count = int(paper.get("subjectiveCount", 0)) if "subjective" in paper_type else 0
 
         _print_header(roll_no, paper['name'], paper_type, sheet_type,
-                      mcq_count, numerical_count, len(file_paths))
+                      mcq_count, numerical_count, subjective_count, len(file_paths))
 
         # ── Extract answers ───────────────────────────────────────────────────
         extracted, confidence, engine_used, ollama_latency = _extract_answers_multi(
-            file_paths, sheet_type, mcq_count, numerical_count
+            file_paths, sheet_type, mcq_count, numerical_count, subjective_count
         )
-        _print_extracted(extracted, mcq_count, numerical_count)
+        _print_extracted(extracted, mcq_count, numerical_count, subjective_count)
 
         # ── Grade MCQ ─────────────────────────────────────────────────────────
         cfg              = paper.get("config", {})
@@ -99,21 +101,39 @@ async def evaluate_submission(submission_id: str) -> None:
                 per_q_marks         = paper.get("numericalQuestionMarks", {}),
             )
 
+        # ── Grade Subjective (Type 3) ─────────────────────────────────────────
+        subjective_score  = 0.0
+        subjective_detail = []
+        llm_latency       = 0.0
+        if subjective_count > 0:
+            subj_answers = {k: v for k, v in extracted.items() if k.startswith("S")}
+            subjective_score, subjective_detail, llm_latency = _grade_subjective(
+                extracted_subjective        = subj_answers,
+                subjective_questions        = paper.get("subjectiveQuestions", []),
+                subjective_rubrics          = paper.get("subjectiveRubrics", []),
+                subjective_prompt_templates = paper.get("subjectivePromptTemplates", []),
+                subjective_count            = subjective_count,
+                default_marks               = float(paper.get("subjectiveMarks", 5)),
+                per_q_marks                 = paper.get("subjectiveQuestionMarks", {}),
+                subject                     = paper.get("subject", ""),
+            )
+
         # ── Print grading table ───────────────────────────────────────────────
-        _print_grading_table(mcq_detail, numerical_detail)
+        _print_grading_table(mcq_detail, numerical_detail, subjective_detail)
 
         # ── Build result ──────────────────────────────────────────────────────
-        total_score = mcq_score + numerical_score
+        total_score = mcq_score + numerical_score + subjective_score
         max_score   = float(paper.get("totalMarks", mcq_count + numerical_count))
         pct         = round((total_score / max_score) * 100, 1) if max_score > 0 else 0.0
 
-        _print_score_summary(mcq_score, numerical_score, total_score, max_score, pct,
-                             engine_used, ollama_latency, confidence)
+        _print_score_summary(mcq_score, numerical_score, subjective_score,
+                             total_score, max_score, pct,
+                             engine_used, ollama_latency, llm_latency, confidence)
 
         result = {
             "mcqScore":        mcq_score,
             "numericalScore":  numerical_score,
-            "subjectiveScore": 0.0,
+            "subjectiveScore": subjective_score,
             "totalScore":      total_score,
             "maxScore":        max_score,
             "percentage":      pct,
@@ -126,11 +146,12 @@ async def evaluate_submission(submission_id: str) -> None:
         await submissions_col().update_one(
             {"_id": sub["_id"]},
             {"$set": {
-                "status":          "evaluated",
-                "result":          result,
-                "mcqDetail":       mcq_detail,
-                "numericalDetail": numerical_detail,
-                "evaluatedAt":     datetime.now(timezone.utc).isoformat(),
+                "status":            "evaluated",
+                "result":            result,
+                "mcqDetail":         mcq_detail,
+                "numericalDetail":   numerical_detail,
+                "subjectiveDetail":  subjective_detail,
+                "evaluatedAt":       datetime.now(timezone.utc).isoformat(),
             }}
         )
 
@@ -148,19 +169,22 @@ async def evaluate_submission(submission_id: str) -> None:
             metrics = {
                 "mcq_score":          mcq_score,
                 "numerical_score":    numerical_score,
+                "subjective_score":   subjective_score,
                 "total_score":        total_score,
                 "max_score":          max_score,
                 "accuracy":           correct_count / mcq_count if mcq_count > 0 else 0,
                 "eval_latency_s":     latency,
                 "ollama_latency_s":   ollama_latency,
+                "llm_latency_s":      llm_latency,
                 "ocr_confidence":     confidence,
             },
             params = {
-                "engine":           engine_used,
-                "sheet_type":       sheet_type,
-                "mcq_count":        mcq_count,
-                "numerical_count":  numerical_count,
-                "ollama_mode":      _ollama.mode,
+                "engine":            engine_used,
+                "sheet_type":        sheet_type,
+                "mcq_count":         mcq_count,
+                "numerical_count":   numerical_count,
+                "subjective_count":  subjective_count,
+                "ollama_mode":       _ollama.mode,
             },
         )
 
@@ -176,10 +200,11 @@ async def evaluate_submission(submission_id: str) -> None:
 # ── Multi-page extraction wrapper ─────────────────────────────────────────────
 
 def _extract_answers_multi(
-    file_paths: list,
-    sheet_type: str,
-    mcq_count: int,
-    numerical_count: int = 0,
+    file_paths:       list,
+    sheet_type:       str,
+    mcq_count:        int,
+    numerical_count:  int = 0,
+    subjective_count: int = 0,
 ) -> tuple[Dict[str, str], float, str, float]:
     """
     Process one or more image pages, merge results.
@@ -192,7 +217,9 @@ def _extract_answers_multi(
     total_ollama_latency = 0.0
 
     for path in file_paths:
-        answers, conf, eng, latency = _extract_answers(path, sheet_type, mcq_count, numerical_count)
+        answers, conf, eng, latency = _extract_answers(
+            path, sheet_type, mcq_count, numerical_count, subjective_count
+        )
         for q, a in answers.items():
             if q not in merged:
                 merged[q] = a
@@ -207,14 +234,15 @@ def _extract_answers_multi(
 # ── Engine dispatch ───────────────────────────────────────────────────────────
 
 def _extract_answers(
-    img_path: str,
-    sheet_type: str,
-    mcq_count: int,
-    numerical_count: int = 0,
+    img_path:         str,
+    sheet_type:       str,
+    mcq_count:        int,
+    numerical_count:  int = 0,
+    subjective_count: int = 0,
 ) -> tuple[Dict[str, str], float, str, float]:
     """
     Route to the correct engine. Returns (answers, confidence, engine_name, ollama_latency).
-    For MCQ+Numerical papers, answers contains both Q1..Qn and N1..Nm keys.
+    answers keys: Q1..Qn (MCQ) | N1..Nm (Numerical) | S1..Ss (Subjective).
     """
     if not img_path or not os.path.exists(img_path):
         raise ValueError(f"Answer sheet file not found at '{img_path}'")
@@ -231,14 +259,19 @@ def _extract_answers(
     elif sheet_type == "handwritten":
         if is_pdf(img_path):
             raw_text = pdf_extract_text(img_path)
-            if raw_text.strip():
+            if raw_text.strip() and subjective_count == 0:
                 answers = parse_mcq_text(raw_text, mcq_count)
                 print(f"  Handwritten: PDF text extracted {len(answers)} answers")
                 return answers, 1.0, "pdf_text_extract", 0.0
             img_path = pdf_to_image(img_path, dpi=200)
             print(f"  Handwritten: scanned PDF → {img_path}")
 
-        if numerical_count > 0:
+        if subjective_count > 0:
+            answers, conf, latency = _ollama.extract_mcq_numerical_subjective(
+                img_path, mcq_count, numerical_count, subjective_count
+            )
+            return answers, conf, f"ollama_{_ollama.mode}_mcq_numerical_subjective", latency
+        elif numerical_count > 0:
             answers, conf, latency = _ollama.extract_mcq_numerical(
                 img_path, mcq_count, numerical_count
             )
@@ -384,35 +417,125 @@ def _grade_numerical(
     return score, detail
 
 
+# ── Subjective grading (Type 3) ───────────────────────────────────────────────
+
+def _grade_subjective(
+    extracted_subjective:        Dict[str, str],
+    subjective_questions:        list,
+    subjective_rubrics:          list,
+    subjective_count:            int,
+    default_marks:               float,
+    per_q_marks:                 Dict[str, Any],
+    subject:                     str = "",
+    subjective_prompt_templates: list | None = None,
+) -> tuple[float, list, float]:
+    """
+    Grade each subjective question via Ollama LLM.
+
+    subjective_questions — list of question texts  (index 0 = S1)
+    subjective_rubrics   — list of rubric dicts    (index 0 = S1 rubric from RubricBuilder)
+      each rubric: {key_concepts, mandatory_concepts, marks_per_concept, model_answer}
+
+    Returns (total_score, detail_list, total_llm_latency_s).
+    """
+    total_score  = 0.0
+    detail       = []
+    total_latency = 0.0
+
+    for i in range(1, subjective_count + 1):
+        s_id    = f"S{i}"
+        rubric  = subjective_rubrics[i - 1] if i - 1 < len(subjective_rubrics) else {}
+        q_text  = (subjective_questions[i - 1]
+                   if i - 1 < len(subjective_questions) else f"Question {i}")
+
+        # Max marks: prefer rubric-derived, then per_q override, then default
+        key_concepts      = rubric.get("key_concepts", [])
+        marks_per_concept = float(rubric.get("marks_per_concept", default_marks))
+        rubric_max        = len(key_concepts) * marks_per_concept if key_concepts else default_marks
+        q_marks           = float(per_q_marks.get(s_id, rubric_max))
+
+        student_ans = extracted_subjective.get(s_id, "").strip()
+
+        template = (
+            subjective_prompt_templates[i - 1]
+            if subjective_prompt_templates and i - 1 < len(subjective_prompt_templates)
+            else None
+        )
+
+        if template:
+            grading_result, latency = grade_with_template(
+                prompt_template = template,
+                student_answer  = student_ans,
+                rubric          = rubric,
+                subject         = subject,
+            )
+        else:
+            grading_result, latency = grade_subjective_question(
+                question_text  = q_text,
+                student_answer = student_ans,
+                rubric         = rubric,
+                subject        = subject,
+            )
+        total_latency += latency
+
+        awarded = min(float(grading_result.get("marks_awarded", 0)), q_marks)
+        total_score += awarded
+
+        detail.append({
+            "question":         s_id,
+            "question_text":    q_text,
+            "student_answer":   student_ans[:500] if student_ans else None,
+            "marks_available":  q_marks,
+            "marks_earned":     awarded,
+            "status":           "graded_by_llm" if student_ans else "unanswered",
+            "concepts_found":   grading_result.get("concepts_found", []),
+            "concepts_missing": grading_result.get("concepts_missing", []),
+            "mandatory_met":    grading_result.get("mandatory_concepts_met", True),
+            "feedback":         grading_result.get("feedback", ""),
+            "ocr_issues":       grading_result.get("ocr_issues_detected", False),
+            "llm_detail":       grading_result,
+        })
+
+        print(f"  {s_id}: awarded {awarded}/{q_marks}  |  "
+              f"found={grading_result.get('concepts_found', [])}  |  "
+              f"{grading_result.get('feedback', '')[:80]}")
+
+    return total_score, detail, round(total_latency, 3)
+
+
 # ── Terminal print helpers ────────────────────────────────────────────────────
 
 _W = 72  # table width
 
 def _print_header(roll_no, paper_name, paper_type, sheet_type,
-                  mcq_count, numerical_count, pages):
+                  mcq_count, numerical_count, subjective_count, pages):
     print()
     print("═" * _W)
     print(f"  EVALUATION  │  Student: {roll_no}  │  Paper: {paper_name}")
     print(f"  Type: {paper_type}  │  Sheet: {sheet_type}  │  "
-          f"MCQ: {mcq_count}  Numerical: {numerical_count}  Pages: {pages}")
+          f"MCQ: {mcq_count}  Numerical: {numerical_count}  "
+          f"Subjective: {subjective_count}  Pages: {pages}")
     print("═" * _W)
 
 
-def _print_extracted(extracted: Dict[str, str], mcq_count: int, numerical_count: int):
+def _print_extracted(extracted: Dict[str, str], mcq_count: int, numerical_count: int,
+                     subjective_count: int = 0):
     print()
     print("  ── Extracted Answers (raw from Ollama / OMR) ──")
-    # MCQ row
     mcq_parts = [f"Q{i}={extracted.get(f'Q{i}', '—')}" for i in range(1, mcq_count + 1)]
     for chunk in _chunks(mcq_parts, 8):
         print("  MCQ │ " + "  ".join(f"{p:<8}" for p in chunk))
-    # Numerical row
     if numerical_count > 0:
         num_parts = [f"N{i}={extracted.get(f'N{i}', '—')}" for i in range(1, numerical_count + 1)]
         for chunk in _chunks(num_parts, 8):
             print("  NUM │ " + "  ".join(f"{p:<12}" for p in chunk))
+    if subjective_count > 0:
+        for i in range(1, subjective_count + 1):
+            text = extracted.get(f"S{i}", "—")
+            print(f"  S{i}  │ {text[:100]}{'…' if len(text) > 100 else ''}")
 
 
-def _print_grading_table(mcq_detail: list, numerical_detail: list):
+def _print_grading_table(mcq_detail: list, numerical_detail: list, subjective_detail: list = []):
     print()
     print("  ── Grading Breakdown ──")
     print(f"  {'Q':<5} {'Student':<12} {'Correct':<18} {'Status':<18} {'Marks'}")
@@ -444,18 +567,34 @@ def _print_grading_table(mcq_detail: list, numerical_detail: list):
             earned    = f"+{d['marks_earned']:.1f}" if d["marks_earned"] > 0 else "0"
             print(f"  {d['question']:<5} {student:<12} {accepted:<18} {icon:<18} {earned}/{d['marks_available']:.1f}")
 
+    if subjective_detail:
+        print("  " + "─" * (_W - 2))
+        print(f"  {'Q':<5} {'Status':<18} {'Earned':<10} {'Concepts Found'}")
+        for d in subjective_detail:
+            earned   = f"+{d['marks_earned']:.1f}" if d["marks_earned"] > 0 else "0"
+            concepts = ", ".join(d.get("concepts_found", [])) or "none"
+            status   = "graded" if d["status"] == "graded_by_llm" else "unanswered"
+            print(f"  {d['question']:<5} {status:<18} {earned:<10}/{d['marks_available']:.1f}   [{concepts}]")
+            if d.get("feedback"):
+                print(f"        feedback: {d['feedback'][:80]}")
+
     print("  " + "─" * (_W - 2))
 
 
-def _print_score_summary(mcq_score, numerical_score, total_score, max_score, pct,
-                         engine, ollama_latency, confidence):
-    print(f"  MCQ Score      : {mcq_score}")
-    if numerical_score > 0 or numerical_score == 0:
-        print(f"  Numerical Score: {numerical_score}")
-    print(f"  Total          : {total_score} / {max_score}  ({pct}%)")
-    print(f"  Engine         : {engine}")
+def _print_score_summary(mcq_score, numerical_score, subjective_score,
+                         total_score, max_score, pct,
+                         engine, ollama_latency, llm_latency, confidence):
+    print(f"  MCQ Score       : {mcq_score}")
+    if numerical_score:
+        print(f"  Numerical Score : {numerical_score}")
+    if subjective_score:
+        print(f"  Subjective Score: {subjective_score}")
+    print(f"  Total           : {total_score} / {max_score}  ({pct}%)")
+    print(f"  Engine          : {engine}")
     if ollama_latency > 0:
-        print(f"  Ollama latency : {ollama_latency:.1f}s   Confidence: {confidence:.2f}")
+        print(f"  Ollama latency  : {ollama_latency:.1f}s   Confidence: {confidence:.2f}")
+    if llm_latency > 0:
+        print(f"  LLM grading     : {llm_latency:.1f}s")
     print("═" * _W)
     print()
 

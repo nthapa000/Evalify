@@ -23,10 +23,14 @@ from typing import Dict, Tuple
 
 from app.prompts.prompt_mcq import build_mcq_prompt
 from app.prompts.prompt_mcq_numerical import build_mcq_numerical_prompt
+from app.prompts.prompt_mcq_numerical_subjective import build_mcq_numerical_subjective_prompt
 
 OLLAMA_HOST  = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_VISION_MODEL", "llama3.2-vision:11b")
-_TIMEOUT     = 120  # seconds per inference call
+# Subjective extraction requires transcribing full paragraphs — needs more time.
+# Override via OLLAMA_TIMEOUT env var if your hardware is faster/slower.
+_TIMEOUT          = int(os.environ.get("OLLAMA_TIMEOUT",          "300"))  # vision calls
+_TIMEOUT_SUBJECTIVE = int(os.environ.get("OLLAMA_TIMEOUT_SUBJECTIVE", "180"))  # per single-Q retry
 
 
 class OllamaEngine:
@@ -115,6 +119,97 @@ class OllamaEngine:
         print(f"  Ollama MCQ+Num: {len(answers)} answers extracted in {latency:.1f}s")
         return answers, conf, latency
 
+    def extract_mcq_numerical_subjective(
+        self,
+        image_path:       str,
+        mcq_count:        int,
+        numerical_count:  int,
+        subjective_count: int,
+    ) -> Tuple[Dict[str, str], float, float]:
+        """
+        Extract MCQ + Numerical + Subjective answers from a Type 3 handwritten sheet.
+        Returns (answers, confidence, latency_s).
+        answers keys:
+          Q1..Qn       → MCQ letter answers
+          N1..Nm       → Numerical answers  (remapped from Q{n+1}..Q{n+m})
+          S1..Ss       → Subjective full-text answers
+        """
+        self._ensure_loaded()
+        if self._mode == "stub":
+            import random
+            mock = {
+                **{f"Q{i}": random.choice(["A", "B", "C", "D"]) for i in range(1, mcq_count + 1)},
+                **{f"N{i}": str(random.randint(0, 100))           for i in range(1, numerical_count + 1)},
+                **{f"S{i}": f"[STUB] Student wrote answer for subjective question {i}."
+                   for i in range(1, subjective_count + 1)},
+            }
+            print(f"🔧 Ollama STUB: mock MCQ+Num+Subj {mock}")
+            return mock, 0.0, 0.0
+
+        prompt = build_mcq_numerical_subjective_prompt(
+            mcq_count, numerical_count, subjective_count
+        )
+        raw, conf, latency = self._call_ollama(image_path, prompt)
+        answers = _parse_mcq_numerical_subjective_json(
+            raw, mcq_count, numerical_count, subjective_count
+        )
+        print(f"  Ollama MCQ+Num+Subj: {len(answers)} answers extracted in {latency:.1f}s")
+
+        # ── Per-question fallback for any subjective answer that came back empty ──
+        missing = [i for i in range(1, subjective_count + 1) if not answers.get(f"S{i}", "").strip()]
+        if missing:
+            print(f"  Subjective fallback: retrying {len(missing)} missing answer(s): "
+                  f"{[f'S{i}' for i in missing]}")
+            fallback_latency = 0.0
+            for idx in missing:
+                text, fl = self._extract_single_subjective(image_path, idx, subjective_count)
+                fallback_latency += fl
+                if text:
+                    answers[f"S{idx}"] = text
+                    print(f"    S{idx} fallback: got {len(text)} chars in {fl:.1f}s")
+                else:
+                    print(f"    S{idx} fallback: still empty after {fl:.1f}s")
+            latency += fallback_latency
+
+        return answers, conf, latency
+
+    def _extract_single_subjective(
+        self, image_path: str, question_index: int, total: int
+    ) -> Tuple[str, float]:
+        """
+        Focused single-question subjective extraction.
+        Used as fallback when the combined extraction misses an answer.
+        Returns (transcribed_text, latency_s).
+        """
+        prompt = _build_single_subjective_prompt(question_index, total)
+        t0 = time.time()
+        try:
+            with open(image_path, "rb") as f:
+                img_b64 = base64.b64encode(f.read()).decode()
+
+            print(f"  Ollama fallback S{question_index}: sending image → {OLLAMA_MODEL} …")
+            resp = requests.post(
+                f"{OLLAMA_HOST}/api/generate",
+                json={
+                    "model":  OLLAMA_MODEL,
+                    "prompt": prompt,
+                    "images": [img_b64],
+                    "stream": False,
+                },
+                timeout=_TIMEOUT_SUBJECTIVE,
+            )
+            resp.raise_for_status()
+            raw     = resp.json().get("response", "").strip()
+            latency = round(time.time() - t0, 3)
+            print(f"  Ollama fallback S{question_index} ({latency:.1f}s): {raw[:200]}")
+            text = "" if raw.strip().upper() == "NOT_FOUND" else raw.strip()
+            return text, latency
+
+        except Exception as e:
+            latency = round(time.time() - t0, 3)
+            print(f"  Ollama fallback S{question_index} error ({latency:.1f}s): {e}")
+            return "", latency
+
     # ── Ollama HTTP call ──────────────────────────────────────────────────────
 
     def _call_ollama(self, image_path: str, prompt: str) -> Tuple[str, float, float]:
@@ -145,6 +240,29 @@ class OllamaEngine:
             latency = round(time.time() - t0, 3)
             print(f"❌ Ollama error ({latency}s): {e}")
             return "", 0.0, latency
+
+
+# ── Focused single-question subjective prompt ────────────────────────────────
+
+def _build_single_subjective_prompt(question_index: int, total_subjective: int) -> str:
+    """
+    Minimal prompt focused on extracting ONE subjective answer.
+    Much faster than the combined 3-section prompt because it asks for less.
+    """
+    return f"""You are reading a student's handwritten answer sheet.
+
+This sheet has {total_subjective} subjective question answer(s), labeled S1 to S{total_subjective}.
+
+Your job: find and transcribe the student's written answer for question S{question_index}.
+
+RULES:
+- Transcribe the COMPLETE written answer for S{question_index} exactly as the student wrote it.
+- Include every sentence, even if handwriting is partially unclear — guess from context.
+- Do NOT include the question label itself (e.g. do not include "S{question_index}:").
+- Do NOT summarise — copy the actual words the student wrote.
+- If you cannot find any handwritten text for S{question_index}, return exactly: NOT_FOUND
+
+Return ONLY the transcribed answer text — no explanation, no preamble."""
 
 
 # ── JSON parsers ──────────────────────────────────────────────────────────────
@@ -285,6 +403,70 @@ def _extract_first_value(v: str) -> str:
     # Take everything before the first comma
     first = v.split(",")[0].strip()
     return first
+
+
+def _parse_mcq_numerical_subjective_json(
+    text:             str,
+    mcq_count:        int,
+    numerical_count:  int,
+    subjective_count: int,
+) -> Dict[str, str]:
+    """
+    Parse the three-section JSON returned by the Type 3 extraction prompt.
+
+    Expected format:
+      {"mcq": {"Q1": "C", ...}, "numerical": {"Q7": "3.5", ...}, "subjective": {"S1": "text..."}}
+
+    The numerical section uses Q-labels on the sheet; they are remapped to N-labels here.
+    """
+    results: Dict[str, str] = {}
+
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if not match:
+        return results
+
+    try:
+        raw = json.loads(match.group())
+    except (json.JSONDecodeError, ValueError):
+        return results
+
+    # ── MCQ section ───────────────────────────────────────────────────────────
+    for k, v in raw.get("mcq", {}).items():
+        num = re.search(r"\d+", str(k))
+        if num:
+            q_num = int(num.group())
+            val   = _normalise_mcq(str(v))
+            if val and 1 <= q_num <= mcq_count:
+                results[f"Q{q_num}"] = val
+
+    # ── Numerical section ─────────────────────────────────────────────────────
+    num_section = raw.get("numerical", {})
+    for k, v in num_section.items():
+        k_up = str(k).strip().upper()
+        num  = re.search(r"\d+", k_up)
+        if not num:
+            continue
+        idx = int(num.group())
+        val = _extract_first_value(str(v))
+        if not val:
+            continue
+        if k_up.startswith("N") and 1 <= idx <= numerical_count:
+            results[f"N{idx}"] = val
+        elif k_up.startswith("Q"):
+            n_idx = idx - mcq_count
+            if 1 <= n_idx <= numerical_count:
+                results[f"N{n_idx}"] = val
+
+    # ── Subjective section ────────────────────────────────────────────────────
+    for k, v in raw.get("subjective", {}).items():
+        num = re.search(r"\d+", str(k))
+        if num:
+            s_num = int(num.group())
+            text_val = str(v).strip()
+            if text_val and 1 <= s_num <= subjective_count:
+                results[f"S{s_num}"] = text_val
+
+    return results
 
 
 def _normalise_mcq(v: str) -> str:

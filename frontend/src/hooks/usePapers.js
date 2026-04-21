@@ -115,6 +115,37 @@ export function useExtractAnswers() {
   return { extract, extracting };
 }
 
+// Extract rubric from two teacher-uploaded PDFs (Type 3 papers)
+export function useExtractRubric() {
+  const [extracting, setExtracting] = useState(false);
+  const { addToast } = useToastStore();
+
+  const extractRubric = async ({ detailedAnswerUrl, gradeRubricUrl, subjectiveCount }) => {
+    if (!detailedAnswerUrl || !gradeRubricUrl || !subjectiveCount) return null;
+    setExtracting(true);
+    try {
+      const res = await api.post("/papers/extract-rubric", {
+        detailed_answer_url: detailedAnswerUrl,
+        grade_rubric_url:    gradeRubricUrl,
+        subjective_count:    subjectiveCount,
+      });
+      if (res.data.warning) {
+        addToast(`Extraction completed with warnings: ${res.data.warning}`, "info");
+      } else {
+        addToast("Rubric extracted successfully!", "success");
+      }
+      return res.data;  // { subjective_questions, subjective_rubrics, warning }
+    } catch (e) {
+      addToast("Failed to extract rubric from PDFs.", "error");
+      return null;
+    } finally {
+      setExtracting(false);
+    }
+  };
+
+  return { extractRubric, extracting };
+}
+
 // Fetch a single paper by ID (for PaperView page)
 export function usePaperView(paperId) {
   const [paper, setPaper] = useState(null);
