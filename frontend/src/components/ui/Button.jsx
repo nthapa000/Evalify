@@ -1,5 +1,6 @@
 // Button.jsx — reusable button with variant, size, and loading state.
 
+// Colour scheme per variant
 const VARIANTS = {
   primary:   "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500",
   secondary: "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-green-500",
@@ -7,6 +8,7 @@ const VARIANTS = {
   ghost:     "text-green-600 hover:bg-green-50 focus:ring-green-500",
 };
 
+// Padding / font size per size
 const SIZES = {
   sm: "px-3 py-1.5 text-sm",
   md: "px-4 py-2 text-sm",
@@ -34,6 +36,7 @@ export default function Button({
       `}
       {...props}
     >
+      {/* Spinner while loading */}
       {loading && (
         <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

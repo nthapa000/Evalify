@@ -272,10 +272,7 @@ Evalify/
 │   ├── vite.config.js        # Vite configuration
 │   └── Dockerfile            # Docker image definition
 │
-├── ml/                        # ML microservices
-│   ├── llm_service/          # LLM grading service
-│   ├── omr_service/          # OMR service
-│   └── trocr_service/        # TrOCR service
+├── infra/                     # Model registry (models.yaml) + cluster scripts (vLLM env, downloads)
 │
 ├── k8s/                       # Kubernetes manifests (optional)
 ├── docker-compose.dev.yml    # Development Docker setup
@@ -374,9 +371,8 @@ TEACHER_JWT_EXPIRE_MINUTES=480
 - **ML/CV**: 
   - Ollama (vision model + LLM)
   - OpenCV (OMR detection)
-  - EasyOCR (handwriting recognition)
-  - Transformers, Torch
-- **Utilities**: PDFPlumber, PyMuPDF, Pillow
+  - vLLM model servers on the GPU cluster (see infra/models.yaml)
+- **Utilities**: PyMuPDF, Pillow
 - **MLOps**: MLflow 2.13.0
 - **Auth**: JWT, bcrypt, passlib
 - **Testing**: pytest, httpx, pytest-asyncio

@@ -32,13 +32,14 @@ yarn-error.log*
 !.env.example
 
 # ── Docker ───────────────────────────────────────────────────────────────────
-*.dockerignore
+# (.dockerignore files are committed — they keep venv/uploads out of images)
 
 # ── ML / Model Weights ───────────────────────────────────────────────────────
 *.gguf
 *.bin
 *.safetensors
-models/
+# NB: was `models/`, which also ignored backend/app/models (Pydantic schemas)
+/models/
 *.pt
 *.pth
 *.onnx
@@ -68,3 +69,9 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+
+# ── Evalify eval runs / cluster ──────────────────────────────────────────────
+eval/runs/
+eval/data/*/images/
+!eval/data/example/images/
+slurm-*.out

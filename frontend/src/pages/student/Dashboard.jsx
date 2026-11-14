@@ -22,6 +22,7 @@ export default function StudentDashboard() {
   const { user } = useAuthStore();
   const { papers, loading } = useAvailablePapers();
 
+  // Count papers per subject → one card per subject that has papers
   const paperCountBySubject = papers.reduce((acc, p) => {
     if (p.subject) acc[p.subject] = (acc[p.subject] ?? 0) + 1;
     return acc;
@@ -32,10 +33,12 @@ export default function StudentDashboard() {
     color: SUBJECT_COLORS[name] ?? "bg-gray-100 text-gray-700",
   }));
 
-  const pendingCount = papers.filter((p) => p.submissionStatus === "not_submitted").length;
+  const count = (status) => papers.filter((p) => p.submissionStatus === status).length;
+  const pendingCount = count("not_submitted");
 
   return (
     <PageWrapper>
+      {/* Greeting + pending count */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Welcome, {user?.name}</h1>
         <p className="text-sm text-gray-500 mt-1">
@@ -43,6 +46,7 @@ export default function StudentDashboard() {
         </p>
       </div>
 
+      {/* Subject cards (skeletons while loading) */}
       <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Subjects</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading
@@ -76,14 +80,15 @@ export default function StudentDashboard() {
         }
       </div>
 
+      {/* Totals: all / pending / evaluated */}
       {!loading && papers.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Overview</h2>
           <div className="grid grid-cols-3 gap-4">
             {[
               { label: "Total Papers", value: papers.length },
-              { label: "Pending",      value: papers.filter((p) => p.submissionStatus === "not_submitted").length },
-              { label: "Evaluated",    value: papers.filter((p) => p.submissionStatus === "evaluated").length },
+              { label: "Pending",      value: pendingCount },
+              { label: "Evaluated",    value: count("evaluated") },
             ].map((s) => (
               <Card key={s.label} className="text-center">
                 <Card.Body>

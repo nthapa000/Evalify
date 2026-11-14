@@ -9,6 +9,7 @@ import Button from "../../components/ui/Button";
 import { SkeletonCard } from "../../components/ui/Skeleton";
 import { formatDate, paperTypeLabel, statusLabel } from "../../utils/formatters";
 
+// Badge colour per submission status
 const STATUS_VARIANT = {
   not_submitted: "neutral",
   processing:    "warning",
@@ -20,6 +21,7 @@ export default function SubjectPage() {
   const decodedSubject = decodeURIComponent(subject);
   const { papers, loading } = useAvailablePapers();
 
+  // Only this subject's papers
   const subjectPapers = papers.filter((p) => p.subject === decodedSubject);
 
   return (
@@ -33,6 +35,7 @@ export default function SubjectPage() {
         <span className="text-sm text-gray-500">{subjectPapers.length} paper(s)</span>
       </div>
 
+      {/* Loading → empty → paper cards */}
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Array.from({ length: 2 }).map((_, i) => <SkeletonCard key={i} />)}
@@ -61,6 +64,7 @@ export default function SubjectPage() {
                   <span>{formatDate(paper.createdAt)}</span>
                 </div>
               </Card.Body>
+              {/* Action depends on status: upload / evaluating / view result */}
               <Card.Footer className="flex gap-2">
                 {paper.submissionStatus === "not_submitted" && (
                   <Link to={`/student/submit/${paper.id}`} className="flex-1">

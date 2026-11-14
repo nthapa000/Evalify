@@ -9,14 +9,16 @@ import Button from "../../components/ui/Button";
 import { SkeletonCard } from "../../components/ui/Skeleton";
 import { formatDate, paperTypeLabel } from "../../utils/formatters";
 
+// Badge colour per paper type
 const TYPE_VARIANT = {
   mcq: "indigo",
   mcq_numerical: "info",
   mcq_numerical_subjective: "warning",
 };
 
+// One paper: name, type, marks/questions/results, and links
 function PaperCard({ paper }) {
-  const totalQuestions = (paper.mcqCount ?? 0) + (paper.numericalCount ?? 0);
+  const totalQuestions = (paper.mcqCount ?? 0) + (paper.numericalCount ?? 0) + (paper.subjectiveCount ?? 0);
 
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -31,6 +33,7 @@ function PaperCard({ paper }) {
           </Badge>
         </div>
 
+        {/* Quick stats */}
         <div className="mt-4 grid grid-cols-3 gap-3 text-center">
           <div className="bg-gray-50 rounded-lg py-2">
             <p className="text-lg font-bold text-gray-800">{paper.totalMarks}</p>
@@ -65,6 +68,7 @@ export default function TeacherDashboard() {
 
   return (
     <PageWrapper>
+      {/* Header + create button */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">My Papers</h1>
@@ -75,6 +79,7 @@ export default function TeacherDashboard() {
         </Link>
       </div>
 
+      {/* Paper grid (skeletons while loading) */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {loading
           ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)

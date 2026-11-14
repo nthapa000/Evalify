@@ -1,5 +1,6 @@
 // Badge.jsx — small status pill.
 
+// Colour per variant
 const VARIANTS = {
   success: "bg-green-100 text-green-700",
   warning: "bg-amber-100 text-amber-700",

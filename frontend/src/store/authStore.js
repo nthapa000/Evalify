@@ -3,6 +3,7 @@
 
 import { create } from "zustand";
 
+// Restore the session saved by a previous visit
 const _token = localStorage.getItem("evalify_token");
 const _user  = (() => {
   try { return JSON.parse(localStorage.getItem("evalify_user") || "null"); }
@@ -13,12 +14,14 @@ const useAuthStore = create((set) => ({
   token: _token,
   user:  _user,
 
+  // Save session (memory + localStorage)
   setAuth: (token, user) => {
     localStorage.setItem("evalify_token", token);
     localStorage.setItem("evalify_user", JSON.stringify(user));
     set({ token, user });
   },
 
+  // Forget session
   clearAuth: () => {
     localStorage.removeItem("evalify_token");
     localStorage.removeItem("evalify_user");

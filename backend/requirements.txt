@@ -1,36 +1,32 @@
-# ── Web framework ─────────────────────────────────────────────────────────────
+# Web framework
 fastapi==0.111.0
-requests
 uvicorn[standard]==0.29.0
-python-multipart==0.0.9      # required for file upload (UploadFile)
+python-multipart==0.0.9      # file uploads (UploadFile)
+requests                     # calls to Ollama / vLLM model servers
 
-# ── ML Dependencies ───────────────────────────────────────────────────────────
-opencv-python-headless
-pdfplumber                # PDF text extraction for answer key parsing
-pymupdf                   # PDF rendering + text extraction for student answer sheets
-mlflow
-transformers
-torch
+# Image + PDF processing
+opencv-python-headless       # OMR, quality gate
+pymupdf                      # PDF render + text layer
 Pillow
-easyocr                      # GPU OCR for handwritten MCQ answer sheets
+pyyaml                       # infra/models.yaml registry
 
-# ── Database ──────────────────────────────────────────────────────────────────
-motor==3.4.0                  # async MongoDB driver (wraps PyMongo)
+# Database
+motor==3.4.0                 # async MongoDB driver
 pymongo==4.7.2
 
-# ── Auth ──────────────────────────────────────────────────────────────────────
+# Auth
 PyJWT==2.8.0
-bcrypt==4.0.1                # 4.1+ removed __about__ which breaks passlib 1.7.4
+bcrypt==4.0.1                # 4.1+ removed __about__, which breaks passlib 1.7.4
 passlib[bcrypt]==1.7.4
 
-# ── Validation ────────────────────────────────────────────────────────────────
+# Validation
 pydantic==2.7.1
-pydantic-settings==2.2.1     # loads .env files into Settings models
+pydantic-settings==2.2.1
 
-# ── MLOps ─────────────────────────────────────────────────────────────────────
-mlflow==2.13.0               # experiment tracking client
+# MLOps
+mlflow==2.13.0
 
-# ── Testing ───────────────────────────────────────────────────────────────────
+# Testing
 pytest==8.2.0
-httpx==0.27.0                # async test client for FastAPI (TestClient uses it)
+httpx==0.27.0
 pytest-asyncio==0.23.6

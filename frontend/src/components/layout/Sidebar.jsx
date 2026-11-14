@@ -3,6 +3,7 @@
 import { NavLink } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
 
+// Nav link, highlighted when its route is active
 function SideLink({ to, label }) {
   return (
     <NavLink
@@ -17,6 +18,7 @@ function SideLink({ to, label }) {
   );
 }
 
+// Links shown per role
 const TEACHER_LINKS = [
   { to: "/teacher/dashboard",       label: "Dashboard" },
   { to: "/teacher/papers/create",   label: "Create Paper" },
@@ -38,6 +40,7 @@ export default function Sidebar() {
         ))}
       </nav>
 
+      {/* Current role at the bottom */}
       <div className="mt-auto px-4 pb-2">
         <p className="text-xs text-gray-400 uppercase tracking-wide font-medium capitalize">
           {user?.role ?? ""}

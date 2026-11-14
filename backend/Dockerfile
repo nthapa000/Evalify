@@ -8,7 +8,7 @@ WORKDIR /app
 
 # ── System dependencies ───────────────────────────────────────────────────────
 # libgl1, libglib2.0-0, libsm6, libxext6, libxrender-dev : OpenCV (cv2)
-# libgomp1                                                : EasyOCR / PyTorch OpenMP
+# libgomp1                                                : OpenMP (OpenCV)
 # gcc, g++, libffi-dev                                    : build tools for some wheels
 # curl                                                    : healthcheck
 RUN apt-get update && apt-get install -y --no-install-recommends \

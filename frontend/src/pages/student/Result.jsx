@@ -10,6 +10,7 @@ import Badge from "../../components/ui/Badge";
 import Skeleton from "../../components/ui/Skeleton";
 import { formatPercent, gradeFromPercent } from "../../utils/formatters";
 
+// Big score ring with a letter-grade badge
 function ScoreCircle({ score, max }) {
   const pct   = max > 0 ? (score / max) * 100 : 0;
   const grade = gradeFromPercent(pct);
@@ -31,12 +32,23 @@ function ScoreCircle({ score, max }) {
   );
 }
 
+// One "label …… value" line in the section breakdown
+function Row({ label, value }) {
+  return (
+    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+      <span className="text-sm text-gray-600">{label}</span>
+      <span className="font-semibold text-gray-800">{value}</span>
+    </div>
+  );
+}
+
 export default function Result() {
   const { submissionId } = useParams();
   const { data, loading } = useResult(submissionId);
   const token = useAuthStore((s) => s.token);
   const [fileLoading, setFileLoading] = useState(false);
 
+  // Fetch the uploaded sheet with the auth header and open it in a new tab
   const viewAnswerSheet = async () => {
     setFileLoading(true);
     try {
@@ -54,6 +66,7 @@ export default function Result() {
     }
   };
 
+  // Loading skeleton
   if (loading) {
     return (
       <PageWrapper>
@@ -66,6 +79,7 @@ export default function Result() {
     );
   }
 
+  // Not evaluated yet
   if (!data) {
     return (
       <PageWrapper>
@@ -82,6 +96,8 @@ export default function Result() {
   const { result, student_name, roll_no, paper_name, stats, paper } = data;
   const isType2 = paper?.type === "mcq_numerical" || paper?.type === "mcq_numerical_subjective";
   const isType3 = paper?.type === "mcq_numerical_subjective";
+  // Section max = count × marks per question ("—" if unknown)
+  const sectionMax = (k) => (paper?.[`${k}Count`] ?? 0) * (paper?.[`${k}Marks`] ?? 0) || "—";
 
   return (
     <PageWrapper>
@@ -91,6 +107,7 @@ export default function Result() {
 
       <h1 className="text-2xl font-bold text-gray-800 mb-6">{paper_name} — Result</h1>
 
+      {/* Score summary */}
       <Card className="mb-6">
         <Card.Body>
           <div className="flex flex-col md:flex-row items-center gap-8">
@@ -102,19 +119,16 @@ export default function Result() {
                 <p className="text-sm text-gray-500">Roll No: {roll_no}</p>
               </div>
 
+              {/* Your score vs class average vs highest */}
               <div className="grid grid-cols-3 gap-3 mt-4">
-                <div className="bg-green-50 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold text-green-600">{result.totalScore}/{result.maxScore}</p>
-                  <p className="text-xs text-gray-500">Your Score</p>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold text-gray-700">{stats.average}/{result.maxScore}</p>
-                  <p className="text-xs text-gray-500">Class Average</p>
-                </div>
-                <div className="bg-green-50 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold text-green-600">{stats.highest}/{result.maxScore}</p>
-                  <p className="text-xs text-gray-500">Highest</p>
-                </div>
+                {[["Your Score", result.totalScore, "bg-green-50 text-green-600"],
+                  ["Class Average", stats.average, "bg-gray-50 text-gray-700"],
+                  ["Highest", stats.highest, "bg-green-50 text-green-600"]].map(([label, value, cls]) => (
+                  <div key={label} className={`rounded-xl p-3 text-center ${cls}`}>
+                    <p className="text-lg font-bold">{value}/{result.maxScore}</p>
+                    <p className="text-xs text-gray-500">{label}</p>
+                  </div>
+                ))}
               </div>
 
               <p className="text-sm text-gray-500">
@@ -141,22 +155,10 @@ export default function Result() {
           <h2 className="text-base font-semibold text-gray-700">Section Breakdown</h2>
         </Card.Header>
         <Card.Body className="space-y-3">
-          <div className="flex justify-between items-center py-2 border-b border-gray-100">
-            <span className="text-sm text-gray-600">MCQ Section</span>
-            <span className="font-semibold text-gray-800">{result.mcqScore} / {(paper?.mcqCount ?? 0) * (paper?.mcqMarks ?? 0) || "—"}</span>
-          </div>
-          {isType2 && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-100">
-              <span className="text-sm text-gray-600">Numerical Section</span>
-              <span className="font-semibold text-gray-800">{result.numericalScore} / {(paper?.numericalCount ?? 0) * (paper?.numericalMarks ?? 0) || "—"}</span>
-            </div>
-          )}
-          {isType3 && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-100">
-              <span className="text-sm text-gray-600">Subjective Section</span>
-              <span className="font-semibold text-gray-800">{result.subjectiveScore} / {(paper?.subjectiveCount ?? 0) * (paper?.subjectiveMarks ?? 0) || "—"}</span>
-            </div>
-          )}
+          {/* Per-section score / section max (only sections this paper type has) */}
+          <Row label="MCQ Section" value={`${result.mcqScore} / ${sectionMax("mcq")}`} />
+          {isType2 && <Row label="Numerical Section" value={`${result.numericalScore} / ${sectionMax("numerical")}`} />}
+          {isType3 && <Row label="Subjective Section" value={`${result.subjectiveScore} / ${sectionMax("subjective")}`} />}
           <div className="flex justify-between items-center py-2 font-bold">
             <span className="text-gray-800">Total</span>
             <span className="text-green-600">{result.totalScore} / {result.maxScore}</span>
