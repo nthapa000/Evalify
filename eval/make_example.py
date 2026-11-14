@@ -2,8 +2,8 @@
 """make_example.py — build eval/data/example: 2 synthetic Type-3 sheets for smoke tests.
 
 Rendered in OpenCV's script font, so it checks plumbing, not handwriting accuracy.
-Each sheet plants a deliberate spelling error ("proccess") to exercise the
-over-correction metric. Real evaluation needs real scanned / photographed sheets.
+ex002 plants a deliberate CONTENT error (wrong fact) to exercise the over-correction
+metric — spelling is ignored, as TAs ignore it in university exams. Real evaluation needs real scanned / photographed sheets.
 """
 import json
 from pathlib import Path
@@ -32,7 +32,7 @@ SHEETS = [
     ("ex001", "dev", {"Q1": "B", "Q2": "A,C", "N1": "5/8",
                       "S1": "Photosynthesis is the proccess where plants\nuse light energy to make glucose\nand release oxygen."}, 3),
     ("ex002", "test", {"Q1": "C", "Q2": "A", "N1": "0.65",
-                       "S1": "It is the proccess plants use to\nmake food from water."}, 0),
+                       "S1": "It is the proccess plants use to\nmake food from water and nitrogen."}, 0),
 ]
 
 
@@ -67,7 +67,8 @@ def main():
             "S1": {"transcript": ans["S1"], "marks": subj_marks, "crop": boxes["S1"],
                    "concepts": {"uses light energy": subj_marks > 0, "produces glucose": subj_marks > 0,
                                 "releases oxygen": subj_marks > 0},
-                   "planted_errors": [{"wrong": "proccess", "correct": "process"}]},
+                   "planted_errors": ([{"wrong": "water and nitrogen", "correct": "water and carbon dioxide"}]
+                                      if sid == "ex002" else [])},
         }
         rows.append({"sheet_id": sid, "split": split, "paper": "papers/bio_quiz.json",
                      "sheet_type": "handwritten", "pages": [f"images/{sid}_p1.png"], "gold": gold})

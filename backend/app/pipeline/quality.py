@@ -21,7 +21,7 @@ MIN_LONG_SIDE = 1000           # smaller photos are too coarse for handwriting
 BLUR_MIN = 60.0                # variance of Laplacian at 1000 px; below = blurry
 GLARE_MAX = 0.04               # max fraction of blown-out (white, unsaturated) pixels
 DARK_MIN = 70.0                # min mean brightness (0–255)
-CONTRAST_MIN = 25.0            # min grey-level std
+CONTRAST_MIN = 60.0            # min paper − ink brightness gap (median vs darkest 1000 px)
 
 
 @dataclass
@@ -102,7 +102,11 @@ def measure(bgr: np.ndarray, rep: QualityReport) -> None:
     # already pure white, so glare is only measured on photos (background < 240)
     bg = float(np.median(gray))
     rep.glare = 0.0 if bg >= 240 else float(((hsv[..., 2] >= max(250, bg + 15)) & (hsv[..., 1] < 25)).mean())
-    rep.brightness, rep.contrast = float(gray.mean()), float(gray.std())
+    # Contrast = how much darker the ink is than the paper; a sparse page has a low global
+    # std but perfectly readable writing, so std is the wrong measure
+    rep.brightness = float(gray.mean())
+    darkest = np.partition(gray.ravel(), 1000)[:1000]                 # the ink, however little
+    rep.contrast = float(np.median(gray) - darkest.mean())
 
     # Each failed check is a reason the student is asked to re-upload
     checks = [(max(rep.size) >= MIN_LONG_SIDE, "resolution too low"),

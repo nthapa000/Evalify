@@ -152,3 +152,24 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   **99.9%** accuracy; **1 silent error** (a light mark on File0002 Q63); 7 other errors all went
   to a TA. The old layout-free engine scored 0% on this layout (it can't parse it).
 - Routing threshold for OMR margin is still the default 0.05; calibrate on more sheets later.
+
+### Handwritten pipeline smoke test (synthetic example set, live models), 14 Nov
+- **User: spelling does not matter** (TAs ignore it in university exams). So the
+  over-correction check now targets **content** corrections only (wrong number / fact / step);
+  the example set plants a wrong fact ("water and nitrogen"), not a misspelling. Qwen3.8 did
+  silently fix "proccess" → "process" despite the verbatim prompt — harmless for grading;
+  neither reader corrected the planted wrong fact.
+- **Prompts p2: label-independent.** Telling the reader "this is question Q1" made Qwen answer
+  "blank" when the written label looked different (script "Q" ≈ "2"). Closed-form prompts now
+  say "one answer, ignore the label"; copied labels are stripped in code.
+- **Guided-JSON whitespace runaway** (Gemma 4 emitted whitespace until max_tokens; vLLM's
+  per-request `disable_any_whitespace` did not stop it): the client now repairs truncated JSON
+  and retries once without the schema.
+- **A reader's value is graded even when it says "unclear"** (the question is still routed),
+  so the TA sees what was read.
+- **Contrast check** = paper brightness − darkest 1000 pixels (a sparse page has low global
+  std but is perfectly readable).
+- Result on 2 synthetic sheets (8 answers): every auto-accepted answer correct (MCQ, MCQ
+  wrong-answer verdict, both subjective marks incl. both graders agreeing); PaddleOCR read all
+  MCQ/numbers right; Qwen3.8 returned empty on some script-font crops → routed via reader
+  disagreement. **The synthetic font is now the limit — real handwritten sheets are needed.**

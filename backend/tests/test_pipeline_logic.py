@@ -26,6 +26,7 @@ def test_ocr_parsing():
     assert readers.parse_letters(readers.strip_label(text, "Q3")) == "D"     # struck-out B ignored
     assert readers.parse_final_number("v = u + at\n= 2 + 3\nAns = 5 m/s") == "5 m/s"
     assert readers.strip_label("7) 3.5", "Q7") == "3.5"
+    assert readers.parse_final_number("23: 0.65") == "0.65"               # misread label dropped
 
 
 # Reader agreement per question type

@@ -51,7 +51,8 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
         reads, models = _read_omr(pages, questions), {"reader_a": "opencv_omr"}
     else:
         reads, models = _read_handwritten(pages, questions)
-    answers = {qid: r["a"].value for qid, r in reads.items() if r["a"].status == "answered"}
+    # Grade whatever reader A read, even if it said "unclear" (that question is routed anyway)
+    answers = {qid: r["a"].value for qid, r in reads.items() if r["a"].value}
 
     # 3. Closed-form questions: scored in code
     n_mcq = sum(q.kind == "mcq" for q in questions)

@@ -100,14 +100,16 @@ def read_general(ep: llm.Endpoint, q: Question, images: List[Image.Image], verba
 
     # Normalise each schema to (status, value, confidence)
     out.confidence = _conf(d.get("confidence"))
+    # Keep the value even when the reader says "unclear": it is routed, and the TA sees it
     if q.kind == "mcq":
         out.status = d.get("status", "unclear")
-        out.value = ",".join(sorted(set(d.get("options", [])))) if out.status == "answered" else ""
+        out.value = ",".join(sorted(set(d.get("options", [])))) if out.status != "blank" else ""
         if out.status == "answered" and not out.value:
             out.status = "unclear"
     elif q.kind == "numerical":
         out.status = d.get("status", "unclear")
-        out.value = str(d.get("final_answer", "")).strip() if out.status == "answered" else ""
+        raw = re.sub(r"^\s*[QqSs]?\d{1,3}\s*[:.)]\s*", "", str(d.get("final_answer", "")).strip())  # copied label
+        out.value = raw if out.status != "blank" else ""
     else:
         out.value = str(d.get("text", "")).strip()
         out.status = "answered" if out.value else "blank"
@@ -173,7 +175,9 @@ def parse_final_number(text: str) -> str:
     """Last line that parses as a number (after '=' / 'Ans'), as written."""
     lines = [l for l in re.sub(r"~~.*?~~", "", text).splitlines() if l.strip()]
     for line in reversed(lines):
-        cand = line.split("=")[-1].strip()
+        # Value after the last "=" or "Ans:"; a misread label like "23:" is dropped
+        cand = re.split(r"=|\bans(?:wer)?\b\s*[:.]?", line, flags=re.I)[-1]
+        cand = re.sub(r"^\s*[QqSs]?\d{1,3}\s*[:.)]\s*", "", cand).strip()
         if numeric.parse_number(cand).ok:
             return cand
     return ""

@@ -4,7 +4,7 @@
 # silently fix student mistakes, so every reader prompt forbids correction.
 # TEMPLATE_VERSION is logged to MLflow; bump it whenever a prompt changes.
 
-TEMPLATE_VERSION = "p1"
+TEMPLATE_VERSION = "p2"   # p2: label-independent closed-form prompts
 
 # ── Segmentation: find each answer's label + box on a page ──────────────────
 
@@ -73,7 +73,9 @@ MCQ_SCHEMA = {
 
 def mcq_prompt(label: str) -> str:
     """Letters only; 'unclear' is the safe answer instead of guessing."""
-    return f"""This is the student's answer to multiple-choice question {label}.
+    # label is unused on purpose: models that cannot match a messy written label answered "blank"
+    return """This image is ONE answer cropped from a handwritten multiple-choice answer sheet.
+Its question label may be hard to read — ignore the label.
 Which option letter(s) did the student choose as the FINAL answer?
 - Ignore letters that are struck out or overwritten by another letter.
 - status "blank" if nothing is written, "unclear" if you cannot tell for sure.
@@ -89,8 +91,9 @@ NUMBER_SCHEMA = {
 
 def number_prompt(label: str) -> str:
     """Copy the final number exactly as written — never compute or fix it."""
-    return f"""This is the student's answer to numerical question {label}.
-Copy the student's FINAL answer exactly as written, including sign, decimal point,
+    # label unused on purpose (see mcq_prompt)
+    return """This image is ONE answer cropped from a handwritten answer sheet. Ignore the question label.
+Copy the student's FINAL numerical answer exactly as written (without the label), including sign, decimal point,
 fraction bar, exponent and unit (e.g. "-3.50 m/s", "5/8", "1.2×10^-3").
 - If several values appear, take the one marked as final (boxed, underlined, "Ans", last line).
 - Do NOT calculate, simplify, round or correct anything.

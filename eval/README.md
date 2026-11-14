@@ -26,7 +26,7 @@ A manifest line:
    "S1": {"transcript": "Photosynthesis is the proccess where…",
           "marks": 3,
           "concepts": {"uses light energy": true, "produces glucose": true, "releases oxygen": false},
-          "planted_errors": [{"wrong": "proccess", "correct": "process"}],
+          "planted_errors": [{"wrong": "releases nitrogen", "correct": "releases oxygen"}],
           "crop": {"page": 0, "bbox": [40, 520, 960, 780]}}
  }}
 ```
@@ -34,7 +34,8 @@ A manifest line:
 - `answer`: what the student actually wrote (MCQ letters / number as written), **not** the key.
 - `transcript`: exact hand transcription, mistakes included. Struck-out text as `~~x~~`, unreadable as `[?]`.
 - `marks` / `concepts`: the TA's grading (double-graded sheets: put the agreed mark).
-- `planted_errors`: deliberate mistakes on the sheet; used to measure silent correction.
+- `planted_errors`: deliberate **content** mistakes (wrong number, wrong fact, missing step) used to
+  measure silent correction. Spelling is ignored — TAs don't mark it in university exams.
 - `crop` (optional): answer box on a page, 0–1000 coordinates. Without it the segmenter finds the answer.
 - `split`: freeze ~30 % as `test` and never tune on it.
 

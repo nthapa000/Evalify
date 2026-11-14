@@ -139,20 +139,48 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
 
     reply = Reply(text="", model=ep.name, version=ep.version, prompt_hash=template_id or prompt_hash(prompt))
     t0 = time.time()
+    finish = ""
     try:
         r = requests.post(f"{ep.base_url}/chat/completions", json=body, timeout=TIMEOUT_S)
         r.raise_for_status()
-        reply.text = (r.json()["choices"][0]["message"].get("content") or "").strip()
+        choice = r.json()["choices"][0]
+        reply.text, finish = (choice["message"].get("content") or "").strip(), choice.get("finish_reason", "")
     except Exception as e:
         reply.error = f"{type(e).__name__}: {e}"
         _health.pop(ep.base_url, None)          # re-check health next time
     reply.latency_s = round(time.time() - t0, 3)
 
-    # Parse JSON (tolerates ```json fences from models without guided decoding)
     if schema is not None and reply.text:
-        txt = reply.text.strip().removeprefix("```json").removeprefix("```").removesuffix("```")
-        try:
-            reply.data = json.loads(txt[txt.find("{"): txt.rfind("}") + 1])
-        except ValueError:
+        reply.data = parse_json(reply.text)
+        # Guided decoding can loop on whitespace until max_tokens (seen with Gemma 4):
+        # retry once unconstrained, asking for the same JSON keys
+        if reply.data is None and finish == "length" and "response_format" in body:
+            retry = {k: v for k, v in body.items() if k != "response_format"}
+            retry["messages"] = messages[:-1] + [{"role": "user", "content": content[:-1] + [{
+                "type": "text", "text": prompt + "\nReply with one JSON object with keys: "
+                + ", ".join(schema.get("required", [])) + ". No other text."}]}]
+            try:
+                r = requests.post(f"{ep.base_url}/chat/completions", json=retry, timeout=TIMEOUT_S)
+                reply.text = (r.json()["choices"][0]["message"].get("content") or "").strip()
+                reply.data = parse_json(reply.text)
+            except Exception as e:
+                reply.error = f"retry failed: {e}"
+            reply.latency_s = round(time.time() - t0, 3)
+        if reply.data is None:
             reply.error = reply.error or "invalid JSON"
     return reply
+
+
+def parse_json(text: str):
+    """First JSON object in text; tolerates ``` fences and a missing closing bracket."""
+    txt = text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+    start = txt.find("{")
+    if start < 0:
+        return None
+    for candidate in (txt[start: txt.rfind("}") + 1], txt[start:].rstrip(", \t\n") + "}",
+                      txt[start:].rstrip(", \t\n") + "]}"):
+        try:
+            return json.loads(candidate)
+        except ValueError:
+            continue
+    return None
