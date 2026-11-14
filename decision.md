@@ -225,3 +225,7 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   printed labels) and reads 20/20 from simulated phone photos.
 - Bug found while preparing keys: "°" was registered as the angle unit → "−7 °C" would be flagged.
   Added °C (temperature, factor only) to `numeric.py`; test covers the paper answers' written forms.
+- **User: no name / roll number written on any test sheet** (OMR roll-number grid left empty too).
+  Fine: identity comes from the photo file name ↔ label-CSV row (in the app, from the student's
+  login at upload); the pipeline never reads name / roll from the sheet. Empty roll grid also
+  checks that the OMR template ignores non-answer bubbles.
