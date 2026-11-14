@@ -1,0 +1,156 @@
+# models.yaml — single source of truth for every model Evalify can use.
+#
+#   download_models.py   reads repo / revision / stage / allow_patterns
+#   serve_models.sbatch  reads the active profile → which models go on which GPU
+#   backend (app/pipeline/registry.py) reads roles → which endpoint does what
+#
+# Revisions are pinned to the commit SHA verified on 2026-11-14 so a bake-off
+# is reproducible. Sizes are the HF file listing at that SHA, not estimates.
+
+models:
+  # ── General VLMs (reader A / grader) ──────────────────────────────────────
+  qwen38-27b-fp8:
+    repo: Qwen/Qwen3.8-27B-FP8
+    revision: c3a462cc3d38cf351f3b26cbd763469eeb74ef81
+    size_gb: 30.9
+    stage: 1
+    family: qwen
+    license: apache-2.0
+    prompt_style: general          # free-form instructions + JSON schema
+    supports_json_schema: true
+    thinking: qwen                 # toggled via chat_template_kwargs.enable_thinking
+    vllm_args: ["--max-model-len", "32768", "--reasoning-parser", "qwen3",
+                "--limit-mm-per-prompt", '{"image": 6, "video": 0}']
+
+  gemma4-31b-fp8:
+    repo: RedHatAI/gemma-4-31B-it-FP8-block
+    revision: d7242548c457ab4b45bd3adb8937f2659af4739d
+    size_gb: 33.3
+    stage: 2
+    family: gemma                  # different family → independent errors
+    license: apache-2.0
+    prompt_style: general
+    supports_json_schema: true
+    vllm_args: ["--max-model-len", "32768",
+                "--limit-mm-per-prompt", '{"image": 6, "audio": 0}']
+
+  # ── OCR specialists (reader B candidates) ────────────────────────────────
+  chandra-ocr-2:
+    repo: datalab-to/chandra-ocr-2
+    revision: af93b47dba1b47b6640c86ccf487ed2260ab9a09
+    size_gb: 10.6
+    stage: 1
+    family: qwen                   # NB: Qwen3.5 architecture — same family as reader A
+    license: openrail              # weights: research / small-org use only
+    prompt_style: chandra
+    supports_json_schema: false
+    vllm_args: ["--max-model-len", "16384", "--enable-prefix-caching",
+                "--mm-processor-kwargs", '{"min_pixels": 3136, "max_pixels": 6291456}']
+
+  paddleocr-vl-1.6:
+    repo: PaddlePaddle/PaddleOCR-VL-1.6
+    revision: 132c45f52c0a26ed5a6b2f6bd8e3985794cc27dd
+    size_gb: 1.9
+    stage: 1
+    family: paddle
+    license: apache-2.0
+    prompt_style: paddleocr_vl
+    supports_json_schema: false
+    vllm_args: ["--max-model-len", "8192", "--trust-remote-code",
+                "--max-num-batched-tokens", "16384", "--no-enable-prefix-caching",
+                "--mm-processor-cache-gb", "0"]
+
+  glm-ocr:
+    repo: zai-org/GLM-OCR
+    revision: 2e85a62840ccac27daa451df36c736c4636b8628
+    size_gb: 2.7
+    stage: 1
+    family: glm
+    license: mit
+    prompt_style: glm_ocr
+    supports_json_schema: false
+    vllm_args: ["--max-model-len", "8192", "--trust-remote-code"]
+
+  nanonets-ocr2-3b:
+    repo: nanonets/Nanonets-OCR2-3B
+    revision: c3886ff00bb037ce7da24988c9eafaf1fe2bed72
+    size_gb: 7.5
+    stage: 1
+    family: qwen                   # Qwen2.5-VL fine-tune
+    license: unknown               # not stated on the model card — check before deploying
+    prompt_style: nanonets
+    supports_json_schema: false
+    vllm_args: ["--max-model-len", "16384"]
+
+  # ── Text-only graders ────────────────────────────────────────────────────
+  gpt-oss-20b:
+    repo: openai/gpt-oss-20b
+    revision: 6cee5e81ee83917806bbde320786a8fb61efebee
+    size_gb: 13.8
+    stage: 2
+    family: gpt-oss
+    license: apache-2.0
+    prompt_style: general
+    supports_json_schema: true
+    text_only: true
+    allow_patterns: ["*.json", "*.safetensors", "*.txt", "*.jinja", "LICENSE*"]
+    ignore_patterns: ["original/*", "metal/*"]
+    vllm_args: ["--max-model-len", "32768"]
+
+  # ── Stage 3: only if the grader bake-off shows a gain ────────────────────
+  qwen35-122b-a10b-int4:
+    repo: Qwen/Qwen3.5-122B-A10B-GPTQ-Int4
+    revision: 30cd92cba9707a9aba09d1e490ed4b66b78e9606
+    size_gb: 79
+    stage: 3
+    family: qwen
+    license: apache-2.0
+    prompt_style: general
+    supports_json_schema: true
+    thinking: qwen
+    vllm_args: ["--max-model-len", "32768", "--reasoning-parser", "qwen3"]
+
+# ── Serving profiles (one vLLM process per model; several per GPU) ─────────
+# mem = vLLM --gpu-memory-utilization, a fraction of the whole 96 GB card.
+# Processes on a GPU start one after another, so the fractions must sum < 0.95.
+profiles:
+  # Tier 1 bake-off: every stage 1+2 candidate up at once on 2x RTX PRO 6000.
+  tier1-bakeoff:
+    gpus:
+      0:
+        - {model: qwen38-27b-fp8,   port: 8101, mem: 0.52}
+        - {model: chandra-ocr-2,    port: 8102, mem: 0.20}
+        - {model: paddleocr-vl-1.6, port: 8103, mem: 0.08}
+        - {model: glm-ocr,          port: 8104, mem: 0.08}
+      1:
+        - {model: gemma4-31b-fp8,   port: 8111, mem: 0.52}
+        - {model: nanonets-ocr2-3b, port: 8112, mem: 0.15}
+        - {model: gpt-oss-20b,      port: 8113, mem: 0.24}
+
+  # Tier 1 production shape (after the bake-off picks winners).
+  tier1:
+    gpus:
+      0:
+        - {model: qwen38-27b-fp8,   port: 8101, mem: 0.62}
+        - {model: chandra-ocr-2,    port: 8102, mem: 0.20}
+        - {model: paddleocr-vl-1.6, port: 8103, mem: 0.08}
+      1:
+        - {model: gemma4-31b-fp8,   port: 8111, mem: 0.85}
+
+  # Tier 2: one RTX PRO 6000.
+  tier2:
+    gpus:
+      0:
+        - {model: qwen38-27b-fp8,   port: 8101, mem: 0.40}
+        - {model: gemma4-31b-fp8,   port: 8111, mem: 0.40}
+        - {model: paddleocr-vl-1.6, port: 8103, mem: 0.08}
+
+# ── Roles → model, with fallbacks (first reachable wins) ───────────────────
+# The backend degrades instead of breaking: if a role has no live endpoint it
+# falls back down the list, and if nothing is up it uses the legacy Ollama path.
+roles:
+  segmenter:        [qwen38-27b-fp8, gemma4-31b-fp8]
+  reader_a:         [qwen38-27b-fp8, gemma4-31b-fp8]
+  reader_b:         [paddleocr-vl-1.6, glm-ocr, chandra-ocr-2, nanonets-ocr2-3b, gemma4-31b-fp8]
+  grader_1:         [qwen38-27b-fp8, gemma4-31b-fp8]
+  grader_2:         [gemma4-31b-fp8, gpt-oss-20b]
