@@ -65,3 +65,15 @@ def test_subjective_marks_in_python():
               "mandatory_concepts": ["sunlight"], "marks_per_concept": 2}
     assert _result(rubric, ["chlorophyll", "sunlight"], "")["marks_awarded"] == 4
     assert _result(rubric, ["chlorophyll", "glucose"], "")["marks_awarded"] == 0
+
+
+# Answers to the Evalify test papers (eval/test_papers) in the forms students may write them
+@pytest.mark.parametrize("student, key", [
+    ("2.5 km", {"answer": "2500", "tolerance": 0.5, "unit": "m"}), ("2500 m", {"answer": "2500", "tolerance": 0.5, "unit": "m"}),
+    ("-7 °C", {"answer": "-7", "tolerance": 0.01, "unit": "°C"}), ("−7", {"answer": "-7", "tolerance": 0.01, "unit": "°C"}),
+    ("5/8", {"answer": "0.625", "tolerance": 0.001}), ("1/2 A", {"answer": "0.5", "tolerance": 0.01, "unit": "A"}),
+    ("19.6 m/s", {"answer": "19.6", "tolerance": 0.05, "unit": "m/s"}), ("440W", {"answer": "440", "tolerance": 0.5, "unit": "W"}),
+])
+def test_test_paper_answers(student, key):
+    res = numeric.compare(student, key)
+    assert res.status == "correct" and "unit_mismatch" not in res.flags and "unknown_unit" not in res.flags

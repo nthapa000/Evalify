@@ -1,0 +1,21 @@
+{
+ "name": "MCQ Basic Science (10)",
+ "subject": "Basic Science",
+ "mcqCount": 10,
+ "mcqMarks": 1,
+ "mcqAnswers": {
+  "Q1": "B",
+  "Q2": "A,C",
+  "Q3": "B",
+  "Q4": "A,C,D",
+  "Q5": "C",
+  "Q6": "A,C",
+  "Q7": "D",
+  "Q8": "A,C,D",
+  "Q9": "B",
+  "Q10": "A,C"
+ },
+ "totalMarks": 10,
+ "studentsWriteOnlyAnswers": true,
+ "type": "mcq"
+}

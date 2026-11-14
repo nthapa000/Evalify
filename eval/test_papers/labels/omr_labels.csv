@@ -1,0 +1,2 @@
+sheet_id,photo_files,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20,edge_cases,notes
+example_01,example_01_p1.jpg,,,,,,,,,,,,,,,,,,,,,e.g. Q3 crossed-out B then C; Q5 blank,"layout = 1, 2 or 3; write the bubble(s) filled, e.g. B or B,C; blank = leave empty"

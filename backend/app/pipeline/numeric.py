@@ -43,6 +43,8 @@ _UNITS = {
     # speed / acceleration (common composite spellings)
     "m/s": ("LT-1", 1.0), "km/h": ("LT-1", 1000 / 3600), "kmph": ("LT-1", 1000 / 3600),
     "m/s2": ("LT-2", 1.0), "m/s^2": ("LT-2", 1.0),
+    # temperature (Celsius only — Kelvin/Fahrenheit need an offset, not a factor)
+    "°c": ("TempC", 1.0), "degc": ("TempC", 1.0), "celsius": ("TempC", 1.0), "c°": ("TempC", 1.0),
     # dimensionless
     "%": ("pct", 1.0),
 }
