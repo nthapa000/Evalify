@@ -46,9 +46,13 @@ def questions_for(paper: dict) -> List[Question]:
     n_mcq = int(paper.get("mcqCount", 0))
     n_num = int(paper.get("numericalCount", 0)) if "numerical" in ptype else 0
     n_subj = int(paper.get("subjectiveCount", 0)) if "subjective" in ptype else 0
+    # paper["numbering"] == "continuous": subjective answers continue the Q-numbers too
+    # (e.g. Q21–Q35 after 20 MCQs) instead of being labelled S1, S2, …
+    cont = paper.get("numbering") == "continuous"
     return ([Question(f"Q{i}", f"Q{i}", "mcq") for i in range(1, n_mcq + 1)]
             + [Question(f"N{i}", f"Q{n_mcq + i}", "numerical") for i in range(1, n_num + 1)]
-            + [Question(f"S{i}", f"S{i}", "subjective") for i in range(1, n_subj + 1)])
+            + [Question(f"S{i}", f"Q{n_mcq + n_num + i}" if cont else f"S{i}", "subjective")
+               for i in range(1, n_subj + 1)])
 
 
 # ── Segmentation ─────────────────────────────────────────────────────────────
@@ -73,11 +77,13 @@ def segment(pages: List[Image.Image], questions: List[Question],
 
 
 def _crop(page: Image.Image, box: list, pad: float = 0.02) -> Image.Image:
-    """0–1000 box → padded pixel crop (padding guards against tight boxes)."""
+    """0–1000 box → padded pixel crop. Vertical padding is capped at a quarter of the box
+    height so a one-line answer does not pick up the lines above and below."""
     w, h = page.size
     (x0, x1), (y0, y1) = sorted(box[0::2]), sorted(box[1::2])
+    pad_y = min(pad * h, 0.25 * (y1 - y0) / 1000 * h)
     x0, x1 = max(0, (x0 / 1000 - pad) * w), min(w, (x1 / 1000 + pad) * w)
-    y0, y1 = max(0, (y0 / 1000 - pad) * h), min(h, (y1 / 1000 + pad) * h)
+    y0, y1 = max(0, y0 / 1000 * h - pad_y), min(h, y1 / 1000 * h + pad_y)
     return page.crop((int(x0), int(y0), int(max(x1, x0 + 8)), int(max(y1, y0 + 8))))
 
 

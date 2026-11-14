@@ -1,0 +1,28 @@
+{
+ "reviewer": "Claude (visual check of page images)",
+ "about": "Transcribed by Claude from the page images (eval/data/mendeley/images). Struck-out text is written ~~like this~~; [?] = could not read. Spelling is kept as written. Please verify.",
+ "transcripts": {
+  "S1": "21. Supervised learning is to make the machine to do what we target it to do. For Example: [triangle] [square] triangle square we have a label for every sign so machince will learn by knowing it label.",
+  "S2": "22. Model M1 have 99 % of Acuracy which is give an highest linear regression that to predict. and for the other 30 % it really not good for the testing data set.",
+  "S3": "23. Regression analysis is for prediction and forcasting. there are 2 value in it which is independence and dependence value or we can call it as input and output",
+  "S4": "24. the two challage in Machine learning are. - It hard to make the Machine to learn what we want it to learn - take too ~~much time~~. much time",
+  "S5": "25. two major application of data science - Linear regression - Logistic regression",
+  "S6": "",
+  "S7": "",
+  "S8": "28. Data pre processing is the way to Clean and make or prepare Data ~~[?]~~ before using and it have many step - Data Cleansing - Data transform - Data -",
+  "S9": "29. data normalization is required KNN because. 1, to get the categories output (0, 1) from KNN. 2, and it will understand and can make the data to scale.",
+  "S10": "",
+  "S11": "",
+  "S12": "",
+  "S13": "33. gradient descent is an optimization algorithm which commonly uses to train machine learning and nereal network",
+  "S14": "",
+  "S15": "35. Radial Basis function kernel work ~~really~~ by finding the right thing to ~~sp~~ support and ~~the~~ making the good Classification and also the distance."
+ },
+ "notes": {
+  "Q1": "DISPUTED: I read '1. B' (a '1' with a hook, then a clear B); the teacher CSV says A. Please check the crop / page 1.",
+  "Q6": "Student wrote B, scribbled it out, wrote C. CSV C is right; Chandra and GLM-OCR reported 'B,C' (missed the strike-out).",
+  "Q14": "A letter was scribbled out before C — final answer C (matches CSV).",
+  "S1": "Includes two drawn shapes (triangle, square) labelled in words; transcribed as [triangle] [square].",
+  "_pages": "Q26, Q27, Q30, Q31, Q32, Q34 not attempted (teacher CSV blank, consistent). Page 4 is a blank back."
+ }
+}

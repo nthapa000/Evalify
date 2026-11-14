@@ -1,0 +1,11 @@
+{
+ "reviewer": "Claude (visual check of MCQ crops only)",
+ "about": "Only the MCQ answers where a reader disagreed with the teacher CSV were checked by eye on this sheet.",
+ "transcripts": {},
+ "notes": {
+  "Q1": "'Ɗ'-style D; CSV right.",
+  "Q3": "'Ɗ'-style D; all four abstained.",
+  "Q5": "Clearly 'A' only. Qwen3.8 answered 'A,C' — it invented a C (one of Qwen's 2 wrong letters).",
+  "Q18": "'Ɗ'-style D; all four abstained."
+ }
+}

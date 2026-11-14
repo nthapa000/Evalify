@@ -41,6 +41,9 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
         pages.append(img)
         reports.append(rep)
     sheet_reasons = routing.page_reasons(reports)
+    # Blank pages / show-through backs carry no answers: don't read them (OMR keeps all pages)
+    if sheet_type != "omr":
+        pages = [p for p, r in zip(pages, reports) if not r.blank] or pages
 
     # 2. Read every answer
     # Template only once the teacher has confirmed its bubble map (a wrong map would mis-grade everyone)

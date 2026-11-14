@@ -32,7 +32,8 @@ def thresholds() -> dict:
 
 def page_reasons(quality_reports: list) -> List[str]:
     """A page that failed the quality gate sends every question on the sheet to review."""
-    return [f"page {i + 1}: {', '.join(r.reasons)}" for i, r in enumerate(quality_reports) if not r.ok]
+    return [f"page {i + 1}: {', '.join(r.reasons)}" for i, r in enumerate(quality_reports)
+            if not r.ok and not getattr(r, "blank", False)]
 
 
 def omr_reasons(margin: Optional[float]) -> List[str]:

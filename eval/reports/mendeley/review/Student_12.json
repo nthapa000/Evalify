@@ -1,0 +1,10 @@
+{
+ "reviewer": "Claude (visual check of MCQ crops only)",
+ "about": "Only the MCQ answers where a reader disagreed with the teacher CSV were checked by eye on this sheet.",
+ "transcripts": {},
+ "notes": {
+  "Q2": "SEGMENTATION ERROR: the crop shows a block of answer text, not Q2.",
+  "Q3": "SEGMENTATION ERROR: the crop shows the Q33 'Gradient descent…' answer; a stray 'D' at its corner was read.",
+  "Q9": "'Ɗ'-style D; CSV right."
+ }
+}

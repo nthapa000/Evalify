@@ -1,0 +1,8 @@
+{
+ "reviewer": "Claude (visual check of MCQ crops only)",
+ "about": "Only the MCQ answers where a reader disagreed with the teacher CSV were checked by eye on this sheet.",
+ "transcripts": {},
+ "notes": {
+  "Q6": "Plain 'C' that looks a bit like 'L'; CSV right; Qwen and Chandra abstained."
+ }
+}

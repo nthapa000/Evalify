@@ -187,3 +187,24 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - MCQ and numerical only; subjective keeps its transcript-similarity + grader checks.
 - Smoke test after the change: all 8 synthetic answers auto-graded correctly, 0 routed
   (3 accepted by B + C after Qwen3.8 abstained).
+
+### Reader comparison on 12 real Mendeley sheets (user request), 14 Nov
+- Dataset downloaded directly (no browser needed): `https://data.mendeley.com/public-api/zip/sf3kvjwknt/download/1`
+  (145 MB) → `/scratch/m25csa019/evalify/datasets/mendeley_sf3kvjwknt/`. Labelled set built by
+  `eval/build_mendeley.py` (Student_1–12; gold from the anonymised CSV only — never `Student_MCQ.csv`).
+- **User asked Claude to do the visual check itself; user will verify.** Claude transcribed the short
+  answers of Student_1–3 from the page images and checked all 30 disputed MCQ crops. All of it is
+  documented per sheet in `eval/reports/mendeley/` (Student_N.md, README.md, FINDINGS.md, review/).
+  Answer crops and page images stay local (git-ignored). Claude is not part of the grading pipeline;
+  the page images it viewed were sent through the conversation (fine for this public CC BY set; for
+  real student sheets prefer a human transcriber).
+- Pipeline changes forced by these real sheets: blank / show-through backs skipped (handwriting-ink
+  fraction with ruled lines removed: backs ≤ 0.074 %, written pages ≥ 0.22 %); vertical crop padding
+  capped at ¼ of the answer height (crops were picking up neighbouring MCQ lines); papers can use
+  continuous numbering (short answers labelled 21–35 instead of S1…).
+- Rubric for Q21–Q35 drafted by Claude from `answerkey.txt` (2 concepts × 1 mark) — to be reviewed.
+- **Results:** MCQ — PaddleOCR 94.6 %, GLM-OCR 91.2 %, Chandra 89.2 %, Qwen3.8 76.7 % (mostly
+  abstentions on unusual "D"s). Short answers (CER) — Qwen3.8 0.071 (best), GLM 0.097, Paddle 0.102,
+  Chandra 0.181 (worst). Chandra is **not** better than Qwen3.8 as reader A on this data.
+- **Pending user decision:** reader roles per question type (proposal in FINDINGS.md: MCQ/num A =
+  PaddleOCR, B = GLM-OCR, tie-break = Qwen3.8; subjective A = Qwen3.8, B = PaddleOCR/GLM-OCR).

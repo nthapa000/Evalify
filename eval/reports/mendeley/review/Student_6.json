@@ -1,0 +1,11 @@
+{
+ "reviewer": "Claude (visual check of MCQ crops only)",
+ "about": "Only the MCQ answers where a reader disagreed with the teacher CSV were checked by eye on this sheet.",
+ "transcripts": {},
+ "notes": {
+  "Q2": "Lower-case 'c'; CSV right; GLM-OCR read 'E' (wrong).",
+  "Q3": "Lower-case 'c'; CSV right.",
+  "Q4": "'C'; CSV right.",
+  "Q8": "Lower-case 'c'; CSV right."
+ }
+}

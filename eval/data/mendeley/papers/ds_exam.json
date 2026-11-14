@@ -1,0 +1,225 @@
+{
+ "name": "Data Science exam (Mendeley sf3kvjwknt)",
+ "subject": "Data Science",
+ "type": "mcq_numerical_subjective",
+ "numbering": "continuous",
+ "mcqCount": 20,
+ "mcqMarks": 1,
+ "mcqAnswers": {
+  "Q1": "B",
+  "Q2": "C",
+  "Q3": "A",
+  "Q4": "C",
+  "Q5": "B",
+  "Q6": "A",
+  "Q7": "A",
+  "Q8": "C",
+  "Q9": "A",
+  "Q10": "B",
+  "Q11": "B",
+  "Q12": "C",
+  "Q13": "B",
+  "Q14": "C",
+  "Q15": "B",
+  "Q16": "C",
+  "Q17": "B",
+  "Q18": "C",
+  "Q19": "B",
+  "Q20": "B"
+ },
+ "numericalCount": 0,
+ "subjectiveCount": 15,
+ "subjectiveMarks": 2,
+ "subjectiveQuestionMarks": {
+  "S1": 2,
+  "S2": 2,
+  "S3": 2,
+  "S4": 2,
+  "S5": 2,
+  "S6": 2,
+  "S7": 2,
+  "S8": 2,
+  "S9": 2,
+  "S10": 2,
+  "S11": 2,
+  "S12": 2,
+  "S13": 2,
+  "S14": 2,
+  "S15": 2
+ },
+ "subjectiveQuestions": [
+  "Define Supervised Learning.",
+  "Evaluation Case Study: A model (M1) achieves 99% accuracy on the training set but only 30% accuracy on the testing set. What is happening to this model?",
+  "What is Regression Analysis?",
+  "List and elucidate two major challenges in Machine Learning.",
+  "List any two major real-world applications of Data Science.",
+  "Distinguish between Structured and Semi-structured data.",
+  "Describe methods used to detect and handle outliers in a dataset.",
+  "What is Data Pre-processing?",
+  "Why is Data Normalization required for the K-Nearest Neighbors (K-NN) algorithm?",
+  "How are continuous attributes discretized? Give an example.",
+  "What does the 'K' represent in the K-Means clustering algorithm?",
+  "Name three common Hyperparameters in Machine Learning algorithms.",
+  "Define Gradient Descent.",
+  "Classifier Comparison: Compare three SVM classifiers based on their margins and boundaries.",
+  "Explain how the Radial Basis Function (RBF) Kernel works in SVM."
+ ],
+ "subjectiveRubrics": [
+  {
+   "key_concepts": [
+    "model is trained on labeled data",
+    "learns from known inputs and outputs to make predictions"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "A type of ML where the model is trained on labeled data with known inputs and outputs.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "identifies the problem as overfitting",
+    "model memorised training data and fails to generalise to new/test data"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "Overfitting; the model has memorized the training data but failed to generalize.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "a statistical method / process",
+    "estimates the relationship between a dependent and independent variable(s)"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "A statistical process for estimating the relationships between a dependent variable and one or more independent variables.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "names and explains one valid machine-learning challenge",
+    "names and explains a second, different valid challenge"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "Data quality/missing values, overfitting/underfitting, data collection, or time consumption.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "one valid real-world application of data science",
+    "a second, different valid application"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "Healthcare/disease prediction, Finance/fraud detection, E-commerce recommendation systems.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "structured data is organised in rows/columns or tables (e.g. SQL, Excel, CSV)",
+    "semi-structured data has tags/markers but no fixed table form (e.g. JSON, XML, HTML)"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "Structured is organized in rows/columns (SQL, Excel); Semi-structured has some markers but isn't in a grid (JSON, XML, HTML).",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "a method to detect outliers (e.g. Z-score, IQR, box or scatter plot)",
+    "a method to handle outliers (e.g. trimming, capping, imputation)"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "Detection: Z-score, IQR, Scatter plots, Box plots. Handling: Trimming, Capping, or Imputation.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "cleaning raw data (missing, incorrect or noisy values)",
+    "transforming data into a form suitable for a model"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "The steps taken to clean and transform raw data into a format suitable for a machine learning model.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "K-NN relies on distances between points",
+    "features with larger scales dominate the distance unless normalised"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "K-NN is distance-based; features with larger scales will dominate the distance calculation if not normalized.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "continuous values are grouped into bins / intervals",
+    "gives a valid example of discretisation"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "By grouping values into bins or intervals, e.g., turning ages 1-100 into 'Child,' 'Adult,' 'Senior.'",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "K is the number of clusters",
+    "K is chosen / fixed beforehand"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "The predefined number of clusters or groups the data will be divided into.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "names at least two valid hyperparameters",
+    "names a third valid hyperparameter"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "K in K-NN, Learning Rate, Number of Estimators/Trees, Max Depth, or Batch Size.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "an optimisation algorithm that minimises a cost / loss function",
+    "iteratively updates parameters in the direction of steepest descent (negative gradient)"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "An optimization algorithm used to minimize the cost function by iteratively moving toward the steepest descent.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "compares the classifiers by margin width (wider margin is better)",
+    "considers whether data points fall inside the margin / gutter"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "Discussion on maximizing the margin and ensuring no data points fall within the 'gutter' or margin.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  },
+  {
+   "key_concepts": [
+    "maps data into a higher-dimensional space",
+    "allows a non-linear decision boundary"
+   ],
+   "mandatory_concepts": [],
+   "marks_per_concept": 1,
+   "model_answer": "It transforms data into a higher-dimensional space to find a non-linear decision boundary.",
+   "rubric_source": "drafted by Claude from answerkey.txt"
+  }
+ ],
+ "totalMarks": 50,
+ "source": {
+  "dataset": "Mendeley sf3kvjwknt v1",
+  "licence": "CC BY 4.0",
+  "url": "https://data.mendeley.com/datasets/sf3kvjwknt/1"
+ }
+}

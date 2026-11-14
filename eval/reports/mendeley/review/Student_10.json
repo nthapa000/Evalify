@@ -1,0 +1,9 @@
+{
+ "reviewer": "Claude (visual check of MCQ crops only)",
+ "about": "Only the MCQ answers where a reader disagreed with the teacher CSV were checked by eye on this sheet.",
+ "transcripts": {},
+ "notes": {
+  "Q7": "Clearly 'B'. Qwen3.8 answered 'A,B' — invented an A.",
+  "Q20": "'20. C' (letter far right of the crop); CSV right."
+ }
+}

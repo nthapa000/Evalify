@@ -1,0 +1,29 @@
+{
+ "reviewer": "Claude (visual check of page images)",
+ "about": "Transcribed by Claude from the page images (eval/data/mendeley/images). Struck-out text is written ~~like this~~; [?] = could not read. Spelling is kept as written. Please verify.",
+ "transcripts": {
+  "S1": "21. Supervised learning is a machine learning algorith which we give labeled data as input and expect output as prediction we want.",
+  "S2": "22. Comment on Model M1: This model doesn't have high accuracy, so it needs better training dataset. ~~The training dataset~~ or more than one training dataset.",
+  "S3": "23. Regression analysis is the method uses to analysis the output of regression.",
+  "S4": "24. Elucidate any 2 challenges of Machine learning: - Hard to find dataset to work on. (Dataset are expensive and confidentail. - Required large data to train in order to get accuracy.",
+  "S5": "25 list out any 2 majar applications of data science: . Financial sector . Transportation sector.",
+  "S6": "26. Distinguish between structured and semi-Structured data. - structured data are the well organized data such as csv file, excel file. - semi-structured data are the data which are half organized such as Json, html file.",
+  "S7": "27. We find out an Outlier in the data by using Outlier detection technique such as Z-score and IOR.",
+  "S8": "28. Data pre-processing is the process for removing incomplete, incorrect and inaccurate data and replacing missing values.",
+  "S9": "29. Data normalization is required in K.NN because after data is normalized it is easy to give K. point, so it will not over fitting or underfitting.",
+  "S10": "30. Continuous attributes are discretized by converting to interval form. Example: 1, 5, 9, 10, 11, 12, 19, 20 → 1-10, 11-20.",
+  "S11": "31. k in k-means algorithm is the pre-defined cluster.",
+  "S12": "32. Name few hyperparameters of machine learning algorithm",
+  "S13": "33. gradient descent is.",
+  "S14": "34. comment on the performance of the classifiers. . P1 : Good classification. The distance between gutters is large and no data between gutters . P2 : Bad classification. There are data between gutters. . P3 : Bad classification. The distance between gutters is small.",
+  "S15": "35. Radial Basis function kernel works by using margin vector to calculate distance margin point and hyperplane."
+ },
+ "notes": {
+  "S7": "Last word looks like 'IOR' (probably meant IQR); transcribed as written.",
+  "S12": "Student only copied the question — no answer. Teacher CSV is blank (no mark), consistent.",
+  "S13": "Answer stops after 'is.' — teacher gave 0.",
+  "_pages": "Answers are written out of order (page 2: 26, 28, 25, 34, 27, 30; page 3: 22, 24, 31, 29, 23, 32, 33, 35). Page 4 is the blank back of page 3 (show-through only).",
+  "Q1": "Student's 'D' is written like 'Ɗ'; CSV D is right — readers abstained (not wrong).",
+  "Q10": "Same 'Ɗ'-style D; CSV right; only PaddleOCR read it."
+ }
+}

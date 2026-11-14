@@ -21,6 +21,8 @@ MIN_LONG_SIDE = 1000           # smaller photos are too coarse for handwriting
 BLUR_MIN = 60.0                # variance of Laplacian at 1000 px; below = blurry
 GLARE_MAX = 0.04               # max fraction of blown-out (white, unsaturated) pixels
 DARK_MIN = 70.0                # min mean brightness (0–255)
+BLANK_INK_MIN = 180.0          # darkest ink lighter than this = blank page / show-through only
+BLANK_TEXT_INK = 0.0012        # < 0.12 % handwriting-like ink (ruled lines removed) = blank back
 CONTRAST_MIN = 60.0            # min paper − ink brightness gap (median vs darkest 1000 px)
 
 
@@ -35,6 +37,7 @@ class QualityReport:
     contrast: float = 0.0
     deskew_deg: float = 0.0
     page_found: bool = False
+    blank: bool = False            # no real ink (e.g. the scanned back of a sheet)
     size: Tuple[int, int] = (0, 0)
 
 
@@ -108,6 +111,13 @@ def measure(bgr: np.ndarray, rep: QualityReport) -> None:
     darkest = np.partition(gray.ravel(), 1000)[:1000]                 # the ink, however little
     rep.contrast = float(np.median(gray) - darkest.mean())
 
+    # No real writing → blank page / show-through from the back (a printed margin line alone
+    # doesn't count): skip it, don't flag it. Measured on 50 Mendeley pages: backs ≤ 0.074 %,
+    # written pages ≥ 0.22 %.
+    if darkest.mean() > BLANK_INK_MIN or text_ink_fraction(gray) < BLANK_TEXT_INK:
+        rep.blank, rep.ok, rep.reasons = True, True, []
+        return
+
     # Each failed check is a reason the student is asked to re-upload
     checks = [(max(rep.size) >= MIN_LONG_SIDE, "resolution too low"),
               (rep.blur >= BLUR_MIN, "image is blurry"),
@@ -116,6 +126,15 @@ def measure(bgr: np.ndarray, rep: QualityReport) -> None:
               (rep.contrast >= CONTRAST_MIN, "very low contrast")]
     rep.reasons = [msg for good, msg in checks if not good]
     rep.ok = not rep.reasons
+
+
+def text_ink_fraction(gray: np.ndarray) -> float:
+    """Share of dark pixels that are not part of long straight (ruled / margin) lines."""
+    ink = (gray < 150).astype(np.uint8) * 255
+    lines = (cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((60, 1), np.uint8))
+             | cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((1, 60), np.uint8)))
+    lines = cv2.dilate(lines, np.ones((5, 5), np.uint8))
+    return float(((ink > 0) & (lines == 0)).mean())
 
 
 def prepare(path: str, out_path: Optional[str] = None) -> Tuple[Image.Image, QualityReport]:

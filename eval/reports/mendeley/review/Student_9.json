@@ -1,0 +1,11 @@
+{
+ "reviewer": "Claude (visual check of MCQ crops only)",
+ "about": "Only the MCQ answers where a reader disagreed with the teacher CSV were checked by eye on this sheet.",
+ "transcripts": {},
+ "notes": {
+  "Q1": "Student wrote 'D, All of the…' — Chandra took the A of 'All' (wrong 'A,D').",
+  "Q7": "'B. one…'; CSV right.",
+  "Q11": "'B, a real…' — Chandra and PaddleOCR took the 'a' (wrong 'A,B').",
+  "Q20": "B struck out, then 'C' — PaddleOCR and GLM-OCR reported 'B,C' (wrong); Chandra right. NB: PaddleOCR and GLM agree here, so the pipeline would have auto-accepted a wrong answer."
+ }
+}

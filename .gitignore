@@ -75,3 +75,5 @@ eval/runs/
 eval/data/*/images/
 !eval/data/example/images/
 slurm-*.out
+
+eval/reports/*/crops/
