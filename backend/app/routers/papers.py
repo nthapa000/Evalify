@@ -25,6 +25,12 @@ class ExtractRequest(BaseModel):
     mcq_count: int
 
 
+class OmrTemplateRequest(BaseModel):
+    blank_url: str               # blank OMR sheet image from /papers/files/upload
+    mcq_count: int
+    n_options: int | None = None # leave empty to detect
+
+
 class ExtractRubricRequest(BaseModel):
     detailed_answer_url: str
     grade_rubric_url: str
@@ -141,6 +147,28 @@ async def extract_rubric(body: ExtractRubricRequest, user: dict = Depends(requir
         _upload_path(body.detailed_answer_url), _upload_path(body.grade_rubric_url), body.subjective_count)
     return {"subjective_questions": questions, "subjective_rubrics": rubrics,
             "subjective_prompt_templates": templates, "warning": warning}
+
+
+@router.post("/omr-template")
+async def omr_template(body: OmrTemplateRequest, user: dict = Depends(require_teacher)):
+    """Learn the bubble map from a blank OMR sheet; returns it plus a labelled preview to confirm."""
+    import asyncio
+    import cv2
+    from app.pipeline import omr_template as omr
+
+    path = _upload_path(body.blank_url)
+    if not os.path.exists(path) or os.path.splitext(path)[1].lower() not in (".png", ".jpg", ".jpeg"):
+        raise HTTPException(status_code=400, detail="Upload the blank OMR sheet as a PNG or JPG first.")
+    blank = cv2.imread(path)
+    tpl = await asyncio.to_thread(omr.build_template, blank, body.mcq_count, body.n_options)
+    if not tpl["bubbles"]:
+        raise HTTPException(status_code=422, detail="No answer bubbles found on this sheet.")
+
+    # Labelled preview the teacher checks before saving the paper
+    preview = os.path.splitext(path)[0] + "_omrmap.png"
+    cv2.imwrite(preview, omr.preview(blank, tpl))
+    tpl["blank_url"] = body.blank_url
+    return {"template": tpl, "preview_url": f"/api/papers/files/{os.path.basename(preview)}"}
 
 
 @router.get("/{paper_id}", response_model=PaperOut)

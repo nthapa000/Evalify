@@ -14,7 +14,7 @@ import RubricBuilder from "../../components/forms/RubricBuilder";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
-import { useCreatePaper, useUploadPaperFile, useExtractAnswers, useExtractRubric } from "../../hooks/usePapers";
+import { useCreatePaper, useUploadPaperFile, useExtractAnswers, useExtractRubric, useBuildOmrTemplate } from "../../hooks/usePapers";
 import { paperTypeLabel } from "../../utils/formatters";
 
 const STEPS = ["Paper Type", "Details", "Answer Key", "Configuration", "Review"];
@@ -50,7 +50,7 @@ function subjectiveTotal(form) {
 // If uploadFn is provided, the file is uploaded to the server; otherwise a
 // browser object URL is used (fallback for cases where upload is not needed).
 
-function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn }) {
+function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn, accept = "application/pdf" }) {
   const [uploading, setUploading] = useState(false);
 
   const handleChange = async (e) => {
@@ -99,12 +99,69 @@ function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn }) {
         {currentUrl ? "Replace" : "Upload"}
         <input
           type="file"
-          accept="application/pdf"
+          accept={accept}
           className="hidden"
           onChange={handleChange}
           disabled={uploading}
         />
       </label>
+    </div>
+  );
+}
+
+
+// ── OMR template: blank sheet → detected bubble map → teacher confirms ──────
+// Works with any bubble layout; students' OMR photos are aligned to this sheet.
+
+function OmrTemplateCard({ form, setForm, uploadFn }) {
+  const { build, building } = useBuildOmrTemplate();
+  const [preview, setPreview] = useState(null);
+  const tpl = form.omrTemplate;
+
+  // Upload the blank sheet, then detect bubbles + question numbers
+  const onBlank = async (url) => {
+    const res = await build(url, form.mcqCount);
+    if (res) {
+      setForm({ ...form, omrTemplate: res.template });
+      setPreview(res.preview_url);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <PdfUploadZone
+        label="Blank OMR sheet (optional — for bubble sheets)"
+        hint="PNG/JPG of your unfilled bubble sheet; any layout works"
+        currentUrl={tpl?.blank_url}
+        uploadFn={uploadFn}
+        accept="image/png,image/jpeg"
+        onFile={onBlank}
+      />
+      {building && <p className="text-xs text-green-500 animate-pulse">Detecting bubbles and question numbers…</p>}
+
+      {/* Summary + labelled preview; teacher confirms before saving */}
+      {tpl && !building && (
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 space-y-2 text-xs text-gray-600">
+          <p>
+            Found <strong>{tpl.questions}</strong> questions × <strong>{tpl.options}</strong> options
+            ({tpl.layout} layout, numbered by {tpl.numbering}).
+          </p>
+          {tpl.warnings?.map((w) => <p key={w} className="text-amber-600">⚠ {w}</p>)}
+          {preview && (
+            <a href={preview} target="_blank" rel="noreferrer">
+              <img src={preview} alt="Detected bubble map" className="max-h-80 border rounded-lg" />
+            </a>
+          )}
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!!tpl.confirmed}
+              onChange={(e) => setForm({ ...form, omrTemplate: { ...tpl, confirmed: e.target.checked } })}
+            />
+            Every bubble is labelled with the right question (Q12 etc.)
+          </label>
+        </div>
+      )}
     </div>
   );
 }
@@ -471,6 +528,9 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
           uploadFn={uploadFn}
           onFile={(url) => setForm({ ...form, answerKeyRefUrl: url })}
         />
+
+        {/* Blank bubble sheet → learned OMR template (MCQ papers) */}
+        {form.mcqCount > 0 && <OmrTemplateCard form={form} setForm={setForm} uploadFn={uploadFn} />}
 
         {/* Physical Answer Sheet Reference — the teacher's filled sheet */}
         <PdfUploadZone
@@ -1029,6 +1089,7 @@ const INITIAL = {
   answerKeyPdfUrl: null,
   answerKeyRefUrl: null,
   answerSheetRefUrl: null,
+  omrTemplate: null,          // learned bubble map from a blank OMR sheet
   // Type 3 rubric source PDFs
   detailedAnswerPdfUrl: null,
   gradeRubricPdfUrl: null,

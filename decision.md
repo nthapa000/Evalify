@@ -106,3 +106,31 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   `Student_MCQ.csv` in the same dataset contains real student names and IDs, despite the
   README saying the data is anonymised, and the PDFs are named by real IDs. We will use only
   the anonymised CSV and never copy names into our files.
+
+### Serving is up (14:30)
+- Job **48695** started 5 servers on cn07: Gemma 4 FP8 on the RTX A6000 (FP8 works there,
+  so the AWQ fallback is **not** needed); Qwen3.8, PaddleOCR-VL, GLM-OCR, Chandra on the
+  RTX PRO 6000. Nanonets and gpt-oss-20b left out for space.
+
+### Layout-independent OMR (user approved the recommended approach)
+- **Problem:** each teacher may use a different bubble layout; the old engine guessed
+  (options left→right, column-first numbering, ≤ 5 options, printed numbers ignored).
+- **Decision: learn the layout once per paper from a blank sheet** (`app/pipeline/omr_template.py`):
+  find bubbles → group them into questions, choosing options-in-a-row vs options-in-a-column
+  by which gives consistent group sizes → the VLM reads the **printed** question numbers
+  (fallback: reading order matched to the layout) → teacher checks a labelled preview.
+  Student photos are aligned to the blank (ORB + homography); each bubble's darkness is
+  measured **minus the blank's own darkness** (printed letters inside bubbles).
+- Marking stays deterministic; the VLM only labels the printed template, so the
+  silent-correction risk does not apply.
+- **The template is used only after the teacher ticks "confirmed"** — a wrong map would
+  mis-grade a whole class. Unconfirmed → layout-free engine as before.
+- A page that cannot be aligned falls back to the layout-free engine and every question on it
+  is routed to a TA.
+- Darkness relative to local paper (not a binary ink mask), so light pencil (≈ 0.5) is read.
+- Verified: synthetic sheets in two layouts (3 columns × horizontal options; vertical options
+  in bands), photographed with tilt / perspective / uneven light, all answers read incl.
+  light pencil, double mark and blank; live test: Qwen3.8 numbered a row-major sheet 24/24
+  correctly where reading order would have been wrong.
+- UI: "Blank OMR sheet" upload + preview + confirm checkbox added to the create-paper wizard
+  (Step 3, MCQ papers).

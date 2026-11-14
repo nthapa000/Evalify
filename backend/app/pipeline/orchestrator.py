@@ -43,7 +43,11 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
     sheet_reasons = routing.page_reasons(reports)
 
     # 2. Read every answer
-    if sheet_type == "omr":
+    # Template only once the teacher has confirmed its bubble map (a wrong map would mis-grade everyone)
+    tpl = paper.get("omrTemplate") or {}
+    if sheet_type == "omr" and tpl.get("bubbles") and tpl.get("confirmed"):
+        reads, models = _read_omr_template(files, paper["omrTemplate"], questions, pages), {"reader_a": "omr_template"}
+    elif sheet_type == "omr":
         reads, models = _read_omr(pages, questions), {"reader_a": "opencv_omr"}
     else:
         reads, models = _read_handwritten(pages, questions)
@@ -97,6 +101,40 @@ def _read_omr(pages, questions: List[Question]) -> Dict[str, dict]:
         a = Reading("opencv_omr", "omr", "answered" if det.get("answer") else "blank", det.get("answer", ""),
                     raw=str(det.get("ratios", "")))
         reasons = routing.omr_reasons(det.get("margin")) if det else ["question not found on OMR sheet"]
+        reads[q.id] = {"a": a, "b": Reading(), "reasons": reasons}
+    return reads
+
+
+def _read_omr_template(files, template: dict, questions: List[Question], pages) -> Dict[str, dict]:
+    """Align each page to the teacher's blank sheet and read fills at the known bubble spots.
+    Pages that cannot be aligned fall back to the layout-free engine and are flagged."""
+    from app.pipeline import omr_template as omr
+    blank = cv2.imread(os.path.join("uploads/papers", template["blank_url"].rstrip("/").split("/")[-1]))
+    found: Dict[str, dict] = {}
+    unaligned = []
+    for i, f in enumerate(files):
+        res = omr.read_sheet(cv2.imread(f), blank, template) if blank is not None else {"aligned": False}
+        if not res["aligned"]:
+            unaligned.append(i + 1)
+            continue
+        for q, det in res["answers"].items():
+            found.setdefault(q, det)
+
+    # Nothing aligned → layout-free engine, every question flagged
+    if not found:
+        reads = _read_omr(pages, questions)
+        for r in reads.values():
+            r["reasons"].append("sheet could not be aligned to the blank OMR template")
+        return reads
+
+    reads = {}
+    for q in (q for q in questions if q.kind == "mcq"):
+        det = found.get(q.id)
+        a = Reading("omr_template", "omr", "answered" if det and det["answer"] else "blank",
+                    det["answer"] if det else "", raw=str(det["deltas"]) if det else "")
+        reasons = routing.omr_reasons(det["margin"]) if det else ["question not in the OMR template"]
+        if unaligned:
+            reasons.append(f"page(s) {unaligned} could not be aligned to the template")
         reads[q.id] = {"a": a, "b": Reading(), "reasons": reasons}
     return reads
 

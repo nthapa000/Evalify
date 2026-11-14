@@ -115,6 +115,28 @@ export function useExtractAnswers() {
   return { extract, extracting };
 }
 
+// Learn the OMR bubble map from an uploaded blank sheet image (layout-independent OMR)
+export function useBuildOmrTemplate() {
+  const [building, setBuilding] = useState(false);
+  const { addToast } = useToastStore();
+
+  const build = async (blankUrl, mcqCount) => {
+    if (!blankUrl || !mcqCount) return null;
+    setBuilding(true);
+    try {
+      const res = await api.post("/papers/omr-template", { blank_url: blankUrl, mcq_count: mcqCount });
+      return res.data;       // { template, preview_url }
+    } catch (e) {
+      addToast(e.response?.data?.detail || "Could not read the blank OMR sheet.", "error");
+      return null;
+    } finally {
+      setBuilding(false);
+    }
+  };
+
+  return { build, building };
+}
+
 // Extract rubric from two teacher-uploaded PDFs (Type 3 papers)
 export function useExtractRubric() {
   const [extracting, setExtracting] = useState(false);
