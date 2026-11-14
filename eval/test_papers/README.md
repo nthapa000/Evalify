@@ -6,7 +6,7 @@ Rough work goes on a separate rough sheet, which is not evaluated and not photog
 
 | Set | Print | Planned sheets | Students write |
 |---|---|---|---|
-| OMR | `omr/omr_question_paper.pdf` + one of `omr/omr_layout_{1,2,3}.pdf` (PNG also provided) | 5 per layout = 15 | fill bubbles |
+| OMR | `omr/omr_question_paper.pdf` (20 Q, 14 single + 6 multiple correct) + one of `omr/omr_layout_{1,2,3}.pdf` (PNG also provided) | 5 per layout = 15 | fill bubble(s) |
 | Handwritten MCQ | `mcq/mcq_question_paper.pdf` (10 Q, single + multiple correct) | 15 | `1. B`, `2. A, C` on plain paper |
 | MCQ + numerical | `mcq_num/paper_2{A,B,C}_question_paper.pdf` (2 MCQ + 3 numerical) | 5 per paper = 15 | `1. B`, `4. 2500 m` on plain paper |
 
@@ -34,7 +34,9 @@ real data.
 
 **OMR**
 - one **light pencil** fill, one **erased and refilled** bubble, one **half-filled** bubble
-- one **double** fill and one **blank** question per sheet on a couple of sheets
+- [one or more correct] questions filled with **2–3 bubbles** (correct and incorrect sets), and a
+  **double fill on a single-answer** question (must score 0)
+- one **blank** question per sheet on a couple of sheets
 - fill the roll-number grid on layout 1 (it must be ignored by the answer reading)
 
 ## Photographing
@@ -48,7 +50,7 @@ real data.
 
 Each `labels/*_labels.csv` already has one row per planned sheet (sheet id + photo file name filled in;
 name your photos to match, or edit `photo_file`). Open it in Excel / LibreOffice / Google Sheets and fill:
-- MCQ / OMR columns: the letter(s) written or filled, e.g. `B` or `A,C`; empty if blank.
+- MCQ / OMR columns: every letter written or bubble filled, e.g. `B` or `A,C`; empty if blank.
 - Numerical columns: copy the value exactly as written, including the unit, e.g. `2.5 km`, `5/8`, `-7 °C`.
 - `edge_cases`: which tricks are on this sheet (e.g. `Q3 struck B→C; Q5 blank`).
 - OMR: the `layout` column is pre-filled (1, 2 or 3) from the sheet id.

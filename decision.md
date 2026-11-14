@@ -229,3 +229,9 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   Fine: identity comes from the photo file name ↔ label-CSV row (in the app, from the student's
   login at upload); the pipeline never reads name / roll from the sheet. Empty roll grid also
   checks that the OMR template ignores non-answer bubbles.
+- **User: OMR questions can have multiple correct answers.** OMR question paper now has 6 of 20
+  "[one or more correct]" questions (Q5, Q9, Q13, Q14, Q17, Q20); sheet instructions say "fill every
+  bubble you choose". Grading stays exact-set (full mark only if exactly the correct bubbles are
+  filled; a double fill on a single-answer question scores 0). Verified on all 3 layouts from a
+  simulated phone photo: 20/20 read incl. 2- and 3-bubble answers, 19/20 score with one planted
+  double fill marked wrong_overfill.

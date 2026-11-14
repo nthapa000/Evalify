@@ -24,27 +24,27 @@ BLACK, BLUE, ORANGE = (0, 0, 0), (0.1, 0.2, 0.7), (0.9, 0.45, 0.1)
 
 # ── Question content ────────────────────────────────────────────────────────
 
-OMR_QUESTIONS = [  # (question, options, answer) — single answer each
-    ("Boiling point of water at sea level is", ["50 °C", "100 °C", "150 °C", "0 °C"], "B"),
-    ("Plants take in which gas for photosynthesis?", ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"], "C"),
-    ("The SI unit of force is", ["Joule", "Watt", "Newton", "Pascal"], "C"),
-    ("Which planet is called the Red Planet?", ["Venus", "Mars", "Jupiter", "Saturn"], "B"),
-    ("The chemical symbol for sodium is", ["S", "So", "Na", "Sd"], "C"),
-    ("The largest organ of the human body is the", ["Liver", "Heart", "Skin", "Brain"], "C"),
-    ("Speed of light in vacuum is about", ["3 x 10^8 m/s", "3 x 10^5 m/s", "340 m/s", "3 x 10^3 m/s"], "A"),
-    ("The pH of pure water is", ["0", "7", "10", "14"], "B"),
-    ("Which of these conducts electricity?", ["Rubber", "Glass", "Copper", "Wood"], "C"),
-    ("The powerhouse of the cell is the", ["Nucleus", "Ribosome", "Mitochondria", "Golgi body"], "C"),
-    ("Freezing point of water on the Kelvin scale is about", ["0 K", "100 K", "273 K", "373 K"], "C"),
-    ("Number of bones in an adult human body", ["106", "206", "306", "156"], "B"),
-    ("Most abundant gas in Earth's atmosphere", ["Oxygen", "Nitrogen", "Argon", "Carbon dioxide"], "B"),
-    ("Which is a vector quantity?", ["Mass", "Time", "Velocity", "Temperature"], "C"),
-    ("The chemical formula of water is", ["H2O", "CO2", "O2", "H2O2"], "A"),
-    ("Sound cannot travel through", ["Water", "Steel", "Air", "Vacuum"], "D"),
-    ("Which blood cells fight infection?", ["Red blood cells", "White blood cells", "Platelets", "Plasma"], "B"),
-    ("The SI unit of electric current is", ["Volt", "Ohm", "Ampere", "Watt"], "C"),
-    ("The star closest to Earth is", ["Sirius", "the Sun", "Polaris", "Alpha Centauri"], "B"),
-    ("The acid found in the human stomach is", ["Sulphuric acid", "Nitric acid", "Hydrochloric acid", "Acetic acid"], "C"),
+OMR_QUESTIONS = [  # (question, options, answer, multiple?) — 6 of 20 have more than one correct option
+    ("Boiling point of water at sea level is", ["50 °C", "100 °C", "150 °C", "0 °C"], "B", False),
+    ("Plants take in which gas for photosynthesis?", ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"], "C", False),
+    ("The SI unit of force is", ["Joule", "Watt", "Newton", "Pascal"], "C", False),
+    ("Which planet is called the Red Planet?", ["Venus", "Mars", "Jupiter", "Saturn"], "B", False),
+    ("Which of these are metals?", ["Sodium", "Sulphur", "Iron", "Oxygen"], "A,C", True),
+    ("The largest organ of the human body is the", ["Liver", "Heart", "Skin", "Brain"], "C", False),
+    ("Speed of light in vacuum is about", ["3 x 10^8 m/s", "3 x 10^5 m/s", "340 m/s", "3 x 10^3 m/s"], "A", False),
+    ("The pH of pure water is", ["0", "7", "10", "14"], "B", False),
+    ("Which of these conduct electricity?", ["Rubber", "Copper", "Glass", "Aluminium"], "B,D", True),
+    ("The powerhouse of the cell is the", ["Nucleus", "Ribosome", "Mitochondria", "Golgi body"], "C", False),
+    ("Freezing point of water on the Kelvin scale is about", ["0 K", "100 K", "273 K", "373 K"], "C", False),
+    ("Number of bones in an adult human body", ["106", "206", "306", "156"], "B", False),
+    ("Which gases are present in the air we breathe?", ["Nitrogen", "Oxygen", "Chlorine", "Argon"], "A,B,D", True),
+    ("Which of these are vector quantities?", ["Mass", "Velocity", "Time", "Force"], "B,D", True),
+    ("The chemical formula of water is", ["H2O", "CO2", "O2", "H2O2"], "A", False),
+    ("Sound cannot travel through", ["Water", "Steel", "Air", "Vacuum"], "D", False),
+    ("Which are parts of blood?", ["Plasma", "Platelets", "Bile", "Red blood cells"], "A,B,D", True),
+    ("The SI unit of electric current is", ["Volt", "Ohm", "Ampere", "Watt"], "C", False),
+    ("The star closest to Earth is", ["Sirius", "the Sun", "Polaris", "Alpha Centauri"], "B", False),
+    ("Which of these are acids?", ["Hydrochloric acid", "Sodium hydroxide", "Sulphuric acid", "Water"], "A,C", True),
 ]
 
 MCQ_QUESTIONS = [  # (question, options, answer, multiple?)
@@ -133,7 +133,7 @@ def question_page(doc, title, sub, items, instructions):
 
 def omr_layout_1(page):
     """Classic: 2 columns × 10, options in a row, letters inside black bubbles, roll-number grid."""
-    header(page, "EVALIFY OMR ANSWER SHEET — Layout 1", "Fill ONE bubble per question completely with a dark pen or pencil.")
+    header(page, "EVALIFY OMR ANSWER SHEET — Layout 1", "Fill the bubble of every option you choose, completely, with a dark pen or pencil.")
     for k, (x, y) in enumerate([(20, 20), (W - 40, 20), (20, H - 40), (W - 40, H - 40)]):   # corner marks
         page.draw_rect(fitz.Rect(x, y, x + 20, y + 20), color=BLACK, fill=BLACK)
     text(page, 50, 150, "Roll number (fill one digit per row):", 10)
@@ -154,7 +154,7 @@ def omr_layout_1(page):
 
 def omr_layout_2(page):
     """Vertical: options A–D stacked under each question number, two bands of 10, blue print."""
-    header(page, "EVALIFY OMR ANSWER SHEET — Layout 2", "Shade the bubble under each question number. Options run top to bottom.", BLUE)
+    header(page, "EVALIFY OMR ANSWER SHEET — Layout 2", "Shade the bubble(s) of your answer under each question number. Options run top to bottom.", BLUE)
     for band in range(2):
         y0 = 190 + band * 300
         for j in range(4):
@@ -170,7 +170,7 @@ def omr_layout_2(page):
 
 def omr_layout_3(page):
     """Grid: 4 columns × 5 rows of numbered boxes, orange print, letters inside small bubbles, row shading."""
-    header(page, "EVALIFY OMR ANSWER SHEET — Layout 3", "Fill the circle of your answer. Do not make stray marks.", ORANGE)
+    header(page, "EVALIFY OMR ANSWER SHEET — Layout 3", "Fill the circle(s) of your answer. Do not make stray marks.", ORANGE)
     for r in range(5):                                       # light shading on alternate rows
         if r % 2 == 0:
             page.draw_rect(fitz.Rect(35, 175 + r * 90, W - 35, 175 + r * 90 + 70), color=None, fill=(0.95, 0.95, 0.95))
@@ -222,9 +222,12 @@ def main():
         doc.save(OUT / "omr" / f"omr_layout_{i}.pdf")
         doc[0].get_pixmap(dpi=200).save(OUT / "omr" / f"omr_layout_{i}.png")
         doc.close()
-    question_page(fitz.open(), "Basic Science — OMR Test (20 questions)", "1 mark each. One correct answer per question.",
-                  [(i + 1, q, o) for i, (q, o, _) in enumerate(OMR_QUESTIONS)],
-                  "Mark your answers on the OMR answer sheet only. Fill exactly one bubble per question.") \
+    question_page(fitz.open(), "Basic Science — OMR Test (20 questions)", "1 mark each. No negative marking.",
+                  [(i + 1, q + ("  [one or more correct]" if multi else "  [one correct]"), o)
+                   for i, (q, o, _, multi) in enumerate(OMR_QUESTIONS)],
+                  "Mark your answers on the OMR answer sheet only. Fill the bubble of every option you choose. "
+                  "For [one or more correct] questions fill all correct options; you get the mark only if the set "
+                  "of filled bubbles is exactly right.") \
         .save(OUT / "omr" / "omr_question_paper.pdf")
 
     # Handwritten MCQ paper
@@ -250,7 +253,7 @@ def main():
     pg = keys.new_page(width=W, height=H)
     text(pg, 50, 60, "Answer keys (teacher copy)", 16, font="hebo")
     y = 95
-    sections = [("OMR test (any layout)", [f"{i + 1}. {a}" for i, (*_, a) in enumerate(OMR_QUESTIONS)]),
+    sections = [("OMR test (any layout)", [f"{i + 1}. {a}{' (multiple)' if m else ''}" for i, (_, _, a, m) in enumerate(OMR_QUESTIONS)]),
                 ("Handwritten MCQ test", [f"{i + 1}. {a}{' (multiple)' if m else ''}" for i, (_, _, a, m) in enumerate(MCQ_QUESTIONS)])]
     for name, (title, mcq, num) in MCQ_NUM_PAPERS.items():
         sections.append((f"{name} — {title}", [f"{i + 1}. {a[2]}" for i, a in enumerate(mcq)]
@@ -262,7 +265,7 @@ def main():
         y = wrap(pg, 60, y + 16, "    ".join(lines), 480, 10.5, 14) + 10
     keys.save(OUT / "keys" / "answer_keys.pdf")
 
-    papers = {"omr_basic_science": evalify_paper("OMR Basic Science (20)", "mcq", OMR_QUESTIONS),
+    papers = {"omr_basic_science": evalify_paper("OMR Basic Science (20)", "mcq", [(q, o, a) for q, o, a, _ in OMR_QUESTIONS]),
               "mcq_basic_science": evalify_paper("MCQ Basic Science (10)", "mcq", [(q, o, a) for q, o, a, _ in MCQ_QUESTIONS])}
     for name, (title, mcq, num) in MCQ_NUM_PAPERS.items():
         papers[name] = evalify_paper(f"{title} ({name[-2:]})", "mcq_num", mcq, num)
