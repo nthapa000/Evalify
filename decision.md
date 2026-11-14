@@ -239,3 +239,8 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   empty cell; struck-out-and-rewritten = final answer + note in `edge_cases`; genuinely unclear = `?`
   (expected outcome: routed to a TA). Numerical: value as written incl. unit. The import script must
   accept all these variants.
+
+## 15 Nov 2026 — own dataset received
+- User uploaded the test sheets as 7 PDFs in `eval/test_papers/dataset_created/` (one sheet per page, in order; 45 sheets = 15 OMR + 15 MCQ + 3×5 MCQ+numerical).
+- `eval/extract_test_photos.py` pulls the original phone photo from each page (largest embedded JPEG, not re-encoded; scanner-app logo strip dropped) → `eval/test_papers/photos/<set>_sNN_p1.jpg`; `photos_overview.pdf` is a labelled thumbnail sheet for the user to verify order/naming.
+- Run starts only after the user confirms the names match the label CSVs.

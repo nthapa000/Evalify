@@ -1,6 +1,6 @@
 sheet_id,photo_file,Q1,Q2,Q3,Q4,Q5,edge_cases,notes
-2C_s01,2C_s01_p1.jpg,,,,,,,
-2C_s02,2C_s02_p1.jpg,,,,,,,
-2C_s03,2C_s03_p1.jpg,,,,,,,
+2C_s01,2C_s01_p1.jpg,C,B,0.5A,440W,9J,,
+2C_s02,2C_s02_p1.jpg,C,B,0.505A,,8J,,
+2C_s03,2C_s03_p1.jpg,D,A,0.5A,440W,99J,,
 2C_s04,2C_s04_p1.jpg,,,,,,,
-2C_s05,2C_s05_p1.jpg,,,,,,,
+2C_s05,2C_s05_p1.jpg,C,B,0.5A,440W,9J,,

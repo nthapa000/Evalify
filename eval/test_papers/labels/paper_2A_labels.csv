@@ -1,6 +1,6 @@
 sheet_id,photo_file,Q1,Q2,Q3,Q4,Q5,edge_cases,notes
-2A_s01,2A_s01_p1.jpg,,,,,,,
-2A_s02,2A_s02_p1.jpg,,,,,,,
-2A_s03,2A_s03_p1.jpg,,,,,,,
-2A_s04,2A_s04_p1.jpg,,,,,,,
+2A_s01,2A_s01_p1.jpg,B,AC,50km/hr,2500m,19,,
+2A_s02,2A_s02_p1.jpg,A,A,50km/hr,2500.5m,19.61m/s,,
+2A_s03,2A_s03_p1.jpg,A,,50.01km/hr,,19m/s,3-cut and rewritten,
+2A_s04,2A_s04_p1.jpg,50,A,,2500m,,,
 2A_s05,2A_s05_p1.jpg,,,,,,,
