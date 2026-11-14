@@ -23,6 +23,11 @@ source "${EVALIFY_HOME:-$HOME/Evalify}/infra/cluster/env.sh"
 export PATH="$VLLM_ENV/bin:$PATH"
 export HF_HUB_OFFLINE=1
 
+# CUDA 13 runtime libs ship as pip wheels; the JIT compiler (NVRTC) must find them
+NV="$VLLM_ENV/lib/python3.12/site-packages/nvidia"
+export LD_LIBRARY_PATH="$NV/cu13/lib:$NV/cudnn/lib:$NV/nccl/lib:$NV/cusparselt/lib:$NV/nvshmem/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export CUDA_HOME="$NV/cu13"
+
 echo "node=$(hostname) job=$SLURM_JOB_ID gpus=$CUDA_VISIBLE_DEVICES"
 nvidia-smi --query-gpu=index,name,memory.total,memory.used --format=csv
 

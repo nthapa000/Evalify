@@ -4,8 +4,8 @@
 Run inside the GPU job (serve_models.sbatch). For the chosen profile in
 infra/models.yaml it:
   1. checks every pinned snapshot is fully downloaded (offline afterwards);
-  2. starts servers GPU by GPU — the two GPUs in parallel, servers on the same
-     GPU one after another (vLLM sizes its KV cache from free memory);
+  2. packs the profile's models (GB budgets) onto the GPUs Slurm allocated, then
+     starts them — GPUs in parallel, servers on one GPU one after another;
   3. writes $EVALIFY_ENDPOINTS_FILE as each server becomes healthy, using the
      node's hostname so the backend on the login node can reach it;
   4. optionally runs $EVALIFY_AFTER_READY (e.g. a bake-off) once all are up;
@@ -73,7 +73,7 @@ def start_gpu(gpu: str, servers: list) -> None:
                "--host", "0.0.0.0", "--port", str(port), "--gpu-memory-utilization", str(s["mem"]),
                *[str(a) for a in m.get("vllm_args", [])]]
         log(f"GPU {gpu}: starting {name} on :{port}")
-        # Profile GPU 0/1 → the i-th device Slurm allocated to this job
+        # Placement GPU i → the i-th device Slurm allocated to this job
         device = os.environ.get("CUDA_VISIBLE_DEVICES", "0,1").split(",")[int(gpu)]
         p = subprocess.Popen(cmd, env={**os.environ, "CUDA_VISIBLE_DEVICES": device},
                              stdout=open(LOGS / f"{name}.log", "w"), stderr=subprocess.STDOUT)
@@ -100,6 +100,33 @@ def start_gpu(gpu: str, servers: list) -> None:
         log(f"GPU {gpu}: ✓ {name} ready in {time.time() - t0:.0f}s")
 
 
+def gpu_sizes() -> list:
+    """Total memory (GB) of each GPU visible to this job, in job-local index order."""
+    out = subprocess.run(["nvidia-smi", "--query-gpu=index,name,memory.total", "--format=csv,noheader,nounits"],
+                         capture_output=True, text=True, check=True).stdout
+    sizes = []
+    for line in out.strip().splitlines():
+        idx, name, mib = [x.strip() for x in line.split(",")]
+        sizes.append(float(mib) / 1024)
+        log(f"GPU {idx}: {name}, {float(mib) / 1024:.0f} GB")
+    return sizes
+
+
+def place(entries: list, sizes: list, headroom: float = 0.92) -> dict:
+    """Priority-ordered models → {gpu index: [entry + mem fraction]}; each goes to the GPU with most room."""
+    free = [s * headroom for s in sizes]
+    plan: dict = {str(i): [] for i in range(len(sizes))}
+    for e in entries:
+        g = max(range(len(free)), key=lambda i: free[i])
+        if e["gb"] > free[g]:
+            log(f"✗ {e['model']} ({e['gb']} GB) does not fit (free: {[round(f) for f in free]} GB); skipping")
+            continue
+        free[g] -= e["gb"]
+        plan[str(g)].append({**e, "mem": round(e["gb"] / sizes[g], 3)})
+        log(f"plan: {e['model']} → GPU {g} ({e['gb']} GB = {e['gb'] / sizes[g]:.2f} of card)")
+    return plan
+
+
 def shutdown(*_) -> None:
     """Stop all servers and withdraw the endpoints file."""
     log("shutting down servers")
@@ -113,16 +140,19 @@ if __name__ == "__main__":
     PROFILE = sys.argv[1] if len(sys.argv) > 1 else "tier1-bakeoff"
     if PROFILE not in REG["profiles"]:
         sys.exit(f"unknown profile {PROFILE!r}; choose from {list(REG['profiles'])}")
-    gpus = REG["profiles"][PROFILE]["gpus"]
+    entries = REG["profiles"][PROFILE]
     signal.signal(signal.SIGTERM, shutdown)
     signal.signal(signal.SIGINT, shutdown)
 
     # 1. All weights present? (downloads happen on the login node, never here)
-    while missing := snapshots_ready({s["model"] for ss in gpus.values() for s in ss}):
+    while missing := snapshots_ready({e["model"] for e in entries}):
         log(f"waiting for downloads: {missing}")
         time.sleep(60)
 
-    # 2–3. Both GPUs in parallel; endpoints file grows as servers come up
+    # 2. Fit the profile onto the GPUs we actually got (cn07 mixes 48 GB and 96 GB cards)
+    gpus = place(entries, gpu_sizes())
+
+    # 3. GPUs in parallel; endpoints file grows as servers come up
     ENDPOINTS.unlink(missing_ok=True)
     threads = [threading.Thread(target=start_gpu, args=(str(g), ss)) for g, ss in gpus.items()]
     for t in threads:

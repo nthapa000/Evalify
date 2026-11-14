@@ -110,40 +110,41 @@ models:
     thinking: qwen
     vllm_args: ["--max-model-len", "32768", "--reasoning-parser", "qwen3"]
 
-# ── Serving profiles (one vLLM process per model; several per GPU) ─────────
-# mem = vLLM --gpu-memory-utilization, a fraction of the whole 96 GB card.
-# Processes on a GPU start one after another, so the fractions must sum < 0.95.
+# ── Serving profiles ──────────────────────────────────────────────────────
+# Each model gets a memory budget in GB (weights + KV cache). serve.py reads the
+# real size of each GPU Slurm hands out (cn07 mixes 48 GB RTX A6000 and 96 GB
+# RTX PRO 6000 cards; the type cannot be requested) and packs the list onto them
+# largest-first; anything that does not fit is skipped and logged. List order is
+# priority: put must-have models first.
 profiles:
-  # Tier 1 bake-off: every stage 1+2 candidate up at once on 2x RTX PRO 6000.
+  # Bake-off: every stage 1+2 candidate at once (needs ~170 GB; on 48+96 GB the
+  # tail of the list — gpt-oss, then nanonets — is skipped and can run later).
   tier1-bakeoff:
-    gpus:
-      0:
-        - {model: qwen38-27b-fp8,   port: 8101, mem: 0.52}
-        - {model: chandra-ocr-2,    port: 8102, mem: 0.20}
-        - {model: paddleocr-vl-1.6, port: 8103, mem: 0.08}
-        - {model: glm-ocr,          port: 8104, mem: 0.08}
-      1:
-        - {model: gemma4-31b-fp8,   port: 8111, mem: 0.52}
-        - {model: nanonets-ocr2-3b, port: 8112, mem: 0.15}
-        - {model: gpt-oss-20b,      port: 8113, mem: 0.24}
+    - {model: qwen38-27b-fp8,   port: 8101, gb: 44}
+    - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
+    - {model: paddleocr-vl-1.6, port: 8103, gb: 6}
+    - {model: glm-ocr,          port: 8104, gb: 6}
+    - {model: chandra-ocr-2,    port: 8102, gb: 16}
+    - {model: nanonets-ocr2-3b, port: 8112, gb: 12}
+    - {model: gpt-oss-20b,      port: 8113, gb: 20}
 
-  # Tier 1 production shape (after the bake-off picks winners).
+  # Grader bake-off: the JSON-capable graders only.
+  graders:
+    - {model: qwen38-27b-fp8,   port: 8101, gb: 44}
+    - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
+    - {model: gpt-oss-20b,      port: 8113, gb: 22}
+
+  # Production shape after the bake-off (edit to the winners).
   tier1:
-    gpus:
-      0:
-        - {model: qwen38-27b-fp8,   port: 8101, mem: 0.62}
-        - {model: chandra-ocr-2,    port: 8102, mem: 0.20}
-        - {model: paddleocr-vl-1.6, port: 8103, mem: 0.08}
-      1:
-        - {model: gemma4-31b-fp8,   port: 8111, mem: 0.85}
+    - {model: qwen38-27b-fp8,   port: 8101, gb: 56}
+    - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
+    - {model: paddleocr-vl-1.6, port: 8103, gb: 8}
+    - {model: chandra-ocr-2,    port: 8102, gb: 16}
 
-  # Tier 2: one RTX PRO 6000.
+  # One small GPU (A30 / A6000): reader + grader + one OCR model.
   tier2:
-    gpus:
-      0:
-        - {model: qwen38-27b-fp8,   port: 8101, mem: 0.40}
-        - {model: gemma4-31b-fp8,   port: 8111, mem: 0.40}
-        - {model: paddleocr-vl-1.6, port: 8103, mem: 0.08}
+    - {model: qwen38-27b-fp8,   port: 8101, gb: 36}
+    - {model: paddleocr-vl-1.6, port: 8103, gb: 6}
 
 # ── Roles → model, with fallbacks (first reachable wins) ───────────────────
 # The backend degrades instead of breaking: if a role has no live endpoint it
