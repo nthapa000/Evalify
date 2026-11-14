@@ -122,8 +122,8 @@ profiles:
   tier1-bakeoff:
     - {model: qwen38-27b-fp8,   port: 8101, gb: 44}
     - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
-    - {model: paddleocr-vl-1.6, port: 8103, gb: 6}
-    - {model: glm-ocr,          port: 8104, gb: 6}
+    - {model: paddleocr-vl-1.6, port: 8103, gb: 10}
+    - {model: glm-ocr,          port: 8104, gb: 10}
     - {model: chandra-ocr-2,    port: 8102, gb: 16}
     - {model: nanonets-ocr2-3b, port: 8112, gb: 12}
     - {model: gpt-oss-20b,      port: 8113, gb: 20}
@@ -144,7 +144,7 @@ profiles:
   # One small GPU (A30 / A6000): reader + grader + one OCR model.
   tier2:
     - {model: qwen38-27b-fp8,   port: 8101, gb: 36}
-    - {model: paddleocr-vl-1.6, port: 8103, gb: 6}
+    - {model: paddleocr-vl-1.6, port: 8103, gb: 10}
 
 # ── Roles → model, with fallbacks (first reachable wins) ───────────────────
 # The backend degrades instead of breaking: if a role has no live endpoint it

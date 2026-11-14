@@ -28,6 +28,13 @@ NV="$VLLM_ENV/lib/python3.12/site-packages/nvidia"
 export LD_LIBRARY_PATH="$NV/cu13/lib:$NV/cudnn/lib:$NV/nccl/lib:$NV/cusparselt/lib:$NV/nvshmem/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export CUDA_HOME="$NV/cu13"
 
+# Number GPUs by PCI slot like nvidia-smi does (CUDA's default is fastest-first,
+# which swapped the A6000 and the RTX PRO 6000 relative to serve.py's plan)
+export CUDA_DEVICE_ORDER=PCI_BUS_ID
+
+# JIT kernel caches on /scratch, not the slow /csehome
+export FLASHINFER_WORKSPACE_BASE="$EVALIFY_SCRATCH/cache"
+
 echo "node=$(hostname) job=$SLURM_JOB_ID gpus=$CUDA_VISIBLE_DEVICES"
 nvidia-smi --query-gpu=index,name,memory.total,memory.used --format=csv
 

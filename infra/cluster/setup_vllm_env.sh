@@ -20,6 +20,10 @@ PY="$VLLM_ENV/bin/python"
   "vllm==${VLLM_VERSION}" \
   huggingface_hub \
   pyyaml requests
+# Keep the CUDA compiler wheels at the runtime's version (13.0); newer nvcc/cccl
+# make FlashInfer's JIT builds fail with "compiler and toolkit headers incompatible"
+"$PY" -m uv pip install --python "$PY" "nvidia-cuda-nvcc==13.0.*" "nvidia-cuda-crt==13.0.*" \
+  "nvidia-nvvm==13.0.*" "nvidia-cuda-cccl==13.0.*"
 
 "$PY" - <<'EOF'
 import vllm, torch, transformers
