@@ -55,13 +55,14 @@ name your photos to match, or edit `photo_file`). Open it in Excel / LibreOffice
   | On the sheet | Type in the cell |
   |---|---|
   | one answer | `B` |
-  | multiple answers | `A,C` / `A,B,D` (any order; `AC` or `A C` also accepted) |
+  | multiple answers | **`AC` / `ABD`** (recommended — no commas; `A,C` also accepted) |
   | blank / not answered | leave the cell **empty** |
   | struck out and rewritten (~~B~~ C) | the **final** answer `C`, and note it in `edge_cases` |
   | genuinely unclear (you cannot tell what was meant) | `?` — correct outcome is "send to a TA" |
 
-  In Excel / LibreOffice / Google Sheets just type `A,C` (the app quotes it when saving). In a plain
-  text editor write `"A,C"` (with quotes) or `AC`.
+  Without commas nothing can go wrong in any editor. If you do use `A,C`: spreadsheet apps quote it
+  when saving; in a plain text editor write `"A,C"`. The import script checks every row (column count,
+  only A–D / `?` / empty) and stops with the row number instead of guessing.
 - Numerical columns: copy the value exactly as written, including the unit, e.g. `2.5 km`, `5/8`, `-7 °C`;
   empty if blank, `?` if unreadable.
 - `edge_cases`: which tricks are on this sheet (e.g. `Q3 struck B→C; Q5 blank`).
