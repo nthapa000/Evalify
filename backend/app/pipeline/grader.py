@@ -24,6 +24,7 @@ class ConceptDecision:
     evidence: str = ""
     confidence: Optional[float] = None
     evidence_found: bool = True       # is the quote really in a transcript?
+    partial: bool = False             # v2 grader: half credit for this concept
 
 
 @dataclass
@@ -43,7 +44,7 @@ class GradeResult:
 
 def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, transcript_b: str,
           images: List[Image.Image], subject: str = "", max_marks: Optional[float] = None,
-          thinking: bool = False) -> GradeResult:
+          thinking: bool = False, version: str = "v1") -> GradeResult:
     """Ask one grader for per-concept decisions, then score them in Python."""
     concepts = list(rubric.get("key_concepts", []))
     res = GradeResult(grader=ep.name, version=ep.version)
@@ -53,9 +54,15 @@ def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, tran
 
     # Text-only graders (e.g. gpt-oss) get the transcripts but no image
     imgs = [] if ep.spec.get("text_only") else images
-    r = llm.chat(ep, P.grade_prompt(question, rubric.get("model_answer", ""), concepts,
-                                    transcript_a, transcript_b, subject),
-                 imgs, schema=P.GRADE_SCHEMA, max_tokens=8192 if thinking else 2048, thinking=thinking)
+    # v1 = original prompt; v2 = quote-first verdicts with optional half credit (prompt p4)
+    allow_partial = bool(rubric.get("allow_partial", True))
+    if version == "v2":
+        prompt, schema = P.grade_prompt_v2(question, rubric.get("model_answer", ""), concepts, transcript_a,
+                                           transcript_b, subject, allow_partial), P.GRADE_SCHEMA_V2
+    else:
+        prompt, schema = P.grade_prompt(question, rubric.get("model_answer", ""), concepts,
+                                        transcript_a, transcript_b, subject), P.GRADE_SCHEMA
+    r = llm.chat(ep, prompt, imgs, schema=schema, max_tokens=8192 if thinking else 2048, thinking=thinking)
     res.latency_s, res.prompt_hash, res.error = r.latency_s, r.prompt_hash, r.error
     data = r.data or {}
     res.transcript_problem = bool(data.get("transcript_problem", False))
@@ -65,9 +72,11 @@ def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, tran
     by_name = {str(d.get("concept", "")).strip().lower(): d for d in got}
     for i, c in enumerate(concepts):
         d = got[i] if i < len(got) and _same(got[i].get("concept"), c) else by_name.get(c.strip().lower(), {})
-        dec = ConceptDecision(c, bool(d.get("present", False)), str(d.get("evidence", "")).strip(),
-                              _conf(d.get("confidence")) if d else None)
-        dec.evidence_found = (not dec.present) or quote_in(dec.evidence, transcript_a, transcript_b)
+        verdict = d.get("verdict") or ("present" if d.get("present") else "absent")   # v2 or v1 shape
+        dec = ConceptDecision(c, verdict == "present", str(d.get("evidence", "")).strip(),
+                              _conf(d.get("confidence")) if d else None,
+                              partial=verdict == "partial" and allow_partial)
+        dec.evidence_found = not (dec.present or dec.partial) or quote_in(dec.evidence, transcript_a, transcript_b)
         res.decisions.append(dec)
 
     score(res, rubric, max_marks)
@@ -75,13 +84,16 @@ def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, tran
 
 
 def score(res: GradeResult, rubric: dict, max_marks: Optional[float] = None) -> None:
-    """Mandatory rule (no mandatory concept present → 0) + marks per concept, capped at max."""
+    """Mandatory rule (no mandatory concept fully present → 0) + marks per concept
+    (half for a partial one), capped at max."""
     per = float(rubric.get("marks_per_concept", 1))
     mandatory = {m.strip().lower() for m in rubric.get("mandatory_concepts", [])}
     present = {d.concept.strip().lower() for d in res.decisions if d.present}
+    n_partial = sum(1 for d in res.decisions if d.partial and not d.present)
     res.max_marks = float(max_marks if max_marks is not None else len(res.decisions) * per)
     res.mandatory_met = (not mandatory) or bool(mandatory & present)
-    res.marks = min(len(present) * per, res.max_marks) if res.mandatory_met else 0.0
+    earned = len(present) * per + 0.5 * per * n_partial
+    res.marks = min(earned, res.max_marks) if res.mandatory_met else 0.0
 
 
 def quote_in(quote: str, *texts: str) -> bool:

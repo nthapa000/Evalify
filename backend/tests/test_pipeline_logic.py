@@ -108,3 +108,13 @@ def test_label_strip_comma():
     from app.pipeline.readers import parse_final_number, strip_label
     assert parse_final_number(strip_label("4, 440 W", "Q4")) == "440 W"
     assert strip_label("4,440", "Q4") == "4,440"
+
+
+# Grader v2: a partial concept earns half its marks; mandatory still needs a full "present"
+def test_score_partial_credit():
+    res = GradeResult(decisions=[ConceptDecision("a", present=True), ConceptDecision("b", partial=True)])
+    score(res, {"marks_per_concept": 1})
+    assert res.marks == 1.5
+    res = GradeResult(decisions=[ConceptDecision("a", partial=True), ConceptDecision("b", present=True)])
+    score(res, {"marks_per_concept": 1, "mandatory_concepts": ["a"]})
+    assert res.marks == 0.0

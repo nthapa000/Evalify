@@ -284,3 +284,18 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   units (ours ignore them), dataset licence not confirmed. Download page (DOI 10.35090/gatech/81252) blocks
   automated access → the user downloads it via browser. (An earlier link I gave, arXiv 2603.24961, was a different
   dataset — ScratchMath — corrected.)
+
+## 15 Nov 2026 — grader prompt v2, v2 plan, RAG plan, results index
+- **Grader prompt v2** (`grade_prompt_v2`, TEMPLATE_VERSION p4) added next to v1, chosen per call with
+  `grade(..., version="v1"|"v2")`; default stays **v1 until the 50-sheet Mendeley comparison** shows v2 is better.
+  v2: spelling/grammar ignored; contradiction → not present; bare keyword is not enough; student text marked as
+  data (anti-injection); evidence quote before verdict; verdict present/partial/absent; **partial = half the
+  point's marks** (rubric `allow_partial`, default true; the Mendeley teacher gave 0.5/1.5 on ~3 % of answers);
+  mandatory points need a full "present". Smoke test: v2 makes Qwen and Gemma agree on a bare keyword (0.5).
+- **V2_EVALIFY_PLAN.md** written (user request): the pipeline as decided so far, with pending items marked.
+- **RAG (user request, later — after the current runs):** only to draft the *sample answer key* for subjective
+  questions from the teacher's reference files; optional; the LLM formats the draft into reference answer +
+  rubric points with citations; the teacher edits and approves; never used when grading students.
+- **Results of every dataset run are kept in Markdown**; index at `eval/reports/RESULTS.md` (user request).
+- Tie-break reader: user asked GLM-OCR vs Chandra → **GLM-OCR** (equal or better on every metric except one
+  answer, ~5× faster, better on Mendeley); Chandra = backup.
