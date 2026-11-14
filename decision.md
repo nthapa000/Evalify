@@ -134,3 +134,21 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   correctly where reading order would have been wrong.
 - UI: "Blank OMR sheet" upload + preview + confirm checkbox added to the create-paper wizard
   (Step 3, MCQ papers).
+
+### OMR tested on real scans: Tamaulipas (CC BY 4.0), 14 Nov
+- Downloaded only the first 80 MB of the 6 GB zip (75 sheets + labels) into
+  `/scratch/m25csa019/evalify/datasets/tamaulipas/`; labels give the human-read bubble per item
+  (X = blank, M = multiple). The dataset has no answer key or marks — not needed for OMR, since
+  marks are computed in code from the bubbles read.
+- The dataset has **no blank sheet** → `eval/tamaulipas_omr.py` synthesises one from the 19
+  Grade 12 sheets of the same form (align, keep the lightest value per pixel); the 12 test
+  sheets (School001/Grade10) are not used to build it.
+- Changes forced by real scans (thin, faint, orange printed bubbles with letters inside):
+  darkest-colour-channel darkness; **Hough circles + edge ring check** (instead of contours);
+  grouping by the regular option spacing; **grid completion** with one sheet-wide row pitch,
+  shared row span across columns, and snapping filled-in rows onto their faint rings;
+  **per-sheet print offset** (median bubble darkness) removed before the 0.10 threshold.
+- **Result on 12 real sheets (1,080 items):** accuracy **99.3%**; **88%** auto-accepted with
+  **99.9%** accuracy; **1 silent error** (a light mark on File0002 Q63); 7 other errors all went
+  to a TA. The old layout-free engine scored 0% on this layout (it can't parse it).
+- Routing threshold for OMR margin is still the default 0.05; calibrate on more sheets later.
