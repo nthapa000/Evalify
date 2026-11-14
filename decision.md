@@ -86,3 +86,23 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Real labelled sheets needed (30–50 to compare models; format in `eval/README.md`).
 - Bake-off results will decide final readers/graders, then update `roles:` and the `tier1`
   profile in `infra/models.yaml` and delete losing weights.
+
+### Serving fixes, continued (14:20)
+- **`--max-num-seqs` capped** (128 for big models, 64 for OCR models): Qwen3.8's hybrid
+  attention needs one cache block per parallel request and failed at vLLM's default of 1024.
+  Grading never needs that many parallel requests.
+- **FlashInfer sampler disabled** (`VLLM_USE_FLASHINFER_SAMPLER=0`): its JIT build kept failing,
+  and we only use greedy decoding (temperature 0), which doesn't need it.
+- Job 48694 cancelled by this session (Qwen and Gemma had failed in it); resubmitted as 48695.
+
+### Test data (discussion with user, 14:20)
+- User wants a **small, hand-checkable test set: 10–15 sheets per paper type** (A: MCQ only,
+  B: MCQ + numerical, C: MCQ + numerical + subjective), with OCR validated separately on a
+  bigger set if available. Proposal and open questions below in this file once agreed.
+- Licences checked via the APIs: Tamaulipas OMR, FERMAT, Handwritten ASAP, SciEntsBank and
+  Mohler are all **CC BY 4.0** (dataset.md had several as "not confirmed").
+- Mendeley exam set: `Teacher_manual_marks_Anonymized.csv` columns 1–20 hold each student's
+  **chosen MCQ letter**, so MCQ reading can be checked directly. **Privacy issue:**
+  `Student_MCQ.csv` in the same dataset contains real student names and IDs, despite the
+  README saying the data is anonymised, and the PDFs are named by real IDs. We will use only
+  the anonymised CSV and never copy names into our files.

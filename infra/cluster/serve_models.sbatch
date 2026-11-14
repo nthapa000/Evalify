@@ -35,6 +35,9 @@ export CUDA_DEVICE_ORDER=PCI_BUS_ID
 # JIT kernel caches on /scratch, not the slow /csehome
 export FLASHINFER_WORKSPACE_BASE="$EVALIFY_SCRATCH/cache"
 
+# Greedy decoding only (temperature 0) → skip FlashInfer's JIT-built sampler
+export VLLM_USE_FLASHINFER_SAMPLER=0
+
 echo "node=$(hostname) job=$SLURM_JOB_ID gpus=$CUDA_VISIBLE_DEVICES"
 nvidia-smi --query-gpu=index,name,memory.total,memory.used --format=csv
 

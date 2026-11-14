@@ -19,7 +19,7 @@ models:
     prompt_style: general          # free-form instructions + JSON schema
     supports_json_schema: true
     thinking: qwen                 # toggled via chat_template_kwargs.enable_thinking
-    vllm_args: ["--max-model-len", "32768", "--reasoning-parser", "qwen3",
+    vllm_args: ["--max-num-seqs", "128", "--max-model-len", "32768", "--reasoning-parser", "qwen3",
                 "--limit-mm-per-prompt", '{"image": 6, "video": 0}']
 
   gemma4-31b-fp8:
@@ -31,7 +31,7 @@ models:
     license: apache-2.0
     prompt_style: general
     supports_json_schema: true
-    vllm_args: ["--max-model-len", "32768",
+    vllm_args: ["--max-num-seqs", "128", "--max-model-len", "32768",
                 "--limit-mm-per-prompt", '{"image": 6, "audio": 0}']
 
   # ── OCR specialists (reader B candidates) ────────────────────────────────
@@ -44,7 +44,7 @@ models:
     license: openrail              # weights: research / small-org use only
     prompt_style: chandra
     supports_json_schema: false
-    vllm_args: ["--max-model-len", "16384", "--enable-prefix-caching",
+    vllm_args: ["--max-num-seqs", "64", "--max-model-len", "16384", "--enable-prefix-caching",
                 "--mm-processor-kwargs", '{"min_pixels": 3136, "max_pixels": 6291456}']
 
   paddleocr-vl-1.6:
@@ -56,7 +56,7 @@ models:
     license: apache-2.0
     prompt_style: paddleocr_vl
     supports_json_schema: false
-    vllm_args: ["--max-model-len", "8192", "--trust-remote-code",
+    vllm_args: ["--max-num-seqs", "64", "--max-model-len", "8192", "--trust-remote-code",
                 "--max-num-batched-tokens", "16384", "--no-enable-prefix-caching",
                 "--mm-processor-cache-gb", "0"]
 
@@ -69,7 +69,7 @@ models:
     license: mit
     prompt_style: glm_ocr
     supports_json_schema: false
-    vllm_args: ["--max-model-len", "8192", "--trust-remote-code"]
+    vllm_args: ["--max-num-seqs", "64", "--max-model-len", "8192", "--trust-remote-code"]
 
   nanonets-ocr2-3b:
     repo: nanonets/Nanonets-OCR2-3B
@@ -80,7 +80,7 @@ models:
     license: unknown               # not stated on the model card — check before deploying
     prompt_style: nanonets
     supports_json_schema: false
-    vllm_args: ["--max-model-len", "16384"]
+    vllm_args: ["--max-num-seqs", "64", "--max-model-len", "16384"]
 
   # ── Text-only graders ────────────────────────────────────────────────────
   gpt-oss-20b:
@@ -95,7 +95,7 @@ models:
     text_only: true
     allow_patterns: ["*.json", "*.safetensors", "*.txt", "*.jinja", "LICENSE*"]
     ignore_patterns: ["original/*", "metal/*"]
-    vllm_args: ["--max-model-len", "32768"]
+    vllm_args: ["--max-num-seqs", "128", "--max-model-len", "32768"]
 
   # ── Stage 3: only if the grader bake-off shows a gain ────────────────────
   qwen35-122b-a10b-int4:
@@ -108,7 +108,7 @@ models:
     prompt_style: general
     supports_json_schema: true
     thinking: qwen
-    vllm_args: ["--max-model-len", "32768", "--reasoning-parser", "qwen3"]
+    vllm_args: ["--max-num-seqs", "128", "--max-model-len", "32768", "--reasoning-parser", "qwen3"]
 
 # ── Serving profiles ──────────────────────────────────────────────────────
 # Each model gets a memory budget in GB (weights + KV cache). serve.py reads the
