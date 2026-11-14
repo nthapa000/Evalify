@@ -50,8 +50,20 @@ real data.
 
 Each `labels/*_labels.csv` already has one row per planned sheet (sheet id + photo file name filled in;
 name your photos to match, or edit `photo_file`). Open it in Excel / LibreOffice / Google Sheets and fill:
-- MCQ / OMR columns: every letter written or bubble filled, e.g. `B` or `A,C`; empty if blank.
-- Numerical columns: copy the value exactly as written, including the unit, e.g. `2.5 km`, `5/8`, `-7 °C`.
+- MCQ / OMR columns:
+
+  | On the sheet | Type in the cell |
+  |---|---|
+  | one answer | `B` |
+  | multiple answers | `A,C` / `A,B,D` (any order; `AC` or `A C` also accepted) |
+  | blank / not answered | leave the cell **empty** |
+  | struck out and rewritten (~~B~~ C) | the **final** answer `C`, and note it in `edge_cases` |
+  | genuinely unclear (you cannot tell what was meant) | `?` — correct outcome is "send to a TA" |
+
+  In Excel / LibreOffice / Google Sheets just type `A,C` (the app quotes it when saving). In a plain
+  text editor write `"A,C"` (with quotes) or `AC`.
+- Numerical columns: copy the value exactly as written, including the unit, e.g. `2.5 km`, `5/8`, `-7 °C`;
+  empty if blank, `?` if unreadable.
 - `edge_cases`: which tricks are on this sheet (e.g. `Q3 struck B→C; Q5 blank`).
 - OMR: the `layout` column is pre-filled (1, 2 or 3) from the sheet id.
 

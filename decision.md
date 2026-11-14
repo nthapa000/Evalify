@@ -235,3 +235,7 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   filled; a double fill on a single-answer question scores 0). Verified on all 3 layouts from a
   simulated phone photo: 20/20 read incl. 2- and 3-bubble answers, 19/20 score with one planted
   double fill marked wrong_overfill.
+- **Label CSV convention:** one answer `B`; multiple `A,C` (any order/spacing, `AC` accepted); blank =
+  empty cell; struck-out-and-rewritten = final answer + note in `edge_cases`; genuinely unclear = `?`
+  (expected outcome: routed to a TA). Numerical: value as written incl. unit. The import script must
+  accept all these variants.
