@@ -84,15 +84,33 @@ def download(name: str, spec: dict) -> None:
     print(f"  ✓ {path}")
 
 
+def cached_repos() -> dict:
+    """{repo_id: CachedRepoInfo} via huggingface_hub's scanner (blobs are shared across repos)."""
+    from huggingface_hub import scan_cache_dir
+    return {r.repo_id: r for r in scan_cache_dir().repos}
+
+
 def list_models(models: dict) -> None:
+    """Print each registry model's on-disk size and whether its pinned revision is present."""
+    cached = cached_repos()
     for name, spec in models.items():
-        d = cache_dir_for(spec["repo"])
-        if d.exists():
-            size = sum(f.stat().st_size for f in d.rglob("*") if f.is_file() and not f.is_symlink())
-            print(f"  {name:<22} stage {spec.get('stage')}  {size/1e9:6.1f} GB  {d}")
-        else:
-            print(f"  {name:<22} stage {spec.get('stage')}    —     (not downloaded)")
+        r = cached.get(spec["repo"])
+        pinned = r is not None and any(rev.commit_hash == spec["revision"] for rev in r.revisions)
+        size = f"{r.size_on_disk / 1e9:6.1f} GB" if r else "     —   "
+        state = "pinned rev ✓" if pinned else ("other revision" if r else "not downloaded")
+        print(f"  {name:<22} stage {spec.get('stage')}  {size}  {state}")
     print(f"free under scratch quota: {free_gb():.0f} GB")
+
+
+def delete_models(models: dict, names: list) -> None:
+    """Delete every cached revision of these models, freeing their blobs."""
+    cached = cached_repos()
+    hashes = [rev.commit_hash for n in names if (r := cached.get(models[n]["repo"])) for rev in r.revisions]
+    if hashes:
+        from huggingface_hub import scan_cache_dir
+        strategy = scan_cache_dir().delete_revisions(*hashes)
+        print(f"  freeing {strategy.expected_freed_size / 1e9:.1f} GB")
+        strategy.execute()
 
 
 def main() -> None:
@@ -109,11 +127,7 @@ def main() -> None:
     if args.list:
         return list_models(models)
     if args.delete:
-        for name in args.delete:
-            d = cache_dir_for(models[name]["repo"])
-            if d.exists():
-                shutil.rmtree(d)
-                print(f"  deleted {name} ({d})")
+        delete_models(models, args.delete)
         return list_models(models)
 
     if args.only:

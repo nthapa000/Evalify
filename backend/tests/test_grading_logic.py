@@ -3,7 +3,7 @@
 import pytest
 
 from app.pipeline import numeric
-from app.services.evaluator import grade_mcq, grade_numerical
+from app.pipeline.scoring import grade_mcq, grade_numerical
 from app.services.ollama_engine import normalise_mcq, parse_answers
 from app.services.subjective_grader import _result
 

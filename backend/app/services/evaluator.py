@@ -1,20 +1,24 @@
 # evaluator.py — evaluates one submission (runs as a FastAPI background task).
 #
-# Flow: load submission + paper → read answers (OMR or handwriting) → grade MCQ,
-# numerical, subjective → save result in MongoDB → log the run to MLflow.
+# Flow: load submission + paper → two-reader pipeline (app/pipeline) when models
+# are reachable, else the legacy single-model Ollama path → save → log to MLflow.
 
 from __future__ import annotations
 
+import asyncio
+import json
 import os
+import tempfile
 import time
 import traceback
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Dict
 
 from bson import ObjectId
 
 from app.db.mongodb import papers_col, submissions_col
-from app.pipeline import numeric
+from app.pipeline import llm, orchestrator
+from app.pipeline.scoring import grade_mcq, grade_numerical
 from app.services.ollama_engine import OLLAMA_MODEL, OllamaEngine
 from app.services.omr_engine import OMREngine
 from app.services.pdf_utils import is_pdf, parse_mcq_text, pdf_extract_text, pdf_to_image
@@ -50,29 +54,39 @@ async def evaluate_submission(submission_id: str) -> None:
         files = sub.get("file_paths") or [sub.get("file_path", "")]
         print(f"\n═══ Evaluating {sub.get('roll_no', '?')} | {paper['name']} | {ptype} | {sheet_type} | {len(files)} page(s)")
 
-        # Read answers from every page
-        answers, confidence, engine, read_latency = _extract_all(files, sheet_type, n_mcq, n_num, n_subj)
+        # Two-reader pipeline when models are up (OMR needs none); else legacy Ollama path
+        if _use_pipeline(sheet_type):
+            out = await asyncio.to_thread(orchestrator.run, paper, files, sheet_type)
+            mcq_score, n_correct, mcq_detail = out["mcq_score"], out["n_correct"], out["mcq_detail"]
+            num_score, num_detail = out["numerical_score"], out["numerical_detail"]
+            subj_score, subj_detail = out["subjective_score"], out["subjective_detail"]
+            engine, confidence, read_latency, llm_latency = "pipeline_v2", 1.0, out["latency_s"], 0.0
+        else:
+            out = None
+            answers, confidence, engine, read_latency = _extract_all(files, sheet_type, n_mcq, n_num, n_subj)
+            mcq_score, n_correct, mcq_detail = grade_mcq(answers, paper, n_mcq)
+            num_score, num_detail = grade_numerical(answers, paper, n_num)
+            subj_score, subj_detail, llm_latency = _grade_subjective(answers, paper, n_subj)
 
-        # Grade each section
-        mcq_score, n_correct, mcq_detail = grade_mcq(answers, paper, n_mcq)
-        num_score, num_detail = grade_numerical(answers, paper, n_num)
-        subj_score, subj_detail, llm_latency = _grade_subjective(answers, paper, n_subj)
-
-        # Totals
+        # Totals (+ how many questions a TA must check)
         total = mcq_score + num_score + subj_score
         max_score = float(paper.get("totalMarks", n_mcq + n_num))
+        review = out["review"] if out else []
         result = {
             "mcqScore": mcq_score, "numericalScore": num_score, "subjectiveScore": subj_score,
             "totalScore": total, "maxScore": max_score,
             "percentage": round(total / max_score * 100, 1) if max_score > 0 else 0.0,
             "engine": engine, "ocrConfidence": round(confidence, 3), "sheetType": sheet_type,
+            "needsReview": bool(review), "reviewCount": len(review),
         }
-        print(f"  Score: {total}/{max_score} ({result['percentage']}%) via {engine}")
+        print(f"  Score: {total}/{max_score} ({result['percentage']}%) via {engine}; "
+              f"{len(review)} question(s) flagged for TA review")
 
         # Save to MongoDB
         await submissions_col().update_one({"_id": sub["_id"]}, {"$set": {
             "status": "evaluated", "result": result,
             "mcqDetail": mcq_detail, "numericalDetail": num_detail, "subjectiveDetail": subj_detail,
+            "review": review, "pipeline": {k: out[k] for k in ("models", "quality", "prompt_version")} if out else None,
             "evaluatedAt": datetime.now(timezone.utc).isoformat(),
         }})
 
@@ -83,7 +97,8 @@ async def evaluate_submission(submission_id: str) -> None:
             "accuracy": n_correct / n_mcq if n_mcq else 0,
             "eval_latency_s": round(time.time() - t0, 3), "ollama_latency_s": read_latency,
             "llm_latency_s": llm_latency, "ocr_confidence": confidence,
-        })
+            "review_count": len(review), "questions": n_mcq + n_num + n_subj,
+        }, out)
 
     except Exception as exc:
         traceback.print_exc()
@@ -132,63 +147,6 @@ def _extract_page(path: str, sheet_type: str, n_mcq: int, n_num: int, n_subj: in
 
 # ── Grading ──────────────────────────────────────────────────────────────────
 
-def _letters(ans) -> frozenset:
-    """'A,C' → {'A','C'}; None → empty set."""
-    return frozenset(a.strip().upper() for a in str(ans or "").split(",") if a.strip())
-
-
-def grade_mcq(answers: Dict[str, str], paper: dict, n_mcq: int):
-    """Exact-set MCQ grading with optional negative marking. Returns (score, n_correct, detail)."""
-    key = paper.get("mcqAnswers", {})
-    per_q = paper.get("mcqQuestionMarks", {})
-    default = float(paper.get("mcqMarks", 1))
-    cfg = paper.get("config", {})
-    neg_qs = cfg.get("negativeMarkingQuestions", []) if cfg.get("negativeMarkingScope") == "per_question" else None
-
-    score, n_correct, detail = 0.0, 0, []
-    for i in range(1, n_mcq + 1):
-        q = f"Q{i}"
-        got, want = _letters(answers.get(q)), _letters(key.get(q))
-        marks = float(per_q.get(q, default))
-        penalty = -(marks / 4) if cfg.get("negativeMaking") and (neg_qs is None or q in neg_qs) else 0.0
-
-        # Status: blank / correct / over-filled / under-filled / wrong
-        if not got:
-            status, earned = "unanswered", 0.0
-        elif got == want:
-            status, earned = "correct", marks
-            n_correct += 1
-        else:
-            status = "wrong_overfill" if got > want else "wrong_underfill" if got < want else "wrong"
-            earned = penalty
-
-        score += earned
-        detail.append({"question": q, "student_answer": ",".join(sorted(got)) or None,
-                       "correct_answer": ",".join(sorted(want)) or None, "status": status,
-                       "marks_available": marks, "marks_earned": earned})
-    return max(0.0, score), n_correct, detail
-
-
-def grade_numerical(answers: Dict[str, str], paper: dict, n_num: int):
-    """Numeric grading in code (fractions, units, tolerance). Returns (score, detail)."""
-    key = paper.get("numericalAnswers", {})
-    per_q = paper.get("numericalQuestionMarks", {})
-    default = float(paper.get("numericalMarks", 1))
-
-    score, detail = 0.0, []
-    for i in range(1, n_num + 1):
-        q = f"N{i}"
-        marks = float(per_q.get(q, default))
-        res = numeric.compare(answers.get(q), key.get(q))
-        earned = marks if res.status == "correct" else 0.0
-        score += earned
-        detail.append({"question": q, "student_answer": res.student_raw or None,
-                       "accepted_answers": numeric.accepted_display(key.get(q)),
-                       "status": res.status, "flags": res.flags,
-                       "marks_available": marks, "marks_earned": earned})
-    return score, detail
-
-
 def _grade_subjective(answers: Dict[str, str], paper: dict, n_subj: int):
     """Grade each subjective answer with the LLM. Returns (score, detail, latency_s)."""
     questions = paper.get("subjectiveQuestions", [])
@@ -230,17 +188,38 @@ def _grade_subjective(answers: Dict[str, str], paper: dict, n_subj: int):
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
-def _log_mlflow(submission_id, paper, ptype, sheet_type, engine, n_mcq, n_num, n_subj, metrics):
-    """Log one run and register model versions in MLflow (best effort)."""
+def _use_pipeline(sheet_type: str) -> bool:
+    """Pipeline unless forced legacy; handwriting additionally needs a live reader model."""
+    mode = os.environ.get("EVALIFY_PIPELINE", "auto")
+    if mode == "legacy":
+        return False
+    return mode == "v2" or sheet_type == "omr" or llm.any_live()
+
+
+def _log_mlflow(submission_id, paper, ptype, sheet_type, engine, n_mcq, n_num, n_subj, metrics, out=None):
+    """Log one run (params, metrics, full per-question outputs) and model versions to MLflow."""
     try:
         from app.db.mlflow_logger import log_evaluation_run, register_model_version
     except Exception:
         return
+    counts = {"mcq_count": n_mcq, "numerical_count": n_num, "subjective_count": n_subj}
+
+    # Pipeline run: model repo@revision per role + prompt version; every output as a JSON artifact
+    if out:
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
+            json.dump(out, fh, default=str, indent=1)
+        log_evaluation_run(submission_id=submission_id, paper_id=str(paper["_id"]), paper_type=ptype,
+                           metrics=metrics, artifacts={"outputs": fh.name},
+                           params={"engine": engine, "sheet_type": sheet_type,
+                                   "prompt_version": out["prompt_version"], **out["models"], **counts})
+        os.unlink(fh.name)
+        return
+
+    # Legacy run: Ollama model tags
     run_id = log_evaluation_run(
         submission_id=submission_id, paper_id=str(paper["_id"]), paper_type=ptype, metrics=metrics,
         params={"engine": engine, "sheet_type": sheet_type, "ollama_mode": _ollama.mode,
-                "vision_model": OLLAMA_MODEL, "grader_model": OLLAMA_LLM_MODEL,
-                "mcq_count": n_mcq, "numerical_count": n_num, "subjective_count": n_subj})
+                "vision_model": OLLAMA_MODEL, "grader_model": OLLAMA_LLM_MODEL, **counts})
     # Track which model produced these scores in the Model Registry
     if run_id and _ollama.mode == "real":
         register_model_version("evalify-vision-ocr", run_id, description=f"Vision OCR: {OLLAMA_MODEL}",

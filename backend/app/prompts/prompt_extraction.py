@@ -14,7 +14,7 @@ def build_extraction_prompt(mcq_count: int, numerical_count: int = 0,
     sections, rules, example = [], [], []
     if mcq_count:
         sections.append(f"MCQ (Q1 to Q{mcq_count}): one or more option letters ({options}).")
-        rules.append(f"MCQ: one option → \"B\"; several → sorted and comma-joined, e.g. \"A,C\"; "
+        rules.append("MCQ: one option → \"B\"; several → sorted and comma-joined, e.g. \"A,C\"; "
                      "blank or unreadable → omit the key.")
         example.append(f'"mcq": {{"Q1": "C", "Q2": "B,D", ..., "Q{mcq_count}": "A"}}')
     if numerical_count:
