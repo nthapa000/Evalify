@@ -85,3 +85,11 @@ def test_quality_gate(tmp_path):
     img, rep = quality.prepare(str(sharp))
     assert rep.ok and max(img.size) <= quality.TARGET_LONG_SIDE
     assert "image is blurry" in quality.prepare(str(blurry))[1].reasons
+
+
+# Abstention = no usable answer; only then is the tie-break reader asked
+def test_abstained():
+    from app.pipeline.orchestrator import abstained
+    assert abstained(Reading(status="blank")) and abstained(Reading(status="unclear", value=""))
+    assert abstained(Reading(status="error")) and abstained(Reading(status="answered", value=""))
+    assert not abstained(Reading(status="answered", value="B"))

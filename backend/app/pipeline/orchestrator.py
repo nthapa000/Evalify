@@ -52,7 +52,7 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
     else:
         reads, models = _read_handwritten(pages, questions)
     # Grade whatever reader A read, even if it said "unclear" (that question is routed anyway)
-    answers = {qid: r["a"].value for qid, r in reads.items() if r["a"].value}
+    answers = {qid: r.get("final", r["a"]).value for qid, r in reads.items() if r.get("final", r["a"]).value}
 
     # 3. Closed-form questions: scored in code
     n_mcq = sum(q.kind == "mcq" for q in questions)
@@ -71,9 +71,11 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
     review = []
     for d in mcq_detail + num_detail + subj_detail:
         r = reads.get(d["question"], {"reasons": [], "a": Reading(), "b": Reading()})
+        if "final" in r and r["final"] is not r["a"]:
+            d["accepted_by"] = "readers B + C (A abstained)" if r["final"] is r["b"] else "readers A + C (B abstained)"
         reasons = sheet_reasons + r["reasons"] + d.pop("_grader_reasons", [])
         d.update(needs_review=bool(reasons), review_reasons=reasons,
-                 readings={"a": asdict(r["a"]), "b": asdict(r["b"])})
+                 readings={k: asdict(r[k]) for k in ("a", "b", "c") if k in r})
         if reasons:
             review.append({"question": d["question"], "reasons": reasons})
 
@@ -146,6 +148,7 @@ def _read_handwritten(pages, questions: List[Question]):
     if ep_a is None:
         raise RuntimeError("no reader model is reachable")
     ep_b = llm.resolve("reader_b", exclude=(ep_a.name,))
+    ep_c = llm.resolve("reader_c", exclude=(ep_a.name, ep_b.name if ep_b else ""))
     crops = readers.segment(pages, questions, llm.resolve("segmenter"))
 
     def read_one(q: Question):
@@ -158,14 +161,34 @@ def _read_handwritten(pages, questions: List[Question]):
         if q.kind == "subjective" and sim is not None:
             agreed = sim >= routing.thresholds()["transcript_min_similarity"]
         reasons = routing.reader_reasons(q.kind, a, b, agreed, sim)
+        final, c = a, Reading()
+
+        # Abstention (one reader answered, the other blank/unclear/failed): ask a third reader.
+        # If it confirms the answering reader, 2 of 3 agree → accept; a real conflict
+        # (both answered, different values) always stays with the TA.
+        if q.kind != "subjective" and ep_c and abstained(a) != abstained(b):
+            answered = b if abstained(a) else a
+            c = readers.read_ocr(ep_c, q, imgs)
+            if readers.agree(q.kind, c, answered) is True:
+                final = answered
+                reasons = [r for r in reasons if r.startswith(("page ", "answer not located"))]
+            else:
+                reasons.append(f"tie-break reader did not confirm ({c.reader}: {c.value or c.status!r})")
+
         if q.id not in crops and crops:
             reasons.append("answer not located on the sheet (read from full page)")
-        return q.id, {"a": a, "b": b, "reasons": reasons, "images": imgs}
+        return q.id, {"a": a, "b": b, "c": c, "final": final, "reasons": reasons, "images": imgs}
 
     with ThreadPoolExecutor(WORKERS) as pool:
         reads = dict(pool.map(read_one, questions))
-    models = {"reader_a": ep_a.version, "reader_b": ep_b.version if ep_b else "none"}
+    models = {"reader_a": ep_a.version, "reader_b": ep_b.version if ep_b else "none",
+              "reader_c": ep_c.version if ep_c else "none"}
     return reads, models
+
+
+def abstained(r: Reading) -> bool:
+    """A reader that gave no usable answer (blank / unclear / failed / empty)."""
+    return r.status in ("blank", "unclear", "error", "missing") or not r.value
 
 
 # ── Subjective grading ───────────────────────────────────────────────────────

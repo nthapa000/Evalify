@@ -173,3 +173,17 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   wrong-answer verdict, both subjective marks incl. both graders agreeing); PaddleOCR read all
   MCQ/numbers right; Qwen3.8 returned empty on some script-font crops → routed via reader
   disagreement. **The synthetic font is now the limit — real handwritten sheets are needed.**
+
+### Third reader for abstentions (user decision), 14 Nov
+- **Why routed before:** at grading time nobody knows which reader is right; exact answers need
+  two independent readings, so a lone reading went to a TA.
+- **User decision: abstentions get a tie-break reader instead of a TA.** If one reader answered
+  and the other abstained (blank / unclear / failed / empty), a third reader (`reader_c` role:
+  GLM-OCR → Gemma 4 → Chandra, never the same model as A or B) reads the answer. If it agrees
+  with the answering reader (2 of 3), the answer is auto-accepted; otherwise it goes to a TA
+  with "tie-break reader did not confirm".
+- **Real conflicts still always go to a TA** (both answered, different values) — a third
+  reader is not used to out-vote one of two confident readers.
+- MCQ and numerical only; subjective keeps its transcript-similarity + grader checks.
+- Smoke test after the change: all 8 synthetic answers auto-graded correctly, 0 routed
+  (3 accepted by B + C after Qwen3.8 abstained).

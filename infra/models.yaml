@@ -153,5 +153,8 @@ roles:
   segmenter:        [qwen38-27b-fp8, gemma4-31b-fp8]
   reader_a:         [qwen38-27b-fp8, gemma4-31b-fp8]
   reader_b:         [paddleocr-vl-1.6, glm-ocr, chandra-ocr-2, nanonets-ocr2-3b, gemma4-31b-fp8]
+  # Tie-breaker: asked only when one reader answered and the other abstained (MCQ/numerical);
+  # first live model that is not already reader A or B, preferring a third model family
+  reader_c:         [glm-ocr, gemma4-31b-fp8, chandra-ocr-2, nanonets-ocr2-3b, paddleocr-vl-1.6]
   grader_1:         [qwen38-27b-fp8, gemma4-31b-fp8]
   grader_2:         [gemma4-31b-fp8, gpt-oss-20b]
