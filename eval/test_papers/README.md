@@ -46,11 +46,12 @@ real data.
 
 ## Labelling (what the student actually wrote — not the key)
 
-Fill one row per answer sheet in `labels/*_labels.csv`:
+Each `labels/*_labels.csv` already has one row per planned sheet (sheet id + photo file name filled in;
+name your photos to match, or edit `photo_file`). Open it in Excel / LibreOffice / Google Sheets and fill:
 - MCQ / OMR columns: the letter(s) written or filled, e.g. `B` or `A,C`; empty if blank.
 - Numerical columns: copy the value exactly as written, including the unit, e.g. `2.5 km`, `5/8`, `-7 °C`.
 - `edge_cases`: which tricks are on this sheet (e.g. `Q3 struck B→C; Q5 blank`).
-- OMR: also note the layout (1, 2 or 3) in `notes`.
+- OMR: the `layout` column is pre-filled (1, 2 or 3) from the sheet id.
 
 Put the photos and filled CSVs in one folder and tell Claude; an import script will turn them into an
 eval set (`eval/data/own_<set>/manifest.jsonl`) for the bake-off, OMR and end-to-end runs.

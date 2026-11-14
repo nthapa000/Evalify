@@ -1,2 +1,16 @@
-sheet_id,photo_files,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,edge_cases,notes
-example_01,example_01_p1.jpg,,,,,,,,,,,e.g. Q3 crossed-out B then C; Q5 blank,"write the letters as the student wrote them, e.g. A,C"
+sheet_id,photo_file,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,edge_cases,notes
+mcq_s01,mcq_s01_p1.jpg,,,,,,,,,,,,
+mcq_s02,mcq_s02_p1.jpg,,,,,,,,,,,,
+mcq_s03,mcq_s03_p1.jpg,,,,,,,,,,,,
+mcq_s04,mcq_s04_p1.jpg,,,,,,,,,,,,
+mcq_s05,mcq_s05_p1.jpg,,,,,,,,,,,,
+mcq_s06,mcq_s06_p1.jpg,,,,,,,,,,,,
+mcq_s07,mcq_s07_p1.jpg,,,,,,,,,,,,
+mcq_s08,mcq_s08_p1.jpg,,,,,,,,,,,,
+mcq_s09,mcq_s09_p1.jpg,,,,,,,,,,,,
+mcq_s10,mcq_s10_p1.jpg,,,,,,,,,,,,
+mcq_s11,mcq_s11_p1.jpg,,,,,,,,,,,,
+mcq_s12,mcq_s12_p1.jpg,,,,,,,,,,,,
+mcq_s13,mcq_s13_p1.jpg,,,,,,,,,,,,
+mcq_s14,mcq_s14_p1.jpg,,,,,,,,,,,,
+mcq_s15,mcq_s15_p1.jpg,,,,,,,,,,,,

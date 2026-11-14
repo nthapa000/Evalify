@@ -201,13 +201,14 @@ def evalify_paper(name, kind, mcq, num=()):
     return p
 
 
-def label_csv(path, qlabels, extra_note):
-    """Template: one row per answer sheet; fill what the student ACTUALLY wrote."""
+def label_csv(path, qlabels, sheet_ids, extra_cols=()):
+    """Ready-to-fill template: one pre-filled row per planned sheet; type what the student ACTUALLY wrote."""
     with open(path, "w", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow(["sheet_id", "photo_files"] + qlabels + ["edge_cases", "notes"])
-        w.writerow(["example_01", "example_01_p1.jpg"] + ["" for _ in qlabels]
-                   + ["e.g. Q3 crossed-out B then C; Q5 blank", extra_note])
+        w.writerow(["sheet_id", "photo_file", *extra_cols, *qlabels, "edge_cases", "notes"])
+        for sid in sheet_ids:
+            extra = [sid.split("_")[1][1:]] if "layout" in extra_cols else []
+            w.writerow([sid, f"{sid}_p1.jpg", *extra, *["" for _ in qlabels], "", ""])
 
 
 def main():
@@ -268,14 +269,15 @@ def main():
     for name, p in papers.items():
         (OUT / "keys" / f"{name}.json").write_text(json.dumps(p, indent=1, ensure_ascii=False))
 
-    # Label templates
+    # Label templates: one pre-filled row per planned sheet
     label_csv(OUT / "labels" / "omr_labels.csv", [f"Q{i}" for i in range(1, 21)],
-              "layout = 1, 2 or 3; write the bubble(s) filled, e.g. B or B,C; blank = leave empty")
+              [f"omr_L{l}_s{n:02d}" for l in (1, 2, 3) for n in range(1, 6)], extra_cols=("layout",))
     label_csv(OUT / "labels" / "mcq_labels.csv", [f"Q{i}" for i in range(1, 11)],
-              "write the letters as the student wrote them, e.g. A,C")
+              [f"mcq_s{n:02d}" for n in range(1, 16)])
     for name in MCQ_NUM_PAPERS:
         label_csv(OUT / "labels" / f"{name}_labels.csv", [f"Q{i}" for i in range(1, 6)],
-                  "Q3–Q5: copy the value exactly as written incl. unit, e.g. '2.5 km' or '5/8'")
+                  [f"{name[-2:]}_s{n:02d}" for n in range(1, 6)])
+
     print("written to", OUT)
 
 
