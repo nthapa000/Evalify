@@ -273,3 +273,14 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   Gemma + Qwen + GLM-OCR page majority (0 silent, 98 % / 97 % auto) vs current crop pipeline 85 % / 57 % auto.
   Qwen as numerical grader violates the tolerance rule → keep code grading. Glare gate too strict for phone
   photos; show-through ghost answers on blank sheets are a real risk. Comma-label parse bug (`4, 440 W`) fixed.
+
+## 15 Nov 2026 — dataset for paper type C (MCQ + numerical + subjective)
+- User cannot write type-C sheets themselves. Decision: **Mendeley sf3kvjwknt (all 50 sheets)** is the main type-C
+  set (20 MCQ + 15 short answers, teacher marks per answer, CC BY 4.0; no numerical questions).
+  Rubrics for Q21–Q35 were drafted by Claude → user reviews `eval/reports/mendeley/RUBRICS_REVIEW.md` first.
+- Numerical-with-working: **EDU-CIRCUIT-HW** (arXiv 2602.00095, Georgia Tech ECE 2040, 1,334 handwritten circuit
+  solutions, 29 students, rubrics + per-aspect deductions E/M/U/C/NC, transcripts for 513). Caveats: no problem
+  statements (textbook copyright), answers are often expressions/phasors not single numbers, its rules penalise
+  units (ours ignore them), dataset licence not confirmed. Download page (DOI 10.35090/gatech/81252) blocks
+  automated access → the user downloads it via browser. (An earlier link I gave, arXiv 2603.24961, was a different
+  dataset — ScratchMath — corrected.)
