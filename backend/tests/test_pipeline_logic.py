@@ -93,3 +93,18 @@ def test_abstained():
     assert abstained(Reading(status="blank")) and abstained(Reading(status="unclear", value=""))
     assert abstained(Reading(status="error")) and abstained(Reading(status="answered", value=""))
     assert not abstained(Reading(status="answered", value="B"))
+
+
+# Label stripping must not eat the integer part of a decimal answer ("3. 4.01" → "4.01", not "01")
+def test_label_strip_keeps_decimals():
+    from app.pipeline.readers import parse_final_number, strip_label
+    assert parse_final_number(strip_label("3. 4.01", "Q3")) == "4.01"
+    assert parse_final_number(strip_label("Q5: 0.626", "Q5")) == "0.626"
+    assert strip_label("3.5", "Q3") == "3.5"
+
+
+# Students often write a comma after the question number ("4, 440 W"); "4,440" stays a number
+def test_label_strip_comma():
+    from app.pipeline.readers import parse_final_number, strip_label
+    assert parse_final_number(strip_label("4, 440 W", "Q4")) == "440 W"
+    assert strip_label("4,440", "Q4") == "4,440"

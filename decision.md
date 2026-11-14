@@ -244,3 +244,32 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - User uploaded the test sheets as 7 PDFs in `eval/test_papers/dataset_created/` (one sheet per page, in order; 45 sheets = 15 OMR + 15 MCQ + 3×5 MCQ+numerical).
 - `eval/extract_test_photos.py` pulls the original phone photo from each page (largest embedded JPEG, not re-encoded; scanner-app logo strip dropped) → `eval/test_papers/photos/<set>_sNN_p1.jpg`; `photos_overview.pdf` is a labelled thumbnail sheet for the user to verify order/naming.
 - Run starts only after the user confirms the names match the label CSVs.
+
+## 15 Nov 2026 — grading rules from the user + architecture sweep
+- **Git:** the user pushes to GitHub themselves; Claude only commits locally.
+- **OMR:** a bubble that is not 100 % filled still counts as marked. OMR sheets are always printed black & white.
+  Checked on the 15 real sheets: every labelled-filled bubble (incl. partial fills) has darkness ≥ 0.46 above the
+  blank, every empty one ≤ 0.07 → the existing threshold 0.10 already marks partial fills; no change needed.
+- **Numerical answers (teacher rule):** the question states the unit, so marks go on the **number in the key's unit,
+  within the key's tolerance**; the unit itself is ignored (missing or different unit is fine, only flagged
+  `unit_ignored`). **No unit conversion**: for a key of 2500 m, `2500`, `2500 m`, `2500.0001`, `2500 km` score;
+  `2.5 km`, `2500.5` do not. Test-paper keys now use tolerance ±0.001 (was 0.01–0.5). Tolerance edge is inclusive
+  (`0.626` vs 0.625 ± 0.001 scores). Implemented in `numeric.compare`; tests updated.
+- **Bug found by the user's sheets:** label stripping ate the integer part of decimals (`3. 4.01` → `01`,
+  `0.626` → `626`) in `readers.strip_label` / `parse_final_number` / `read_general`. Fixed + regression test.
+- **Architecture sweep** (`eval/arch_sweep.py`, user asked for "all reader × grader combinations, all patterns"):
+  import (label CSVs → `eval/data/own_{omr,mcq,mcqnum}`), read (each live model once per sheet, cached in
+  `eval/reports/arch_sweep/raw/`), score (offline). Sources: crop reading with segmenter Qwen/Gemma × reader
+  Qwen/Gemma/PaddleOCR/GLM/Chandra; whole-page reading by each model; direct VLM grading (read+grade in one call);
+  OMR template / legacy / VLM. Architectures: single, pair, pair+tie-break (current), pair+majority; numerical
+  grader code vs Qwen vs Gemma. For MCQ, grading is always the exact-set code rule (an LLM adds nothing there);
+  the LLM-grader alternative for MCQ/OMR is the direct-grading source. Nanonets and gpt-oss are not loaded in the
+  current GPU job, so they are not in this sweep.
+- New prompts (TEMPLATE_VERSION p3): page_prompt, omr_page_prompt, direct_grade_prompt, numeric_grade_prompt.
+- Label edge cases kept as written: mcq_s09 has digits as answers (`1`, `A3`, `4`), 2A_s04 Q1 `50`; blank answer
+  sheets (omr_L*_s03, mcq_s08, 2A_s05, 2B_s05, 2C_s04), some with show-through from the back.
+- **Sweep results (15 Nov):** see `eval/reports/arch_sweep/FINDINGS.md`. Recommended (pending user approval):
+  OMR = template + Qwen page cross-check (0 silent, 299/300 auto); handwritten MCQ and MCQ+numerical = whole-page
+  Gemma + Qwen + GLM-OCR page majority (0 silent, 98 % / 97 % auto) vs current crop pipeline 85 % / 57 % auto.
+  Qwen as numerical grader violates the tolerance rule → keep code grading. Glare gate too strict for phone
+  photos; show-through ghost answers on blank sheets are a real risk. Comma-label parse bug (`4, 440 W`) fixed.

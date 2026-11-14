@@ -1,0 +1,35 @@
+{
+  "name": "Electricity and Energy (2C)",
+  "subject": "Basic Science",
+  "mcqCount": 2,
+  "mcqMarks": 1,
+  "mcqAnswers": {
+    "Q1": "C",
+    "Q2": "B"
+  },
+  "totalMarks": 8,
+  "studentsWriteOnlyAnswers": true,
+  "type": "mcq_numerical",
+  "numericalCount": 3,
+  "numericalMarks": 2,
+  "numericalAnswers": {
+    "N1": {
+      "answer": "0.5",
+      "tolerance": 0.001,
+      "tolerance_type": "abs",
+      "unit": "A"
+    },
+    "N2": {
+      "answer": "440",
+      "tolerance": 0.001,
+      "tolerance_type": "abs",
+      "unit": "W"
+    },
+    "N3": {
+      "answer": "9",
+      "tolerance": 0.001,
+      "tolerance_type": "abs",
+      "unit": "J"
+    }
+  }
+}

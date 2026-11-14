@@ -1,0 +1,822 @@
+{
+"omr:template": {
+"Q1": {
+"status": "answered",
+"value": "A",
+"raw": "{\"A\": 0.574, \"B\": 0.0, \"C\": -0.002, \"D\": 0.01}",
+"latency": 0.09,
+"margin": 0.09
+},
+"Q2": {
+"status": "answered",
+"value": "B,C",
+"raw": "{\"A\": 0.005, \"B\": 0.684, \"C\": 0.673, \"D\": -0.0}",
+"latency": 0.09,
+"margin": 0.095
+},
+"Q3": {
+"status": "answered",
+"value": "B",
+"raw": "{\"A\": 0.003, \"B\": 0.629, \"C\": -0.002, \"D\": 0.001}",
+"latency": 0.09,
+"margin": 0.097
+},
+"Q4": {
+"status": "answered",
+"value": "B",
+"raw": "{\"A\": -0.015, \"B\": 0.586, \"C\": 0.001, \"D\": 0.001}",
+"latency": 0.09,
+"margin": 0.099
+},
+"Q5": {
+"status": "answered",
+"value": "B",
+"raw": "{\"A\": -0.028, \"B\": 0.635, \"C\": -0.014, \"D\": 0.017}",
+"latency": 0.09,
+"margin": 0.083
+},
+"Q6": {
+"status": "answered",
+"value": "B",
+"raw": "{\"A\": 0.004, \"B\": 0.62, \"C\": -0.011, \"D\": -0.008}",
+"latency": 0.09,
+"margin": 0.096
+},
+"Q7": {
+"status": "answered",
+"value": "B",
+"raw": "{\"A\": -0.01, \"B\": 0.616, \"C\": 0.007, \"D\": -0.007}",
+"latency": 0.09,
+"margin": 0.093
+},
+"Q8": {
+"status": "answered",
+"value": "B",
+"raw": "{\"A\": -0.003, \"B\": 0.607, \"C\": -0.018, \"D\": 0.013}",
+"latency": 0.09,
+"margin": 0.087
+},
+"Q9": {
+"status": "answered",
+"value": "D",
+"raw": "{\"A\": -0.027, \"B\": -0.019, \"C\": -0.025, \"D\": 0.641}",
+"latency": 0.09,
+"margin": 0.119
+},
+"Q10": {
+"status": "answered",
+"value": "D",
+"raw": "{\"A\": 0.002, \"B\": -0.001, \"C\": -0.031, \"D\": 0.586}",
+"latency": 0.09,
+"margin": 0.098
+},
+"Q11": {
+"status": "answered",
+"value": "A",
+"raw": "{\"A\": 0.619, \"B\": 0.012, \"C\": 0.002, \"D\": -0.012}",
+"latency": 0.09,
+"margin": 0.088
+},
+"Q12": {
+"status": "answered",
+"value": "B,C",
+"raw": "{\"A\": -0.025, \"B\": 0.521, \"C\": 0.561, \"D\": 0.004}",
+"latency": 0.09,
+"margin": 0.096
+},
+"Q13": {
+"status": "answered",
+"value": "C",
+"raw": "{\"A\": -0.021, \"B\": -0.02, \"C\": 0.558, \"D\": -0.028}",
+"latency": 0.09,
+"margin": 0.12
+},
+"Q14": {
+"status": "answered",
+"value": "C",
+"raw": "{\"A\": -0.021, \"B\": -0.01, \"C\": 0.508, \"D\": -0.014}",
+"latency": 0.09,
+"margin": 0.11
+},
+"Q15": {
+"status": "answered",
+"value": "C",
+"raw": "{\"A\": -0.005, \"B\": -0.012, \"C\": 0.576, \"D\": -0.005}",
+"latency": 0.09,
+"margin": 0.105
+},
+"Q16": {
+"status": "answered",
+"value": "C",
+"raw": "{\"A\": -0.022, \"B\": -0.006, \"C\": 0.598, \"D\": 0.013}",
+"latency": 0.09,
+"margin": 0.087
+},
+"Q17": {
+"status": "answered",
+"value": "C",
+"raw": "{\"A\": -0.022, \"B\": -0.013, \"C\": 0.591, \"D\": -0.016}",
+"latency": 0.09,
+"margin": 0.113
+},
+"Q18": {
+"status": "answered",
+"value": "A",
+"raw": "{\"A\": 0.628, \"B\": -0.004, \"C\": -0.017, \"D\": -0.019}",
+"latency": 0.09,
+"margin": 0.104
+},
+"Q19": {
+"status": "answered",
+"value": "A",
+"raw": "{\"A\": 0.559, \"B\": 0.01, \"C\": -0.007, \"D\": -0.022}",
+"latency": 0.09,
+"margin": 0.09
+},
+"Q20": {
+"status": "answered",
+"value": "A",
+"raw": "{\"A\": 0.567, \"B\": 0.002, \"C\": -0.021, \"D\": -0.021}",
+"latency": 0.09,
+"margin": 0.098
+}
+},
+"omr:legacy": {
+"Q1": {
+"status": "answered",
+"value": "A,B,C,D,E",
+"raw": "",
+"latency": 0.0,
+"margin": 0.081
+},
+"Q2": {
+"status": "answered",
+"value": "A,B,C,D,E",
+"raw": "",
+"latency": 0.0,
+"margin": 0.073
+},
+"Q3": {
+"status": "answered",
+"value": "A,B,C,D,E",
+"raw": "",
+"latency": 0.0,
+"margin": 0.08
+},
+"Q4": {
+"status": "answered",
+"value": "A,B,C,D,E",
+"raw": "",
+"latency": 0.0,
+"margin": 0.077
+},
+"Q5": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.073
+},
+"Q6": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.069
+},
+"Q7": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.063
+},
+"Q8": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.069
+},
+"Q9": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.061
+},
+"Q10": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.062
+},
+"Q11": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.064
+},
+"Q12": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.06
+},
+"Q13": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.057
+},
+"Q14": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.067
+},
+"Q15": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.061
+},
+"Q16": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.06
+},
+"Q17": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.058
+},
+"Q18": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.058
+},
+"Q19": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.053
+},
+"Q20": {
+"status": "answered",
+"value": "A,B,C,D",
+"raw": "",
+"latency": 0.0,
+"margin": 0.062
+}
+},
+"page>qwen": {
+"Q1": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "answered",
+"value": "B,C",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0
+},
+"Q11": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q12": {
+"status": "answered",
+"value": "B,C",
+"raw": "",
+"latency": 0.0
+},
+"Q13": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q14": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q15": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q16": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q17": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q18": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q19": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q20": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 15.59,
+"_error": ""
+},
+"direct>qwen": {
+"Q1": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q2": {
+"status": "answered",
+"value": "B,C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q3": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q4": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q5": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q6": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q7": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q8": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q9": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q10": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q11": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q12": {
+"status": "answered",
+"value": "B,C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q13": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q14": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q15": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q16": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q17": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q18": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q19": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q20": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"_latency": 14.78,
+"_error": ""
+},
+"page>gemma": {
+"Q1": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "answered",
+"value": "A,C",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0
+},
+"Q11": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"Q12": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q13": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q14": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q15": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q16": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q17": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q18": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q19": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"Q20": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 22.884,
+"_error": ""
+},
+"direct>gemma": {
+"Q1": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q2": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q3": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q4": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q5": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q6": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q7": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q8": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q9": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q10": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q11": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q12": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q13": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q14": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q15": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q16": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q17": {
+"status": "answered",
+"value": "D",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q18": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q19": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q20": {
+"status": "answered",
+"value": "A",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"_latency": 21.624,
+"_error": ""
+}
+}

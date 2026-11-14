@@ -1,0 +1,790 @@
+{
+"meta": {
+"blank_page": false,
+"quality_ok": true,
+"reasons": []
+},
+"seg:qwen": {
+"answers": [
+{
+"label": "Q1",
+"bbox": [
+157,
+78,
+218,
+140
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q2",
+"bbox": [
+152,
+209,
+202,
+267
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q3",
+"bbox": [
+138,
+370,
+268,
+423
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q4",
+"bbox": [
+128,
+475,
+315,
+525
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q5",
+"bbox": [
+125,
+565,
+210,
+623
+],
+"continues_from_previous_page": false
+}
+],
+"latency": 4.805,
+"error": ""
+},
+"seg:gemma": {
+"answers": [
+{
+"label": "Q1",
+"bbox": [
+162,
+92,
+211,
+138
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q2",
+"bbox": [
+157,
+221,
+203,
+268
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q3",
+"bbox": [
+143,
+373,
+261,
+416
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q4",
+"bbox": [
+133,
+478,
+308,
+525
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q5",
+"bbox": [
+132,
+571,
+206,
+618
+],
+"continues_from_previous_page": false
+}
+],
+"latency": 10.72,
+"error": ""
+},
+"crop:qwen>qwen": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 0.9\n}",
+"latency": 3.06,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
+"latency": 3.11,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5 A",
+"raw": "{\n  \"status\": \"answered\",\n  \"final_answer\": \"0.5 A\"\n  ,\n  \"confidence\": 1.0\n}",
+"latency": 3.51,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "{\n  \"status\": \"answered\",\n  \"final_answer\": \"440 W\"\n  ,\n  \"confidence\": 0.95\n}",
+"latency": 3.56,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"\"\n, \"confidence\": 0.0}",
+"latency": 2.73,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>gemma": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"options\": []",
+"latency": 33.57,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"options\": []",
+"latency": 33.63,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "unclear",
+"value": "0.5 A",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"0.5 A\"",
+"latency": 33.6,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "unclear",
+"value": "440 W",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"440 W\"  , \"confidence\": 0.5}",
+"latency": 5.43,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "unclear",
+"value": "qJ",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"qJ\"",
+"latency": 33.61,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>paddle": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "C",
+"latency": 0.94,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "B",
+"latency": 0.94,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "0.5A",
+"latency": 0.96,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "440 W",
+"latency": 0.94,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "95",
+"raw": "95",
+"latency": 0.91,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>glm": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "C",
+"latency": 0.66,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "B",
+"latency": 0.66,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "0.5A",
+"latency": 0.46,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440W",
+"raw": "440W",
+"latency": 0.46,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "9 J",
+"raw": "9 J",
+"latency": 0.2,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>chandra": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "C",
+"latency": 0.76,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "B",
+"latency": 0.76,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "0.5A",
+"latency": 0.79,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "440 W",
+"latency": 0.79,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "95",
+"raw": "95",
+"latency": 0.67,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>qwen": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "{\"status\": \"answered\", \"options\": [\"C\"], \"confidence\": 0.95}",
+"latency": 1.7,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
+"latency": 2.15,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "{\"status\": \"answered\", \"final_answer\": \"0.5A\", \"confidence\": 1.0}",
+"latency": 1.86,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "{\"status\": \"answered\", \"final_answer\": \"440 W\", \"confidence\": 0.95}",
+"latency": 1.89,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "unclear",
+"value": "9J",
+"raw": "{\n  \"status\": \"unclear\",\n  \"final_answer\": \"9J\"\n  \n  , \"confidence\": 0.5\n}",
+"latency": 2.05,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>gemma": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"options\": []",
+"latency": 31.99,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"options\": []",
+"latency": 31.99,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "unclear",
+"value": "0.5 A",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"0.5 A\"",
+"latency": 31.94,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "unclear",
+"value": "440 W",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"440 W\"",
+"latency": 31.94,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "unclear",
+"value": "qJ",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"qJ\"",
+"latency": 31.11,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>paddle": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "C",
+"latency": 0.16,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "B",
+"latency": 0.58,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5 A",
+"raw": "0.5 A",
+"latency": 0.6,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "440 W",
+"latency": 0.59,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "95",
+"raw": "95",
+"latency": 0.53,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>glm": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "C",
+"latency": 0.15,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "B",
+"latency": 0.26,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "0.5A",
+"latency": 0.44,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440W",
+"raw": "440W",
+"latency": 0.27,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "95",
+"raw": "95",
+"latency": 0.25,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>chandra": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "C",
+"latency": 0.73,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "B",
+"latency": 0.7,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "0.5A",
+"latency": 0.72,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "440 W",
+"latency": 0.73,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "95",
+"raw": "95",
+"latency": 0.67,
+"located": true,
+"error": ""
+}
+},
+"page>qwen": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "answered",
+"value": "0.5 A",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "answered",
+"value": "9 J",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 7.23,
+"_error": ""
+},
+"page>gemma": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "answered",
+"value": "0.5A",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "answered",
+"value": "440W",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "answered",
+"value": "9J",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 10.588,
+"_error": ""
+},
+"page>paddle": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 0.955,
+"_error": "",
+"_text": "C\nB\n0.5A A 400W\n9J\nT3"
+},
+"page>glm": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 1.115,
+"_error": "",
+"_text": "C\n\nB\n\n0.5A\n\n440W\n\n9J"
+},
+"page>chandra": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 3.684,
+"_error": "",
+"_text": "<div data-bbox=\"163 84 208 134\" data-label=\"Text\"><p>C</p></div><div data-bbox=\"157 215 195 264\" data-label=\"Text\"><p>B</p></div><div data-bbox=\"140 375 260 419\" data-label=\"Text\"><p>0.5A</p></div><div data-bbox=\"128 478 307 520\" data-label=\"Text\"><p>440W</p></div><div data-bbox=\"128 569 205 620\" data-label=\"Text\"><p>9J</p></div>"
+},
+"direct>qwen": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"N1": {
+"status": "answered",
+"value": "0.5 A",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"N3": {
+"status": "answered",
+"value": "9 J",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"_latency": 7.112,
+"_error": ""
+},
+"direct>gemma": {
+"Q1": {
+"status": "answered",
+"value": "C",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"Q2": {
+"status": "answered",
+"value": "B",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"N1": {
+"status": "answered",
+"value": "0.5 A",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"N2": {
+"status": "answered",
+"value": "440 W",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"N3": {
+"status": "answered",
+"value": "9 J",
+"raw": "",
+"latency": 0.0,
+"correct": true
+},
+"_latency": 10.134,
+"_error": ""
+}
+}

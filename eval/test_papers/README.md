@@ -11,7 +11,7 @@ Rough work goes on a separate rough sheet, which is not evaluated and not photog
 | MCQ + numerical | `mcq_num/paper_2{A,B,C}_question_paper.pdf` (2 MCQ + 3 numerical) | 5 per paper = 15 | `1. B`, `4. 2500 m` on plain paper |
 
 Answer keys: `keys/answer_keys.pdf` (to read) and `keys/*.json` (Evalify paper format; numerical
-answers carry a tolerance and unit, so `2.5 km`, `2500 m` and `2500` all match a key of 2500 m).
+answers carry a tolerance (±0.001) and unit. Marks go on the **number in the key's unit**, within the tolerance: `2500`, `2500 m`, `2500.0001` and `2500 km` (unit is ignored, only flagged) score for a key of 2500 m; `2.5 km` and `2500.5` do not — no unit conversion.
 
 ## Edge cases to include on purpose
 
@@ -26,7 +26,7 @@ real data.
 - a **wrong** answer on purpose on several sheets (so not every sheet scores full marks)
 
 **MCQ + numerical**
-- equivalent forms: `5/8` vs `0.625`, `1/2` vs `0.5`, `2.5 km` vs `2500 m`
+- equivalent forms: `5/8` vs `0.625`, `1/2` vs `0.5`, `2500` vs `2500 m` (and `2.5 km`, which must score 0)
 - negative value (paper 2B Q4 is −7 °C): write it with and without the unit; one sheet **without the minus sign**
 - a **plausible wrong** value on purpose (e.g. `0.65` instead of `0.625`, `19.8` instead of `19.6`) —
   this checks that no reader silently "corrects" it

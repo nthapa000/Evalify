@@ -60,25 +60,25 @@ MCQ_QUESTIONS = [  # (question, options, answer, multiple?)
     ("Which of these are magnetic materials?", ["Iron", "Copper", "Nickel", "Aluminium"], "A,C", True),
 ]
 
-MCQ_NUM_PAPERS = {  # name → (title, [MCQ (q, opts, ans)], [numerical (q, answer, tolerance, unit)])
+MCQ_NUM_PAPERS = {  # name → (title, [MCQ (q, opts, ans)], [numerical (q, answer, tolerance, unit)])  # tolerance ±0.001 on the number in the key unit (teacher rule)
     "paper_2A": ("Motion and Measurement",
                  [("The SI unit of speed is", ["m/s", "km", "s", "m/s²"], "A"),
                   ("A body at rest has zero", ["velocity", "mass", "weight", "volume"], "A")],
-                 [("A car travels 150 km in 3 hours. What is its average speed in km/h?", "50", 0.01, "km/h"),
-                  ("Convert 2.5 km into metres.", "2500", 0.5, "m"),
-                  ("A stone falls freely from rest for 2 s (take g = 9.8 m/s²). What is its speed after 2 s in m/s?", "19.6", 0.05, "m/s")]),
+                 [("A car travels 150 km in 3 hours. What is its average speed in km/h?", "50", 0.001, "km/h"),
+                  ("Convert 2.5 km into metres.", "2500", 0.001, "m"),
+                  ("A stone falls freely from rest for 2 s (take g = 9.8 m/s²). What is its speed after 2 s in m/s?", "19.6", 0.001, "m/s")]),
     "paper_2B": ("Matter and Heat",
                  [("Which is a chemical change?", ["Melting ice", "Burning paper", "Dissolving sugar", "Cutting wood"], "B"),
                   ("The atomic number of carbon is", ["6", "12", "8", "14"], "A")],
-                 [("A block has mass 200 g and volume 50 cm³. What is its density in g/cm³?", "4", 0.01, "g/cm3"),
-                  ("A liquid at 5 °C cools down by 12 °C. What is its new temperature in °C?", "-7", 0.01, "°C"),
+                 [("A block has mass 200 g and volume 50 cm³. What is its density in g/cm³?", "4", 0.001, "g/cm3"),
+                  ("A liquid at 5 °C cools down by 12 °C. What is its new temperature in °C?", "-7", 0.001, "°C"),
                   ("A 40 mL solution contains 25 mL of acid. What fraction of the solution is acid? (fraction or decimal)", "0.625", 0.001, None)]),
     "paper_2C": ("Electricity and Energy",
                  [("The SI unit of resistance is", ["Ampere", "Volt", "Ohm", "Watt"], "C"),
                   ("Which device changes electrical energy into motion?", ["Generator", "Electric motor", "Battery", "Bulb"], "B")],
-                 [("A 5 V battery is connected to a 10 ohm resistor. What current flows, in amperes?", "0.5", 0.01, "A"),
-                  ("A bulb draws 2 A at 220 V. What is its power in watts?", "440", 0.5, "W"),
-                  ("A 2 kg ball moves at 3 m/s. What is its kinetic energy in joules?", "9", 0.01, "J")]),
+                 [("A 5 V battery is connected to a 10 ohm resistor. What current flows, in amperes?", "0.5", 0.001, "A"),
+                  ("A bulb draws 2 A at 220 V. What is its power in watts?", "440", 0.001, "W"),
+                  ("A 2 kg ball moves at 3 m/s. What is its kinetic energy in joules?", "9", 0.001, "J")]),
 }
 
 

@@ -1,0 +1,35 @@
+{
+  "name": "Motion and Measurement (2A)",
+  "subject": "Basic Science",
+  "mcqCount": 2,
+  "mcqMarks": 1,
+  "mcqAnswers": {
+    "Q1": "A",
+    "Q2": "A"
+  },
+  "totalMarks": 8,
+  "studentsWriteOnlyAnswers": true,
+  "type": "mcq_numerical",
+  "numericalCount": 3,
+  "numericalMarks": 2,
+  "numericalAnswers": {
+    "N1": {
+      "answer": "50",
+      "tolerance": 0.001,
+      "tolerance_type": "abs",
+      "unit": "km/h"
+    },
+    "N2": {
+      "answer": "2500",
+      "tolerance": 0.001,
+      "tolerance_type": "abs",
+      "unit": "m"
+    },
+    "N3": {
+      "answer": "19.6",
+      "tolerance": 0.001,
+      "tolerance_type": "abs",
+      "unit": "m/s"
+    }
+  }
+}

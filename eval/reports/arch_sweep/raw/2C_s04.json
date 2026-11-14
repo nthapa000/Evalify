@@ -1,0 +1,790 @@
+{
+"meta": {
+"blank_page": true,
+"quality_ok": true,
+"reasons": []
+},
+"seg:qwen": {
+"answers": [
+{
+"label": "Q1",
+"bbox": [
+200,
+178,
+270,
+230
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q2",
+"bbox": [
+190,
+308,
+240,
+350
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q3",
+"bbox": [
+180,
+460,
+240,
+505
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q4",
+"bbox": [
+175,
+620,
+240,
+660
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q5",
+"bbox": [
+170,
+790,
+230,
+840
+],
+"continues_from_previous_page": false
+}
+],
+"latency": 7.34,
+"error": ""
+},
+"seg:gemma": {
+"answers": [
+{
+"label": "Q1",
+"bbox": [
+211,
+185,
+236,
+258
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q2",
+"bbox": [
+198,
+315,
+236,
+358
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q3",
+"bbox": [
+188,
+464,
+231,
+511
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q4",
+"bbox": [
+186,
+626,
+233,
+671
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q5",
+"bbox": [
+183,
+800,
+231,
+853
+],
+"continues_from_previous_page": false
+}
+],
+"latency": 10.762,
+"error": ""
+},
+"crop:qwen>qwen": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"options\": [],\n  \"confidence\": 0.0\n}",
+"latency": 2.47,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"options\": []\n  , \"confidence\": 0.0\n}",
+"latency": 2.52,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"final_answer\": \"3.\"\n  ,\n  \"confidence\": 0.5\n}",
+"latency": 2.79,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "unclear",
+"value": "40",
+"raw": "{\n  \"status\": \"unclear\",\n  \"final_answer\": \"40\"\n  ,\n  \"confidence\": 0.5\n}",
+"latency": 2.86,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "",
+"raw": "{\n  \"status\": \"answered\",\n  \"final_answer\": \"5.\"\n  ,\n  \"confidence\": 0.9\n}",
+"latency": 2.79,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>gemma": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"  , \"options\": []  , \"confidence\": 1.0}",
+"latency": 5.25,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"  , \"options\": []  , \"confidence\": 1.0}",
+"latency": 5.19,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"3.\" \n  , \"confidence\": 0.5}",
+"latency": 5.47,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "unclear",
+"value": "40",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"40\"",
+"latency": 30.18,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"5.\" \n  , \"confidence\": 0.5}",
+"latency": 5.47,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>paddle": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "1.",
+"latency": 0.99,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.99,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "3",
+"latency": 0.96,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "40",
+"raw": "40",
+"latency": 0.98,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.98,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>glm": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "1.",
+"latency": 0.63,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.64,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "3.",
+"latency": 0.32,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "40",
+"raw": "40",
+"latency": 0.32,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.17,
+"located": true,
+"error": ""
+}
+},
+"crop:qwen>chandra": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "1.",
+"latency": 0.67,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.66,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "answered",
+"value": "30",
+"raw": "30",
+"latency": 0.68,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "40",
+"raw": "40",
+"latency": 0.67,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.65,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>qwen": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"options\": []\n  , \"confidence\": 0.0\n}",
+"latency": 1.99,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"options\": []\n  , \"confidence\": 0.0\n}",
+"latency": 1.98,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"final_answer\": \"3.\"\n  ,\n  \"confidence\": 0.5\n}",
+"latency": 2.17,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "unclear",
+"value": "40",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"40\", \"confidence\": 0.8}",
+"latency": 1.56,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "answered",
+"value": "",
+"raw": "{\n  \"status\": \"answered\",\n  \"final_answer\": \"5.\",\n  \"confidence\": 0.9\n}",
+"latency": 1.83,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 28.59,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"  , \"options\": []  , \"confidence\": 1.0}",
+"latency": 3.68,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"3.\" \n  , \"confidence\": 0.5}",
+"latency": 3.88,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "unclear",
+"value": "40?",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"40?\"  , \"confidence\": 0.5}",
+"latency": 3.83,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"final_answer\": \"5.\" \n  , \"confidence\": 0.5}",
+"latency": 3.18,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>paddle": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "1.",
+"latency": 0.16,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.58,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "3.",
+"latency": 0.53,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "40",
+"raw": "40",
+"latency": 0.47,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.47,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>glm": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "1.",
+"latency": 0.15,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.38,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "3.",
+"latency": 0.37,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "40",
+"raw": "40",
+"latency": 0.36,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.14,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>chandra": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "1.",
+"latency": 0.66,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.66,
+"located": true,
+"error": ""
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "3",
+"latency": 0.72,
+"located": true,
+"error": ""
+},
+"N2": {
+"status": "answered",
+"value": "40",
+"raw": "40",
+"latency": 0.67,
+"located": true,
+"error": ""
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.62,
+"located": true,
+"error": ""
+}
+},
+"page>qwen": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 6.24,
+"_error": ""
+},
+"page>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 9.428,
+"_error": ""
+},
+"page>paddle": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 0.985,
+"_error": "",
+"_text": "1.\n2.\n3.\n4.\n5."
+},
+"page>glm": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 0.945,
+"_error": "",
+"_text": "1.\n2.\n3.\n4.\n5."
+},
+"page>chandra": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 3.531,
+"_error": "",
+"_text": "<div data-bbox=\"208 185 258 226\" data-label=\"Text\"><p>1.</p></div><div data-bbox=\"197 312 232 347\" data-label=\"Text\"><p>2.</p></div><div data-bbox=\"188 464 232 497\" data-label=\"Text\"><p>3.</p></div><div data-bbox=\"184 625 229 656\" data-label=\"Text\"><p>4.</p></div><div data-bbox=\"181 796 225 836\" data-label=\"Text\"><p>5.</p></div>"
+},
+"direct>qwen": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"_latency": 6.187,
+"_error": ""
+},
+"direct>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"N1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"N2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"N3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"_latency": 8.824,
+"_error": ""
+}
+}

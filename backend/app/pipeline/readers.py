@@ -114,7 +114,7 @@ def read_general(ep: llm.Endpoint, q: Question, images: List[Image.Image], verba
             out.status = "unclear"
     elif q.kind == "numerical":
         out.status = d.get("status", "unclear")
-        raw = re.sub(r"^\s*[QqSs]?\d{1,3}\s*[:.)]\s*", "", str(d.get("final_answer", "")).strip())  # copied label
+        raw = re.sub(r"^\s*[QqSs]?\d{1,3}\s*[:.),](?!\d)\s*", "", str(d.get("final_answer", "")).strip())  # copied label, not a decimal
         out.value = raw if out.status != "blank" else ""
     else:
         out.value = str(d.get("text", "")).strip()
@@ -167,7 +167,8 @@ def clean_ocr(text: str) -> str:
 def strip_label(text: str, label: str) -> str:
     """Remove a leading 'Q3:' / '3)' / 'Ans 3.' so it isn't read as part of the answer."""
     num = re.sub(r"\D", "", label)
-    return re.sub(rf"^\s*(?:{label[0]}|ans(?:wer)?)?\s*\.?\s*{num}\s*[.:)\-]?\s*", "", text, count=1, flags=re.I).strip()
+    # The number must end at punctuation (not starting a decimal) or a space: "3. 4.01" → "4.01", "3.5" stays
+    return re.sub(rf"^\s*(?:{label[0]}|ans(?:wer)?)?\s*\.?\s*{num}(?:\s*[.,:)\-](?!\d)|(?=\s)|$)\s*", "", text, count=1, flags=re.I).strip()
 
 
 def parse_letters(text: str) -> str:
@@ -183,7 +184,7 @@ def parse_final_number(text: str) -> str:
     for line in reversed(lines):
         # Value after the last "=" or "Ans:"; a misread label like "23:" is dropped
         cand = re.split(r"=|\bans(?:wer)?\b\s*[:.]?", line, flags=re.I)[-1]
-        cand = re.sub(r"^\s*[QqSs]?\d{1,3}\s*[:.)]\s*", "", cand).strip()
+        cand = re.sub(r"^\s*[QqSs]?\d{1,3}\s*[:.),](?!\d)\s*", "", cand).strip()            # "23:" yes, "4.01" no
         if numeric.parse_number(cand).ok:
             return cand
     return ""

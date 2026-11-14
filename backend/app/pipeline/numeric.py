@@ -41,7 +41,7 @@ _UNITS = {
     # angle
     "rad": ("Ang", 1.0), "deg": ("Ang", math.pi / 180), "°": ("Ang", math.pi / 180),
     # speed / acceleration (common composite spellings)
-    "m/s": ("LT-1", 1.0), "km/h": ("LT-1", 1000 / 3600), "kmph": ("LT-1", 1000 / 3600),
+    "m/s": ("LT-1", 1.0), "km/h": ("LT-1", 1000 / 3600), "kmph": ("LT-1", 1000 / 3600), "km/hr": ("LT-1", 1000 / 3600),
     "m/s2": ("LT-2", 1.0), "m/s^2": ("LT-2", 1.0),
     # temperature (Celsius only — Kelvin/Fahrenheit need an offset, not a factor)
     "°c": ("TempC", 1.0), "degc": ("TempC", 1.0), "celsius": ("TempC", 1.0), "c°": ("TempC", 1.0),
@@ -243,24 +243,20 @@ def compare(student_raw: Any, key: Any, decimal_comma: bool = False,
         k_unit = kp.unit or key_unit
         s_val, k_val = sp.value, kp.value
 
-        su, ku = _unit_info(sp.unit), _unit_info(k_unit)
-        if sp.unit and k_unit:
-            if su and ku:
-                if su[0] != ku[0]:
-                    res.flags.append("unit_mismatch")
-                    continue
-                s_val = s_val * su[1] / ku[1]
-            elif sp.unit.lower() != str(k_unit).lower():
-                res.flags.append("unknown_unit")
-        elif k_unit and not sp.unit:
+        # Teacher's rule: the number as written must match the key's number in the key's unit.
+        # No unit conversion ("2.5 km" for 2500 m is wrong); a missing or different unit is
+        # only flagged, never penalised ("2500", "2500 m", "2500 km" all score)
+        if k_unit and not sp.unit:
             if require_unit:
                 res.flags.append("unit_missing")
                 continue
             res.flags.append("unit_missing_lenient")
+        elif sp.unit and k_unit and _unit_key(sp.unit) != _unit_key(k_unit):
+            res.flags.append("unit_ignored")
 
         diff = abs(s_val - k_val)
         allowed = tol * abs(k_val) if tol_type.startswith("rel") else tol
-        allowed = max(allowed, 1e-9 * max(1.0, abs(k_val)))       # float round-off only
+        allowed += 1e-9 * max(1.0, abs(k_val))                   # inclusive edge despite float round-off
         if best_diff is None or diff < best_diff:
             best_diff = diff
         if diff <= allowed:
@@ -269,6 +265,12 @@ def compare(student_raw: Any, key: Any, decimal_comma: bool = False,
 
     res.status, res.abs_diff = "wrong", best_diff
     return res
+
+
+def _unit_key(unit: str):
+    """Same unit written differently ('km/hr' = 'km/h', 'C' = '°C')? Compare by table entry, else text."""
+    info = _unit_info(unit) or _unit_info("°" + unit)
+    return info if info else str(unit).replace(" ", "").lower()
 
 
 def _canon(s: str) -> str:

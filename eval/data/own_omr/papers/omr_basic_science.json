@@ -1,0 +1,31 @@
+{
+ "name": "OMR Basic Science (20)",
+ "subject": "Basic Science",
+ "mcqCount": 20,
+ "mcqMarks": 1,
+ "mcqAnswers": {
+  "Q1": "B",
+  "Q2": "C",
+  "Q3": "C",
+  "Q4": "B",
+  "Q5": "A,C",
+  "Q6": "C",
+  "Q7": "A",
+  "Q8": "B",
+  "Q9": "B,D",
+  "Q10": "C",
+  "Q11": "C",
+  "Q12": "B",
+  "Q13": "A,B,D",
+  "Q14": "B,D",
+  "Q15": "A",
+  "Q16": "D",
+  "Q17": "A,B,D",
+  "Q18": "C",
+  "Q19": "B",
+  "Q20": "A,C"
+ },
+ "totalMarks": 20,
+ "studentsWriteOnlyAnswers": true,
+ "type": "mcq"
+}

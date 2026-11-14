@@ -4,7 +4,7 @@
 # silently fix student mistakes, so every reader prompt forbids correction.
 # TEMPLATE_VERSION is logged to MLflow; bump it whenever a prompt changes.
 
-TEMPLATE_VERSION = "p2"   # p2: label-independent closed-form prompts
+TEMPLATE_VERSION = "p3"   # p2: label-independent closed-form prompts; p3: page / direct-grade / OMR-VLM / numeric-grader prompts
 
 # ── Segmentation: find each answer's label + box on a page ──────────────────
 
@@ -158,3 +158,84 @@ For EACH concept, in the same order, decide independently:
 - "confidence": 0–1.
 Set "transcript_problem" true if the image and transcriptions disagree in a way that
 matters for grading. Do not award marks; just judge each concept. Return JSON."""
+
+
+# ── Architecture sweep (eval/arch_sweep.py): alternatives to crop-by-crop reading ──
+
+PAGE_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["answers"],
+    "properties": {"answers": {"type": "array", "items": {
+        "type": "object", "additionalProperties": False, "required": ["label", "status", "value"],
+        "properties": {"label": {"type": "string"},
+                       "status": {"type": "string", "enum": ["answered", "blank", "unclear"]},
+                       "value": {"type": "string"}}}}}}
+
+
+def page_prompt(questions: list) -> str:
+    """Whole page in one call: every answer's final value (no segmentation step)."""
+    lines = "\n".join(f"- {label}: {'option letter(s) A-D' if kind == 'mcq' else 'a number, copied exactly as written'}"
+                      for label, kind in questions)
+    return f"""This is a photo of a student's handwritten answer sheet. Each answer is written after its
+question number (e.g. "1. B", "4. 2500 m"). Questions on this sheet:
+{lines}
+
+For EVERY question above return one entry:
+- "label": the question label as listed;
+- "value": the student's FINAL answer exactly as written (letters like "A,C"; numbers with sign,
+  decimal point, fraction and unit as written). Ignore struck-out or overwritten text.
+  If the student wrote something that is not a letter (e.g. a digit) copy it as written;
+- "status": "blank" if nothing is written after the number, "unclear" if you cannot read it
+  with certainty, else "answered".
+Do NOT correct, calculate or guess. Faint mirrored text showing through from the back of
+the page is NOT an answer. Return JSON."""
+
+
+def omr_page_prompt(n_questions: int, n_options: int = 4) -> str:
+    """OMR sheet read by a VLM instead of the bubble template (comparison only)."""
+    letters = "ABCDEFGH"[:n_options]
+    return f"""This is a photo of a filled OMR answer sheet with questions 1 to {n_questions}, each with
+bubbles {", ".join(letters)}. A question may have more than one filled bubble.
+For EVERY question return "label" ("Q1" … "Q{n_questions}"), "value" = the letters of ALL filled
+bubbles (e.g. "B" or "A,C"; a partly filled or scribbled bubble counts as filled; "" if none),
+and "status" ("answered", "blank" or "unclear"). Ignore the roll-number grid. Return JSON."""
+
+
+DIRECT_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["answers"],
+    "properties": {"answers": {"type": "array", "items": {
+        "type": "object", "additionalProperties": False, "required": ["label", "student_answer", "correct"],
+        "properties": {"label": {"type": "string"},
+                       "student_answer": {"type": "string"},
+                       "correct": {"type": "boolean"}}}}}}
+
+
+def direct_grade_prompt(key_lines: list, omr: bool = False) -> str:
+    """One VLM call reads AND grades the page against the key (no code grading)."""
+    what = "filled OMR answer sheet (a partly filled bubble counts as filled)" if omr else "handwritten answer sheet"
+    key = "\n".join(key_lines)
+    return f"""This is a photo of a student's {what}. Grade it against this answer key:
+{key}
+
+Rules: a multiple-choice answer is correct only if the student chose EXACTLY the key's set of
+letters (order does not matter). A numerical answer is correct if the student's number is within
+the key's tolerance of the key's number (equivalent forms such as 5/8 = 0.625 are fine); the unit
+is ignored — a missing or different unit does not matter, but no unit conversion (2.5 km is NOT 2500).
+Blank answers are not correct. Ignore struck-out text and mirrored show-through from the back.
+For EVERY question in the key return "label", "student_answer" (as written, "" if blank) and
+"correct". Return JSON."""
+
+
+NUM_GRADE_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["correct"],
+    "properties": {"correct": {"type": "boolean"}}}
+
+
+def numeric_grade_prompt(student: str, key_value: str, key_unit: str, tolerance: float = 0.0) -> str:
+    """LLM as the numerical grader (alternative to numeric.compare)."""
+    return f"""Answer key: {key_value}{(" " + key_unit) if key_unit else ""} (tolerance ± {tolerance:g})
+Student's answer: {student or "(blank)"}
+
+Is the student's answer correct? Rules: the student's number must be within the tolerance of the
+key's number (equivalent forms such as 5/8 = 0.625 or 1/2 = 0.5 are fine). Ignore the unit completely — a
+missing or different unit is fine — but do NOT convert units (2.5 km is NOT 2500). A blank or
+non-numeric answer is wrong. Return JSON."""

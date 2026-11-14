@@ -12,7 +12,7 @@ from app.services.subjective_grader import _result
 @pytest.mark.parametrize("student, key", [
     ("3", ["3.0"]), ("0.625", ["5/8"]), ("1 1/2", ["1.5"]), ("−2.5", ["-2.5"]),
     ("1.2×10⁻³", ["0.0012"]), ("1.2e-3", ["1.2*10^-3"]), ("1,234.5", ["1234.5"]),
-    ("x = 3.5", ["3.5"]), ("\\frac{3}{4}", ["0.75"]), ("250 cm", {"answer": "2.5", "unit": "m"}),
+    ("x = 3.5", ["3.5"]), ("\\frac{3}{4}", ["0.75"]),
 ])
 def test_numeric_equivalent_forms(student, key):
     assert numeric.compare(student, key).status == "correct"
@@ -23,7 +23,14 @@ def test_numeric_tolerance_and_failures():
     assert numeric.compare("9.79", {"answer": "9.8", "tolerance": 0.02}).status == "correct"
     assert numeric.compare("9.70", {"answer": "9.8", "tolerance": 0.02}).status == "wrong"
     assert numeric.compare("101", {"answer": "100", "tolerance": 0.01, "tolerance_type": "rel"}).status == "correct"
-    assert numeric.compare("5 kg", {"answer": "5", "unit": "m"}).status == "wrong"
+    # Value decides marks: a wrong unit still scores, but is flagged for the teacher
+    r = numeric.compare("5 kg", {"answer": "5", "unit": "m"})
+    assert r.status == "correct" and "unit_ignored" in r.flags
+    assert numeric.compare("2500 km", {"answer": "2500", "unit": "m"}).status == "correct"
+    assert numeric.compare("4 kg", {"answer": "5", "unit": "m"}).status == "wrong"
+    # No unit conversion: the number must be the key's number in the key's unit
+    assert numeric.compare("2.5 km", {"answer": "2500", "tolerance": 0.5, "unit": "m"}).status == "wrong"
+    assert numeric.compare("250 cm", {"answer": "2.5", "unit": "m"}).status == "wrong"
     assert numeric.compare("", ["3"]).status == "unanswered"
     assert numeric.compare("banana", ["3"]).status == "unparseable"
 
@@ -69,11 +76,12 @@ def test_subjective_marks_in_python():
 
 # Answers to the Evalify test papers (eval/test_papers) in the forms students may write them
 @pytest.mark.parametrize("student, key", [
-    ("2.5 km", {"answer": "2500", "tolerance": 0.5, "unit": "m"}), ("2500 m", {"answer": "2500", "tolerance": 0.5, "unit": "m"}),
+    ("2500", {"answer": "2500", "tolerance": 0.5, "unit": "m"}), ("2500 m", {"answer": "2500", "tolerance": 0.5, "unit": "m"}),
     ("-7 °C", {"answer": "-7", "tolerance": 0.01, "unit": "°C"}), ("−7", {"answer": "-7", "tolerance": 0.01, "unit": "°C"}),
     ("5/8", {"answer": "0.625", "tolerance": 0.001}), ("1/2 A", {"answer": "0.5", "tolerance": 0.01, "unit": "A"}),
     ("19.6 m/s", {"answer": "19.6", "tolerance": 0.05, "unit": "m/s"}), ("440W", {"answer": "440", "tolerance": 0.5, "unit": "W"}),
+    ("50km/hr", {"answer": "50", "tolerance": 0.01, "unit": "km/h"}), ("-7C", {"answer": "-7", "tolerance": 0.01, "unit": "°C"}),
 ])
 def test_test_paper_answers(student, key):
     res = numeric.compare(student, key)
-    assert res.status == "correct" and "unit_mismatch" not in res.flags and "unknown_unit" not in res.flags
+    assert res.status == "correct" and "unit_ignored" not in res.flags

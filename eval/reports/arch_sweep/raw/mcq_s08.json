@@ -1,0 +1,1409 @@
+{
+"meta": {
+"blank_page": true,
+"quality_ok": true,
+"reasons": []
+},
+"seg:qwen": {
+"answers": [],
+"latency": 0.777,
+"error": ""
+},
+"seg:gemma": {
+"answers": [
+{
+"label": "Q1",
+"bbox": [
+351,
+36,
+378,
+381
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q2",
+"bbox": [
+348,
+125,
+375,
+165
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q3",
+"bbox": [
+345,
+195,
+372,
+235
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q4",
+"bbox": [
+333,
+296,
+360,
+336
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q5",
+"bbox": [
+338,
+385,
+365,
+425
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q6",
+"bbox": [
+335,
+486,
+362,
+526
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q7",
+"bbox": [
+332,
+587,
+359,
+627
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q8",
+"bbox": [
+323,
+688,
+350,
+728
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q9",
+"bbox": [
+320,
+789,
+347,
+829
+],
+"continues_from_previous_page": false
+},
+{
+"label": "Q10",
+"bbox": [
+301,
+889,
+348,
+930
+],
+"continues_from_previous_page": false
+}
+],
+"latency": 21.06,
+"error": ""
+},
+"crop:qwen>qwen": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  ,\n  \"options\": []\n  ,\n  \"confidence\": 1.0\n}",
+"latency": 3.96,
+"located": false,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  , \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.81,
+"located": false,
+"error": ""
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  , \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.18,
+"located": false,
+"error": ""
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  , \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.76,
+"located": false,
+"error": ""
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.31,
+"located": false,
+"error": ""
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.21,
+"located": false,
+"error": ""
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  ,\n  \"options\": []\n  ,\n  \"confidence\": 1.0\n}",
+"latency": 4.16,
+"located": false,
+"error": ""
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  , \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.0,
+"located": false,
+"error": ""
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  ,\n  \"options\": []\n  ,\n  \"confidence\": 1.0\n}",
+"latency": 4.74,
+"located": false,
+"error": ""
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  , \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 4.46,
+"located": false,
+"error": ""
+}
+},
+"crop:qwen>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.11,
+"located": false,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.15,
+"located": false,
+"error": ""
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.16,
+"located": false,
+"error": ""
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.24,
+"located": false,
+"error": ""
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.15,
+"located": false,
+"error": ""
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.13,
+"located": false,
+"error": ""
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 35.01,
+"located": false,
+"error": ""
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 34.63,
+"located": false,
+"error": ""
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 34.66,
+"located": false,
+"error": ""
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 34.75,
+"located": false,
+"error": ""
+}
+},
+"crop:qwen>paddle": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.81,
+"located": false,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.71,
+"located": false,
+"error": ""
+},
+"Q3": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.62,
+"located": false,
+"error": ""
+},
+"Q4": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.6,
+"located": false,
+"error": ""
+},
+"Q5": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.51,
+"located": false,
+"error": ""
+},
+"Q6": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.4,
+"located": false,
+"error": ""
+},
+"Q7": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.18,
+"located": false,
+"error": ""
+},
+"Q8": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.03,
+"located": false,
+"error": ""
+},
+"Q9": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 1.03,
+"located": false,
+"error": ""
+},
+"Q10": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.62,
+"located": false,
+"error": ""
+}
+},
+"crop:qwen>glm": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.39,
+"located": false,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.38,
+"located": false,
+"error": ""
+},
+"Q3": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.31,
+"located": false,
+"error": ""
+},
+"Q4": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.38,
+"located": false,
+"error": ""
+},
+"Q5": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.36,
+"located": false,
+"error": ""
+},
+"Q6": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.4,
+"located": false,
+"error": ""
+},
+"Q7": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.35,
+"located": false,
+"error": ""
+},
+"Q8": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.34,
+"located": false,
+"error": ""
+},
+"Q9": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.23,
+"located": false,
+"error": ""
+},
+"Q10": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10.",
+"latency": 0.22,
+"located": false,
+"error": ""
+}
+},
+"crop:qwen>chandra": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.31,
+"located": false,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.34,
+"located": false,
+"error": ""
+},
+"Q3": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.42,
+"located": false,
+"error": ""
+},
+"Q4": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.38,
+"located": false,
+"error": ""
+},
+"Q5": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.35,
+"located": false,
+"error": ""
+},
+"Q6": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.44,
+"located": false,
+"error": ""
+},
+"Q7": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.28,
+"located": false,
+"error": ""
+},
+"Q8": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.05,
+"located": false,
+"error": ""
+},
+"Q9": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 7.03,
+"located": false,
+"error": ""
+},
+"Q10": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.\n\n6.\n\n7.\n\n8.\n\n9.\n\n10.\n\n8",
+"latency": 6.96,
+"located": false,
+"error": ""
+}
+},
+"crop:gemma>qwen": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\"\n  , \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 1.7,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\", \"options\": [] , \"confidence\": 0.0}",
+"latency": 1.25,
+"located": true,
+"error": ""
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\", \"options\": [] , \"confidence\": 100}",
+"latency": 1.31,
+"located": true,
+"error": ""
+},
+"Q4": {
+"status": "answered",
+"value": "C",
+"raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ],\n  \"confidence\": 0.95\n}",
+"latency": 2.22,
+"located": true,
+"error": ""
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+"latency": 1.77,
+"located": true,
+"error": ""
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+"latency": 1.42,
+"located": true,
+"error": ""
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+"latency": 1.02,
+"located": true,
+"error": ""
+},
+"Q8": {
+"status": "answered",
+"value": "E",
+"raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"E\"]\n  , \"confidence\": 0.8\n}",
+"latency": 1.06,
+"located": true,
+"error": ""
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\", \"options\": [] , \"confidence\": 100}",
+"latency": 0.78,
+"located": true,
+"error": ""
+},
+"Q10": {
+"status": "unclear",
+"value": "",
+"raw": "{\n  \"status\": \"unclear\",\n  \"options\": []\n  , \"confidence\": 0.0\n}",
+"latency": 0.99,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 34.64,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"  , \"options\": []  , \"confidence\": 1.0}",
+"latency": 4.97,
+"located": true,
+"error": ""
+},
+"Q3": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"options\": []",
+"latency": 34.65,
+"located": true,
+"error": ""
+},
+"Q4": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"",
+"latency": 34.62,
+"located": true,
+"error": ""
+},
+"Q5": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"",
+"latency": 34.61,
+"located": true,
+"error": ""
+},
+"Q6": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"  , \"options\": []  , \"confidence\": 1.0}",
+"latency": 4.93,
+"located": true,
+"error": ""
+},
+"Q7": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"  , \"options\": []  , \"confidence\": 1.0}",
+"latency": 4.78,
+"located": true,
+"error": ""
+},
+"Q8": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\"",
+"latency": 34.37,
+"located": true,
+"error": ""
+},
+"Q9": {
+"status": "unclear",
+"value": "",
+"raw": "{\"status\": \"unclear\", \"options\": []",
+"latency": 34.16,
+"located": true,
+"error": ""
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "{\"status\": \"blank\"",
+"latency": 34.04,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>paddle": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.",
+"latency": 0.27,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.2,
+"located": true,
+"error": ""
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "3.",
+"latency": 0.19,
+"located": true,
+"error": ""
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "4.",
+"latency": 0.24,
+"located": true,
+"error": ""
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.24,
+"located": true,
+"error": ""
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "6.",
+"latency": 0.23,
+"located": true,
+"error": ""
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "7.",
+"latency": 0.24,
+"located": true,
+"error": ""
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "8.",
+"latency": 0.24,
+"located": true,
+"error": ""
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "9.",
+"latency": 0.24,
+"located": true,
+"error": ""
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "10.",
+"latency": 0.11,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>glm": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n2.\n3.\n4.",
+"latency": 0.32,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.22,
+"located": true,
+"error": ""
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "3.",
+"latency": 0.11,
+"located": true,
+"error": ""
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "4.",
+"latency": 0.11,
+"located": true,
+"error": ""
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.11,
+"located": true,
+"error": ""
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "6.",
+"latency": 0.06,
+"located": true,
+"error": ""
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "7.",
+"latency": 0.07,
+"located": true,
+"error": ""
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "8.",
+"latency": 0.07,
+"located": true,
+"error": ""
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "9.",
+"latency": 0.07,
+"located": true,
+"error": ""
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "10.",
+"latency": 0.06,
+"located": true,
+"error": ""
+}
+},
+"crop:gemma>chandra": {
+"Q1": {
+"status": "unclear",
+"value": "",
+"raw": "1.\n\n2.\n\n3.\n\n4.\n\n5.",
+"latency": 1.45,
+"located": true,
+"error": ""
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "2.",
+"latency": 0.35,
+"located": true,
+"error": ""
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "3",
+"latency": 0.39,
+"located": true,
+"error": ""
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "4.",
+"latency": 0.35,
+"located": true,
+"error": ""
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "5.",
+"latency": 0.35,
+"located": true,
+"error": ""
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "6.",
+"latency": 0.35,
+"located": true,
+"error": ""
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "7.",
+"latency": 0.31,
+"located": true,
+"error": ""
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "8.",
+"latency": 0.33,
+"located": true,
+"error": ""
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "9.",
+"latency": 0.32,
+"located": true,
+"error": ""
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "10.",
+"latency": 0.34,
+"located": true,
+"error": ""
+}
+},
+"page>qwen": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 16.814,
+"_error": ""
+},
+"page>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 12.744,
+"_error": ""
+},
+"page>paddle": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 1.021,
+"_error": "",
+"_text": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10."
+},
+"page>glm": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 1.391,
+"_error": "",
+"_text": "1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.\n9.\n10."
+},
+"page>chandra": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0
+},
+"_latency": 7.849,
+"_error": "",
+"_text": "<div data-bbox=\"354 37 390 69\" data-label=\"Text\"><p>1.</p></div><div data-bbox=\"346 122 375 151\" data-label=\"Text\"><p>2.</p></div><div data-bbox=\"335 195 367 231\" data-label=\"Text\"><p>3.</p></div><div data-bbox=\"331 289 365 326\" data-label=\"Text\"><p>4.</p></div><div data-bbox=\"335 386 365 420\" data-label=\"Text\"><p>5.</p></div><div data-bbox=\"332 490 361 525\" data-label=\"Text\"><p>6.</p></div><div data-bbox=\"329 598 362 633\" data-label=\"Text\"><p>7.</p></div><div data-bbox=\"322 703 354 734\" data-label=\"Text\"><p>8.</p></div><div data-bbox=\"320 790 344 831\" data-label=\"Text\"><p>9.</p></div><div data-bbox=\"304 888 346 928\" data-label=\"Text\"><p>10.</p></div><div data-bbox=\"875 415 945 495\" data-label=\"Text\"><p>8</p></div>"
+},
+"direct>qwen": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"_latency": 11.926,
+"_error": ""
+},
+"direct>gemma": {
+"Q1": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q2": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q3": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q4": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q5": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q6": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q7": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q8": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q9": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"Q10": {
+"status": "blank",
+"value": "",
+"raw": "",
+"latency": 0.0,
+"correct": false
+},
+"_latency": 11.257,
+"_error": ""
+}
+}
