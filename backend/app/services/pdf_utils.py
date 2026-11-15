@@ -30,11 +30,13 @@ def pdf_extract_text(pdf_path: str) -> str:
 
 
 def parse_mcq_text(text: str, mcq_count: int = 0) -> Dict[str, str]:
-    """Parse lines like '1. A', 'Q2: B', '3) c' into {'Q1': 'A', ...}."""
+    """Parse lines like '1. A', 'Q2: B', '3) c', '4. A, C' into {'Q1': 'A', ..., 'Q4': 'A,C'}."""
     answers = {}
-    for m in re.finditer(r"[Qq]?(\d+)\s*[.\s:)]\s*([A-Da-d])\b", text):
-        if mcq_count == 0 or int(m.group(1)) <= mcq_count:
-            answers[f"Q{int(m.group(1))}"] = m.group(2).upper()
+    # Line by line so an answer never runs into the next question; several letters = several correct options
+    for line in text.splitlines():
+        for m in re.finditer(r"[Qq]?(\d+)[ \t]*[.\s:)][ \t]*([A-Da-d](?:[ \t]*[,&/]?[ \t]*[A-Da-d]\b)*)\b", line):
+            if mcq_count == 0 or int(m.group(1)) <= mcq_count:
+                answers[f"Q{int(m.group(1))}"] = ",".join(sorted(set(re.findall(r"[A-D]", m.group(2).upper()))))
     return answers
 
 

@@ -576,3 +576,23 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   name is easy to confuse with the live `mongo-db`). Decision: **keep it untouched**; nothing uses it.
 - 16 Nov: user then approved deleting it. Checked first: no process and no project script used it. Deleted
   `/scratch/$USER/evalify/mongo-data` (302 MB). Live data stays in `mongo-db`.
+
+## 16 Nov 2026 — upload kit for testing every flow (user request)
+- User asked for one folder with everything to upload when testing each flow: `uploads/Pattern{1,2,3}/{Teacher,Student}`,
+  built from the datasets used in our evaluations. Built by `python eval/make_upload_kit.py` (101 files, 20 MB):
+  - Pattern1 (MCQ only): OMR paper (20 Q, question paper, answer key PDF, 3 blank OMR layouts; 5 student sheets per
+    layout) and handwritten paper (10 Q; 15 student photos).
+  - Pattern2 (MCQ + numerical): papers 2A/2B/2C (question paper, answer key PDF; 5 student photos each).
+  - Pattern3 (MCQ + subjective): Data Science exam (Mendeley, CC BY 4.0): question paper, MCQ key PDF, detailed
+    answer + grade rubric PDFs in the format "Extract Rubric from PDFs" reads, reference notes for the answer-key
+    assistant; 6 student sheets (4-6 pages, teacher totals 14-43) re-saved as JPEG (quality gate still passes).
+  - Teacher README per pattern = what to pick / type / upload at each wizard step; one folder per student login
+    (PH2025xxx under the Physics teacher, DS2025xxx under the Data Science teacher) with `expected_results.md`.
+- Found while building it, fixed:
+  - "Extract Answers from PDF" kept only the first letter of a multi-answer key ("A, C" -> "A"), which would mark every
+    correct multi-answer wrong. Now keeps all letters.
+  - The teacher form had no way to say written answers continue the Q-numbering (the Data Science students wrote
+    21-35); the pipeline supported it but a paper made in the UI expected S1..S15. New Step-2 choice
+    "S1, S2, ..." / "Q21, Q22, ... (numbers continue)", shown on the review step.
+- Checked live: OMR layout-1 sheets aligned and read 20/20 as labelled (5/5); a Data Science sheet from the JPEG kit
+  gave the same written-answer marks as the earlier PNG run.

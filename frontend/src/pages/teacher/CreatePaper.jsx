@@ -15,6 +15,7 @@ import AnswerKeyAssistant from "../../components/forms/AnswerKeyAssistant";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
+import NumberingChoice from "../../components/forms/NumberingChoice";
 import { useCreatePaper, useUploadPaperFile, useExtractAnswers, useExtractRubric, useBuildOmrTemplate } from "../../hooks/usePapers";
 import { paperTypeLabel } from "../../utils/formatters";
 
@@ -425,6 +426,9 @@ function Step2({ form, setForm, uploadFn }) {
             countKey="subjectiveCount" questionMarksKey="subjectiveQuestionMarks"
             prefix="S" label="Subjective"
           />
+          {/* Labels students write for written answers; reading matches answers to questions by them */}
+          <NumberingChoice value={form.numbering} mcqCount={form.mcqCount} numericalCount={form.numericalCount}
+            onChange={(numbering) => setForm({ ...form, numbering })} />
         </>
       )}
 
@@ -1030,6 +1034,7 @@ function Step5({ form }) {
         {form.mcqCount > 0 && <Row label="MCQ Questions" value={`${form.mcqCount} questions = ${mcqTotal(form)} marks`} />}
         {isType2 && form.numericalCount > 0 && <Row label="Numerical Questions" value={`${form.numericalCount} questions = ${numericalTotal(form)} marks`} />}
         {isType3 && <Row label="Subjective Questions" value={`${form.subjectiveCount} questions = ${subjectiveTotal(form)} marks`} />}
+        {isType3 && <Row label="Written answers numbered" value={form.numbering === "continuous" ? `Q${form.mcqCount + (form.numericalCount || 0) + 1} onwards` : "S1 onwards"} />}
         <Row label="Total Marks" value={<span className="text-green-600 font-bold">{total}</span>} />
         <Row label="Negative Marking" value={negMarkingSummary()} />
         {form.mcqCount > 0 && <Row label="MCQ Answers set" value={`${Object.keys(form.mcqAnswers).length} / ${form.mcqCount}`} />}
@@ -1092,6 +1097,7 @@ const INITIAL = {
   subjectiveMarks: 10,
   subjectiveQuestionMarks: {},
   uniformSubjectiveMarks: true,
+  numbering: "separate",         // written answers labelled S1.. ("separate") or Q(m+n+1).. ("continuous")
   // Answers
   mcqAnswers: {},
   numericalAnswers: {},

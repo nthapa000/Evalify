@@ -1,0 +1,46 @@
+Data Science - reference answers (from the dataset's answer key)
+
+Question 21: Define Supervised Learning.
+Answer: A type of ML where the model is trained on labeled data with known inputs and outputs.
+
+Question 22: Evaluation Case Study: A model (M1) achieves 99% accuracy on the training set but only 30% accuracy on the testing set. What is happening to this model?
+Answer: Overfitting; the model has memorized the training data but failed to generalize.
+
+Question 23: What is Regression Analysis?
+Answer: A statistical process for estimating the relationships between a dependent variable and one or more independent variables.
+
+Question 24: List and elucidate two major challenges in Machine Learning.
+Answer: Data quality/missing values, overfitting/underfitting, data collection, or time consumption.
+
+Question 25: List any two major real-world applications of Data Science.
+Answer: Healthcare/disease prediction, Finance/fraud detection, E-commerce recommendation systems.
+
+Question 26: Distinguish between Structured and Semi-structured data.
+Answer: Structured is organized in rows/columns (SQL, Excel); Semi-structured has some markers but isn't in a grid (JSON, XML, HTML).
+
+Question 27: Describe methods used to detect and handle outliers in a dataset.
+Answer: Detection: Z-score, IQR, Scatter plots, Box plots. Handling: Trimming, Capping, or Imputation.
+
+Question 28: What is Data Pre-processing?
+Answer: The steps taken to clean and transform raw data into a format suitable for a machine learning model.
+
+Question 29: Why is Data Normalization required for the K-Nearest Neighbors (K-NN) algorithm?
+Answer: K-NN is distance-based; features with larger scales will dominate the distance calculation if not normalized.
+
+Question 30: How are continuous attributes discretized? Give an example.
+Answer: By grouping values into bins or intervals, e.g., turning ages 1-100 into 'Child,' 'Adult,' 'Senior.'
+
+Question 31: What does the 'K' represent in the K-Means clustering algorithm?
+Answer: The predefined number of clusters or groups the data will be divided into.
+
+Question 32: Name three common Hyperparameters in Machine Learning algorithms.
+Answer: K in K-NN, Learning Rate, Number of Estimators/Trees, Max Depth, or Batch Size.
+
+Question 33: Define Gradient Descent.
+Answer: An optimization algorithm used to minimize the cost function by iteratively moving toward the steepest descent.
+
+Question 34: Classifier Comparison: Compare three SVM classifiers based on their margins and boundaries.
+Answer: Discussion on maximizing the margin and ensuring no data points fall within the 'gutter' or margin.
+
+Question 35: Explain how the Radial Basis Function (RBF) Kernel works in SVM.
+Answer: It transforms data into a higher-dimensional space to find a non-linear decision boundary.

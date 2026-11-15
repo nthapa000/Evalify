@@ -89,3 +89,15 @@ async def test_upload_and_serve_file(client, teacher_token, tmp_path, monkeypatc
     assert ok.status_code == 200
     served = await client.get(ok.json()["url"])
     assert served.status_code == 200 and served.content.startswith(b"%PDF")
+
+
+# Why: the numbering the teacher picks ("continuous" = written answers labelled Q21.. after 20 MCQs) must be saved,
+# because the pipeline matches transcribed answers to questions by those labels
+@pytest.mark.asyncio
+async def test_paper_keeps_written_answer_numbering(client, teacher_token):
+    from app.pipeline.readers import questions_for
+    from tests.helpers import make_paper
+    paper = await make_paper(client, teacher_token, numbering="continuous")
+    got = (await client.get(f"/api/papers/{paper['id']}", headers=auth_headers(teacher_token))).json()
+    assert got["numbering"] == "continuous"
+    assert [q.label for q in questions_for(got) if q.kind == "subjective"] == ["Q4", "Q5"]
