@@ -82,7 +82,7 @@ pipeline was also safe but sent 22 and 32 answers to TAs.
      Qwen thinking, Gemma v1 at 95 %). A second grader added no accuracy → not used. Thinking off.
   4. Python sums: 1 × marks per present point, 0.5 × per partial point, mandatory-point rule, cap at max.
   5. TA: answer not located (never an automatic 0), transcript problem, low confidence / missing evidence.
-- **Teacher calibration** (run 9): the teacher marks 3–5 sheets; the mean difference teacher − grader is added
+- **Teacher calibration** (optional, teacher-only; runs 9–10): the teacher marks 3–5 sheets; the mean difference teacher − grader is added
   to every mark (rounded to 0.5, clipped): MAE 0.62 → 0.43, within 0.5: 55 % → 83 %. Teacher setting; both
   the rubric mark and the calibrated mark are kept.
 - Known gap (before run 9): the grader is 0.57 marks stricter than the Mendeley teacher (lenient teacher ≈ half; segmentation
@@ -95,7 +95,13 @@ pipeline was also safe but sent 22 and 32 answers to TAs.
 ### 3.5 Routing to a TA (`backend/app/pipeline/routing.py`, thresholds in `infra/routing.yaml`)
 Page failed quality gate · readers disagree with no majority · OMR fill within 0.05 of the threshold ·
 numeric value unparseable · grader disagreement / low confidence / evidence not found ·
-answer not located. The TA sees the crop, every reading and the reason. **(pending)** TA review UI.
+answer not located. **TA view (user design, 15 Nov):** new role TA (per subject) with two tabs — *Flagged by AI*
+and *Re-evaluation requests* (student remark shown); each item shows the full answer sheet, question paper,
+answer key / reference solution, rubric (subjective), the AI mark + one-line reason; the TA submits re-evaluated
+marks. Random spot-checks appear in the Flagged tab. **TA marks are final** (every change logged). Students may send
+**one** re-evaluation request per paper (one remark box); they then see the new marks and the mark history
+(AI → TA). Users (teachers + subjects, TAs per subject, 10–50 demo students per subject) come from `demo.env`;
+no admin UI for users. **(pending)** implementation.
 
 ## 4. Models (cn07, 2 GPUs: RTX A6000 48 GB + RTX PRO 6000 96 GB)
 

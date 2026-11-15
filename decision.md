@@ -404,3 +404,30 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - With 10 teacher sheets: **few-shot + global shift best** (MAE 0.36, within 0.5 86 %, QWK 0.65, bias ≈ 0) but the
   grader is ~5× slower (60 vs 12.6 s/answer); **per-question shift alone** 0.38–0.39 at no extra cost.
 - Pipeline NOT changed; choice left to the user.
+
+## 15 Nov 2026 — TA role and TA view (user design; keep TA checking simple)
+- New third user type **TA** (today only teacher + student exist). TA sees only the subjects they are TA of.
+- Two tabs: **Flagged by AI** and **Re-evaluation requests** (from students). Same item view in both: the
+  student's full answer sheet, question paper, teacher's answer key / reference solution, grading rubric (if
+  subjective), AI's mark + one-line reason; TA enters re-evaluated marks and submits. Request tab also shows the
+  student's remark ("this question was wrongly evaluated because …").
+- Consequence for the pipeline: routing only needs to flag a question with ONE short reason (answer not found,
+  readers disagree, unclear handwriting, grader unsure, random quality check). Random spot-checks appear in the
+  Flagged tab; no separate queue. Student side needs a per-question "Request re-evaluation" + reason box.
+- Open (to decide at UI time): who assigns TAs (proposed: teacher, by email); TA mark final or teacher-approved
+  (proposed: final + audit log); re-evaluation limits (once per question? time window?); student sees new mark
+  + optional TA comment?; can TAs mark the calibration papers?
+
+## 15 Nov 2026 — user decisions on TA / re-evaluation / calibration (final)
+1. **Users from `demo.env`**: teachers with their subjects; per subject a list of TAs and sample student
+   credentials (10–50 students per subject). No UI/logic for assigning TAs or creating teachers/students/TAs now.
+   (Replaces the hard-coded demo teacher + students in `backend/app/db/seed.py`.)
+2. **TA marks are final**; every TA decision is logged (old mark, new mark, TA, time, optional remark).
+3. **Re-evaluation: at most ONE request per student per question paper**, one text box with the student's remarks
+   / concerns; the TA reads it and re-evaluates only those parts.
+4. After the TA submits, the student sees the updated marks and a **history of previously awarded marks**
+   (AI → TA); TA remark optional.
+5. **Calibration (teacher-evaluated answer sheets) is optional and teacher-only.** Without it the rubric marks are
+   used as they are (measured: ≈ 0.5 marks/answer stricter than a lenient teacher) → setup screen should say so.
+- Still open: calibration method when used (per-question shift vs few-shot + shift); order of work
+  (pipeline into the main code vs UI review).
