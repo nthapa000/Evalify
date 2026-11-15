@@ -7,6 +7,13 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  // Vitest: component tests in a simulated browser (jsdom); `npm test`
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/test/setup.js",
+    css: false,
+  },
   server: {
     port: 5173,
     proxy: {

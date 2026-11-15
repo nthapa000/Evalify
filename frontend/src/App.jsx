@@ -8,6 +8,7 @@ import ToastContainer from "./components/ui/Toast";
 // Auth pages
 import TeacherLogin from "./pages/auth/TeacherLogin";
 import StudentLogin from "./pages/auth/StudentLogin";
+import TaLogin from "./pages/auth/TaLogin";
 
 // Teacher pages
 import TeacherDashboard from "./pages/teacher/Dashboard";
@@ -21,7 +22,15 @@ import SubjectPage from "./pages/student/SubjectPage";
 import Submission from "./pages/student/Submission";
 import Result from "./pages/student/Result";
 
+// TA pages
+import TaDashboard from "./pages/ta/Dashboard";
+import TaReview from "./pages/ta/Review";
+
 // ── Route guard components ────────────────────────────────────────────────────
+
+// Home page of each role (teacher, TA, student)
+const HOME = { teacher: "/teacher/dashboard", ta: "/ta/dashboard", student: "/student/dashboard" };
+const homeFor = (role) => HOME[role] ?? "/student/dashboard";
 
 // Redirects unauthenticated users to the given loginPath
 function ProtectedRoute({ children, requiredRole, loginPath }) {
@@ -35,7 +44,7 @@ function ProtectedRoute({ children, requiredRole, loginPath }) {
 
   if (requiredRole && user?.role !== requiredRole) {
     // Logged in with the wrong role — send to their own home
-    return <Navigate to={user?.role === "teacher" ? "/teacher/dashboard" : "/student/dashboard"} replace />;
+    return <Navigate to={homeFor(user?.role)} replace />;
   }
 
   return children;
@@ -45,7 +54,7 @@ function ProtectedRoute({ children, requiredRole, loginPath }) {
 function PublicOnlyRoute({ children }) {
   const { token, user } = useAuthStore();
   if (token) {
-    return <Navigate to={user?.role === "teacher" ? "/teacher/dashboard" : "/student/dashboard"} replace />;
+    return <Navigate to={homeFor(user?.role)} replace />;
   }
   return children;
 }
@@ -54,7 +63,7 @@ function PublicOnlyRoute({ children }) {
 function RootRedirect() {
   const { token, user } = useAuthStore();
   if (!token) return <Navigate to="/login/teacher" replace />;
-  return <Navigate to={user?.role === "teacher" ? "/teacher/dashboard" : "/student/dashboard"} replace />;
+  return <Navigate to={homeFor(user?.role)} replace />;
 }
 
 // ── App ───────────────────────────────────────────────────────────────────────
@@ -71,6 +80,7 @@ export default function App() {
         {/* Auth routes — redirect away if already logged in */}
         <Route path="/login/teacher" element={<PublicOnlyRoute><TeacherLogin /></PublicOnlyRoute>} />
         <Route path="/login/student" element={<PublicOnlyRoute><StudentLogin /></PublicOnlyRoute>} />
+        <Route path="/login/ta" element={<PublicOnlyRoute><TaLogin /></PublicOnlyRoute>} />
 
         {/* Teacher routes */}
         <Route path="/teacher/dashboard" element={<ProtectedRoute requiredRole="teacher" loginPath="/login/teacher"><TeacherDashboard /></ProtectedRoute>} />
@@ -83,6 +93,10 @@ export default function App() {
         <Route path="/student/subjects/:subject" element={<ProtectedRoute requiredRole="student" loginPath="/login/student"><SubjectPage /></ProtectedRoute>} />
         <Route path="/student/submit/:paperId" element={<ProtectedRoute requiredRole="student" loginPath="/login/student"><Submission /></ProtectedRoute>} />
         <Route path="/student/results/:submissionId" element={<ProtectedRoute requiredRole="student" loginPath="/login/student"><Result /></ProtectedRoute>} />
+
+        {/* TA routes: review queue (two tabs) and one answer sheet */}
+        <Route path="/ta/dashboard" element={<ProtectedRoute requiredRole="ta" loginPath="/login/ta"><TaDashboard /></ProtectedRoute>} />
+        <Route path="/ta/review/:submissionId" element={<ProtectedRoute requiredRole="ta" loginPath="/login/ta"><TaReview /></ProtectedRoute>} />
 
         {/* 404 fallback */}
         <Route path="*" element={

@@ -79,6 +79,11 @@ export default function StudentLogin() {
           <Link to="/login/teacher" className="text-green-600 font-medium hover:underline">
             Teacher Login →
           </Link>
+          {/* TA login (third role) */}
+          {" · "}
+          <Link to="/login/ta" className="text-green-600 font-medium hover:underline">
+            TA Login →
+          </Link>
         </p>
       </div>
     </div>

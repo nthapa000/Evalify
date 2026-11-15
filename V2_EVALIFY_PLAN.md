@@ -103,7 +103,7 @@ answer key / reference solution, rubric (subjective), the AI mark + one-line rea
 marks. Random spot-checks appear in the Flagged tab. **TA marks are final** (every change logged). Students may send
 **one** re-evaluation request per paper (one remark box); they then see the new marks and the mark history
 (AI → TA). Users (teachers + subjects, TAs per subject, 10–50 demo students per subject) come from `demo.env`;
-no admin UI for users. **(pending)** implementation.
+no admin UI for users. **Implemented 15 Nov** (backend + UI, test-first).
 
 ## 4. Models (cn07, 2 GPUs: RTX A6000 48 GB + RTX PRO 6000 96 GB)
 
@@ -163,7 +163,7 @@ vector index), chunk size; evaluation = how much teachers edit the drafts.
 2. ~~Segmentation fixes for type C + teacher calibration~~ — done (run 9). Next: UI review to match the pipeline (user asked, after models load).
 3. ~~Switch MCQ/numerical to whole-page majority; v2 grader (Gemma) default for subjective~~ — done 15 Nov (test-first).
 4. Fix the glare gate and show-through ghosts; calibrate routing thresholds.
-5. TA review UI; then the RAG answer-key assistant (§6).
+5. ~~TA review UI~~ — done 15 Nov (TA role, two tabs, re-evaluation, marks history, calibration UI). Next: the RAG answer-key assistant (§6).
 6. (later, user request) Student-facing marking breakdown: per question and rubric point — evidence quote,
    verdict, marks (+ one-line reason); calibration shown as a separate adjustment; TA overrides shown; visible
    after the teacher releases results; per-point re-evaluation request → TA queue.

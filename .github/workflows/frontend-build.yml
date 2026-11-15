@@ -24,6 +24,11 @@ jobs:
         working-directory: frontend
         run: npm ci
 
+      # Component and page tests (Vitest + Testing Library, no backend needed)
+      - name: Test
+        working-directory: frontend
+        run: npm test
+
       - name: Build
         working-directory: frontend
         run: npm run build

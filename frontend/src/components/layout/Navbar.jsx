@@ -9,7 +9,8 @@ export default function Navbar() {
 
   const handleLogout = () => {
     clearAuth();
-    navigate(user?.role === "teacher" ? "/login/teacher" : "/login/student");
+    // Back to the login page of the role that signed out
+    navigate({ teacher: "/login/teacher", ta: "/login/ta" }[user?.role] ?? "/login/student");
   };
 
   return (
@@ -27,7 +28,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-medium text-gray-800">{user.name}</p>
-            <p className="text-xs text-gray-400 capitalize">{user.role}</p>
+            <p className="text-xs text-gray-400 capitalize">{user.role === "ta" ? "TA" : user.role}</p>
           </div>
           <div className="w-9 h-9 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-semibold">
             {user.name?.[0]?.toUpperCase() ?? "?"}

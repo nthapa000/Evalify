@@ -242,7 +242,12 @@ export default function PaperView() {
                             <h2 className="text-base font-semibold text-gray-700">✍️ Subjective Questions</h2>
                         </Card.Header>
                         <Card.Body className="space-y-4">
-                            {paper.subjectiveQuestions.map((sq, i) => {
+                            {paper.subjectiveQuestions.map((raw, i) => {
+                                // The wizard stores plain question strings with rubrics in subjectiveRubrics;
+                                // older papers stored {question_text, rubric} objects — show both
+                                const sq = typeof raw === "string"
+                                    ? { question_text: raw, rubric: paper.subjectiveRubrics?.[i] }
+                                    : { ...raw, rubric: raw.rubric ?? paper.subjectiveRubrics?.[i] };
                                 const marks = paper.subjectiveQuestionMarks?.[`S${i + 1}`] ?? paper.subjectiveMarks ?? sq.max_marks;
                                 return (
                                     <div key={i} className="bg-gray-50 rounded-xl p-4 space-y-2">

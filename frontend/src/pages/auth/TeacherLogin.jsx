@@ -76,11 +76,15 @@ export default function TeacherLogin() {
           </Button>
         </div>
 
-        {/* Switch to student login */}
+        {/* Switch to the student or TA login */}
         <p className="text-center text-sm text-gray-500 mt-6">
           Are you a student?{" "}
           <Link to="/login/student" className="text-green-600 font-medium hover:underline">
             Student Login →
+          </Link>
+          {" · "}
+          <Link to="/login/ta" className="text-green-600 font-medium hover:underline">
+            TA Login →
           </Link>
         </p>
       </div>

@@ -55,7 +55,8 @@ export function usePaperResults(paperId) {
   const [loading, setLoading] = useState(true);
   const { addToast } = useToastStore();
 
-  useEffect(() => {
+  // refetch() reloads after the teacher hand-marks a sheet or changes calibration
+  const load = useCallback(() => {
     if (!paperId) return;
     setLoading(true);
     api.get(`/results/paper/${paperId}`)
@@ -64,7 +65,34 @@ export function usePaperResults(paperId) {
       .finally(() => setLoading(false));
   }, [paperId, addToast]);
 
-  return { data, loading };
+  useEffect(() => { load(); }, [load]);
+
+  return { data, loading, refetch: load };
+}
+
+// Optional teacher calibration: hand-mark a sheet, apply or remove the learned shift
+export function useCalibration(paperId) {
+  const [busy, setBusy] = useState(false);
+  const { addToast } = useToastStore();
+  const run = async (fn, okMsg) => {
+    setBusy(true);
+    try {
+      const res = await fn();
+      if (okMsg) addToast(okMsg, "success");
+      return res.data;
+    } catch (e) {
+      addToast(e.response?.data?.detail || "Calibration request failed.", "error");
+      return null;
+    } finally {
+      setBusy(false);
+    }
+  };
+  return {
+    busy,
+    handMark: (sid, marks) => run(() => api.put(`/papers/${paperId}/calibration/marks/${sid}`, { marks }), "Your marks were saved."),
+    apply: () => run(() => api.post(`/papers/${paperId}/calibration/apply`), "Calibration applied."),
+    remove: () => run(() => api.delete(`/papers/${paperId}/calibration`), "Calibration removed."),
+  };
 }
 
 // Upload a PDF to the server — returns the persistent server URL or null

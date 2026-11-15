@@ -16,6 +16,12 @@ _db: AsyncIOMotorDatabase | None = None
 async def connect_db(max_retries: int = 10, delay_s: float = 5.0):
     """Connect and ping, retrying while MongoDB is still starting (e.g. in Docker)."""
     global _client, _db
+    # In-memory database (no server needed); everything is lost when the backend stops
+    if settings.EVALIFY_INMEMORY_DB:
+        from mongomock_motor import AsyncMongoMockClient
+        _client = AsyncMongoMockClient()
+        _db = _client[settings.MONGO_DB_NAME]
+        return print("⚠️  Using an in-memory database (EVALIFY_INMEMORY_DB=1): data is lost on restart")
     _client = AsyncIOMotorClient(settings.MONGO_URI, serverSelectionTimeoutMS=5000)
     _db = _client[settings.MONGO_DB_NAME]
     for attempt in range(1, max_retries + 1):

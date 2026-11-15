@@ -475,3 +475,23 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Bugs found by the new tests and fixed: any user could read any student's result; upload response crashed on the
   Mongo `_id`; 422 handler crashed on custom validation messages; Gemma whitespace runaway skipped the JSON retry and
   looked like a blank answer; `any_live()` checked the old reader role.
+
+## 15 Nov 2026 — UI phase, frontend part + live end-to-end check
+- **Frontend tests (Vitest + Testing Library)**, every test with a one-line "why": utilities, stores, UI components,
+  layout, route guards, all existing pages (student dashboard/subject/upload/result, teacher dashboard/paper
+  view/create wizard/results, logins) and the new TA pages. 55 tests; `npm test`; added to the frontend CI build.
+- **New UI**: TA login (`/login/ta`, links from the other logins); TA dashboard (`/ta/dashboard`: subjects with
+  counts, tabs "Flagged by AI" / "Re-evaluation requests", one-line reasons or the student's remark); TA review
+  (`/ta/review/:id?tab=`: full answer sheet, question paper / answer key / solution links, MCQ + numerical keys,
+  rubric points, every question's AI mark + reason + evidence, mark inputs with 0…max check, optional remark;
+  only changed marks are sent; TA marks final). Student result: question-wise marks, marks history (role, not
+  TA name), the one re-evaluation request (form → pending → resolved with TA response). Teacher results: status
+  badges (n flagged / TA pending / TA reviewed / re-evaluation pending / re-evaluated / hand-marked) and optional
+  calibration (Hand-mark dialog, Apply / Remove calibration).
+- Bug found by the new tests: teacher PaperView expected subjective questions as objects but the wizard saves
+  strings → questions showed empty; fixed (both shapes). ESLint has no config in the repo, so the existing lint
+  workflow cannot pass — left as is (to decide).
+- **EVALIFY_INMEMORY_DB=1**: backend runs without MongoDB (data lost on restart) — for UI testing on the cluster.
+- **Live end-to-end run with the real models** (API): DS teacher creates the Mendeley paper → DS2025003 uploads
+  Student_3 (4 pages) → v2 pipeline 142 s, 16/50 → re-evaluation request → TA Data Science sees it (4 pages, 35
+  questions, key) → TA sets S2 = 1 → student sees 17/50, history "S2 0 → 1 (TA)", request resolved.

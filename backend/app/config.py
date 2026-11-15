@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     EVALIFY_DEMO_ENV: str = str(PROJECT_ROOT / "demo.env")
     BCRYPT_ROUNDS: int = 12            # tests lower this to keep seeding fast
 
+    # Run without a MongoDB server (data is lost on restart) — for UI testing on the GPU cluster
+    EVALIFY_INMEMORY_DB: bool = False
+
     class Config:
         env_file = (str(PROJECT_ROOT / "teacher_credentials.env"),
                     str(PROJECT_ROOT / "student_credentials.env"))

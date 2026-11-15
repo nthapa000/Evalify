@@ -95,7 +95,7 @@ export function useSubmissionStatus(submissionId) {
   return { status, result };
 }
 
-// Fetch the full result object for a completed submission
+// Fetch the full result object for a completed submission (setData lets the page update it after actions)
 export function useResult(submissionId) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -110,5 +110,25 @@ export function useResult(submissionId) {
       .finally(() => setLoading(false));
   }, [submissionId, addToast]);
 
-  return { data, loading };
+  return { data, loading, setData };
+}
+
+// The student's one re-evaluation request for a paper (remark says which questions and why)
+export function useRequestReevaluation() {
+  const [sending, setSending] = useState(false);
+  const { addToast } = useToastStore();
+  const request = async (submissionId, remark) => {
+    setSending(true);
+    try {
+      const res = await api.post(`/submissions/${submissionId}/reevaluation`, { remark });
+      addToast("Re-evaluation requested. A TA will check it.", "success");
+      return res.data.reevaluation;
+    } catch (e) {
+      addToast(e.response?.data?.detail || "Could not send the request.", "error");
+      return null;
+    } finally {
+      setSending(false);
+    }
+  };
+  return { request, sending };
 }

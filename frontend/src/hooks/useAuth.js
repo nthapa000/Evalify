@@ -1,4 +1,4 @@
-// useAuth.js — teacher/student login and logout against the backend JWT API.
+// useAuth.js — teacher / student / TA login and logout against the backend JWT API.
 
 import { useState } from "react";
 import useAuthStore from "../store/authStore";
@@ -28,6 +28,8 @@ export default function useAuth() {
 
   const loginTeacher = (c) => login("/auth/teacher/login", c, "Welcome back", "Teacher login failed.");
   const loginStudent = (c) => login("/auth/student/login", c, "Welcome", "Student login failed.");
+  // TA: third role, email + password like the teacher
+  const loginTa = (c) => login("/auth/ta/login", c, "Welcome", "TA login failed.");
 
   // Clear the stored session
   const logout = () => {
@@ -35,5 +37,5 @@ export default function useAuth() {
     addToast("Signed out successfully.", "info");
   };
 
-  return { user, token, isAuthenticated: !!token, loading, loginTeacher, loginStudent, logout };
+  return { user, token, isAuthenticated: !!token, loading, loginTeacher, loginStudent, loginTa, logout };
 }

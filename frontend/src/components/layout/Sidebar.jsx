@@ -28,9 +28,14 @@ const STUDENT_LINKS = [
   { to: "/student/dashboard",       label: "Dashboard" },
 ];
 
+// TA: one page with the two review tabs
+const TA_LINKS = [
+  { to: "/ta/dashboard",            label: "Review queue" },
+];
+
 export default function Sidebar() {
   const { user } = useAuthStore();
-  const links = user?.role === "teacher" ? TEACHER_LINKS : STUDENT_LINKS;
+  const links = { teacher: TEACHER_LINKS, ta: TA_LINKS }[user?.role] ?? STUDENT_LINKS;
 
   return (
     <aside className="w-56 bg-white border-r border-gray-200 flex flex-col py-4 flex-shrink-0">
