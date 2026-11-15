@@ -13,6 +13,22 @@ page images.
 | B  MCQ + numerical | 15 | 0.9 | 2 mcq + 3 numerical | 2.2 | 4,446 | 289 | **4,735** | 3,206 – 7,980 | 9 s |
 | C  MCQ + subjective (Data Science exam) | 12 | 3.5 | 20 mcq + 15 subjective | 26.8 | 34,899 | 6,553 | **41,451** | 32,881 – 63,123 | 100 s |
 
+## Per model, for comparing with a hosted API (per 1,000 sheets)
+
+API providers price each model separately, input and output tokens at different rates.
+
+| Paper type | Model | Calls / sheet | Input / sheet | Output / sheet | Input per 1,000 sheets | Output per 1,000 sheets |
+|---|---|---|---|---|---|---|
+| A  MCQ only (handwritten) | gemma4-31b-fp8 | 1.0 | 611 | 223 | 0.61 M | 0.22 M |
+| A  MCQ only (handwritten) | glm-ocr | 0.1 | 252 | 2 | 0.25 M | 0.00 M |
+| A  MCQ only (handwritten) | qwen38-27b-fp8 | 1.0 | 3,234 | 314 | 3.23 M | 0.31 M |
+| B  MCQ + numerical | gemma4-31b-fp8 | 1.0 | 544 | 115 | 0.54 M | 0.11 M |
+| B  MCQ + numerical | glm-ocr | 0.2 | 746 | 7 | 0.75 M | 0.01 M |
+| B  MCQ + numerical | qwen38-27b-fp8 | 1.0 | 3,156 | 167 | 3.16 M | 0.17 M |
+| C  MCQ + subjective (Data Science exam) | gemma4-31b-fp8 | 19.3 | 11,036 | 3,633 | 11.04 M | 3.63 M |
+| C  MCQ + subjective (Data Science exam) | glm-ocr | 0.5 | 1,781 | 60 | 1.78 M | 0.06 M |
+| C  MCQ + subjective (Data Science exam) | qwen38-27b-fp8 | 7.0 | 22,082 | 2,859 | 22.08 M | 2.86 M |
+
 ## Per pipeline step (average per sheet)
 
 **A  MCQ only (handwritten)**

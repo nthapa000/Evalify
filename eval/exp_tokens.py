@@ -129,6 +129,23 @@ def score(_args) -> None:
                   f"| {_mean([r['usage']['completion_tokens'] for r in rs]):,} | **{_mean(tot):,}** "
                   f"| {min(tot):,} – {max(tot):,} | {st.mean(r['latency_s'] for r in rs):.0f} s |")
 
+    # 1b. Per model, input vs output, scaled to 1,000 sheets (what an API bill is computed from)
+    md += ["", "## Per model, for comparing with a hosted API (per 1,000 sheets)", "",
+           "API providers price each model separately, input and output tokens at different rates.",
+           "", "| Paper type | Model | Calls / sheet | Input / sheet | Output / sheet | Input per 1,000 sheets "
+           "| Output per 1,000 sheets |", "|---|---|---|---|---|---|---|"]
+    for label, *_ in SETS:
+        rs = [r for r in rows if r["set"] == label]
+        per = {}
+        for r in rs:
+            for g in r["usage"]["by_stage"]:
+                a = per.setdefault(g["model"], [0, 0, 0])
+                a[0], a[1], a[2] = a[0] + g["calls"], a[1] + g["prompt_tokens"], a[2] + g["completion_tokens"]
+        for model, (c, i, o) in sorted(per.items()):
+            n = len(rs)
+            md.append(f"| {label} | {model} | {c / n:.1f} | {i / n:,.0f} | {o / n:,.0f} | {i / n * 1000 / 1e6:.2f} M "
+                      f"| {o / n * 1000 / 1e6:.2f} M |")
+
     # 2. Per pipeline step and model
     md += ["", "## Per pipeline step (average per sheet)", ""]
     for label, *_ in SETS:
