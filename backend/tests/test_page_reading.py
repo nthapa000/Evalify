@@ -126,3 +126,12 @@ def test_mcq_labels_are_not_subjective_answers():
     pr.merge_attempts(store, [("Q1", False, "A"), ("Q4", False, "real answer")])
     subj = pr.subjective_texts(store, {}, QS)
     assert set(subj) == {"S1"} and subj["S1"] == ("real answer", "")
+
+
+# Why: a blank vote while one reader saw an answer is ambiguous — faint real writing (a silent 0 if accepted) or
+# show-through from the back of the page; on our sheets this was 3 of 225 answers, all on blank sheets → TA
+def test_decide_blank_vote_with_one_answer_goes_to_ta():
+    final, reason = pr.decide("mcq", r(), r("A"), r())
+    assert final is None and "only one reader" in reason
+    final, reason = pr.decide("numerical", r(), r(), r("0.056"))
+    assert final is None and "only one reader" in reason

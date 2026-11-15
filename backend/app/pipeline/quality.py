@@ -18,11 +18,13 @@ from PIL import Image, ImageOps
 # Thresholds (tune on the dev split; values below are conservative defaults)
 TARGET_LONG_SIDE = int(os.environ.get("EVALIFY_TARGET_LONG_SIDE", "2000"))
 MIN_LONG_SIDE = 1000           # smaller photos are too coarse for handwriting
-BLUR_MIN = 60.0                # variance of Laplacian at 1000 px; below = blurry
-GLARE_MAX = 0.04               # max fraction of blown-out (white, unsaturated) pixels
+BLUR_MIN = 3.0                 # sharpness ratio (detail lost by a slight blur): good phone photos ≥ 3.98, blurred (σ ≥ 2) ≤ 2.47
+GLARE_MAX = 0.33               # max blown-out area (≥ 40 levels above the paper); good photos ≤ 0.245 (uneven light)
 DARK_MIN = 70.0                # min mean brightness (0–255)
 BLANK_INK_MIN = 180.0          # darkest ink lighter than this = blank page / show-through only
 BLANK_TEXT_INK = 0.0012        # < 0.12 % handwriting-like ink (ruled lines removed) = blank back
+BLANK_DARK_MAX = 0.008         # a "blank" page must also have < 0.8 % darker-than-paper area: blank backs ≤ 0.55 %,
+                               # blurred written pages ≥ 0.93 % (blur turns ink grey; it must not look blank)
 CONTRAST_MIN = 60.0            # min paper − ink brightness gap (median vs darkest 1000 px)
 
 
@@ -112,14 +114,22 @@ def rotate(bgr: np.ndarray, deg: float) -> np.ndarray:
 def measure(bgr: np.ndarray, rep: QualityReport) -> None:
     """Fill blur / glare / brightness / contrast and the pass/fail reasons."""
     # Measure at a fixed scale so blur scores are comparable across phones
+    # Area averaging, so the blur score does not depend on how big the upload was
     scale = 1000 / max(bgr.shape[:2])
-    gray = cv2.cvtColor(cv2.resize(bgr, None, fx=scale, fy=scale), cv2.COLOR_BGR2GRAY)
-    hsv = cv2.cvtColor(cv2.resize(bgr, None, fx=scale, fy=scale), cv2.COLOR_BGR2HSV)
-    rep.blur = float(cv2.Laplacian(gray, cv2.CV_64F).var())
-    # Glare = blown-out patches clearly brighter than the paper; a scan's paper is
-    # already pure white, so glare is only measured on photos (background < 240)
-    bg = float(np.median(gray))
-    rep.glare = 0.0 if bg >= 240 else float(((hsv[..., 2] >= max(250, bg + 15)) & (hsv[..., 1] < 25)).mean())
+    small = cv2.resize(bgr, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+    gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
+    hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+    # Sharpness = how much detail a slight blur removes (scale- and contrast-free): sharp writing loses a lot,
+    # an out-of-focus photo almost nothing. The plain Laplacian variance depended on the upload size.
+    lap = cv2.Laplacian(gray, cv2.CV_64F).var()
+    rep.blur = float(lap / max(cv2.Laplacian(cv2.GaussianBlur(gray, (0, 0), 1), cv2.CV_64F).var(), 1e-6))
+    # Glare = a hotspot much brighter than the paper (≥ 40 levels, unsaturated colour). Bright, evenly lit paper is
+    # not glare (the old rule rejected 9/30 good photos for it); on white paper a hotspot cannot hide anything more.
+    # Milder glare is left to the readers: an unreadable answer comes back "unclear" and goes to a TA.
+    # Paper level ignoring blown-out pixels, so a large hotspot cannot raise it and hide itself
+    lit = gray[gray < 250]
+    paper = float(np.median(lit)) if lit.size > 0.3 * gray.size else 255.0
+    rep.glare = float(((gray >= min(255, paper + 40)) & (hsv[..., 1] < 40)).mean()) if paper <= 215 else 0.0
     # Contrast = how much darker the ink is than the paper; a sparse page has a low global
     # std but perfectly readable writing, so std is the wrong measure
     rep.brightness = float(gray.mean())
@@ -129,7 +139,9 @@ def measure(bgr: np.ndarray, rep: QualityReport) -> None:
     # No real writing → blank page / show-through from the back (a printed margin line alone
     # doesn't count): skip it, don't flag it. Measured on 50 Mendeley pages: backs ≤ 0.074 %,
     # written pages ≥ 0.22 %.
-    if darkest.mean() > BLANK_INK_MIN or text_ink_fraction(gray) < BLANK_TEXT_INK:
+    # …but a blurred written page also has little dark ink: it is blank only if almost nothing is darker than the paper
+    dark_area = float((gray < np.median(gray) - 25).mean())
+    if (darkest.mean() > BLANK_INK_MIN or text_ink_fraction(gray) < BLANK_TEXT_INK) and dark_area < BLANK_DARK_MAX:
         rep.blank, rep.ok, rep.reasons = True, True, []
         return
 

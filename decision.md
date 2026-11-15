@@ -509,3 +509,20 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Found while checking screenshots: the TA queue flashed "Nothing to review" while loading — fixed. The Vite dev
   server caches the Tailwind config: restart it after config changes.
 - 58 frontend tests, production build OK.
+
+## 15 Nov 2026 — quality gate and show-through fixes (user: "implement 3 and 4")
+- **Glare gate** rejected 9 of 30 good phone photos: it counted bright, evenly lit paper as glare. Now glare =
+  area ≥ 40 levels brighter than the paper (paper level ignores blown-out pixels, so a hotspot cannot hide
+  itself); reject only extreme glare (≥ 33 % of the page; good photos reach 24.5 % with uneven light). Milder glare
+  is left to the readers ("unclear" → TA). Measured: own 45 photos 0 rejected (was 9), Mendeley 200 scans 0
+  rejected, blank backs still detected (22/22).
+- **Blur** score now scale-free (detail lost by a slight blur; good ≥ 3.98, blurred ≤ 2.47 → limit 3.0); the old
+  Laplacian variance depended on the upload size.
+- **Bug found:** a heavily blurred written page was classed as a blank back and skipped — its answers would score 0
+  with no TA. A page is blank only if < 0.8 % of it is darker than the paper (blank backs ≤ 0.55 %, blurred written
+  pages ≥ 0.93 %); otherwise it is rejected as blurry.
+- **Show-through:** with whole-page majority reading no ghost answer was accepted on the known sheets (one reader
+  saw a mirrored "A", the other two saw nothing). New rule: a blank vote while one reader saw an answer → TA
+  ("only one reader saw an answer — faint writing or show-through?"), so faint real answers are never silently 0.
+  Fires on 3/225 own-sheet answers (all on blank sheets). Consistent with the user's rule (0 only when readers agree
+  there is no answer).

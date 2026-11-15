@@ -115,12 +115,14 @@ def _show(r: Optional[Reading]) -> str:
 
 def decide(kind: str, a: Reading, b: Reading, c: Optional[Reading] = None) -> Tuple[Optional[Reading], str]:
     """A and B agree → A. Otherwise C must agree with A or B (2 of 3). Else (None, one-line reason for the TA)."""
-    if _agree(kind, a, b):
-        return a, ""
-    if c is not None:
-        for x in (a, b):
-            if _agree(kind, c, x):
-                return x, ""
+    winner = a if _agree(kind, a, b) else next((x for x in (a, b) if c is not None and _agree(kind, c, x)), None)
+    # A blank vote while one reader saw an answer is ambiguous (faint writing, or show-through from the back):
+    # a TA decides instead of a silent 0
+    if winner is not None and not winner.value and any(r is not None and r.value for r in (a, b, c)):
+        seen = ", ".join(f"{n}: {r.value}" for n, r in (("A", a), ("B", b), ("C", c)) if r is not None and r.value)
+        return None, f"only one reader saw an answer ({seen}) — faint writing or show-through?"
+    if winner is not None:
+        return winner, ""
     if all(r is None or r.status in ABSTAIN for r in (a, b, c)):
         return None, "handwriting unclear to every reader"
     shown = f"A: {_show(a)}, B: {_show(b)}" + (f", C: {_show(c)}" if c is not None else "")
