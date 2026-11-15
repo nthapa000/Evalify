@@ -604,3 +604,12 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - `eval/cost_compare.py`: tokens x API prices (web lookup 16 Nov, low / typical) vs GPU rental per hour / throughput.
   Per 1,000 sheets: handwritten MCQ API $0.74-1.26 vs rented GPUs $0.85-1.14; Data Science API $7.46-11.74 vs
   rented $13.62-18.36. Our cluster GPUs cost nothing extra; with an API the student sheets leave the university.
+
+## 16 Nov 2026 — class-scale cost for the proposal to the teacher (user request)
+- User: the college already has the GPU servers, so self-hosting has no purchase or extra maintenance cost (rental
+  value may be shown, but it is not consumed). Asked for: 700 type-C sheets of ~10 pages, and 700 handwritten
+  MCQ / numerical quizzes: time and money, API vs own servers.
+- `eval/scenario_cost.py` -> `eval/reports/scenario_cost/README.md`. Type-C 10-page sheet estimated from measured
+  per-page (reading + transcription) and per-answer (grading) tokens, 15 written answers assumed: ~109k tokens per
+  sheet (estimate 5-8 % above measured 4/6-page sheets). 700 sheets: API $14-22 (~₹1,200-1,900), own servers
+  ₹0 extra and ~12 h of GPU time. 700 one-page quizzes: API under $1, own servers ~17 min. OMR: no model at all.
