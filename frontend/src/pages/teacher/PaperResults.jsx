@@ -13,6 +13,8 @@ import Button from "../../components/ui/Button";
 import Modal from "../../components/ui/Modal";
 import StatLedger from "../../components/ui/StatLedger";
 import { SkeletonRow } from "../../components/ui/Skeleton";
+import api from "../../services/api";
+import useToastStore from "../../store/toastStore";
 import { formatDateTime, formatPercent, gradeFromPercent } from "../../utils/formatters";
 
 // Map percentage to a badge color
@@ -66,6 +68,45 @@ function HandMarkDialog({ sub, onClose, onSave, busy }) {
   );
 }
 
+// Release / withdraw results; warns about sheets with open TA work
+function ReleasePanel({ paper, subs, released, onChange }) {
+  const [busy, setBusy] = useState(false);
+  const { addToast } = useToastStore();
+  const isReleased = released ?? paper.resultsReleased !== false;
+  const openTa = subs.filter((s) => (s.review?.length ?? 0) > 0 && s.ta_review?.status !== "done").length;
+  const openRe = subs.filter((s) => s.reevaluation?.status === "pending").length;
+  const toggle = async () => {
+    setBusy(true);
+    try {
+      const { data } = await api.put(`/papers/${paper.id}/release`, { released: !isReleased });
+      onChange(data.resultsReleased);
+      addToast(data.resultsReleased ? "Results released to students." : "Release withdrawn.", "success");
+    } catch (e) {
+      addToast(e.response?.data?.detail || "Could not change the release.", "error");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <Card className="mb-6">
+      <Card.Body className="flex flex-col md:flex-row md:items-center gap-4">
+        <div className="flex-1">
+          <p className="kicker">Results</p>
+          <p className="text-gray-900">{isReleased ? "Released to students" : "Not released to students"}</p>
+          {!isReleased && (
+            <p className="text-sm text-gray-500">Students see "Your answer sheet is being evaluated" until you release.</p>
+          )}
+          {openTa > 0 && <p className="text-sm text-amber-700">{openTa} sheet{openTa > 1 ? "s" : ""} still {openTa > 1 ? "have" : "has"} answers flagged for TA review.</p>}
+          {openRe > 0 && <p className="text-sm text-amber-700">{openRe} re-evaluation request{openRe > 1 ? "s" : ""} pending.</p>}
+        </div>
+        <Button variant={isReleased ? "secondary" : "primary"} loading={busy} onClick={toggle}>
+          {isReleased ? "Withdraw release" : "Release results"}
+        </Button>
+      </Card.Body>
+    </Card>
+  );
+}
+
 export default function PaperResults() {
   const { paperId } = useParams();
   const { data, loading, refetch } = usePaperResults(paperId);
@@ -73,6 +114,7 @@ export default function PaperResults() {
   const cal = useCalibration(paperId);
   const [marking, setMarking] = useState(null);
   const [summary, setSummary] = useState(null);
+  const [released, setReleased] = useState(null);       // local value after the teacher changes the release
   const subjective = paper?.type === "mcq_numerical_subjective";
   const handMarked = data?.submissions?.filter((s) => s.teacher_marks).length ?? 0;
 
@@ -111,6 +153,11 @@ export default function PaperResults() {
             { label: "Lowest", value: data.stats.lowest },
           ]} />
         </div>
+      )}
+
+      {/* Release results to students (hidden until then; TAs can finish flagged answers first) */}
+      {paper && data && (
+        <ReleasePanel paper={paper} subs={data.submissions ?? []} onChange={(p) => setReleased(p)} released={released} />
       )}
 
       {/* Optional calibration (subjective papers only) */}

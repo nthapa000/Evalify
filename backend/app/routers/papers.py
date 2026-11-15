@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from app.db.mongodb import papers_col, submissions_col
 from app.models.paper import PaperCreate, PaperOut
 from app.routers.auth import get_current_user, require_teacher, user_subjects
+from app.services.access import student_status
 
 router = APIRouter(prefix="/papers", tags=["papers"])
 PAPER_UPLOAD_DIR = "uploads/papers"
@@ -63,7 +64,8 @@ async def create_paper(body: PaperCreate, user: dict = Depends(require_teacher))
     """Create a paper; subject is forced to the teacher's own subject."""
     doc = body.model_dump()
     doc.update(teacher_id=user["sub"], subject=user.get("subject", doc.get("subject", "")),
-               createdAt=datetime.now(timezone.utc).isoformat(), resultCount=0)
+               createdAt=datetime.now(timezone.utc).isoformat(), resultCount=0,
+               resultsReleased=False, releasedAt=None)          # students see marks only after release
     doc["_id"] = (await papers_col().insert_one(doc)).inserted_id
     return _to_dict(doc)
 
@@ -89,7 +91,8 @@ async def available_papers(user: dict = Depends(get_current_user)):
     async for doc in papers_col().find(query).sort("createdAt", -1):
         paper = _to_dict(doc)
         sub = await submissions_col().find_one({"student_id": user["sub"], "paper_id": paper["id"]})
-        paper["submissionStatus"] = sub["status"] if sub else "not_submitted"
+        # "awaiting_release" until the teacher releases results (shown as "being evaluated")
+        paper["submissionStatus"] = student_status(sub, doc) if sub else "not_submitted"
         paper["submissionId"] = str(sub["_id"]) if sub else None
         papers.append(paper)
     return papers
@@ -173,6 +176,23 @@ async def omr_template(body: OmrTemplateRequest, user: dict = Depends(require_te
     cv2.imwrite(preview, omr.preview(blank, tpl))
     tpl["blank_url"] = body.blank_url
     return {"template": tpl, "preview_url": f"/api/papers/files/{os.path.basename(preview)}"}
+
+
+# ── Release results to students (teacher only) ───────────────────────────────
+
+class ReleaseRequest(BaseModel):
+    released: bool
+
+
+@router.put("/{paper_id}/release")
+async def release_results(paper_id: str, body: ReleaseRequest, user: dict = Depends(require_teacher)):
+    """Release the paper's results to students (or withdraw the release)."""
+    pid = _valid_id(paper_id)
+    upd = {"resultsReleased": body.released, "releasedAt": datetime.now(timezone.utc).isoformat() if body.released else None}
+    res = await papers_col().update_one({"_id": pid, "teacher_id": user["sub"]}, {"$set": upd})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Paper not found or not owned by you.")
+    return {"id": paper_id, **upd}
 
 
 # ── Optional RAG answer-key assistant: drafts only, the teacher edits; never used to grade students ──

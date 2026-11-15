@@ -55,6 +55,13 @@ describe("Student result", () => {
     expect(row).toHaveTextContent("Not found in your answer");
   });
 
+  // Why: before the teacher releases results the result page shows the "being evaluated" window, not an error
+  it("shows the being-evaluated window before release", async () => {
+    api.routes["GET /results/s1"] = () => { throw Object.assign(new Error("409"), { response: { status: 409, data: {} } }); };
+    page();
+    expect(await screen.findByRole("heading", { name: "Your answer sheet is being evaluated" })).toBeInTheDocument();
+  });
+
   // Why: the student may ask once for re-evaluation, writing which parts to re-check and why
   it("sends the one re-evaluation request", async () => {
     page();

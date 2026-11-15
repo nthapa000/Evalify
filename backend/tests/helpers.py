@@ -21,11 +21,16 @@ TYPE_C = {
 }
 
 
-async def make_paper(client, token, **overrides) -> dict:
-    """Create a paper through the API as the given teacher and return it."""
+async def make_paper(client, token, release: bool = True, **overrides) -> dict:
+    """Create a paper through the API as the given teacher (results released unless release=False)."""
     resp = await client.post("/api/papers", json={**TYPE_C, **overrides}, headers=auth_headers(token))
     assert resp.status_code == 200, resp.text
-    return resp.json()
+    paper = resp.json()
+    if release:
+        r = await client.put(f"/api/papers/{paper['id']}/release", json={"released": True}, headers=auth_headers(token))
+        if r.status_code == 200:                    # (before the release feature existed this endpoint was missing)
+            paper.update(r.json())
+    return paper
 
 
 async def student_id(db, roll_no: str) -> str:

@@ -43,3 +43,15 @@ async def require_view(user: dict, submission_id: str) -> tuple[dict, dict | Non
     if not await can_view(user, sub, paper):
         raise HTTPException(status_code=403, detail="Access denied.")
     return sub, paper
+
+
+# Results of papers created before "release" existed have no flag: they were visible at once
+def results_released(paper: dict | None) -> bool:
+    """Has the teacher released this paper's results to students?"""
+    return bool(paper) and paper.get("resultsReleased", True) is not False
+
+
+def student_status(sub: dict, paper: dict | None) -> str:
+    """Status shown to a student: an evaluated sheet stays "awaiting_release" until the teacher releases results."""
+    s = sub.get("status", "processing")
+    return "awaiting_release" if s == "evaluated" and not results_released(paper) else s

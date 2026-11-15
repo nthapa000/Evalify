@@ -16,7 +16,7 @@ const sub = (id, name, extra = {}) => ({
 
 beforeEach(() => {
   loginAs("teacher");
-  api.routes["GET /papers/p1"] = { id: "p1", name: "Unit Test 1", type: "mcq_numerical_subjective" };
+  api.routes["GET /papers/p1"] = { id: "p1", name: "Unit Test 1", type: "mcq_numerical_subjective", resultsReleased: false };
   api.routes["GET /results/paper/p1"] = { calibration: null, stats: { count: 2, average: 4.5, highest: 4.5, lowest: 4.5 },
     submissions: [sub("s1", "Aarav Sharma", { review: [{ question: "Q2", reason: "readers disagree" }] }),
                   sub("s2", "Priya Patel", { ta_review: { status: "done" }, reevaluation: { status: "pending" },
@@ -64,6 +64,18 @@ describe("Teacher paper results", () => {
     api.routes["GET /results/paper/p1"] = { ...d, submissions: d.submissions.map(({ teacher_marks, ...s }) => s) };
     page();
     expect(await screen.findByRole("button", { name: /Apply calibration/ })).toBeDisabled();
+  });
+
+  // Why: students see marks only after the teacher releases them; the teacher is warned about open TA work first
+  it("releases results with a warning about open TA work", async () => {
+    api.routes["PUT /papers/p1/release"] = { id: "p1", resultsReleased: true, releasedAt: "2026-11-15T12:00:00Z" };
+    page();
+    expect(await screen.findByText("Not released to students")).toBeInTheDocument();
+    expect(screen.getByText(/1 sheet still has answers flagged for TA review/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Release results" }));
+    await waitFor(() => expect(api.put).toHaveBeenCalledWith("/papers/p1/release", { released: true }));
+    expect(await screen.findByText(/Released to students/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Withdraw release" })).toBeInTheDocument();
   });
 
   // Why: calibration only makes sense for papers with subjective questions

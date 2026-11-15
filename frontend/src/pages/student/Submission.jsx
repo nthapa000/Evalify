@@ -9,6 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSubmitAnswerSheet, useSubmissionStatus } from "../../hooks/useSubmission";
 import { usePaperView } from "../../hooks/usePapers";
+import EvaluationNotice from "../../components/results/EvaluationNotice";
 import PageWrapper from "../../components/layout/PageWrapper";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
@@ -147,7 +148,7 @@ const SHEET_TYPES = {
     ),
     title: "OMR Bubble Sheet",
     subtitle: "Standard multiple-choice bubble form",
-    engine: "OpenCV OMR",
+    engine: "Bubble template, checked by an AI reader",
     bullets: [
       "Fill the circles with pencil or dark pen",
       "Each row = one question (A B C D left-to-right)",
@@ -162,11 +163,11 @@ const SHEET_TYPES = {
     ),
     title: "Handwritten Answer Sheet",
     subtitle: "Written text responses (e.g. Q1. A  Q2. C)",
-    engine: "Ollama Vision",
+    engine: "Read by two independent AI readers, checked by TAs when unsure",
     bullets: [
       "Write answers as: Q1. A   Q2. C   3. B …",
       "One answer per line for best recognition",
-      "System uses AI vision model to read handwriting",
+      "Two AI readers read your writing; unclear answers go to a TA",
     ],
   },
 };
@@ -222,34 +223,8 @@ export default function Submission() {
   if (submissionId) {
     return (
       <PageWrapper>
-        <div className="max-w-md mx-auto mt-20 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
-            <svg className="w-8 h-8 text-green-600 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-            </svg>
-          </div>
-          <h2 className="text-xl font-bold text-gray-800">Evaluating Your Answer Sheet</h2>
-          <p className="text-gray-500 text-sm mt-2">
-            {sheetType === "omr"
-              ? "Detecting filled bubbles with computer vision…"
-              : "Reading your handwriting with Ollama Vision…"
-            }
-          </p>
-          <p className="text-xs text-green-500 mt-1 font-mono">
-            Engine: {SHEET_TYPES[sheetType].engine}
-          </p>
-          <div className="flex justify-center gap-1.5 mt-6">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"
-                style={{ animationDelay: `${i * 0.2}s` }}
-              />
-            ))}
-          </div>
-          <p className="text-xs text-gray-400 mt-4">Status: {status}</p>
-        </div>
+        {/* Being marked, or marked and waiting for the teacher to release results */}
+        <EvaluationNotice status={status} paperName={paper?.name} />
       </PageWrapper>
     );
   }

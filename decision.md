@@ -545,3 +545,21 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   correctly, an off-topic question correctly reported as not covered. Citations show the passage sentences closest
   to the point. `.txt` uploads now allowed.
 - Tests: backend 184, frontend 72 (all with a "why" line); production build OK.
+
+## 15 Nov 2026 — permanent database on the cluster; release results (user decisions)
+- **Database on the cluster** (user): MongoDB 7.0.15 in user space (`/scratch/$USER/evalify/mongodb`), data in
+  `/scratch/$USER/evalify/mongo-db`, port 27027 on 127.0.0.1 only, **password authentication always on** (the
+  login node is shared; anonymous access refused — checked). Random password in `/scratch/$USER/evalify/run/mongo.env`
+  (chmod 600, not in git). Scripts: `infra/cluster/mongo.sh init|start|stop|status`, `infra/cluster/app.sh
+  start|stop|status` (database + backend :47823 on it + frontend :5173; logs in /scratch/$USER/evalify/logs).
+  Checked: data survives a backend restart.
+- Found an older MongoDB **8.3** data folder `/scratch/$USER/evalify/mongo-data` (Nov 14, 302 MB, not created in this
+  session, nothing running on it). Left untouched; asked the user whether it is needed.
+- **Release results** (user): new papers start unreleased; students see "Your answer sheet is being evaluated" while
+  marking and until the teacher releases (status `awaiting_release`, no marks in status / result / paper list);
+  teacher "Release results" / "Withdraw release" with a warning about sheets still flagged for TAs and pending
+  re-evaluations; TAs and the teacher work on results before release; re-evaluation requests only after release;
+  papers created before this feature count as released. Live check: hidden (409) → released → visible.
+- Also fixed: the submission status endpoint returned any submission's result to any logged-in user (now the same
+  access rule as results). Upload page no longer says "Ollama Vision".
+- Tests: backend 192, frontend 77.

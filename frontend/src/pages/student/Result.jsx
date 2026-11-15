@@ -11,6 +11,7 @@ import Skeleton from "../../components/ui/Skeleton";
 import Button from "../../components/ui/Button";
 import ScoreMark from "../../components/ui/ScoreMark";
 import MarkBreakdown from "../../components/results/MarkBreakdown";
+import EvaluationNotice from "../../components/results/EvaluationNotice";
 import StatLedger from "../../components/ui/StatLedger";
 import { formatDateTime, formatPercent } from "../../utils/formatters";
 
@@ -117,7 +118,7 @@ function Reevaluation({ submissionId, state, onRequested }) {
 
 export default function Result() {
   const { submissionId } = useParams();
-  const { data, loading, setData } = useResult(submissionId);
+  const { data, loading, setData, notReleased } = useResult(submissionId);
   const token = useAuthStore((s) => s.token);
   const [fileLoading, setFileLoading] = useState(false);
 
@@ -150,6 +151,11 @@ export default function Result() {
         </div>
       </PageWrapper>
     );
+  }
+
+  // Marked but not released by the teacher yet
+  if (notReleased) {
+    return <PageWrapper><EvaluationNotice status="awaiting_release" /></PageWrapper>;
   }
 
   // Not evaluated yet

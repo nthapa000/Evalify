@@ -13,6 +13,7 @@ import { formatDate, paperTypeLabel, statusLabel } from "../../utils/formatters"
 const STATUS_VARIANT = {
   not_submitted: "neutral",
   processing:    "warning",
+  awaiting_release: "warning",
   evaluated:     "success",
 };
 
@@ -71,9 +72,10 @@ export default function SubjectPage() {
                     <Button size="sm" className="w-full">Upload Answer Sheet</Button>
                   </Link>
                 )}
-                {paper.submissionStatus === "processing" && (
+                {/* Being marked, or marked but not released by the teacher yet */}
+                {(paper.submissionStatus === "processing" || paper.submissionStatus === "awaiting_release") && (
                   <Button size="sm" variant="secondary" disabled className="flex-1">
-                    Evaluating…
+                    Being evaluated
                   </Button>
                 )}
                 {paper.submissionStatus === "evaluated" && (

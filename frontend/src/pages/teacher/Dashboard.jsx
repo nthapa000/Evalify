@@ -23,6 +23,10 @@ function PaperRow({ paper }) {
       <div className="min-w-0">
         <p className="text-gray-900 font-medium">{paper.name}</p>
         <p className="text-xs text-gray-500">{paper.subject} · created {formatDate(paper.createdAt)}</p>
+        {/* Students see results only after release */}
+        <Badge variant={paper.resultsReleased === false ? "neutral" : "success"} className="mt-1">
+          {paper.resultsReleased === false ? "Not released" : "Released"}
+        </Badge>
       </div>
       <div className="hidden md:block"><Badge variant={TYPE_VARIANT[paper.type] ?? "neutral"}>{paperTypeLabel(paper.type)}</Badge></div>
       {[["Marks", paper.totalMarks], ["Questions", totalQuestions], ["Results", paper.resultCount]].map(([label, v]) => (

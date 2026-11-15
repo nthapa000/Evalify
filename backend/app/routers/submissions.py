@@ -14,7 +14,7 @@ from pydantic import BaseModel, field_validator
 from app.db.mongodb import papers_col, submissions_col, users_col
 from app.models.submission import SubmissionOut, SubmissionStatusOut
 from app.routers.auth import get_current_user, require_student, user_subjects
-from app.services.access import require_view
+from app.services.access import require_view, results_released, student_status
 
 router = APIRouter(prefix="/submissions", tags=["submissions"])
 UPLOAD_DIR = "uploads"
@@ -98,8 +98,11 @@ async def get_submission_file(submission_id: str, user: dict = Depends(get_curre
 
 @router.get("/{submission_id}/status", response_model=SubmissionStatusOut)
 async def get_submission_status(submission_id: str, user: dict = Depends(get_current_user)):
-    """Poll status; includes the result once evaluated."""
-    doc = await _get_submission(submission_id)
+    """Poll status; includes the result once evaluated (for students: once the teacher has released it)."""
+    doc, paper = await require_view(user, submission_id)
+    if user.get("role") == "student":
+        status = student_status(doc, paper)
+        return {"id": str(doc["_id"]), "status": status, "result": doc.get("result") if status == "evaluated" else None}
     return {"id": str(doc["_id"]), "status": doc["status"], "result": doc.get("result")}
 
 
@@ -149,9 +152,9 @@ class ReevaluationRequest(BaseModel):
 async def request_reevaluation(submission_id: str, body: ReevaluationRequest,
                                user: dict = Depends(require_student)):
     """The student's one re-evaluation request for this paper; a TA of the subject answers it."""
-    doc, _ = await require_view(user, submission_id)
-    if doc.get("status") != "evaluated":
-        raise HTTPException(status_code=409, detail="The paper has not been evaluated yet.")
+    doc, paper = await require_view(user, submission_id)
+    if doc.get("status") != "evaluated" or not results_released(paper):
+        raise HTTPException(status_code=409, detail="The paper's results have not been released yet.")
     if doc.get("reevaluation"):
         raise HTTPException(status_code=409, detail="You have already asked for re-evaluation of this paper.")
     req = {"remark": body.remark, "status": "pending", "requestedAt": datetime.now(timezone.utc).isoformat()}

@@ -75,6 +75,8 @@ export function useSubmissionStatus(submissionId) {
         if (s === "evaluated") {
           setResult(r);
           clearInterval(intervalRef.current);
+        } else if (s === "awaiting_release") {
+          clearInterval(intervalRef.current);          // marked; results come when the teacher releases them
         } else if (s === "error") {
           addToast("Evaluation failed. Please try re-uploading.", "error");
           clearInterval(intervalRef.current);
@@ -98,6 +100,7 @@ export function useSubmissionStatus(submissionId) {
 // Fetch the full result object for a completed submission (setData lets the page update it after actions)
 export function useResult(submissionId) {
   const [data, setData] = useState(null);
+  const [notReleased, setNotReleased] = useState(false);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToastStore();
 
@@ -106,11 +109,15 @@ export function useResult(submissionId) {
     setLoading(true);
     api.get(`/results/${submissionId}`)
       .then(res => setData(res.data))
-      .catch(() => addToast("Could not load result details.", "error"))
+      .catch((e) => {
+        // 409 = not released yet: the page shows "being evaluated", no error
+        if (e.response?.status === 409) setNotReleased(true);
+        else addToast("Could not load result details.", "error");
+      })
       .finally(() => setLoading(false));
   }, [submissionId, addToast]);
 
-  return { data, loading, setData };
+  return { data, loading, setData, notReleased };
 }
 
 // The student's one re-evaluation request for a paper (remark says which questions and why)

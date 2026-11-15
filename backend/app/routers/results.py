@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.db.mongodb import papers_col, submissions_col
 from app.routers.auth import get_current_user, require_teacher
-from app.services.access import require_view
+from app.services.access import require_view, results_released
 
 router = APIRouter(prefix="/results", tags=["results"])
 
@@ -46,6 +46,9 @@ async def get_result(submission_id: str, user: dict = Depends(get_current_user))
     sub, paper = await require_view(user, submission_id)
     if not sub.get("result"):
         raise HTTPException(status_code=404, detail="Result not available yet.")
+    # Students wait for the teacher's release; teachers and TAs work on results before it
+    if user.get("role") == "student" and not results_released(paper):
+        raise HTTPException(status_code=409, detail="Results have not been released yet — your answer sheet is being evaluated.")
     sub["id"] = str(sub.pop("_id"))
     sub.setdefault("marks_history", [])
     sub.setdefault("reevaluation", None)

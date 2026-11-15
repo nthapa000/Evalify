@@ -27,6 +27,7 @@ export const paperTypeLabel = (type) => ({
 
 export const statusLabel = (status) => ({
   not_submitted: "Not Submitted",
-  processing:    "Processing",
+  processing:    "Being evaluated",
+  awaiting_release: "Being evaluated",   // marked, waiting for the teacher to release results
   evaluated:     "Evaluated",
 }[status] ?? status);

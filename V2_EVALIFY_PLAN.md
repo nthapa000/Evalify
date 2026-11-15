@@ -147,6 +147,11 @@ Flow:
 Open choices at implementation time: embedding model, vector store (e.g. FAISS / Chroma / MongoDB
 vector index), chunk size; evaluation = how much teachers edit the drafts.
 
+## 6b. Running on the cluster (15 Nov)
+`bash infra/cluster/mongo.sh init` once, then `bash infra/cluster/app.sh start`: MongoDB (user space, password,
+127.0.0.1:27027, data on /scratch), backend :47823 (v2 pipeline, GPU models of the Slurm job), frontend :5173.
+Results are released to students by the teacher ("Release results"); until then students see "being evaluated".
+
 ## 7. Evaluation and MLOps
 
 - Harness in `eval/` (metrics, bake-offs, end-to-end, `arch_sweep.py`); every run's analysis is kept

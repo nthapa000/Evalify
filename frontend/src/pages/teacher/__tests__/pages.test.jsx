@@ -14,7 +14,7 @@ const PAPER = { id: "p1", name: "Unit Test 1", subject: "Computer Science", type
                 numericalMarks: 2, numericalAnswers: { N1: { answer: "2500", unit: "m", tolerance: 0.001 } },
                 subjectiveCount: 1, subjectiveMarks: 2, subjectiveQuestions: ["What is solar energy?"],
                 subjectiveRubrics: [{ key_concepts: ["energy derived from the sun"], marks_per_concept: 2 }],
-                resultCount: 3, createdAt: "2026-11-15T10:00:00Z" };
+                resultCount: 3, createdAt: "2026-11-15T10:00:00Z", resultsReleased: false };
 
 beforeEach(() => {
   loginAs("teacher", { name: "Prof. Ramesh Kumar", subject: "Computer Science" });
@@ -28,6 +28,7 @@ describe("Teacher pages", () => {
     renderAt(<TeacherDashboard />);
     expect(await screen.findByText("Unit Test 1")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /View Results/ })).toHaveAttribute("href", "/teacher/papers/p1/results");
+    expect(screen.getByText("Not released")).toBeInTheDocument();     // results hidden from students until released
   });
 
   // Why: the paper view shows the subjective questions and rubric points the wizard saved (plain strings +

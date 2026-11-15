@@ -38,6 +38,14 @@ describe("Student pages", () => {
     expect(screen.getByRole("link", { name: /View Result/ })).toHaveAttribute("href", "/student/results/s2");
   });
 
+  // Why: an evaluated sheet whose results are not released yet shows "Being evaluated" and no result link
+  it("subject page shows being evaluated before release", async () => {
+    api.routes["GET /papers/available"] = [{ ...PAPERS[1], submissionStatus: "awaiting_release" }];
+    renderAt(<SubjectPage />, { path: "/student/subjects/:subject", route: "/student/subjects/Computer%20Science" });
+    expect(await screen.findAllByText("Being evaluated")).not.toHaveLength(0);
+    expect(screen.queryByRole("link", { name: /View Result/ })).toBeNull();
+  });
+
   // Why: the upload page opens for the chosen paper
   it("upload page renders for a paper", async () => {
     renderAt(<Submission />, { path: "/student/submit/:paperId", route: "/student/submit/p1" });
