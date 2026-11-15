@@ -572,3 +572,7 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   graded at the same time. Each submission now stores `pipeline.usage`; MLflow gets prompt/completion/total tokens.
 - Measured on real labelled sheets with `eval/exp_tokens.py` (all 15 handwritten MCQ, 15 OMR, 15 MCQ+numerical,
   12 of the 50 Data Science sheets); report in `eval/reports/exp_tokens/README.md`.
+- 16 Nov: user asked why the old `mongo-data` folder would be deleted. Explained: optional only (302 MB space, and the
+  name is easy to confuse with the live `mongo-db`). Decision: **keep it untouched**; nothing uses it.
+- 16 Nov: user then approved deleting it. Checked first: no process and no project script used it. Deleted
+  `/scratch/$USER/evalify/mongo-data` (302 MB). Live data stays in `mongo-db`.

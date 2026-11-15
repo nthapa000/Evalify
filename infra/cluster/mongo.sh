@@ -12,7 +12,7 @@ set -euo pipefail
 
 BASE=/scratch/$USER/evalify
 MONGOD=$(ls -d "$BASE"/mongodb/mongodb-linux-*/bin/mongod | head -1)
-DATA=$BASE/mongo-db            # own folder; an older MongoDB 8.3 folder "mongo-data" (Nov 14) is left untouched
+DATA=$BASE/mongo-db            # database files (the old unused MongoDB 8.3 folder "mongo-data" was removed, 16 Nov)
 LOG=$BASE/logs/mongod.log
 ENVF=$BASE/run/mongo.env
 PORT=27027
