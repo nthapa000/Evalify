@@ -596,3 +596,11 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
     "S1, S2, ..." / "Q21, Q22, ... (numbers continue)", shown on the review step.
 - Checked live: OMR layout-1 sheets aligned and read 20/20 as labelled (5/5); a Data Science sheet from the JPEG kit
   gave the same written-answer marks as the earlier PNG run.
+
+## 16 Nov 2026 — cost comparison: own GPUs vs open-model API (user request)
+- User wants token use to compare hosting the models ourselves with paying an API for the same open models.
+- Measured throughput on our node (A6000 + RTX PRO 6000, vLLM), `eval/exp_throughput.py`: one-page sheets
+  1,136 / 1,785 / 2,404 per hour at 4 / 8 / 16 in parallel (not saturated); Data Science sheets 118 / 145 / 150.
+- `eval/cost_compare.py`: tokens x API prices (web lookup 16 Nov, low / typical) vs GPU rental per hour / throughput.
+  Per 1,000 sheets: handwritten MCQ API $0.74-1.26 vs rented GPUs $0.85-1.14; Data Science API $7.46-11.74 vs
+  rented $13.62-18.36. Our cluster GPUs cost nothing extra; with an API the student sheets leave the university.

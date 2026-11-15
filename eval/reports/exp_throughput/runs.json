@@ -1,0 +1,74 @@
+[
+ {
+  "workload": "Handwritten MCQ / MCQ+numerical (1 page)",
+  "concurrency": 4,
+  "sheets": 30,
+  "wall_s": 95.1,
+  "sheets_per_hour": 1135.6,
+  "mean_sheet_latency_s": 12.2,
+  "tokens": 147983,
+  "tokens_per_s": 1556,
+  "output_tokens_per_s": 131,
+  "errors": 0
+ },
+ {
+  "workload": "Handwritten MCQ / MCQ+numerical (1 page)",
+  "concurrency": 8,
+  "sheets": 30,
+  "wall_s": 60.5,
+  "sheets_per_hour": 1784.5,
+  "mean_sheet_latency_s": 15.1,
+  "tokens": 144731,
+  "tokens_per_s": 2391,
+  "output_tokens_per_s": 206,
+  "errors": 0
+ },
+ {
+  "workload": "Handwritten MCQ / MCQ+numerical (1 page)",
+  "concurrency": 16,
+  "sheets": 30,
+  "wall_s": 44.9,
+  "sheets_per_hour": 2403.8,
+  "mean_sheet_latency_s": 21.8,
+  "tokens": 144608,
+  "tokens_per_s": 3219,
+  "output_tokens_per_s": 275,
+  "errors": 0
+ },
+ {
+  "workload": "Data Science exam (20 MCQ + 15 written, 4-6 pages)",
+  "concurrency": 4,
+  "sheets": 24,
+  "wall_s": 730.2,
+  "sheets_per_hour": 118.3,
+  "mean_sheet_latency_s": 113.7,
+  "tokens": 1005015,
+  "tokens_per_s": 1376,
+  "output_tokens_per_s": 214,
+  "errors": 0
+ },
+ {
+  "workload": "Data Science exam (20 MCQ + 15 written, 4-6 pages)",
+  "concurrency": 8,
+  "sheets": 24,
+  "wall_s": 595.9,
+  "sheets_per_hour": 145.0,
+  "mean_sheet_latency_s": 178.8,
+  "tokens": 989457,
+  "tokens_per_s": 1660,
+  "output_tokens_per_s": 260,
+  "errors": 0
+ },
+ {
+  "workload": "Data Science exam (20 MCQ + 15 written, 4-6 pages)",
+  "concurrency": 16,
+  "sheets": 24,
+  "wall_s": 576.6,
+  "sheets_per_hour": 149.8,
+  "mean_sheet_latency_s": 312.1,
+  "tokens": 978979,
+  "tokens_per_s": 1698,
+  "output_tokens_per_s": 269,
+  "errors": 0
+ }
+]
