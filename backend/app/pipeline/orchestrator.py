@@ -166,12 +166,10 @@ def _read_handwritten(pages, questions: List[Question]):
         texts, _secs = page_reading.transcribe_subjective(pages, questions, tr_a, tr_b) if tr_a else ({}, {})
         for q in subj:
             ta, tb = texts.get(q.id, ("", ""))
-            found = bool(ta.strip() or tb.strip())
             a = Reading(tr_a.name if tr_a else "", tr_a.version if tr_a else "", "answered" if ta else "blank", ta)
             b = Reading(tr_b.name if tr_b else "", tr_b.version if tr_b else "", "answered" if tb else "blank", tb)
-            # Never an automatic 0: an answer we could not find goes to a TA
-            reasons = [] if found else ["answer not found on the page"]
-            reads[q.id] = {"a": a, "b": b, "final": a, "accepted": found, "reasons": reasons}
+            # Both transcribers found nothing → the student did not answer: 0 marks, no TA item (user, 15 Nov)
+            reads[q.id] = {"a": a, "b": b, "final": a, "accepted": True, "reasons": []}
         models.update(transcriber_a=tr_a.version if tr_a else "none", transcriber_b=tr_b.version if tr_b else "none")
     return reads, models
 
@@ -204,7 +202,7 @@ def _grade_subjective(paper, questions, reads, pages):
         q_text = texts[i] if i < len(texts) else f"Question {i + 1}"
         a_txt, b_txt = r["a"].value, r["b"].value
 
-        # Not found on the page: no grader call, 0 for now, the TA decides (reason already in reads)
+        # Unanswered (nothing found by either transcriber): no grader call, 0 marks
         if not (a_txt.strip() or b_txt.strip()):
             return _subj_row(q, q_text, "", max_marks, 0.0, None, [], cal)
         if g_ep is None:

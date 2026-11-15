@@ -453,3 +453,6 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Open (asked user): unanswered questions. "Not found → TA" flags 170 items on Mendeley to catch 9 real misses
   (161 truly unanswered). Alternative: not found by both transcribers → "no answer found", 0, not flagged; the
   student sees it and can use the one re-evaluation request.
+- **Decided (user):** when both transcribers / readers find no answer, the student did not answer → **0 marks, not
+  sent to a TA**. (Mendeley: avoids 161 useless TA items; the 9 real misses can come back via the student's
+  re-evaluation request.) Test `test_unanswered_question_is_zero_and_not_flagged` written first.

@@ -1,6 +1,6 @@
 This file if for claude or any other AI agent for guidelines to follow before adding any new code
 
-Dont push to github unless specificially told
+Dont push to github unless specificially told, AND dont commit , claude as Co Author, dont mention claude at all
 
 Add one line comment to new added block of code so that it can easily be 
 

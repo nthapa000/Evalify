@@ -5,7 +5,7 @@
 #   Q2  A says "A", B says "C", C says "C" → majority "C", wrong, no TA
 #   Q3  "2500 m" vs "2500"                → numbers agree, correct (unit ignored)
 #   Q4  both transcripts found            → graded by the grader (1 present + 1 partial = 1.5)
-#   Q5  not written anywhere               → sent to a TA, reason "answer not found on the page"
+#   Q5  nothing found by either transcriber → the student did not answer: 0 marks, not sent to a TA (user, 15 Nov)
 
 import json
 
@@ -107,12 +107,13 @@ def test_subjective_graded_with_half_credit(pipeline):
     assert [c["partial"] for c in d["S1"]["concepts"]] == [False, True]
 
 
-def test_answer_not_found_goes_to_ta_with_one_reason(pipeline):
+# Both transcribers found nothing → the student did not answer: 0 marks, no TA item
+def test_unanswered_question_is_zero_and_not_flagged(pipeline):
     out = run(pipeline)
     d = rows(out)
-    assert d["S2"]["needs_review"] and d["S2"]["review_reason"] == "answer not found on the page"
-    flagged = {r["question"]: r for r in out["review"]}
-    assert set(flagged) == {"S2"} and flagged["S2"]["reason"] == "answer not found on the page"
+    assert d["S2"]["marks_earned"] == 0 and d["S2"]["status"] == "unanswered"
+    assert not d["S2"]["needs_review"] and d["S2"]["review_reason"] == ""
+    assert out["review"] == []
 
 
 def test_teacher_calibration_applied_and_rubric_mark_kept(pipeline):
