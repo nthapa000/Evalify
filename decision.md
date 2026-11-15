@@ -372,3 +372,35 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Proposal for the product: calibration is a teacher setting; keep both the rubric mark and the calibrated mark.
 - Testing approach (user asked): 25 DB-free unit tests + 10 MongoDB tests + dataset evaluation; proposed
   test-first for the UI phase (API tests, Vitest component tests, one end-to-end test with fake model replies).
+
+## 15 Nov 2026 — product workflow for large classes (user idea)
+- User: teacher gives rubric + answer key + reference solution + ~10 strictly hand-checked papers; the pipeline
+  learns how the teacher grades and marks the remaining ~690; should also reduce inconsistency between TAs.
+- Clarified: the main gain came from the **global shift** (no fine-tuning; model weights unchanged); few-shot
+  examples helped less (MAE 0.48 vs 0.43) and are 4× slower.
+- Agreed direction + safeguards proposed: split the 10 papers into 5 calibrate / 5 hidden check and show the
+  teacher the agreement before the batch runs; auto-accept only confident answers, TA for the rest; random 5 %
+  spot-check of auto-accepted answers. Consistency ≠ correctness (systematic errors repeat on every paper);
+  calibration also copies the teacher's leniency.
+- Proposed measurements (awaiting go-ahead): grader self-consistency (grade twice), 5 vs 10 vs 15 calibration
+  sheets, few-shot + shift combined. Then the UI phase with a "teacher calibration" step.
+
+## 15 Nov 2026 — feature for later: student-facing marking breakdown (user request)
+- After evaluation, students see per question and per rubric point how marks were given, e.g. Q4 "What is solar
+  energy": "energy derived from the sun → +1", "gave an example → +1", with the student's own words as evidence.
+- Already available from grader v2: rubric point, evidence quote, verdict present/partial/absent (1 / 0.5 / 0).
+- To decide when built: add a one-line reason per point (re-measure accuracy); how to show teacher calibration
+  (it is per answer, not per point — separate "teacher adjustment" line or per-point calibration); TA overrides
+  replace the grader's decision in the breakdown; shown only after the teacher releases results (teacher decides
+  whether the reference answer is visible); per-point re-evaluation request → TA queue.
+- Not started (user: "for later").
+
+## 15 Nov 2026 — run 10: calibration experiments (user: "experiment first, don't change the pipeline")
+- Consistency: same input twice 99 % exact; transcripts swapped 96 %; two reading methods 91 %; two different
+  graders (Gemma vs Qwen, "two TAs") 66 % exact / 6 % ≥ 1 mark apart → one fixed grader removes most
+  grader-to-grader variation (supports the user's point about TA irregularity). Earlier "humans agree 50–70 %"
+  was from memory, unverified — not to be quoted.
+- Teacher sheets: global shift saturates at 3; per-question shift improves up to 20 (0.417 → 0.393).
+- With 10 teacher sheets: **few-shot + global shift best** (MAE 0.36, within 0.5 86 %, QWK 0.65, bias ≈ 0) but the
+  grader is ~5× slower (60 vs 12.6 s/answer); **per-question shift alone** 0.38–0.39 at no extra cost.
+- Pipeline NOT changed; choice left to the user.

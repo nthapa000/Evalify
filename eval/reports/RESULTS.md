@@ -5,6 +5,7 @@ One place for the outcome of each evaluation run; details are in the linked repo
 
 | # | Date | Run | Data | Headline | Report |
 |---|---|---|---|---|---|
+| 10 | 15 Nov | **Calibration experiments**: grader consistency, number of teacher sheets, few-shot + shift (pipeline unchanged) | Mendeley, 50 sheets | grader agrees with itself 96–99 %; two graders 66 %; 10 teacher sheets + few-shot + shift: MAE 0.36, within 0.5: 86 %, bias ≈ 0 | [exp_consistency/README.md](exp_consistency/README.md), [exp_fewshot_shift/README_k10.md](exp_fewshot_shift/README_k10.md) |
 | 9 | 15 Nov | **Type C fixes**: segmentation variants + teacher calibration | Mendeley, 50 sheets (564 short answers) | whole-page reading finds 555/564 answers (was 523; TA 41 → 9); calibration from 5 teacher-marked sheets: MAE 0.62 → 0.43, within 0.5: 55 % → 83 % | [mendeley_seg/README.md](mendeley_seg/README.md), [mendeley_calibrate/](mendeley_calibrate/) |
 | 8 | 15 Nov | **EDU-CIRCUIT-HW** final numbers in worked solutions (5 readers, all architectures) | 213 solutions, 702 values | best: pair Chandra→Qwen + Gemma, 30 silent, 79.5 % auto, 55 s/solution; best single reader 86.6 % | [edu_circuit/FINDINGS.md](edu_circuit/FINDINGS.md), [edu_circuit/README.md](edu_circuit/README.md) |
 | 7 | 15 Nov | **Type C sweep** (MCQ readers, 5 graders, 10 transcript pairs, grader pairs) | Mendeley, all 50 sheets (1,000 MCQ, 564 short answers) | MCQ ~1 real error / 1000 (12 more are CSV errors); short answers: Gemma v2 best, MAE 0.665/2, 0.57 stricter than teacher | [mendeley_sweep/FINDINGS.md](mendeley_sweep/FINDINGS.md), [mendeley_sweep/README.md](mendeley_sweep/README.md) |
@@ -298,8 +299,37 @@ grader 42–50 s/answer (≈ 4× slower) → global shift chosen.
 Per-sheet totals on the 45 non-calibration sheets: raw grader off by 5.8 marks on average (correlation with the
 teacher 0.87); calibrated off by 2.1 marks (correlation 0.93, rank correlation 0.92).
 
+## Calibration experiments (run 10, pipeline unchanged)
+
+Transcripts: whole page (pagetext); grader Gemma + prompt v2.
+
+**Consistency** (`exp_consistency.py`):
+
+| comparison | exact | within 0.5 | ≥ 1 mark apart |
+|---|---|---|---|
+| same input graded twice | 99 % | 100 % | 0 % |
+| the two transcripts swapped | 96 % | 100 % | 1 % |
+| two reading methods (pagetext vs seg2) | 91 % | 98 % | 2 % |
+| two different graders (Gemma vs Qwen) — "two TAs" | 66 % | 94 % | 6 % |
+| our grader vs the teacher | 37 % | 55 % | 45 % |
+
+**Number of teacher-marked sheets** (`mendeley_calibrate.py --k K`, 30 splits): global shift 0.425 for K = 3…20
+(no gain from more sheets); per-question shift 0.417 (K = 3) → 0.393 (K = 20), range narrows 0.35–0.49 → 0.37–0.43.
+
+**10 teacher sheets: few-shot + shift** (`exp_fewshot_shift.py`, 2 splits, ~437 held-out answers each):
+
+| method | MAE | exact | within 0.5 | QWK | bias | grader s/answer |
+|---|---|---|---|---|---|---|
+| no calibration | 0.60 | 38 % | 55 % | 0.49 | −0.50 | 12.6 |
+| global shift | 0.42 | 37 % | 85 % | 0.62 | −0.12 | 12.6 |
+| per-question shift | 0.38–0.39 | 44–45 % | 82–83 % | 0.60–0.62 | −0.03 | 12.6 |
+| few-shot | 0.45 | 50–51 % | 66–67 % | 0.60 | −0.28 | 59–62 |
+| **few-shot + global shift** | **0.36** | 45 % | **86 %** | **0.65** | +0.02–0.03 | 59–62 |
+| few-shot + per-question shift | 0.37 | 45 % | 84–85 % | 0.65–0.67 | −0.03–0.01 | 59–62 |
+
+Shift learned on the calibration sheets only (few-shot marks there use examples from the other 9 sheets).
+
 ## Pending runs
 
-- Few-shot + global shift combined (needs few-shot grades on the calibration sheets themselves).
 - EDU-CIRCUIT-HW: inspect the 30 errors; deduction-based marking of the working (optional).
 - Nanonets-OCR2 and gpt-oss — not loaded in the current GPU job.
