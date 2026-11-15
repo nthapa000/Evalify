@@ -78,3 +78,34 @@ def test_use_pipeline_modes(monkeypatch, mode, sheet, live, expected):
     monkeypatch.setenv("EVALIFY_PIPELINE", mode)
     monkeypatch.setattr(evaluator.llm, "any_live", lambda: live)
     assert evaluator._use_pipeline(sheet) is expected
+
+
+# Why: grader confidence does not predict wrong written-answer marks (measured on 437 Mendeley answers), so quality is
+# controlled by a random 5 % spot-check of auto-accepted written answers, shown to TAs as "random quality check"
+@pytest.mark.asyncio
+async def test_random_spot_check(client, db, teacher_token, monkeypatch):
+    paper = await make_paper(client, teacher_token)
+    rows = [{"question": f"S{i}", "marks_earned": 1.0, "needs_review": False, "review_reason": ""} for i in range(1, 201)]
+    out = {**FAKE_OUT, "subjective_detail": rows, "review": []}
+    monkeypatch.setattr(evaluator, "_use_pipeline", lambda sheet_type: True)
+    monkeypatch.setattr(evaluator.orchestrator, "run", lambda paper, files, sheet_type: {**out, "subjective_detail": [dict(r) for r in rows]})
+    monkeypatch.setattr(evaluator.settings, "EVALIFY_SPOT_CHECK_RATE", 0.05)
+    sid = await _submission(db, paper["id"])
+    await evaluator.evaluate_submission(str(sid))
+    sub = await db["submissions"].find_one({"_id": sid})
+    picked = [r for r in sub["subjectiveDetail"] if r["needs_review"]]
+    assert 3 <= len(picked) <= 20 and all(r["review_reason"] == "random quality check" for r in picked)
+    assert {r["question"] for r in sub["review"]} == {r["question"] for r in picked}
+    # same submission → same picks (reproducible)
+    assert evaluator.spot_check_pick(str(sid), "S7", 0.05) == evaluator.spot_check_pick(str(sid), "S7", 0.05)
+
+
+# Why: the spot-check can be switched off (rate 0) and never touches answers already flagged for another reason
+def test_spot_check_off_and_flagged_untouched():
+    rows = [{"question": "S1", "needs_review": True, "review_reason": "grader failed"},
+            {"question": "S2", "needs_review": False, "review_reason": ""}]
+    review = evaluator.add_spot_checks("sub1", [dict(r) for r in rows], [], rate=0.0)
+    assert review == []
+    review = evaluator.add_spot_checks("sub1", flagged := [dict(r) for r in rows], [], rate=1.0)
+    assert flagged[0]["review_reason"] == "grader failed" and flagged[1]["review_reason"] == "random quality check"
+    assert [r["question"] for r in review] == ["S2"]

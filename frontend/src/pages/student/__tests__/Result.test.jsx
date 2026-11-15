@@ -40,6 +40,21 @@ describe("Student result", () => {
     expect(row).toHaveTextContent("1 / 2");
   });
 
+  // Why: under each written answer the student sees how it was marked, point by point (rubric from the paper)
+  it("shows the point-by-point breakdown of a written answer", async () => {
+    const d = base();
+    d.paper.subjectiveRubrics = [{ key_concepts: ["energy derived from the sun", "an example"], marks_per_concept: 1 }];
+    d.subjectiveDetail[0].concepts = [
+      { concept: "energy derived from the sun", present: true, partial: false, evidence: "energy from the sun" },
+      { concept: "an example", present: false, partial: false, evidence: "" }];
+    api.routes["GET /results/s1"] = d;
+    page();
+    const row = await screen.findByTestId("q-row-S1");
+    expect(row).toHaveTextContent("How this answer was marked");
+    expect(row).toHaveTextContent("energy derived from the sun");
+    expect(row).toHaveTextContent("Not found in your answer");
+  });
+
   // Why: the student may ask once for re-evaluation, writing which parts to re-check and why
   it("sends the one re-evaluation request", async () => {
     page();

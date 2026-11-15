@@ -5,6 +5,7 @@ One place for the outcome of each evaluation run; details are in the linked repo
 
 | # | Date | Run | Data | Headline | Report |
 |---|---|---|---|---|---|
+| 11 | 15 Nov | **Quality gate + TA-flagging rules for written answers** | own 45 photos, Mendeley 200 scans; 437 Mendeley answers | gate: 0 good photos rejected (was 9/30), blank backs 22/22, blurred pages no longer pass as blank; grader confidence does not predict wrong marks → random 5 % spot-check | [exp_routing/README.md](exp_routing/README.md) |
 | 10 | 15 Nov | **Calibration experiments**: grader consistency, number of teacher sheets, few-shot + shift (pipeline unchanged) | Mendeley, 50 sheets | grader agrees with itself 96–99 %; two graders 66 %; 10 teacher sheets + few-shot + shift: MAE 0.36, within 0.5: 86 %, bias ≈ 0 | [exp_consistency/README.md](exp_consistency/README.md), [exp_fewshot_shift/README_k10.md](exp_fewshot_shift/README_k10.md) |
 | 9 | 15 Nov | **Type C fixes**: segmentation variants + teacher calibration | Mendeley, 50 sheets (564 short answers) | whole-page reading finds 555/564 answers (was 523; TA 41 → 9); calibration from 5 teacher-marked sheets: MAE 0.62 → 0.43, within 0.5: 55 % → 83 % | [mendeley_seg/README.md](mendeley_seg/README.md), [mendeley_calibrate/](mendeley_calibrate/) |
 | 8 | 15 Nov | **EDU-CIRCUIT-HW** final numbers in worked solutions (5 readers, all architectures) | 213 solutions, 702 values | best: pair Chandra→Qwen + Gemma, 30 silent, 79.5 % auto, 55 s/solution; best single reader 86.6 % | [edu_circuit/FINDINGS.md](edu_circuit/FINDINGS.md), [edu_circuit/README.md](edu_circuit/README.md) |
@@ -328,6 +329,30 @@ Transcripts: whole page (pagetext); grader Gemma + prompt v2.
 | few-shot + per-question shift | 0.37 | 45 % | 84–85 % | 0.65–0.67 | −0.03–0.01 | 59–62 |
 
 Shift learned on the calibration sheets only (few-shot marks there use examples from the other 9 sheets).
+
+## Quality gate and TA-flagging rules (run 11)
+
+**Upload quality gate** (`app/pipeline/quality.py`): own phone photos 45 → 0 rejected (old gate: 9 of 30 good
+photos rejected, mostly "glare" on bright paper); Mendeley 200 scans → 0 rejected, blank backs 22 / 22 still detected.
+Glare now = area ≥ 40 levels brighter than the paper, reject only ≥ 33 % (good photos up to 24.5 %); sharpness =
+detail lost by a slight blur (good ≥ 3.98, blurred ≤ 2.47, limit 3.0). Bug fixed: a heavily blurred written page was
+classed as blank (silent 0) — a page is blank only if < 0.8 % of it is darker than the paper.
+
+**Show-through:** whole-page majority accepted no ghost answer on the known sheets; new rule "blank vote while one
+reader saw an answer → TA" fires on 3 / 225 own-sheet answers (all show-through on blank sheets).
+
+**TA-flagging rules for written answers** (`eval/exp_routing.py`, 437 answers, wrong = ≥ 1 mark from the teacher):
+
+| rule | to TA | wrong rate in TA vs auto (after calibration) |
+|---|---|---|
+| current defaults (confidence < 0.7, evidence, transcript problem) | 2 (0.5 %) | 0 % vs 17 % |
+| confidence < 0.9 | 63 (14 %) | 16 % vs 18 % |
+| transcripts differ (< 0.6) | 18 (4 %) | 6 % vs 18 % |
+
+No grader-side signal predicts wrong marks (the grader is almost always confident; errors come from how this teacher
+marked individual answers). Thresholds left as they are; quality is controlled by a **random 5 % spot-check** of
+auto-accepted written answers (`EVALIFY_SPOT_CHECK_RATE`), shown to TAs as "random quality check", plus calibration
+and the student's re-evaluation request.
 
 ## Pending runs
 

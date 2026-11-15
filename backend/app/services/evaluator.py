@@ -16,6 +16,7 @@ from typing import Dict
 
 from bson import ObjectId
 
+from app.config import settings
 from app.db.mongodb import papers_col, submissions_col
 from app.pipeline import llm, orchestrator
 from app.pipeline.scoring import grade_mcq, grade_numerical
@@ -68,10 +69,11 @@ async def evaluate_submission(submission_id: str) -> None:
             num_score, num_detail = grade_numerical(answers, paper, n_num)
             subj_score, subj_detail, llm_latency = _grade_subjective(answers, paper, n_subj)
 
-        # Totals (+ how many questions a TA must check)
+        # Totals (+ how many questions a TA must check, incl. random quality checks of written answers)
         total = mcq_score + num_score + subj_score
         max_score = float(paper.get("totalMarks", n_mcq + n_num))
-        review = out["review"] if out else []
+        review = add_spot_checks(submission_id, subj_detail, list(out["review"]) if out else [],
+                                 settings.EVALIFY_SPOT_CHECK_RATE)
         result = {
             "mcqScore": mcq_score, "numericalScore": num_score, "subjectiveScore": subj_score,
             "totalScore": total, "maxScore": max_score,
@@ -228,6 +230,25 @@ def _log_mlflow(submission_id, paper, ptype, sheet_type, engine, n_mcq, n_num, n
             register_model_version("evalify-subjective-grader", run_id,
                                    description=f"Grader: {OLLAMA_LLM_MODEL}",
                                    tags={"ollama_tag": OLLAMA_LLM_MODEL})
+
+
+# ── Random quality checks (written answers) ──────────────────────────────────
+
+def spot_check_pick(submission_id: str, qid: str, rate: float) -> bool:
+    """Reproducible random pick: the same submission + question always gives the same answer."""
+    import hashlib
+    h = int(hashlib.sha256(f"{submission_id}|{qid}".encode()).hexdigest()[:8], 16)
+    return h / 0xFFFFFFFF < rate
+
+
+def add_spot_checks(submission_id: str, subj_rows: list, review: list, rate: float) -> list:
+    """Send a random share of auto-accepted written answers to a TA ("random quality check"); returns the review list."""
+    for r in subj_rows:
+        if not r.get("needs_review") and r.get("student_answer", "x") is not None and spot_check_pick(submission_id, r["question"], rate):
+            r.update(needs_review=True, review_reason="random quality check",
+                     review_reasons=[*(r.get("review_reasons") or []), "random quality check"])
+            review.append({"question": r["question"], "reason": "random quality check", "reasons": ["random quality check"]})
+    return review
 
 
 async def _set_error(sub_id, message: str) -> None:

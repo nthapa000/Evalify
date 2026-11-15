@@ -4,7 +4,7 @@
 # silently fix student mistakes, so every reader prompt forbids correction.
 # TEMPLATE_VERSION is logged to MLflow; bump it whenever a prompt changes.
 
-TEMPLATE_VERSION = "p6"   # p6: optional teacher examples in grade_prompt_v2; p5: segment_prompt_v2 + page_text_prompt; p2: label-independent closed-form prompts; p3: page / direct-grade / OMR-VLM / numeric-grader prompts; p4: grade_prompt_v2
+TEMPLATE_VERSION = "p7"   # p7: answer_key_prompt (RAG assistant); p6: optional teacher examples in grade_prompt_v2; p5: segment_prompt_v2 + page_text_prompt; p2: label-independent closed-form prompts; p3: page / direct-grade / OMR-VLM / numeric-grader prompts; p4: grade_prompt_v2
 
 # ── Segmentation: find each answer's label + box on a page ──────────────────
 
@@ -385,3 +385,38 @@ Marking rules:
 - Length and extra correct facts outside the rubric earn nothing.
 Set "transcript_problem" true if the image and the transcriptions disagree in a way that
 matters for marking. Do not give marks or a total. Return JSON."""
+
+
+# ── RAG answer-key assistant (p7): draft a reference answer + rubric points from the teacher's material ──
+
+ANSWER_KEY_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["covered", "model_answer", "points", "note"],
+    "properties": {
+        "covered": {"type": "boolean"},
+        "model_answer": {"type": "string"},
+        "points": {"type": "array", "items": {
+            "type": "object", "additionalProperties": False, "required": ["point", "sources"],
+            "properties": {"point": {"type": "string"}, "sources": {"type": "array", "items": {"type": "integer"}}}}},
+        "note": {"type": "string"}}}
+
+
+def answer_key_prompt(question: str, marks: float, passages: list) -> str:
+    """Draft for the teacher (edited before use): reference answer + gradable points, each citing passages."""
+    shown = "\n\n".join(f"[{p['n']}] ({p['source']}, page {p['page']})\n{p['text']}" for p in passages)
+    return f"""You help a teacher prepare the answer key for one exam question. Use ONLY the reference passages below
+(the teacher's own material). The teacher will check and edit your draft.
+
+Question ({marks:g} marks): {question}
+
+Reference passages:
+{shown}
+
+Return:
+- "covered": false if the passages do not contain what is needed to answer the question (then leave the other
+  fields empty and explain in "note"); never answer from general knowledge;
+- "model_answer": a short, correct reference answer in the passages' own terms;
+- "points": the separate ideas a full-mark answer must contain, one per rubric point, each short and checkable
+  (e.g. "identifies the problem as overfitting"), about one point per mark; "sources" = the passage numbers each
+  point comes from;
+- "note": anything the teacher should check (e.g. passages disagree), else "".
+Return JSON."""

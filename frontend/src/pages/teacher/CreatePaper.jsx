@@ -11,6 +11,7 @@ import useAuthStore from "../../store/authStore";
 import PageWrapper from "../../components/layout/PageWrapper";
 import StepWizard from "../../components/forms/StepWizard";
 import RubricBuilder from "../../components/forms/RubricBuilder";
+import AnswerKeyAssistant from "../../components/forms/AnswerKeyAssistant";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
@@ -851,6 +852,28 @@ function Step4({ form, setForm, uploadFn, extractRubricFn, extractingRubric }) {
               You can still create the paper — evaluation will use keyword fallback.
             </div>
           )}
+
+          {/* Optional: draft answers + rubric points from the teacher's reference files (RAG), then edit */}
+          <AnswerKeyAssistant
+            count={form.subjectiveCount}
+            questions={form.subjectiveQuestions ?? []}
+            marks={Array.from({ length: form.subjectiveCount }, (_, i) =>
+              form.subjectiveQuestionMarks?.[`S${i + 1}`] ?? form.subjectiveMarks ?? 1)}
+            rubrics={form.subjectiveRubrics ?? []}
+            uploadFn={uploadFn}
+            onUse={(i, d) => {
+              const qs = [...(form.subjectiveQuestions ?? [])];
+              const rs = [...(form.subjectiveRubrics ?? [])];
+              qs[i] = d.question;
+              rs[i] = d.rubric;
+              setForm({ ...form, subjectiveQuestions: qs, subjectiveRubrics: rs });
+            }}
+            onRubricChange={(i, r) => {
+              const rs = [...(form.subjectiveRubrics ?? [])];
+              rs[i] = r;
+              setForm({ ...form, subjectiveRubrics: rs });
+            }}
+          />
 
           <div className="border-t border-gray-100 pt-3" />
         </div>

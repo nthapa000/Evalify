@@ -73,14 +73,17 @@ async def test_delete_paper_owner_only(client, teacher_token, physics_teacher_to
     assert own.status_code == 200
 
 
-# Why: uploads accept only PDF / JPEG / PNG and are served back by name
+# Why: uploads accept only PDF / JPEG / PNG / plain-text notes and are served back by name
 @pytest.mark.asyncio
 async def test_upload_and_serve_file(client, teacher_token, tmp_path, monkeypatch):
     from app.routers import papers
     monkeypatch.setattr(papers, "PAPER_UPLOAD_DIR", str(tmp_path))
     bad = await client.post("/api/papers/files/upload", headers=auth_headers(teacher_token),
-                            files={"file": ("notes.txt", b"hello", "text/plain")})
+                            files={"file": ("notes.docx", b"PK..", "application/octet-stream")})
     assert bad.status_code == 400
+    txt = await client.post("/api/papers/files/upload", headers=auth_headers(teacher_token),
+                            files={"file": ("notes.txt", b"Solar energy is energy from the sun.", "text/plain")})
+    assert txt.status_code == 200                      # reference notes for the answer-key assistant
     ok = await client.post("/api/papers/files/upload", headers=auth_headers(teacher_token),
                            files={"file": ("key.pdf", b"%PDF-1.4 test", "application/pdf")})
     assert ok.status_code == 200

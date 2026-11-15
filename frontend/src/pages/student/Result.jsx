@@ -10,6 +10,7 @@ import Badge from "../../components/ui/Badge";
 import Skeleton from "../../components/ui/Skeleton";
 import Button from "../../components/ui/Button";
 import ScoreMark from "../../components/ui/ScoreMark";
+import MarkBreakdown from "../../components/results/MarkBreakdown";
 import StatLedger from "../../components/ui/StatLedger";
 import { formatDateTime, formatPercent } from "../../utils/formatters";
 
@@ -41,6 +42,10 @@ function QuestionMarks({ data }) {
             <div className="flex-1 min-w-0">
               {r.question_text && <p className="text-sm text-gray-800">{r.question_text}</p>}
               <p className="text-xs text-gray-500 truncate">Your answer: {r.student_answer ?? "—"}</p>
+              {/* Written answers: rubric point by point (rubric S1 = subjectiveRubrics[0]) */}
+              {r.question.startsWith("S") && (
+                <MarkBreakdown row={r} rubric={data.paper?.subjectiveRubrics?.[Number(r.question.slice(1)) - 1]} />
+              )}
             </div>
             <span className="font-semibold text-gray-800 whitespace-nowrap">{fmt(r.marks_earned)} / {fmt(r.marks_available)}</span>
           </div>

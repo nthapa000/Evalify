@@ -17,7 +17,8 @@ from app.routers.auth import get_current_user, require_teacher, user_subjects
 
 router = APIRouter(prefix="/papers", tags=["papers"])
 PAPER_UPLOAD_DIR = "uploads/papers"
-_ALLOWED = {".pdf": "application/pdf", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png"}
+# .txt: plain reference notes for the answer-key assistant
+_ALLOWED = {".pdf": "application/pdf", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".txt": "text/plain"}
 
 
 class ExtractRequest(BaseModel):
@@ -99,7 +100,7 @@ async def upload_paper_file(file: UploadFile = File(...), user: dict = Depends(r
     """Store a PDF/JPEG/PNG (≤ 20 MB) and return its server URL."""
     ext = os.path.splitext((file.filename or "").lower())[1]
     if ext not in _ALLOWED:
-        raise HTTPException(status_code=400, detail="Only PDF, JPEG, or PNG files are accepted.")
+        raise HTTPException(status_code=400, detail="Only PDF, JPEG, PNG or TXT files are accepted.")
     content = await file.read()
     if len(content) > 20 * 1024 * 1024:
         raise HTTPException(status_code=413, detail="File too large. Maximum size is 20 MB.")
@@ -172,6 +173,41 @@ async def omr_template(body: OmrTemplateRequest, user: dict = Depends(require_te
     cv2.imwrite(preview, omr.preview(blank, tpl))
     tpl["blank_url"] = body.blank_url
     return {"template": tpl, "preview_url": f"/api/papers/files/{os.path.basename(preview)}"}
+
+
+# ── Optional RAG answer-key assistant: drafts only, the teacher edits; never used to grade students ──
+
+class DraftAnswerKeyRequest(BaseModel):
+    reference_urls: list[str]          # files from /papers/files/upload (PDF with a text layer, or .txt)
+    questions: list[str]               # subjective question texts, in order
+    marks: list[float] = []            # marks per question (default 1 each)
+
+
+@router.post("/answer-key/draft")
+async def draft_answer_key(body: DraftAnswerKeyRequest, user: dict = Depends(require_teacher)):
+    """Reference answer + rubric points per question, each point citing the reference passages it came from."""
+    import asyncio
+    from app.pipeline import llm
+    from app.services import answer_key as ak
+
+    paths = [_upload_path(u) for u in body.reference_urls]
+    missing = [os.path.basename(p) for p in paths if not os.path.exists(p)]
+    if missing:
+        raise HTTPException(status_code=404, detail=f"Reference file(s) not found: {', '.join(missing)} — upload them first.")
+    ep = llm.resolve("grader") or llm.resolve("transcriber_a")
+    if ep is None:
+        raise HTTPException(status_code=503, detail="No language model is running right now; try again later.")
+    passages = ak.chunk(await asyncio.to_thread(ak.load_reference, paths))
+    skipped = list(ak.load_reference.last_skipped)
+    if not passages:
+        raise HTTPException(status_code=422, detail="No readable text in the reference files (scanned PDFs need a text layer).")
+
+    # One draft per question, in parallel
+    marks = [body.marks[i] if i < len(body.marks) else 1.0 for i in range(len(body.questions))]
+    drafts = await asyncio.gather(*[asyncio.to_thread(ak.draft, ep, q, m, passages)
+                                    for q, m in zip(body.questions, marks)])
+    return {"drafts": [{"question": q, **d} for q, d in zip(body.questions, drafts)],
+            "skipped_pages": skipped, "passages": len(passages)}
 
 
 @router.get("/{paper_id}", response_model=PaperOut)

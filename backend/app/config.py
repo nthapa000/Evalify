@@ -35,6 +35,10 @@ class Settings(BaseSettings):
     EVALIFY_DEMO_ENV: str = str(PROJECT_ROOT / "demo.env")
     BCRYPT_ROUNDS: int = 12            # tests lower this to keep seeding fast
 
+    # Share of auto-accepted written answers sent to a TA at random ("random quality check"); 0 = off.
+    # Grader confidence did not predict wrong marks (eval/reports/exp_routing), so random checks measure quality.
+    EVALIFY_SPOT_CHECK_RATE: float = 0.05
+
     # Run without a MongoDB server (data is lost on restart) — for UI testing on the GPU cluster
     EVALIFY_INMEMORY_DB: bool = False
 

@@ -125,7 +125,7 @@ no admin UI for users. **Implemented 15 Nov** (backend + UI, test-first).
 4. OMR papers: upload the blank sheet → check the preview → confirm.
 5. **(planned) RAG answer-key assistant** — §6.
 
-## 6. Planned: RAG answer-key assistant (after the current evaluation runs)
+## 6. RAG answer-key assistant — implemented 15 Nov (`app/services/answer_key.py`, wizard step 4)
 
 **Purpose — one thing only:** help the teacher write the *sample answer key* (reference answer +
 rubric points) for subjective questions. It is **never used while grading students**.
@@ -164,6 +164,7 @@ vector index), chunk size; evaluation = how much teachers edit the drafts.
 3. ~~Switch MCQ/numerical to whole-page majority; v2 grader (Gemma) default for subjective~~ — done 15 Nov (test-first).
 4. Fix the glare gate and show-through ghosts; calibrate routing thresholds.
 5. ~~TA review UI~~ — done 15 Nov (TA role, two tabs, re-evaluation, marks history, calibration UI). Next: the RAG answer-key assistant (§6).
-6. (later, user request) Student-facing marking breakdown: per question and rubric point — evidence quote,
+6. ~~(later, user request) Student-facing marking breakdown~~ — done 15 Nov (per rubric point: Met / Partly met /
+   Missed, the student's words, marks; calibration and TA change as separate lines; no extra reason field): per question and rubric point — evidence quote,
    verdict, marks (+ one-line reason); calibration shown as a separate adjustment; TA overrides shown; visible
    after the teacher releases results; per-point re-evaluation request → TA queue.

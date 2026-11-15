@@ -526,3 +526,22 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   ("only one reader saw an answer — faint writing or show-through?"), so faint real answers are never silently 0.
   Fires on 3/225 own-sheet answers (all on blank sheets). Consistent with the user's rule (0 only when readers agree
   there is no answer).
+
+## 15 Nov 2026 — TA-flagging thresholds, student breakdown, RAG answer-key assistant
+- **TA-flagging for written answers measured** (run 11, `eval/exp_routing.py`): grader confidence, evidence check,
+  transcript problem and transcript disagreement do not predict wrong marks (confidence < 0.9 → 14 % to TA, wrong
+  16 % vs 18 % auto). Thresholds unchanged. Added a **random 5 % spot-check** of auto-accepted written answers
+  (`EVALIFY_SPOT_CHECK_RATE`, reproducible per submission + question, "random quality check" in the Flagged tab).
+- **Student breakdown per rubric point** (`MarkBreakdown`): Met / Partly met / Missed, the student's words (or "Not
+  found in your answer"), marks per point; teacher's calibration adjustment and a TA/teacher re-evaluation shown as
+  separate lines; "required point missing → 0" explained. No new grader field (no extra reason line, so grading is
+  unchanged and needs no re-measurement). No "release results" step exists yet, so it is visible as soon as the
+  result is.
+- **RAG answer-key assistant** (optional, teacher-only, never used to grade): reference files (PDF with text layer or
+  .txt; scanned pages are reported) → passages with file + page → BM25 retrieval (no extra model) → Gemma drafts a
+  reference answer and rubric points, each citing its passages (prompt p7); "not covered" instead of inventing.
+  Endpoint `POST /api/papers/answer-key/draft`; wizard step 4 panel: question texts, files, drafts with citations,
+  "Use this draft" → editable RubricBuilder. Live check on the Mendeley answer key: 2 covered questions drafted
+  correctly, an off-topic question correctly reported as not covered. Citations show the passage sentences closest
+  to the point. `.txt` uploads now allowed.
+- Tests: backend 184, frontend 72 (all with a "why" line); production build OK.
