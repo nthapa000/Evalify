@@ -63,7 +63,8 @@ def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, tran
     else:
         prompt, schema = P.grade_prompt(question, rubric.get("model_answer", ""), concepts,
                                         transcript_a, transcript_b, subject), P.GRADE_SCHEMA
-    r = llm.chat(ep, prompt, imgs, schema=schema, max_tokens=8192 if thinking else 2048, thinking=thinking)
+    r = llm.chat(ep, prompt, imgs, schema=schema, max_tokens=8192 if thinking else 2048, thinking=thinking,
+                 stage="grade_subjective")
     res.latency_s, res.prompt_hash, res.error = r.latency_s, r.prompt_hash, r.error
     data = r.data or {}
     res.transcript_problem = bool(data.get("transcript_problem", False))

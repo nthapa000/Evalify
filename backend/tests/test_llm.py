@@ -102,3 +102,71 @@ def test_chat_retries_runaway_json(monkeypatch):
     ep = llm.Endpoint("gemma4-31b-fp8", "http://g", {"supports_json_schema": True})
     reply = llm.chat(ep, "read", schema={"type": "object", "required": ["answers"]})
     assert reply.data == {"answers": [1]} and len(calls) == 2 and "response_format" not in calls[1]
+
+
+class _UsageResp(_Resp):
+    """Response that also reports token usage, as vLLM does."""
+    def __init__(self, content, prompt, completion, finish="stop"):
+        super().__init__(content, finish)
+        self._u = {"prompt_tokens": prompt, "completion_tokens": completion}
+
+    def json(self):
+        return {**super().json(), "usage": self._u}
+
+
+# Why: token cost per sheet is only measurable if every reply keeps the server's token counts
+def test_chat_records_token_usage(monkeypatch):
+    monkeypatch.setattr(llm.requests, "post", lambda url, json=None, timeout=None: _UsageResp("hi", 1200, 30))
+    with llm.UsageMeter() as meter:
+        reply = llm.chat(llm.Endpoint("glm-ocr", "http://x", {}), "read", images=[])
+    assert (reply.prompt_tokens, reply.completion_tokens) == (1200, 30)
+    s = meter.summary()
+    assert s["calls"] == 1 and s["prompt_tokens"] == 1200 and s["completion_tokens"] == 30 and s["total_tokens"] == 1230
+
+
+# Why: the runaway-JSON retry is a second paid request, so its tokens must be added, not lost
+def test_chat_usage_includes_retry(monkeypatch):
+    calls = []
+
+    def post(url, json=None, timeout=None):
+        calls.append(json)
+        return _UsageResp("   ", 1000, 4096, "length") if len(calls) == 1 else _UsageResp('{"answers": [1]}', 1010, 20)
+    monkeypatch.setattr(llm.requests, "post", post)
+    with llm.UsageMeter() as meter:
+        reply = llm.chat(llm.Endpoint("gemma4-31b-fp8", "http://g", {"supports_json_schema": True}), "read",
+                         schema={"type": "object", "required": ["answers"]})
+    assert (reply.prompt_tokens, reply.completion_tokens) == (2010, 4116)
+    assert meter.summary()["calls"] == 2
+
+
+# Why: the pipeline calls models from worker threads; carry() must bring the sheet's meter along,
+# and two sheets evaluated at the same time must not count each other's tokens
+def test_meter_follows_worker_threads_and_stays_separate():
+    from concurrent.futures import ThreadPoolExecutor
+
+    def sheet(n):
+        with llm.UsageMeter() as meter:
+            work = llm.carry(lambda i: llm.record(llm.Reply("", model="m", prompt_tokens=n, completion_tokens=1), "s"))
+            with ThreadPoolExecutor(4) as pool:
+                list(pool.map(work, range(5)))
+        return meter.summary()
+
+    with ThreadPoolExecutor(2) as outer:
+        a, b = outer.map(sheet, (100, 7))
+    assert (a["calls"], a["prompt_tokens"]) == (5, 500) and (b["calls"], b["prompt_tokens"]) == (5, 35)
+
+
+# Why: the report splits tokens by pipeline step and model, which is how the cost per question type is read
+def test_meter_summary_groups_by_stage_and_model():
+    with llm.UsageMeter() as meter:
+        llm.record(llm.Reply("", model="gemma", prompt_tokens=10, completion_tokens=2), "read_page")
+        llm.record(llm.Reply("", model="gemma", prompt_tokens=5, completion_tokens=1), "read_page")
+        llm.record(llm.Reply("", model="qwen", prompt_tokens=3, completion_tokens=3), "grade")
+    by = {(r["stage"], r["model"]): r for r in meter.summary()["by_stage"]}
+    assert by[("read_page", "gemma")]["calls"] == 2 and by[("read_page", "gemma")]["prompt_tokens"] == 15
+    assert by[("grade", "qwen")]["total_tokens"] == 6
+
+
+# Why: outside a meter (e.g. a quick script) recording must be a harmless no-op
+def test_record_without_meter_is_noop():
+    llm.record(llm.Reply("", model="m", prompt_tokens=1), "x")

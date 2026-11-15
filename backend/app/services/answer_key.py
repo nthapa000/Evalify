@@ -99,7 +99,8 @@ def draft(ep, question: str, marks: float, passages: List[dict], k: int = 5) -> 
     top = retrieve(question, passages, k=k)
     # Passages are renumbered 1..k for the model; citations map back to file + page
     numbered = [{**p, "n": i + 1} for i, p in enumerate(top)]
-    r = llm.chat(ep, P.answer_key_prompt(question, marks, numbered), schema=P.ANSWER_KEY_SCHEMA, max_tokens=2048)
+    r = llm.chat(ep, P.answer_key_prompt(question, marks, numbered), schema=P.ANSWER_KEY_SCHEMA, max_tokens=2048,
+                 stage="answer_key_draft")
     data = r.data or {}
     points = [p for p in data.get("points", []) if str(p.get("point", "")).strip()]
     used = sorted({s for p in points for s in p.get("sources", []) if isinstance(s, int) and 1 <= s <= len(numbered)})

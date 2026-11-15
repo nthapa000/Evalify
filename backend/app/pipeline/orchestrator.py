@@ -31,6 +31,15 @@ _omr = OMREngine()
 
 def run(paper: dict, files: List[str], sheet_type: str) -> dict:
     """Evaluate one submission; returns answers, per-section details, scores and review info."""
+    # Count the tokens of every model call made for this sheet (returned as out["usage"])
+    with llm.UsageMeter() as meter:
+        out = _run(paper, files, sheet_type)
+    out["usage"] = meter.summary()
+    return out
+
+
+def _run(paper: dict, files: List[str], sheet_type: str) -> dict:
+    """The evaluation itself (see run)."""
     t0 = time.time()
     questions = readers.questions_for(paper)
 
@@ -213,7 +222,7 @@ def _grade_subjective(paper, questions, reads, pages):
         return _subj_row(q, q_text, a_txt, max_marks, g.marks, g, routing.grader_reasons(g), cal)
 
     with ThreadPoolExecutor(WORKERS) as pool:
-        detail = list(pool.map(grade_one, enumerate(subj)))
+        detail = list(pool.map(llm.carry(grade_one), enumerate(subj)))   # carry(): count grader tokens
     models = {"grader": g_ep.version if g_ep else "none", "calibration": "per-question shift" if cal else "none"}
     return sum(d["marks_earned"] for d in detail), detail, models
 

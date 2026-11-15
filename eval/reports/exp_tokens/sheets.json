@@ -1,0 +1,2621 @@
+[
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s01",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3531,
+   "completion_tokens": 556,
+   "total_tokens": 4087,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2924,
+     "completion_tokens": 322,
+     "total_tokens": 3246
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 607,
+     "completion_tokens": 234,
+     "total_tokens": 841
+    }
+   ]
+  },
+  "latency_s": 15.5,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s02",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3847,
+   "completion_tokens": 553,
+   "total_tokens": 4400,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3234,
+     "completion_tokens": 321,
+     "total_tokens": 3555
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 232,
+     "total_tokens": 845
+    }
+   ]
+  },
+  "latency_s": 15.807,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s03",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3723,
+   "completion_tokens": 553,
+   "total_tokens": 4276,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3110,
+     "completion_tokens": 321,
+     "total_tokens": 3431
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 232,
+     "total_tokens": 845
+    }
+   ]
+  },
+  "latency_s": 15.765,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s04",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3847,
+   "completion_tokens": 541,
+   "total_tokens": 4388,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3234,
+     "completion_tokens": 317,
+     "total_tokens": 3551
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 224,
+     "total_tokens": 837
+    }
+   ]
+  },
+  "latency_s": 14.647,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s05",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3785,
+   "completion_tokens": 541,
+   "total_tokens": 4326,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3172,
+     "completion_tokens": 317,
+     "total_tokens": 3489
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 224,
+     "total_tokens": 837
+    }
+   ]
+  },
+  "latency_s": 14.573,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s06",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 4019,
+   "completion_tokens": 535,
+   "total_tokens": 4554,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3420,
+     "completion_tokens": 313,
+     "total_tokens": 3733
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 599,
+     "completion_tokens": 222,
+     "total_tokens": 821
+    }
+   ]
+  },
+  "latency_s": 14.382,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s07",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3593,
+   "completion_tokens": 516,
+   "total_tokens": 4109,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2986,
+     "completion_tokens": 304,
+     "total_tokens": 3290
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 607,
+     "completion_tokens": 212,
+     "total_tokens": 819
+    }
+   ]
+  },
+  "latency_s": 13.258,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s08",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 4535,
+   "completion_tokens": 501,
+   "total_tokens": 5036,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3916,
+     "completion_tokens": 294,
+     "total_tokens": 4210
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 619,
+     "completion_tokens": 207,
+     "total_tokens": 826
+    }
+   ]
+  },
+  "latency_s": 13.062,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s09",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 4161,
+   "completion_tokens": 532,
+   "total_tokens": 4693,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3544,
+     "completion_tokens": 315,
+     "total_tokens": 3859
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 617,
+     "completion_tokens": 217,
+     "total_tokens": 834
+    }
+   ]
+  },
+  "latency_s": 13.675,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s10",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3957,
+   "completion_tokens": 553,
+   "total_tokens": 4510,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3358,
+     "completion_tokens": 321,
+     "total_tokens": 3679
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 599,
+     "completion_tokens": 232,
+     "total_tokens": 831
+    }
+   ]
+  },
+  "latency_s": 15.364,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s11",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3847,
+   "completion_tokens": 553,
+   "total_tokens": 4400,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3234,
+     "completion_tokens": 321,
+     "total_tokens": 3555
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 232,
+     "total_tokens": 845
+    }
+   ]
+  },
+  "latency_s": 14.901,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s12",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3847,
+   "completion_tokens": 535,
+   "total_tokens": 4382,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3234,
+     "completion_tokens": 313,
+     "total_tokens": 3547
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 222,
+     "total_tokens": 835
+    }
+   ]
+  },
+  "latency_s": 14.212,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s13",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3847,
+   "completion_tokens": 544,
+   "total_tokens": 4391,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3234,
+     "completion_tokens": 316,
+     "total_tokens": 3550
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 228,
+     "total_tokens": 841
+    }
+   ]
+  },
+  "latency_s": 14.508,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s14",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3358,
+   "completion_tokens": 518,
+   "total_tokens": 3876,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2738,
+     "completion_tokens": 310,
+     "total_tokens": 3048
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 620,
+     "completion_tokens": 208,
+     "total_tokens": 828
+    }
+   ]
+  },
+  "latency_s": 13.333,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (handwritten)",
+  "sheet": "mcq_s15",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 10,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 3,
+   "prompt_tokens": 7560,
+   "completion_tokens": 566,
+   "total_tokens": 8126,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3172,
+     "completion_tokens": 307,
+     "total_tokens": 3479
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 613,
+     "completion_tokens": 222,
+     "total_tokens": 835
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "glm-ocr",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3775,
+     "completion_tokens": 37,
+     "total_tokens": 3812
+    }
+   ]
+  },
+  "latency_s": 15.389,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L1_s01",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 0.724,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L1_s02",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 0.949,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L1_s03",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.505,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L1_s04",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.293,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L1_s05",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.121,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L2_s01",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.949,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L2_s02",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.538,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L2_s03",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.005,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L2_s04",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.316,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L2_s05",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.924,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L3_s01",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.678,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L3_s02",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 0.76,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L3_s03",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 0.738,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L3_s04",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.065,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "A  MCQ only (OMR sheet)",
+  "sheet": "omr_L3_s05",
+  "sheet_type": "omr",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "by_stage": []
+  },
+  "latency_s": 1.204,
+  "models": {
+   "reader_a": "opencv_omr"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2A_s01",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3725,
+   "completion_tokens": 290,
+   "total_tokens": 4015,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3181,
+     "completion_tokens": 172,
+     "total_tokens": 3353
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 118,
+     "total_tokens": 662
+    }
+   ]
+  },
+  "latency_s": 8.014,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2A_s02",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3977,
+   "completion_tokens": 307,
+   "total_tokens": 4284,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3429,
+     "completion_tokens": 183,
+     "total_tokens": 3612
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 548,
+     "completion_tokens": 124,
+     "total_tokens": 672
+    }
+   ]
+  },
+  "latency_s": 7.85,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2A_s03",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 2917,
+   "completion_tokens": 289,
+   "total_tokens": 3206,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2375,
+     "completion_tokens": 168,
+     "total_tokens": 2543
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 542,
+     "completion_tokens": 121,
+     "total_tokens": 663
+    }
+   ]
+  },
+  "latency_s": 7.566,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2A_s04",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3787,
+   "completion_tokens": 283,
+   "total_tokens": 4070,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3243,
+     "completion_tokens": 166,
+     "total_tokens": 3409
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 117,
+     "total_tokens": 661
+    }
+   ]
+  },
+  "latency_s": 8.22,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2A_s05",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 3,
+   "prompt_tokens": 7571,
+   "completion_tokens": 270,
+   "total_tokens": 7841,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3181,
+     "completion_tokens": 158,
+     "total_tokens": 3339
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 101,
+     "total_tokens": 645
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "glm-ocr",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3846,
+     "completion_tokens": 11,
+     "total_tokens": 3857
+    }
+   ]
+  },
+  "latency_s": 8.279,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2B_s01",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 3,
+   "prompt_tokens": 7633,
+   "completion_tokens": 347,
+   "total_tokens": 7980,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3243,
+     "completion_tokens": 172,
+     "total_tokens": 3415
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 123,
+     "total_tokens": 667
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "glm-ocr",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3846,
+     "completion_tokens": 52,
+     "total_tokens": 3898
+    }
+   ]
+  },
+  "latency_s": 8.67,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2B_s02",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 4039,
+   "completion_tokens": 281,
+   "total_tokens": 4320,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3491,
+     "completion_tokens": 168,
+     "total_tokens": 3659
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 548,
+     "completion_tokens": 113,
+     "total_tokens": 661
+    }
+   ]
+  },
+  "latency_s": 8.419,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2B_s03",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 3,
+   "prompt_tokens": 6962,
+   "completion_tokens": 335,
+   "total_tokens": 7297,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2933,
+     "completion_tokens": 170,
+     "total_tokens": 3103
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 538,
+     "completion_tokens": 121,
+     "total_tokens": 659
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "glm-ocr",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3491,
+     "completion_tokens": 44,
+     "total_tokens": 3535
+    }
+   ]
+  },
+  "latency_s": 8.55,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2B_s04",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3725,
+   "completion_tokens": 261,
+   "total_tokens": 3986,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3181,
+     "completion_tokens": 157,
+     "total_tokens": 3338
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 104,
+     "total_tokens": 648
+    }
+   ]
+  },
+  "latency_s": 8.139,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2B_s05",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3787,
+   "completion_tokens": 259,
+   "total_tokens": 4046,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3243,
+     "completion_tokens": 153,
+     "total_tokens": 3396
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 106,
+     "total_tokens": 650
+    }
+   ]
+  },
+  "latency_s": 8.156,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2C_s01",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3725,
+   "completion_tokens": 289,
+   "total_tokens": 4014,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3181,
+     "completion_tokens": 170,
+     "total_tokens": 3351
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 119,
+     "total_tokens": 663
+    }
+   ]
+  },
+  "latency_s": 8.182,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2C_s02",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3977,
+   "completion_tokens": 284,
+   "total_tokens": 4261,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3429,
+     "completion_tokens": 167,
+     "total_tokens": 3596
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 548,
+     "completion_tokens": 117,
+     "total_tokens": 665
+    }
+   ]
+  },
+  "latency_s": 10.97,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2C_s03",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3533,
+   "completion_tokens": 286,
+   "total_tokens": 3819,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2995,
+     "completion_tokens": 171,
+     "total_tokens": 3166
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 538,
+     "completion_tokens": 115,
+     "total_tokens": 653
+    }
+   ]
+  },
+  "latency_s": 7.74,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2C_s04",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 0,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3539,
+   "completion_tokens": 259,
+   "total_tokens": 3798,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 2995,
+     "completion_tokens": 153,
+     "total_tokens": 3148
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 106,
+     "total_tokens": 650
+    }
+   ]
+  },
+  "latency_s": 12.215,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "B  MCQ + numerical",
+  "sheet": "2C_s05",
+  "sheet_type": "handwritten",
+  "pages": 1,
+  "pages_read": 1,
+  "questions": {
+   "mcq": 2,
+   "numerical": 3,
+   "subjective": 0
+  },
+  "usage": {
+   "calls": 2,
+   "prompt_tokens": 3787,
+   "completion_tokens": 294,
+   "total_tokens": 4081,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 3243,
+     "completion_tokens": 175,
+     "total_tokens": 3418
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 1,
+     "images": 1,
+     "prompt_tokens": 544,
+     "completion_tokens": 119,
+     "total_tokens": 663
+    }
+   ]
+  },
+  "latency_s": 10.14,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_1",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 27,
+   "prompt_tokens": 30490,
+   "completion_tokens": 6734,
+   "total_tokens": 37224,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1377,
+     "total_tokens": 10881
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1188,
+     "total_tokens": 3447
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 646,
+     "total_tokens": 2572
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1575,
+     "total_tokens": 10998
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 15,
+     "images": 0,
+     "prompt_tokens": 7378,
+     "completion_tokens": 1948,
+     "total_tokens": 9326
+    }
+   ]
+  },
+  "latency_s": 101.355,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_2",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 21,
+   "prompt_tokens": 27555,
+   "completion_tokens": 5326,
+   "total_tokens": 32881,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1396,
+     "total_tokens": 10900
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1230,
+     "total_tokens": 3489
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 470,
+     "total_tokens": 2396
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1079,
+     "total_tokens": 10502
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 9,
+     "images": 0,
+     "prompt_tokens": 4443,
+     "completion_tokens": 1151,
+     "total_tokens": 5594
+    }
+   ]
+  },
+  "latency_s": 83.681,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_3",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 24,
+   "prompt_tokens": 28921,
+   "completion_tokens": 6411,
+   "total_tokens": 35332,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1828,
+     "total_tokens": 11332
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1230,
+     "total_tokens": 3489
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 506,
+     "total_tokens": 2432
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1378,
+     "total_tokens": 10801
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 12,
+     "images": 0,
+     "prompt_tokens": 5809,
+     "completion_tokens": 1469,
+     "total_tokens": 7278
+    }
+   ]
+  },
+  "latency_s": 90.631,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_4",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 24,
+   "prompt_tokens": 29289,
+   "completion_tokens": 6358,
+   "total_tokens": 35647,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1148,
+     "total_tokens": 10652
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1188,
+     "total_tokens": 3447
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 704,
+     "total_tokens": 2630
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1605,
+     "total_tokens": 11028
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 12,
+     "images": 0,
+     "prompt_tokens": 6177,
+     "completion_tokens": 1713,
+     "total_tokens": 7890
+    }
+   ]
+  },
+  "latency_s": 107.824,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_5",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 23,
+   "prompt_tokens": 28737,
+   "completion_tokens": 5334,
+   "total_tokens": 34071,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 638,
+     "total_tokens": 10142
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1188,
+     "total_tokens": 3447
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1413,
+     "total_tokens": 10836
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 626,
+     "total_tokens": 2552
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 11,
+     "images": 0,
+     "prompt_tokens": 5625,
+     "completion_tokens": 1469,
+     "total_tokens": 7094
+    }
+   ]
+  },
+  "latency_s": 93.972,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_6",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 25,
+   "prompt_tokens": 38757,
+   "completion_tokens": 6297,
+   "total_tokens": 45054,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1616,
+     "total_tokens": 11120
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1188,
+     "total_tokens": 3447
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "glm-ocr",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 10686,
+     "completion_tokens": 389,
+     "total_tokens": 11075
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1262,
+     "total_tokens": 10685
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 494,
+     "total_tokens": 2420
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 10,
+     "images": 0,
+     "prompt_tokens": 4959,
+     "completion_tokens": 1348,
+     "total_tokens": 6307
+    }
+   ]
+  },
+  "latency_s": 90.145,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_7",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 26,
+   "prompt_tokens": 29966,
+   "completion_tokens": 6082,
+   "total_tokens": 36048,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1007,
+     "total_tokens": 10511
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1188,
+     "total_tokens": 3447
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 589,
+     "total_tokens": 2515
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1504,
+     "total_tokens": 10927
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 14,
+     "images": 0,
+     "prompt_tokens": 6854,
+     "completion_tokens": 1794,
+     "total_tokens": 8648
+    }
+   ]
+  },
+  "latency_s": 103.187,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_8",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 3,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 26,
+   "prompt_tokens": 38982,
+   "completion_tokens": 6164,
+   "total_tokens": 45146,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9504,
+     "completion_tokens": 1557,
+     "total_tokens": 11061
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 2259,
+     "completion_tokens": 1272,
+     "total_tokens": 3531
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "glm-ocr",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 10686,
+     "completion_tokens": 337,
+     "total_tokens": 11023
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 1926,
+     "completion_tokens": 407,
+     "total_tokens": 2333
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 3,
+     "images": 3,
+     "prompt_tokens": 9423,
+     "completion_tokens": 1175,
+     "total_tokens": 10598
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 11,
+     "images": 0,
+     "prompt_tokens": 5184,
+     "completion_tokens": 1416,
+     "total_tokens": 6600
+    }
+   ]
+  },
+  "latency_s": 90.199,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_9",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 4,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 31,
+   "prompt_tokens": 38239,
+   "completion_tokens": 7234,
+   "total_tokens": 45473,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 12672,
+     "completion_tokens": 1280,
+     "total_tokens": 13952
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 3012,
+     "completion_tokens": 1605,
+     "total_tokens": 4617
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 2568,
+     "completion_tokens": 754,
+     "total_tokens": 3322
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 12564,
+     "completion_tokens": 1663,
+     "total_tokens": 14227
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 15,
+     "images": 0,
+     "prompt_tokens": 7423,
+     "completion_tokens": 1932,
+     "total_tokens": 9355
+    }
+   ]
+  },
+  "latency_s": 109.89,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_10",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 4,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 25,
+   "prompt_tokens": 35560,
+   "completion_tokens": 6543,
+   "total_tokens": 42103,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 12672,
+     "completion_tokens": 1754,
+     "total_tokens": 14426
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 3012,
+     "completion_tokens": 1605,
+     "total_tokens": 4617
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 2568,
+     "completion_tokens": 617,
+     "total_tokens": 3185
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 12564,
+     "completion_tokens": 1389,
+     "total_tokens": 13953
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 9,
+     "images": 0,
+     "prompt_tokens": 4744,
+     "completion_tokens": 1178,
+     "total_tokens": 5922
+    }
+   ]
+  },
+  "latency_s": 99.847,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_11",
+  "sheet_type": "handwritten",
+  "pages": 6,
+  "pages_read": 6,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 39,
+   "prompt_tokens": 54126,
+   "completion_tokens": 8997,
+   "total_tokens": 63123,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 6,
+     "images": 6,
+     "prompt_tokens": 19008,
+     "completion_tokens": 1765,
+     "total_tokens": 20773
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 6,
+     "images": 6,
+     "prompt_tokens": 4518,
+     "completion_tokens": 2355,
+     "total_tokens": 6873
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 6,
+     "images": 6,
+     "prompt_tokens": 3852,
+     "completion_tokens": 935,
+     "total_tokens": 4787
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 6,
+     "images": 6,
+     "prompt_tokens": 18846,
+     "completion_tokens": 1935,
+     "total_tokens": 20781
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 15,
+     "images": 0,
+     "prompt_tokens": 7902,
+     "completion_tokens": 2007,
+     "total_tokens": 9909
+    }
+   ]
+  },
+  "latency_s": 124.716,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ },
+ {
+  "set": "C  MCQ + subjective (Data Science exam)",
+  "sheet": "Student_12",
+  "sheet_type": "handwritten",
+  "pages": 4,
+  "pages_read": 4,
+  "questions": {
+   "mcq": 20,
+   "numerical": 0,
+   "subjective": 15
+  },
+  "usage": {
+   "calls": 31,
+   "prompt_tokens": 38162,
+   "completion_tokens": 7151,
+   "total_tokens": 45313,
+   "by_stage": [
+    {
+     "stage": "read_mcq_numerical",
+     "model": "qwen38-27b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 12672,
+     "completion_tokens": 1383,
+     "total_tokens": 14055
+    },
+    {
+     "stage": "read_mcq_numerical",
+     "model": "gemma4-31b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 3012,
+     "completion_tokens": 1563,
+     "total_tokens": 4575
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 2568,
+     "completion_tokens": 637,
+     "total_tokens": 3205
+    },
+    {
+     "stage": "transcribe_subjective",
+     "model": "qwen38-27b-fp8",
+     "calls": 4,
+     "images": 4,
+     "prompt_tokens": 12564,
+     "completion_tokens": 1584,
+     "total_tokens": 14148
+    },
+    {
+     "stage": "grade_subjective",
+     "model": "gemma4-31b-fp8",
+     "calls": 15,
+     "images": 0,
+     "prompt_tokens": 7346,
+     "completion_tokens": 1984,
+     "total_tokens": 9330
+    }
+   ]
+  },
+  "latency_s": 104.857,
+  "models": {
+   "reader_a": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "reader_b": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "reader_c": "zai-org/GLM-OCR@2e85a62840",
+   "transcriber_a": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+   "transcriber_b": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "grader": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+   "calibration": "none"
+  }
+ }
+]

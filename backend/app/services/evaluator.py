@@ -88,7 +88,7 @@ async def evaluate_submission(submission_id: str) -> None:
         await submissions_col().update_one({"_id": sub["_id"]}, {"$set": {
             "status": "evaluated", "result": result,
             "mcqDetail": mcq_detail, "numericalDetail": num_detail, "subjectiveDetail": subj_detail,
-            "review": review, "pipeline": {k: out[k] for k in ("models", "quality", "prompt_version")} if out else None,
+            "review": review, "pipeline": {k: out[k] for k in ("models", "quality", "prompt_version", "usage") if k in out} if out else None,
             "evaluatedAt": datetime.now(timezone.utc).isoformat(),
         }})
 
@@ -100,6 +100,8 @@ async def evaluate_submission(submission_id: str) -> None:
             "eval_latency_s": round(time.time() - t0, 3), "ollama_latency_s": read_latency,
             "llm_latency_s": llm_latency, "ocr_confidence": confidence,
             "review_count": len(review), "questions": n_mcq + n_num + n_subj,
+            # Tokens used by all model calls for this sheet (0 for OMR / legacy runs)
+            **{k: (out or {}).get("usage", {}).get(k, 0) for k in ("prompt_tokens", "completion_tokens", "total_tokens")},
         }, out)
 
     except Exception as exc:

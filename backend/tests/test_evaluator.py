@@ -47,6 +47,18 @@ async def test_evaluation_saves_result_and_flags(client, db, teacher_token, monk
     assert sub["pipeline"]["prompt_version"] == "p6"
 
 
+# Why: each sheet's token count is stored with it, so the real cost per paper can be added up later
+@pytest.mark.asyncio
+async def test_evaluation_saves_token_usage(client, db, teacher_token, monkeypatch):
+    paper = await make_paper(client, teacher_token)
+    usage = {"calls": 3, "prompt_tokens": 9000, "completion_tokens": 400, "total_tokens": 9400, "by_stage": []}
+    monkeypatch.setattr(evaluator, "_use_pipeline", lambda sheet_type: True)
+    monkeypatch.setattr(evaluator.orchestrator, "run", lambda paper, files, sheet_type: {**FAKE_OUT, "usage": usage})
+    sid = await _submission(db, paper["id"])
+    await evaluator.evaluate_submission(str(sid))
+    assert (await db["submissions"].find_one({"_id": sid}))["pipeline"]["usage"]["total_tokens"] == 9400
+
+
 # Why: a pipeline crash must leave the submission in "error" with the message, not stuck in "processing"
 @pytest.mark.asyncio
 async def test_evaluation_error_is_recorded(client, db, teacher_token, monkeypatch):

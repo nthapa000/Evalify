@@ -188,11 +188,12 @@ def _page_closed(ep, page, questions):
     """One page read by one model: VLM → JSON, OCR model → its own prompt, parsed in code."""
     if ep.spec.get("supports_json_schema") and ep.spec.get("prompt_style", "general") == "general":
         r = llm.chat(ep, P.page_prompt([(q.label, q.kind) for q in questions]), [page],
-                     schema=P.PAGE_SCHEMA, max_tokens=2048)
+                     schema=P.PAGE_SCHEMA, max_tokens=2048, stage="read_mcq_numerical")
         if r.error and not r.data:
             return {q.id: Reading(ep.name, ep.version, "error", error=r.error) for q in questions}
         return readings_from_page_json(r.data, questions, ep.name, r.latency_s)
-    r = llm.chat(ep, P.OCR_PROMPTS.get(ep.spec.get("prompt_style"), P.OCR_PROMPTS["general"]), [page], max_tokens=4096)
+    r = llm.chat(ep, P.OCR_PROMPTS.get(ep.spec.get("prompt_style"), P.OCR_PROMPTS["general"]), [page], max_tokens=4096,
+                 stage="read_mcq_numerical")
     if r.error and not r.text:
         return {q.id: Reading(ep.name, ep.version, "error", error=r.error) for q in questions}
     return readings_from_ocr_text(r.text, questions, ep.name, r.latency_s)
@@ -200,7 +201,8 @@ def _page_closed(ep, page, questions):
 
 def _read_all_pages(ep, pages, questions, workers):
     with ThreadPoolExecutor(max(1, workers)) as pool:
-        return merge_pages(list(pool.map(lambda p: _page_closed(ep, p, questions), pages)), questions)
+        # carry(): page reads in worker threads still count toward this sheet's tokens
+        return merge_pages(list(pool.map(llm.carry(lambda p: _page_closed(ep, p, questions)), pages)), questions)
 
 
 def read_closed_form(pages, questions: List[Question], ep_a, ep_b, ep_c=None, workers: int = 4) -> Dict[str, dict]:
@@ -209,8 +211,8 @@ def read_closed_form(pages, questions: List[Question], ep_a, ep_b, ep_c=None, wo
     if not qs:
         return {}
     with ThreadPoolExecutor(2) as pool:                         # A and B in parallel
-        fa = pool.submit(_read_all_pages, ep_a, pages, qs, workers)
-        fb = pool.submit(_read_all_pages, ep_b, pages, qs, workers) if ep_b else None
+        fa = pool.submit(llm.carry(_read_all_pages), ep_a, pages, qs, workers)
+        fb = pool.submit(llm.carry(_read_all_pages), ep_b, pages, qs, workers) if ep_b else None
         ra, rb = fa.result(), (fb.result() if fb else {q.id: Reading() for q in qs})
     # Reader C only when A and B do not already agree on everything
     need_c = [q for q in qs if not _agree(q.kind, ra[q.id], rb[q.id])]
@@ -234,7 +236,8 @@ def transcribe_subjective(pages, questions: List[Question], ep_a, ep_b) -> Tuple
     def run_a():
         store, last, t = {}, None, 0.0
         for page in pages:
-            r = llm.chat(ep_a, P.page_text_prompt(labels), [page], schema=P.PAGE_TEXT_SCHEMA, max_tokens=8192)
+            r = llm.chat(ep_a, P.page_text_prompt(labels), [page], schema=P.PAGE_TEXT_SCHEMA, max_tokens=8192,
+                         stage="transcribe_subjective")
             t += r.latency_s
             items, last = items_from_page_json(r.data, last)
             merge_attempts(store, items)
@@ -245,13 +248,13 @@ def transcribe_subjective(pages, questions: List[Question], ep_a, ep_b) -> Tuple
         if ep_b is None:
             return store, t
         for page in pages:
-            r = llm.chat(ep_b, P.page_text_plain_prompt(labels), [page], max_tokens=8192)
+            r = llm.chat(ep_b, P.page_text_plain_prompt(labels), [page], max_tokens=8192, stage="transcribe_subjective")
             t += r.latency_s
             items, last = split_marked(r.text, last)
             merge_attempts(store, items)
         return store, t
 
     with ThreadPoolExecutor(2) as pool:
-        fa, fb = pool.submit(run_a), pool.submit(run_b)
+        fa, fb = pool.submit(llm.carry(run_a)), pool.submit(llm.carry(run_b))
         (sa, ta), (sb, tb) = fa.result(), fb.result()
     return subjective_texts(sa, sb, questions), {"a": round(ta, 3), "b": round(tb, 3)}

@@ -8,10 +8,13 @@
 from __future__ import annotations
 
 import base64
+import contextvars
 import hashlib
 import io
 import json
 import os
+import sys
+import threading
 import time
 from dataclasses import dataclass, field
 from functools import lru_cache
@@ -52,6 +55,82 @@ class Reply:
     latency_s: float = 0.0
     prompt_hash: str = ""
     error: str = ""
+    prompt_tokens: int = 0    # input tokens (text + image) as counted by the server, retry included
+    completion_tokens: int = 0
+
+
+# ── Token usage meter ────────────────────────────────────────────────────────
+# One meter per evaluated sheet. It lives in a context variable so two sheets graded at the
+# same time never mix; carry() hands it to the worker threads the pipeline uses.
+
+_meter: contextvars.ContextVar = contextvars.ContextVar("evalify_usage_meter", default=None)
+
+
+class UsageMeter:
+    """Counts the tokens of every model call made inside `with UsageMeter() as m:`."""
+
+    def __init__(self):
+        self.calls: list = []
+        self._lock = threading.Lock()
+        self._token = None
+
+    def __enter__(self):
+        self._token = _meter.set(self)
+        return self
+
+    def __exit__(self, *exc):
+        _meter.reset(self._token)
+        return False
+
+    def add(self, stage: str, model: str, prompt_tokens: int, completion_tokens: int, n_images: int) -> None:
+        """Record one request."""
+        with self._lock:
+            self.calls.append({"stage": stage, "model": model, "prompt_tokens": prompt_tokens,
+                               "completion_tokens": completion_tokens, "images": n_images})
+
+    def summary(self) -> dict:
+        """Totals plus one row per (pipeline step, model)."""
+        with self._lock:
+            calls = list(self.calls)
+        groups: dict = {}
+        for c in calls:
+            g = groups.setdefault((c["stage"], c["model"]), {"stage": c["stage"], "model": c["model"], "calls": 0,
+                                                            "images": 0, "prompt_tokens": 0, "completion_tokens": 0})
+            for k in ("images", "prompt_tokens", "completion_tokens"):
+                g[k] += c[k]
+            g["calls"] += 1
+        rows = [{**g, "total_tokens": g["prompt_tokens"] + g["completion_tokens"]} for g in groups.values()]
+        pt, ct = sum(c["prompt_tokens"] for c in calls), sum(c["completion_tokens"] for c in calls)
+        return {"calls": len(calls), "prompt_tokens": pt, "completion_tokens": ct, "total_tokens": pt + ct,
+                "by_stage": rows}
+
+
+def record(reply: "Reply", stage: str, n_images: int = 0, requests_made: int = 1) -> None:
+    """Add a reply's tokens to the active meter (no-op when none is active)."""
+    m = _meter.get()
+    if m is not None:
+        m.add(stage, reply.model, reply.prompt_tokens, reply.completion_tokens, n_images)
+        for _ in range(requests_made - 1):            # extra requests (retry): counted as calls, tokens already summed
+            m.add(stage, reply.model, 0, 0, 0)
+
+
+def carry(fn):
+    """Wrap fn so that, run in a worker thread, it still records into the caller's meter."""
+    m = _meter.get()
+
+    def run(*args, **kwargs):
+        token = _meter.set(m)
+        try:
+            return fn(*args, **kwargs)
+        finally:
+            _meter.reset(token)
+    return run
+
+
+def _usage(resp_json: dict) -> tuple:
+    """(prompt_tokens, completion_tokens) from an OpenAI-style reply (0, 0 if absent)."""
+    u = resp_json.get("usage") or {}
+    return int(u.get("prompt_tokens") or 0), int(u.get("completion_tokens") or 0)
 
 
 @lru_cache(maxsize=1)
@@ -122,7 +201,7 @@ def prompt_hash(*parts: str) -> str:
 
 def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = None,
          system: Optional[str] = None, max_tokens: int = 4096, thinking: bool = False,
-         template_id: str = "") -> Reply:
+         template_id: str = "", stage: str = "") -> Reply:
     """One deterministic chat call; with `schema`, output is constrained to that JSON schema."""
     # Images first, then the instruction (what most VLMs are trained on)
     content = [image_part(im) for im in images] + [{"type": "text", "text": prompt}]
@@ -140,10 +219,13 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
     reply = Reply(text="", model=ep.name, version=ep.version, prompt_hash=template_id or prompt_hash(prompt))
     t0 = time.time()
     finish = ""
+    requests_made = 1
     try:
         r = requests.post(f"{ep.base_url}/chat/completions", json=body, timeout=TIMEOUT_S)
         r.raise_for_status()
-        choice = r.json()["choices"][0]
+        payload = r.json()
+        reply.prompt_tokens, reply.completion_tokens = _usage(payload)
+        choice = payload["choices"][0]
         reply.text, finish = (choice["message"].get("content") or "").strip(), choice.get("finish_reason", "")
     except Exception as e:
         reply.error = f"{type(e).__name__}: {e}"
@@ -162,13 +244,20 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
                 + ", ".join(schema.get("required", [])) + ". No other text."}]}]
             try:
                 r = requests.post(f"{ep.base_url}/chat/completions", json=retry, timeout=TIMEOUT_S)
-                reply.text = (r.json()["choices"][0]["message"].get("content") or "").strip()
+                requests_made += 1
+                payload = r.json()
+                pt, ct = _usage(payload)                    # the retry is a second paid request
+                reply.prompt_tokens += pt
+                reply.completion_tokens += ct
+                reply.text = (payload["choices"][0]["message"].get("content") or "").strip()
                 reply.data = parse_json(reply.text)
             except Exception as e:
                 reply.error = f"retry failed: {e}"
             reply.latency_s = round(time.time() - t0, 3)
         if reply.data is None:
             reply.error = reply.error or "invalid JSON"
+    # Pipeline step = the function that called chat() (e.g. _page_closed, run_a, grade)
+    record(reply, stage or sys._getframe(1).f_code.co_name, len(images), requests_made)
     return reply
 
 

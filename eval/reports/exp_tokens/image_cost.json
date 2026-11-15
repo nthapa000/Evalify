@@ -1,0 +1,26 @@
+[
+ {
+  "model": "gemma4-31b-fp8",
+  "image_px": [
+   1414,
+   2000
+  ],
+  "image_tokens": 268
+ },
+ {
+  "model": "qwen38-27b-fp8",
+  "image_px": [
+   1414,
+   2000
+  ],
+  "image_tokens": 2730
+ },
+ {
+  "model": "glm-ocr",
+  "image_px": [
+   1414,
+   2000
+  ],
+  "image_tokens": 3552
+ }
+]

@@ -563,3 +563,12 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Also fixed: the submission status endpoint returned any submission's result to any logged-in user (now the same
   access rule as results). Upload page no longer says "Ollama Vision".
 - Tests: backend 192, frontend 77.
+
+## 15 Nov 2026 — token use of the whole pipeline (user request)
+- User asked how many tokens the pipeline uses, for every question type.
+- The model client now keeps the token counts vLLM returns with each reply (retry requests included) and a
+  per-sheet meter adds them up by step (`read_mcq_numerical`, `transcribe_subjective`, `grade_subjective`,
+  `answer_key_draft`) and model. The meter follows the pipeline's worker threads and never mixes two sheets
+  graded at the same time. Each submission now stores `pipeline.usage`; MLflow gets prompt/completion/total tokens.
+- Measured on real labelled sheets with `eval/exp_tokens.py` (all 15 handwritten MCQ, 15 OMR, 15 MCQ+numerical,
+  12 of the 50 Data Science sheets); report in `eval/reports/exp_tokens/README.md`.

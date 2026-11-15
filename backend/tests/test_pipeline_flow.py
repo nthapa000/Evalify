@@ -137,3 +137,21 @@ def test_disagreement_without_majority_flags_with_reason(pipeline, monkeypatch):
     monkeypatch.setattr(llm, "chat", chat)
     d = rows(run(pipeline))
     assert d["Q2"]["needs_review"] and "readers disagree" in d["Q2"]["review_reason"]
+
+
+# Why: every model call of a sheet (page reading, transcription, grading — most run in worker threads)
+# must reach the sheet's token count, otherwise the cost per paper type is under-reported
+def test_sheet_reports_tokens_of_every_model_call(pipeline, monkeypatch):
+    seen = []
+
+    def chat(ep, prompt, images=(), schema=None, **kw):
+        r = fake_chat(ep, prompt, images, schema, **kw)
+        r.prompt_tokens, r.completion_tokens = 1000, 50
+        seen.append(ep.name)
+        llm.record(r, "fake", len(images))
+        return r
+    monkeypatch.setattr(llm, "chat", chat)
+    usage = run(pipeline)["usage"]
+    assert usage["calls"] == len(seen) > 0
+    assert usage["prompt_tokens"] == 1000 * len(seen) and usage["total_tokens"] == 1050 * len(seen)
+    assert {r["model"] for r in usage["by_stage"]} == set(seen)
