@@ -11,15 +11,15 @@ describe("layout", () => {
   it("Sidebar shows TA links for a TA", () => {
     loginAs("ta");
     renderAt(<Sidebar />);
-    expect(screen.getByRole("link", { name: "Review queue" })).toHaveAttribute("href", "/ta/dashboard");
-    expect(screen.queryByRole("link", { name: "Create Paper" })).toBeNull();
+    expect(screen.getByRole("link", { name: /Review queue/ })).toHaveAttribute("href", "/ta/dashboard");
+    expect(screen.queryByRole("link", { name: /Create Paper/ })).toBeNull();
   });
 
   // Why: teachers keep their existing menu
   it("Sidebar shows teacher links for a teacher", () => {
     loginAs("teacher");
     renderAt(<Sidebar />);
-    expect(screen.getByRole("link", { name: "Create Paper" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Create Paper/ })).toBeInTheDocument();
   });
 
   // Why: signing out clears the session and returns to that role's own login page

@@ -23,7 +23,7 @@ describe("UI components", () => {
   // Why: badges show statuses (Flagged, Re-evaluated…) with a colour per variant
   it("Badge renders its text with the variant colour", () => {
     render(<Badge variant="warning">Flagged</Badge>);
-    expect(screen.getByText("Flagged").className).toMatch(/amber/);
+    expect(screen.getByText("Flagged").className).toMatch(/ochre/);
   });
 
   // Why: cards are the layout block of every page
@@ -49,7 +49,7 @@ describe("UI components", () => {
     useToastStore.setState({ toasts: [{ id: 1, message: "Marks submitted", type: "success" }] });
     render(<ToastContainer />);
     expect(screen.getByText("Marks submitted")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("✕"));
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
     expect(useToastStore.getState().toasts).toHaveLength(0);
   });
 

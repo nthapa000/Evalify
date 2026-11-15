@@ -37,8 +37,7 @@ export default function PaperView() {
         return (
             <PageWrapper>
                 <div className="text-center py-20 text-gray-400">
-                    <p className="text-5xl mb-3">📄</p>
-                    <p className="text-lg font-medium">Paper not found</p>
+                                        <p className="text-lg font-medium">Paper not found</p>
                 </div>
             </PageWrapper>
         );
@@ -68,7 +67,7 @@ export default function PaperView() {
                 {/* Marks Overview */}
                 <Card>
                     <Card.Header>
-                        <h2 className="text-base font-semibold text-gray-700">📊 Marks Overview</h2>
+                        <h2 className="text-base font-semibold text-gray-700">Marks overview</h2>
                     </Card.Header>
                     <Card.Body>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
@@ -95,7 +94,7 @@ export default function PaperView() {
                         </div>
                         {paper.config?.negativeMaking && (
                             <p className="text-xs text-red-500 mt-3 text-center">
-                                ⚠ Negative marking: −{paper.config.marksDeducted ?? 0.5} per wrong answer
+                                Negative marking: −{paper.config.marksDeducted ?? 0.5} per wrong answer
                                 {paper.config.negativeMarkingScope === "per_question" && paper.config.negativeMarkingQuestions?.length > 0
                                     ? ` — applies to ${paper.config.negativeMarkingQuestions.join(", ")}`
                                     : " — all questions"
@@ -109,13 +108,13 @@ export default function PaperView() {
                 {(paper.questionPaperUrl || paper.answerKeyRefUrl || paper.answerSheetRefUrl) && (
                     <Card>
                         <Card.Header>
-                            <h2 className="text-base font-semibold text-gray-700">📎 Uploaded Documents</h2>
+                            <h2 className="text-base font-semibold text-gray-700">Uploaded documents</h2>
                         </Card.Header>
                         <Card.Body className="space-y-3">
                             {paper.questionPaperUrl && (
                                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
                                     <div className="flex items-center gap-3">
-                                        <span className="text-2xl">📄</span>
+                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">PDF</span>
                                         <div>
                                             <p className="text-sm font-medium text-gray-700">Question Paper (Reference)</p>
                                             <p className="text-xs text-gray-400">PDF reference for this exam paper</p>
@@ -125,14 +124,14 @@ export default function PaperView() {
                                         onClick={() => window.open(paper.questionPaperUrl, "_blank")}
                                         className="text-sm text-green-600 hover:underline font-medium"
                                     >
-                                        View PDF ↗
+                                        View PDF
                                     </button>
                                 </div>
                             )}
                             {paper.answerKeyRefUrl && (
                                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
                                     <div className="flex items-center gap-3">
-                                        <span className="text-2xl">📝</span>
+                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">KEY</span>
                                         <div>
                                             <p className="text-sm font-medium text-gray-700">Answer Key (Reference)</p>
                                             <p className="text-xs text-gray-400">Uploaded answer key PDF for reference</p>
@@ -142,14 +141,14 @@ export default function PaperView() {
                                         onClick={() => window.open(paper.answerKeyRefUrl, "_blank")}
                                         className="text-sm text-green-600 hover:underline font-medium"
                                     >
-                                        View PDF ↗
+                                        View PDF
                                     </button>
                                 </div>
                             )}
                             {paper.answerSheetRefUrl && (
                                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
                                     <div className="flex items-center gap-3">
-                                        <span className="text-2xl">📋</span>
+                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">SHEET</span>
                                         <div>
                                             <p className="text-sm font-medium text-gray-700">Answer Sheet (Reference)</p>
                                             <p className="text-xs text-gray-400">Teacher's completed answer sheet for reference</p>
@@ -159,7 +158,7 @@ export default function PaperView() {
                                         onClick={() => window.open(paper.answerSheetRefUrl, "_blank")}
                                         className="text-sm text-green-600 hover:underline font-medium"
                                     >
-                                        View PDF ↗
+                                        View PDF
                                     </button>
                                 </div>
                             )}
@@ -171,7 +170,7 @@ export default function PaperView() {
                 {paper.mcqAnswers && Object.keys(paper.mcqAnswers).length > 0 && (
                     <Card>
                         <Card.Header>
-                            <h2 className="text-base font-semibold text-gray-700">☑️ MCQ Answer Key</h2>
+                            <h2 className="text-base font-semibold text-gray-700">MCQ answer key</h2>
                         </Card.Header>
                         <Card.Body>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -208,7 +207,7 @@ export default function PaperView() {
                 {isType2 && paper.numericalAnswers && Object.keys(paper.numericalAnswers).length > 0 && (
                     <Card>
                         <Card.Header>
-                            <h2 className="text-base font-semibold text-gray-700">🔢 Numerical Answers</h2>
+                            <h2 className="text-base font-semibold text-gray-700">Numerical answers</h2>
                         </Card.Header>
                         <Card.Body>
                             <div className="space-y-2">
@@ -239,7 +238,7 @@ export default function PaperView() {
                 {isType3 && paper.subjectiveQuestions && paper.subjectiveQuestions.length > 0 && (
                     <Card>
                         <Card.Header>
-                            <h2 className="text-base font-semibold text-gray-700">✍️ Subjective Questions</h2>
+                            <h2 className="text-base font-semibold text-gray-700">Subjective questions</h2>
                         </Card.Header>
                         <Card.Body className="space-y-4">
                             {paper.subjectiveQuestions.map((raw, i) => {

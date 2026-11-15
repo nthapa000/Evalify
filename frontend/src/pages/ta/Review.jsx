@@ -159,7 +159,7 @@ export default function TaReview() {
                       {/* Subjective: rubric point verdicts with the student's words as evidence */}
                       {(q.concepts || []).map((c) => (
                         <p key={c.concept} className="text-xs text-gray-500">
-                          {c.present ? "✔" : c.partial ? "½" : "✘"} {c.concept}{c.evidence ? ` — “${c.evidence}”` : ""}
+                          <span className="font-mono uppercase">{c.present ? "met" : c.partial ? "partial" : "missed"}</span> {c.concept}{c.evidence ? ` — “${c.evidence}”` : ""}
                         </p>
                       ))}
                     </div>

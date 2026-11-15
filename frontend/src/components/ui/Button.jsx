@@ -1,18 +1,18 @@
-// Button.jsx — reusable button with variant, size, and loading state.
+// Button.jsx — square, hairline buttons: solid ink for the main action, outlined for the rest.
 
 // Colour scheme per variant
 const VARIANTS = {
-  primary:   "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500",
-  secondary: "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-green-500",
-  danger:    "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
-  ghost:     "text-green-600 hover:bg-green-50 focus:ring-green-500",
+  primary:   "bg-paper-900 text-paper-50 hover:bg-ink-800 border border-paper-900",
+  secondary: "bg-transparent text-paper-900 border border-paper-400 hover:border-paper-900 hover:bg-paper-50",
+  danger:    "bg-pen-500 text-paper-50 border border-pen-500 hover:bg-pen-600",
+  ghost:     "bg-transparent text-ink-600 border border-transparent underline underline-offset-4 decoration-ink-200 hover:decoration-ink-600",
 };
 
 // Padding / font size per size
 const SIZES = {
-  sm: "px-3 py-1.5 text-sm",
+  sm: "px-3 py-1.5 text-[13px]",
   md: "px-4 py-2 text-sm",
-  lg: "px-5 py-2.5 text-base",
+  lg: "px-5 py-2.5 text-sm",
 };
 
 export default function Button({
@@ -27,22 +27,13 @@ export default function Button({
   return (
     <button
       disabled={disabled || loading}
-      className={`
-        inline-flex items-center justify-center gap-2 rounded-lg font-medium
-        focus:outline-none focus:ring-2 focus:ring-offset-2
-        disabled:opacity-50 disabled:cursor-not-allowed
-        transition-colors duration-150
-        ${VARIANTS[variant]} ${SIZES[size]} ${className}
-      `}
+      className={`inline-flex items-center justify-center gap-2 rounded-sm font-medium tracking-wide
+        disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-100
+        ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
       {...props}
     >
-      {/* Spinner while loading */}
-      {loading && (
-        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-        </svg>
-      )}
+      {/* Thin progress bar instead of a spinner while loading */}
+      {loading && <span aria-hidden className="w-3 h-3 border border-current border-r-transparent rounded-full animate-spin" />}
       {children}
     </button>
   );

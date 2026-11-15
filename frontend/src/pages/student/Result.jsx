@@ -9,29 +9,9 @@ import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
 import Skeleton from "../../components/ui/Skeleton";
 import Button from "../../components/ui/Button";
-import { formatDateTime, formatPercent, gradeFromPercent } from "../../utils/formatters";
-
-// Big score ring with a letter-grade badge
-function ScoreCircle({ score, max }) {
-  const pct   = max > 0 ? (score / max) * 100 : 0;
-  const grade = gradeFromPercent(pct);
-  const color = pct >= 80 ? "text-green-600" : pct >= 50 ? "text-green-500" : "text-red-500";
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-32 h-32 rounded-full border-8 border-green-100 flex flex-col items-center justify-center">
-        <span className={`text-3xl font-bold ${color}`}>{score}</span>
-        <span className="text-xs text-gray-400">/ {max}</span>
-      </div>
-      <Badge
-        variant={pct >= 80 ? "success" : pct >= 50 ? "info" : "error"}
-        className="mt-3 text-sm px-4 py-1"
-      >
-        Grade {grade}
-      </Badge>
-    </div>
-  );
-}
+import ScoreMark from "../../components/ui/ScoreMark";
+import StatLedger from "../../components/ui/StatLedger";
+import { formatDateTime, formatPercent } from "../../utils/formatters";
 
 // One "label …… value" line in the section breakdown
 function Row({ label, value }) {
@@ -193,49 +173,30 @@ export default function Result() {
         &larr; Back to Dashboard
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">{paper_name} — Result</h1>
+      <p className="kicker">Result</p>
+      <h1 className="text-3xl text-gray-900 mb-6">{paper_name}</h1>
 
-      {/* Score summary */}
-      <Card className="mb-6">
-        <Card.Body>
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <ScoreCircle score={result.totalScore} max={result.maxScore} />
-
-            <div className="flex-1 space-y-3 text-center md:text-left">
-              <div>
-                <p className="text-xl font-bold text-gray-800">{student_name}</p>
-                <p className="text-sm text-gray-500">Roll No: {roll_no}</p>
-              </div>
-
-              {/* Your score vs class average vs highest */}
-              <div className="grid grid-cols-3 gap-3 mt-4">
-                {[["Your Score", result.totalScore, "bg-green-50 text-green-600"],
-                  ["Class Average", stats.average, "bg-gray-50 text-gray-700"],
-                  ["Highest", stats.highest, "bg-green-50 text-green-600"]].map(([label, value, cls]) => (
-                  <div key={label} className={`rounded-xl p-3 text-center ${cls}`}>
-                    <p className="text-lg font-bold">{value}/{result.maxScore}</p>
-                    <p className="text-xs text-gray-500">{label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-sm text-gray-500">
-                Percentage: <strong>{formatPercent(result.percentage)}</strong>
-              </p>
-            </div>
+      {/* Score summary: the red-pen score box, then the class comparison as a ruled row */}
+      <div className="flex flex-col md:flex-row md:items-center gap-8 mb-6">
+        <ScoreMark score={result.totalScore} max={result.maxScore} />
+        <div className="flex-1 space-y-3">
+          <div>
+            <p className="kicker">Student</p>
+            <p className="text-lg text-gray-900">{student_name} <span className="font-mono text-sm text-gray-500">{roll_no}</span></p>
           </div>
-        </Card.Body>
-      </Card>
+          <StatLedger items={[
+            { label: "Your score", value: `${result.totalScore}/${result.maxScore}` },
+            { label: "Class average", value: stats.average },
+            { label: "Highest", value: stats.highest },
+            { label: "Percentage", value: formatPercent(result.percentage) },
+          ]} />
+        </div>
+      </div>
 
       <div className="mb-4">
-        <button
-          type="button"
-          onClick={viewAnswerSheet}
-          disabled={fileLoading}
-          className="inline-flex items-center gap-2 text-sm text-green-600 hover:text-green-800 border border-green-200 hover:border-green-400 rounded-lg px-4 py-2 bg-green-50 hover:bg-green-100 transition-colors disabled:opacity-50"
-        >
-          {fileLoading ? "Loading…" : "View My Answer Sheet"}
-        </button>
+        <Button variant="secondary" size="sm" onClick={viewAnswerSheet} loading={fileLoading}>
+          View my answer sheet
+        </Button>
       </div>
 
       <Card>

@@ -23,7 +23,7 @@ describe("TA dashboard", () => {
   it("shows subjects and tab counts", async () => {
     renderAt(<TaDashboard />);
     expect(await screen.findByText("Computer Science")).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Flagged by AI \(1\)/ })).toBeInTheDocument();
+    expect(await screen.findByRole("tab", { name: /Flagged by AI \(1\)/ })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /Re-evaluation requests \(1\)/ })).toBeInTheDocument();
   });
 
@@ -51,6 +51,6 @@ describe("TA dashboard", () => {
     api.routes["GET /ta/queue"] = [];
     renderAt(<TaDashboard />);
     await screen.findByText("Computer Science");
-    expect(await screen.findByText(/Nothing to review/, {}, { timeout: 5000 })).toBeInTheDocument();
+    expect(await screen.findByText(/Nothing to review/)).toBeInTheDocument();
   });
 });

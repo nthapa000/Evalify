@@ -1,7 +1,9 @@
-// Navbar.jsx — top navigation bar.
+// Navbar.jsx — top bar: serif wordmark, the user's name and role, sign out.
 
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
+
+const ROLE_LABEL = { teacher: "Teacher", ta: "TA", student: "Student" };
 
 export default function Navbar() {
   const { user, clearAuth } = useAuthStore();
@@ -14,29 +16,21 @@ export default function Navbar() {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0 z-10">
-      {/* Logo */}
-      <Link to="/" className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center">
-          <span className="text-white text-sm font-bold">E</span>
-        </div>
-        <span className="text-lg font-bold text-gray-800">Evalify</span>
+    <header className="h-14 bg-paper-50 border-b border-paper-900 flex items-center justify-between px-6 flex-shrink-0 z-10">
+      {/* Wordmark */}
+      <Link to="/" className="flex items-baseline gap-2">
+        <span className="font-serif text-xl font-semibold text-paper-900">Evalify</span>
+        <span className="kicker hidden sm:inline">answer sheets, marked</span>
       </Link>
 
-      {/* User info + logout */}
+      {/* User + sign out */}
       {user && (
-        <div className="flex items-center gap-4">
-          <div className="text-right hidden sm:block">
-            <p className="text-sm font-medium text-gray-800">{user.name}</p>
-            <p className="text-xs text-gray-400 capitalize">{user.role === "ta" ? "TA" : user.role}</p>
+        <div className="flex items-center gap-5">
+          <div className="text-right hidden sm:block leading-tight">
+            <p className="text-sm text-paper-900">{user.name}</p>
+            <p className="kicker">{ROLE_LABEL[user.role] ?? user.role}{user.roll_no ? ` / ${user.roll_no}` : ""}</p>
           </div>
-          <div className="w-9 h-9 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-semibold">
-            {user.name?.[0]?.toUpperCase() ?? "?"}
-          </div>
-          <button
-            onClick={handleLogout}
-            className="text-sm text-gray-500 hover:text-red-500 transition-colors"
-          >
+          <button onClick={handleLogout} className="text-sm text-paper-600 underline underline-offset-4 decoration-paper-300 hover:text-pen-600 hover:decoration-pen-400">
             Sign out
           </button>
         </div>

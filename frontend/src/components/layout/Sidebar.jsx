@@ -1,19 +1,18 @@
-// Sidebar.jsx — left navigation panel with role-based links.
+// Sidebar.jsx — left index of the role's pages, numbered like a contents page; the open page is
+// marked with a red-pen rule.
 
 import { NavLink } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
 
-// Nav link, highlighted when its route is active
-function SideLink({ to, label }) {
+// One numbered entry
+function SideLink({ to, label, n }) {
   return (
-    <NavLink
-      to={to}
+    <NavLink to={to} end
       className={({ isActive }) =>
-        `flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-colors
-         ${isActive ? "bg-green-50 text-green-700 border-l-2 border-green-600" : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"}`
-      }
-    >
-      {label}
+        `flex items-baseline gap-3 pl-4 pr-3 py-2 text-sm border-l-2 transition-colors
+         ${isActive ? "border-pen-500 text-paper-900 bg-paper-50" : "border-transparent text-paper-600 hover:text-paper-900"}`}>
+      <span className="font-mono text-[11px] text-paper-400">{String(n).padStart(2, "0")}</span>
+      <span>{label}</span>
     </NavLink>
   );
 }
@@ -38,19 +37,19 @@ export default function Sidebar() {
   const links = { teacher: TEACHER_LINKS, ta: TA_LINKS }[user?.role] ?? STUDENT_LINKS;
 
   return (
-    <aside className="w-56 bg-white border-r border-gray-200 flex flex-col py-4 flex-shrink-0">
-      <nav className="flex flex-col gap-1 px-2">
-        {links.map((l) => (
-          <SideLink key={l.to} {...l} />
-        ))}
+    <aside className="w-52 bg-paper-100 border-r border-paper-300 flex flex-col py-5 flex-shrink-0">
+      <p className="kicker px-4 mb-2">Contents</p>
+      <nav className="flex flex-col">
+        {links.map((l, i) => <SideLink key={l.to} n={i + 1} {...l} />)}
       </nav>
 
-      {/* Current role at the bottom */}
-      <div className="mt-auto px-4 pb-2">
-        <p className="text-xs text-gray-400 uppercase tracking-wide font-medium capitalize">
-          {user?.role ?? ""}
-        </p>
-      </div>
+      {/* Subjects of the user, if any */}
+      {user?.subjects?.length > 0 && (
+        <div className="mt-auto px-4">
+          <p className="kicker mb-1">Subjects</p>
+          {user.subjects.map((s) => <p key={s} className="text-xs text-paper-600">{s}</p>)}
+        </div>
+      )}
     </aside>
   );
 }

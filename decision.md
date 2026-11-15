@@ -495,3 +495,17 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - **Live end-to-end run with the real models** (API): DS teacher creates the Mendeley paper → DS2025003 uploads
   Student_3 (4 pages) → v2 pipeline 142 s, 16/50 → re-evaluation request → TA Data Science sees it (4 pages, 35
   questions, key) → TA sets S2 = 1 → student sees 17/50, history "S2 0 → 1 (TA)", request resolved.
+
+## 15 Nov 2026 — UI redesign: no emoji, "marked paper" style (user: sleek, unique, not AI-looking)
+- **No emoji anywhere in the frontend** (also ✓ ✕ ★ ↗); enforced by `src/__tests__/no-emoji.test.js`. Icons
+  replaced by words (Required / Optional, Remove, Dismiss, Close, met / partial / missed, PDF / KEY).
+- **Style "marked paper"**, from the domain (answer sheets + a teacher's red pen): warm paper background, ink text,
+  ink-blue actions, one red-pen accent for marks and flags, square corners, hairline rules instead of shadows, no
+  gradients; Source Serif 4 headings, IBM Plex Sans text, IBM Plex Mono for numbers, roll numbers and labels; a
+  thin red margin rule down every page like an exam booklet; numbered "Contents" side menu; split login page
+  (ink panel + form). Tokens in `tailwind.config.js` remap the old palette so every page changed consistently.
+- New shared pieces with tests: StatLedger (ruled number row), ScoreMark (red-pen score box), AuthShell.
+  Teacher dashboard is now a paper register (one ruled row per paper); student dashboard a numbered subject index.
+- Found while checking screenshots: the TA queue flashed "Nothing to review" while loading — fixed. The Vite dev
+  server caches the Tailwind config: restart it after config changes.
+- 58 frontend tests, production build OK.

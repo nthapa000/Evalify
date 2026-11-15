@@ -1,41 +1,21 @@
-// StepWizard.jsx — horizontal step progress indicator used in CreatePaper.
-// Renders numbered circles with labels; completed steps show a check mark.
+// StepWizard.jsx — step indicator for CreatePaper: numbered steps on one rule, current step in ink,
+// finished steps marked "done" in mono capitals.
 
 export default function StepWizard({ steps, current }) {
   return (
-    <div className="flex items-center w-full">
+    <ol className="grid border-t border-paper-900" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
       {steps.map((label, i) => {
-        const stepNum = i + 1;
-        const done    = stepNum < current;
-        const active  = stepNum === current;
-
+        const n = i + 1;
+        const done = n < current;
+        const active = n === current;
         return (
-          <div key={i} className="flex items-center flex-1 last:flex-none">
-            {/* Circle */}
-            <div className="flex flex-col items-center">
-              <div
-                className={`
-                  w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold
-                  ${done   ? "bg-green-600 text-white" : ""}
-                  ${active ? "bg-green-600 text-white ring-4 ring-green-100" : ""}
-                  ${!done && !active ? "bg-gray-200 text-gray-500" : ""}
-                `}
-              >
-                {done ? "✓" : stepNum}
-              </div>
-              {/* Label below circle */}
-              <span className={`mt-1 text-xs font-medium whitespace-nowrap ${active ? "text-green-600" : "text-gray-400"}`}>
-                {label}
-              </span>
-            </div>
-
-            {/* Connector line between steps (not after last) */}
-            {i < steps.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-2 mb-5 ${done ? "bg-green-600" : "bg-gray-200"}`} />
-            )}
-          </div>
+          <li key={label} aria-current={active ? "step" : undefined}
+              className={`pt-2 pr-2 border-t-4 -mt-px ${active ? "border-ink-600" : done ? "border-paper-900" : "border-transparent"}`}>
+            <span className="font-mono text-[11px] text-paper-500">{String(n).padStart(2, "0")}{done ? " done" : ""}</span>
+            <p className={`text-sm ${active ? "text-paper-900 font-medium" : "text-paper-500"}`}>{label}</p>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

@@ -1,4 +1,30 @@
-/* Tailwind base layers — must be imported before any component styles */
+/* index.css — Tailwind layers + the base of the "marked paper" style (tokens in tailwind.config.js) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Paper background, ink text, Plex Sans; numbers line up in columns */
+  html { -webkit-font-smoothing: antialiased; }
+  body { @apply bg-paper-100 text-paper-900 font-sans; font-feature-settings: "tnum" 1; }
+
+  /* Headings in the serif, slightly tight */
+  h1 { @apply font-serif tracking-tight; font-weight: 600; }
+  h2, h3 { @apply tracking-tight; }
+
+  /* Ink-blue text selection, visible keyboard focus */
+  ::selection { @apply bg-ink-100 text-ink-900; }
+  :focus-visible { outline: 2px solid theme("colors.ink.600"); outline-offset: 2px; }
+
+  /* Form fields: square, hairline, paper-white */
+  input, textarea, select { @apply bg-paper-50; }
+}
+
+@layer components {
+  /* Small uppercase mono label used above headings and in tables ("TEACHER / RESULTS") */
+  .kicker { @apply font-mono text-[11px] uppercase tracking-label text-paper-500; }
+
+  /* Exam-booklet margin: a thin red rule down the left of the page content */
+  .margin-rule { background-image: linear-gradient(to right, transparent 0, transparent 2.25rem,
+      theme("colors.pen.300") 2.25rem, theme("colors.pen.300") calc(2.25rem + 1px), transparent calc(2.25rem + 1px)); }
+}

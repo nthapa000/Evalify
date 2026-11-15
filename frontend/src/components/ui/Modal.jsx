@@ -1,5 +1,4 @@
-// Modal.jsx — focus-trapped overlay dialog.
-// Used for success confirmations, delete confirmations, and detail views.
+// Modal.jsx — dialog on a dimmed page; closes on Escape, on the backdrop, or on "Close".
 
 import { useEffect } from "react";
 
@@ -14,31 +13,18 @@ export default function Modal({ isOpen, onClose, title, children, footer }) {
   if (!isOpen) return null;
 
   return (
-    // Semi-transparent backdrop — click outside to close
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
-    >
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-            aria-label="Close"
-          >
-            ✕
-          </button>
+    // Backdrop — click outside to close
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-paper-900/40 p-4"
+         onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+      <div role="dialog" aria-label={title} className="bg-paper-50 border border-paper-900 rounded-sm w-full max-w-lg">
+        {/* Header: serif title, text close button */}
+        <div className="flex items-baseline justify-between px-5 py-3 border-b border-paper-300">
+          <h2 className="font-serif text-lg text-paper-900">{title}</h2>
+          <button onClick={onClose} aria-label="Close" className="kicker hover:text-paper-900">Close</button>
         </div>
-
-        {/* Body */}
-        <div className="px-6 py-5">{children}</div>
-
+        <div className="px-5 py-4">{children}</div>
         {/* Optional footer (action buttons) */}
-        {footer && (
-          <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">{footer}</div>
-        )}
+        {footer && <div className="px-5 py-3 border-t border-paper-300 flex justify-end gap-2">{footer}</div>}
       </div>
     </div>
   );

@@ -20,9 +20,9 @@ import { paperTypeLabel } from "../../utils/formatters";
 const STEPS = ["Paper Type", "Details", "Answer Key", "Configuration", "Review"];
 
 const PAPER_TYPES = [
-  { value: "mcq", icon: "☑️", label: "MCQ Only", desc: "OMR bubbles or written MCQ answers" },
-  { value: "mcq_numerical", icon: "🔢", label: "MCQ + Numerical", desc: "MCQ section + numerical answers with tolerance" },
-  { value: "mcq_numerical_subjective", icon: "✍️", label: "MCQ + Numerical + Subjective", desc: "Full paper graded with LLM on subjective section" },
+  { value: "mcq", icon: "A", label: "MCQ Only", desc: "OMR bubbles or written MCQ answers" },
+  { value: "mcq_numerical", icon: "B", label: "MCQ + Numerical", desc: "MCQ section + numerical answers with tolerance" },
+  { value: "mcq_numerical_subjective", icon: "C", label: "MCQ + Numerical + Subjective", desc: "Full paper graded with LLM on subjective section" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -75,7 +75,7 @@ function PdfUploadZone({ label, hint, currentUrl, onFile, uploadFn, accept = "ap
 
   return (
     <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-      <span className="text-2xl">📄</span>
+      <span className="font-mono text-[11px] uppercase text-gray-500">PDF</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-gray-700">{label}</p>
         <p className="text-xs text-gray-400 truncate">
@@ -146,7 +146,7 @@ function OmrTemplateCard({ form, setForm, uploadFn }) {
             Found <strong>{tpl.questions}</strong> questions × <strong>{tpl.options}</strong> options
             ({tpl.layout} layout, numbered by {tpl.numbering}).
           </p>
-          {tpl.warnings?.map((w) => <p key={w} className="text-amber-600">⚠ {w}</p>)}
+          {tpl.warnings?.map((w) => <p key={w} className="text-amber-600">Warning: {w}</p>)}
           {preview && (
             <a href={preview} target="_blank" rel="noreferrer">
               <img src={preview} alt="Detected bubble map" className="max-h-80 border rounded-lg" />
@@ -181,12 +181,12 @@ function Step1({ value, onChange }) {
           className={`w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-4
             ${value === t.value ? "border-green-500 bg-green-50" : "border-gray-200 hover:border-green-200"}`}
         >
-          <span className="text-2xl mt-0.5">{t.icon}</span>
+          <span className="font-serif text-2xl leading-none text-gray-400 w-6">{t.icon}</span>
           <div>
             <p className="font-semibold text-gray-800">{t.label}</p>
             <p className="text-xs text-gray-500 mt-0.5">{t.desc}</p>
           </div>
-          {value === t.value && <span className="ml-auto text-green-600 text-lg">✓</span>}
+          {value === t.value && <span className="ml-auto font-mono text-[11px] uppercase text-green-700">Selected</span>}
         </button>
       ))}
     </div>
@@ -487,7 +487,7 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
                   ? "border-green-500 bg-green-50 text-green-700"
                   : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
             >
-              {mode === "manual" ? "✏️ Enter Manually" : "📄 Upload PDF & Extract"}
+              {mode === "manual" ? "Enter manually" : "Upload PDF and extract"}
             </button>
           ))}
         </div>
@@ -514,7 +514,7 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
             </Button>
             {Object.keys(form.mcqAnswers).length > 0 && !extracting && (
               <p className="text-xs text-green-600 font-medium text-center">
-                ✓ {Object.keys(form.mcqAnswers).length} answers extracted — review and edit below
+                {Object.keys(form.mcqAnswers).length} answers extracted — review and edit below
               </p>
             )}
           </div>
@@ -600,7 +600,7 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
 
           {/* Convention guidance banner */}
           <div className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-xs text-blue-800 space-y-1">
-            <p className="font-semibold">📋 Answer Sheet Convention for Students</p>
+            <p className="font-semibold">Answer sheet convention for students</p>
             <p>Students write answers in the following order on their sheet:</p>
             <ol className="list-decimal list-inside space-y-0.5 pl-1">
               {form.mcqCount > 0 && <li><strong>MCQ section first</strong> — circles / letters for Q1, Q2, Q3 …</li>}
@@ -675,8 +675,8 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
                           <button
                             type="button"
                             onClick={() => removeValue(idx)}
-                            className="text-xs text-red-400 hover:text-red-600 px-1"
-                          >✕</button>
+                            className="text-xs text-red-400 hover:text-red-600 px-1" aria-label="Remove value"
+                          >Remove</button>
                         )}
                       </div>
                     ))}
@@ -726,7 +726,7 @@ function RubricPreviewCard({ rubric, questionText, index }) {
               className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium
                 ${mandatory.includes(c) ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}
             >
-              {mandatory.includes(c) && <span title="mandatory">★</span>}
+              {mandatory.includes(c) && <span title="mandatory" className="font-mono text-[10px] uppercase text-red-500 ml-1">required</span>}
               {c}
             </span>
           ))}
@@ -1016,9 +1016,9 @@ function Step5({ form }) {
             value={`${Object.values(form.numericalAnswers).filter(a => (a.values ?? []).some(v => v.trim())).length} / ${form.numericalCount}`}
           />
         )}
-        <Row label="Question Paper PDF" value={form.questionPaperUrl ? "✓ Uploaded" : "Not uploaded"} />
-        <Row label="Answer Key PDF" value={(form.answerKeyPdfUrl || form.answerKeyRefUrl) ? "✓ Uploaded" : "Not uploaded"} />
-        <Row label="Answer Sheet PDF" value={form.answerSheetRefUrl ? "✓ Uploaded" : "Not uploaded"} />
+        <Row label="Question Paper PDF" value={form.questionPaperUrl ? "Uploaded" : "Not uploaded"} />
+        <Row label="Answer Key PDF" value={(form.answerKeyPdfUrl || form.answerKeyRefUrl) ? "Uploaded" : "Not uploaded"} />
+        <Row label="Answer Sheet PDF" value={form.answerSheetRefUrl ? "Uploaded" : "Not uploaded"} />
       </div>
 
       {/* Quick links to review uploaded PDFs before saving */}
@@ -1026,19 +1026,19 @@ function Step5({ form }) {
         {form.questionPaperUrl && (
           <button type="button" onClick={() => window.open(form.questionPaperUrl, "_blank")}
             className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
-            📄 View Question Paper
+            View question paper
           </button>
         )}
         {(form.answerKeyPdfUrl || form.answerKeyRefUrl) && (
           <button type="button" onClick={() => window.open(form.answerKeyRefUrl || form.answerKeyPdfUrl, "_blank")}
             className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
-            📝 View Answer Key
+            View answer key
           </button>
         )}
         {form.answerSheetRefUrl && (
           <button type="button" onClick={() => window.open(form.answerSheetRefUrl, "_blank")}
             className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
-            📋 View Answer Sheet
+            View answer sheet
           </button>
         )}
       </div>
@@ -1197,7 +1197,7 @@ export default function CreatePaper() {
             </Button>
             {step < 5
               ? <Button onClick={() => setStep((s) => s + 1)} disabled={!canNext()}>Next →</Button>
-              : <Button onClick={handleSubmit} loading={loading}>Create Paper ✓</Button>
+              : <Button onClick={handleSubmit} loading={loading}>Create Paper</Button>
             }
           </Card.Footer>
         </Card>
@@ -1210,8 +1210,7 @@ export default function CreatePaper() {
         footer={<Button onClick={() => { setSuccess(false); navigate("/teacher/dashboard"); }}>Go to Dashboard</Button>}
       >
         <div className="text-center py-4">
-          <div className="text-5xl mb-3">🎉</div>
-          <p className="text-gray-700 font-medium">
+                    <p className="text-gray-700 font-medium">
             Successfully created <strong>{form.name}</strong>.
           </p>
           <p className="text-sm text-gray-500 mt-2">Students can now upload their answer sheets for evaluation.</p>

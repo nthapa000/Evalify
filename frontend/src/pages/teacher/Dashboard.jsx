@@ -3,7 +3,6 @@
 import { Link } from "react-router-dom";
 import { useTeacherPapers } from "../../hooks/usePapers";
 import PageWrapper from "../../components/layout/PageWrapper";
-import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
 import { SkeletonCard } from "../../components/ui/Skeleton";
@@ -16,50 +15,27 @@ const TYPE_VARIANT = {
   mcq_numerical_subjective: "warning",
 };
 
-// One paper: name, type, marks/questions/results, and links
-function PaperCard({ paper }) {
+// One paper as a register row: name + subject, type, marks / questions / results, links
+function PaperRow({ paper }) {
   const totalQuestions = (paper.mcqCount ?? 0) + (paper.numericalCount ?? 0) + (paper.subjectiveCount ?? 0);
-
   return (
-    <Card className="hover:shadow-md transition-shadow">
-      <Card.Body>
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1 min-w-0">
-            <h3 className="text-base font-semibold text-gray-800 truncate">{paper.name}</h3>
-            <p className="text-sm text-gray-500 mt-0.5">{paper.subject}</p>
-          </div>
-          <Badge variant={TYPE_VARIANT[paper.type] ?? "neutral"}>
-            {paperTypeLabel(paper.type)}
-          </Badge>
+    <li className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,1fr)_auto_repeat(3,5rem)_auto] items-center gap-x-6 gap-y-2 py-4">
+      <div className="min-w-0">
+        <p className="text-gray-900 font-medium">{paper.name}</p>
+        <p className="text-xs text-gray-500">{paper.subject} · created {formatDate(paper.createdAt)}</p>
+      </div>
+      <div className="hidden md:block"><Badge variant={TYPE_VARIANT[paper.type] ?? "neutral"}>{paperTypeLabel(paper.type)}</Badge></div>
+      {[["Marks", paper.totalMarks], ["Questions", totalQuestions], ["Results", paper.resultCount]].map(([label, v]) => (
+        <div key={label} className="hidden md:block">
+          <p className="kicker">{label}</p>
+          <p className="font-mono text-gray-900">{v}</p>
         </div>
-
-        {/* Quick stats */}
-        <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-          <div className="bg-gray-50 rounded-lg py-2">
-            <p className="text-lg font-bold text-gray-800">{paper.totalMarks}</p>
-            <p className="text-xs text-gray-400">Total Marks</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg py-2">
-            <p className="text-lg font-bold text-gray-800">{totalQuestions}</p>
-            <p className="text-xs text-gray-400">Questions</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg py-2">
-            <p className="text-lg font-bold text-green-600">{paper.resultCount}</p>
-            <p className="text-xs text-gray-400">Results</p>
-          </div>
-        </div>
-
-        <p className="text-xs text-gray-400 mt-3">Created {formatDate(paper.createdAt)}</p>
-      </Card.Body>
-      <Card.Footer className="flex gap-2">
-        <Link to={`/teacher/papers/${paper.id}/results`} className="flex-1">
-          <Button variant="primary" size="sm" className="w-full">View Results</Button>
-        </Link>
-        <Link to={`/teacher/papers/${paper.id}/view`}>
-          <Button variant="secondary" size="sm">View Paper</Button>
-        </Link>
-      </Card.Footer>
-    </Card>
+      ))}
+      <div className="flex gap-2 justify-end">
+        <Link to={`/teacher/papers/${paper.id}/results`}><Button size="sm">View Results</Button></Link>
+        <Link to={`/teacher/papers/${paper.id}/view`}><Button variant="secondary" size="sm">View Paper</Button></Link>
+      </div>
+    </li>
   );
 }
 
@@ -69,30 +45,25 @@ export default function TeacherDashboard() {
   return (
     <PageWrapper>
       {/* Header + create button */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-end justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">My Papers</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage your exam papers and view student results</p>
+          <p className="kicker">Teacher</p>
+          <h1 className="text-3xl text-gray-900">My papers</h1>
+          <p className="text-sm text-gray-500 mt-1">Create exam papers and follow every student's result.</p>
         </div>
-        <Link to="/teacher/papers/create">
-          <Button>+ Create Paper</Button>
-        </Link>
+        <Link to="/teacher/papers/create"><Button>Create paper</Button></Link>
       </div>
 
-      {/* Paper grid (skeletons while loading) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {loading
-          ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-          : papers.length === 0
-            ? (
-              <div className="col-span-3 text-center py-20 text-gray-400">
-                <p className="text-lg font-medium">No papers yet</p>
-                <p className="text-sm mt-1">Click "Create Paper" to add your first exam.</p>
-              </div>
-            )
-            : papers.map((p) => <PaperCard key={p.id} paper={p} />)
-        }
-      </div>
+      {/* Paper register (placeholders while loading) */}
+      {loading ? (
+        <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}</div>
+      ) : papers.length === 0 ? (
+        <p className="py-16 text-gray-500 border-y border-gray-300">No papers yet. Use "Create paper" to add your first exam.</p>
+      ) : (
+        <ul className="border-y border-gray-900 divide-y divide-gray-300">
+          {papers.map((p) => <PaperRow key={p.id} paper={p} />)}
+        </ul>
+      )}
     </PageWrapper>
   );
 }

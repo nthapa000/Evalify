@@ -116,7 +116,7 @@ function SheetTypeCard({ type, selected, onSelect }) {
         </div>
         <div className={`ml-auto w-5 h-5 rounded-full border-2 flex items-center justify-center
           ${isSelected ? "border-green-500 bg-green-500" : "border-gray-300"}`}>
-          {isSelected && <span className="text-white text-xs">✓</span>}
+          {isSelected && <span className="w-2 h-2 bg-white" />}
         </div>
       </div>
 
@@ -313,7 +313,7 @@ export default function Submission() {
 
         {/* Step indicator */}
         <div className="flex items-center gap-2 mb-6">
-          <div className="w-6 h-6 rounded-full bg-green-100 text-green-600 text-xs flex items-center justify-center font-bold">✓</div>
+          <div className="w-6 h-6 rounded-full bg-green-100 text-green-600 text-xs flex items-center justify-center font-bold">1</div>
           <span className="text-sm text-gray-400">Choose Sheet Type</span>
           <div className="flex-1 h-px bg-green-300 mx-2" />
           <div className="w-6 h-6 rounded-full bg-green-600 text-white text-xs flex items-center justify-center font-bold">2</div>

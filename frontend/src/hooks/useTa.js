@@ -18,20 +18,23 @@ export function useTaSubjects() {
   return { subjects, loading };
 }
 
-// Pending items of one tab ("flagged" | "reevaluation") for one subject
+// Pending items of one tab ("flagged" | "reevaluation") for one subject.
+// "loading" stays true until the items of exactly this subject + tab have arrived, so the page never
+// flashes "Nothing to review" while switching tabs.
 export function useTaQueue(subject, tab) {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState({ key: null, items: [] });
   const { addToast } = useToastStore();
+  const key = `${subject}|${tab}`;
   useEffect(() => {
     if (!subject) return;
-    setLoading(true);
+    let alive = true;
     api.get("/ta/queue", { params: { subject, tab } })
-      .then((res) => setItems(res.data))
-      .catch(() => addToast("Could not load the review queue.", "error"))
-      .finally(() => setLoading(false));
-  }, [subject, tab, addToast]);
-  return { items, loading };
+      .then((res) => alive && setState({ key, items: res.data }))
+      .catch(() => { if (alive) { setState({ key, items: [] }); addToast("Could not load the review queue.", "error"); } });
+    return () => { alive = false; };
+  }, [subject, tab, key, addToast]);
+  const loaded = state.key === key;
+  return { items: loaded ? state.items : [], loading: Boolean(subject) && !loaded };
 }
 
 // Everything for one answer sheet (paper materials, questions with AI marks + reasons)

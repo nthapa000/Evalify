@@ -11,6 +11,7 @@ import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
 import Modal from "../../components/ui/Modal";
+import StatLedger from "../../components/ui/StatLedger";
 import { SkeletonRow } from "../../components/ui/Skeleton";
 import { formatDateTime, formatPercent, gradeFromPercent } from "../../utils/formatters";
 
@@ -95,26 +96,20 @@ export default function PaperResults() {
         ← Back to Dashboard
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
-        {loading ? "Loading…" : `Results — ${paper?.name ?? data?.submissions?.[0]?.paper_name ?? "Paper"}`}
+      <p className="kicker">Results</p>
+      <h1 className="text-3xl text-gray-900 mb-6">
+        {loading ? "Loading…" : paper?.name ?? data?.submissions?.[0]?.paper_name ?? "Paper"}
       </h1>
 
-      {/* Stats bar */}
+      {/* Stats as one ruled row */}
       {!loading && data && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {[
+        <div className="mb-6">
+          <StatLedger items={[
             { label: "Submissions", value: data.stats.count },
-            { label: "Average Score", value: data.stats.average },
-            { label: "Highest Score", value: data.stats.highest },
-            { label: "Lowest Score", value: data.stats.lowest },
-          ].map((s) => (
-            <Card key={s.label} className="text-center">
-              <Card.Body>
-                <p className="text-2xl font-bold text-green-600">{s.value}</p>
-                <p className="text-xs text-gray-500 mt-1">{s.label}</p>
-              </Card.Body>
-            </Card>
-          ))}
+            { label: "Average", value: data.stats.average },
+            { label: "Highest", value: data.stats.highest },
+            { label: "Lowest", value: data.stats.lowest },
+          ]} />
         </div>
       )}
 

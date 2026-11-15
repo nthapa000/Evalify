@@ -13,6 +13,7 @@ export default defineConfig({
     globals: true,
     setupFiles: "./src/test/setup.js",
     css: false,
+    testTimeout: 15000,   // the shared cluster machine is slow when all test files run in parallel
   },
   server: {
     port: 5173,

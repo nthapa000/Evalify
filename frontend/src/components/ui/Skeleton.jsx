@@ -1,14 +1,13 @@
-// Skeleton.jsx — animated placeholder shown while data is loading.
-// Use skeletons instead of spinners to avoid layout shifts.
+// Skeleton.jsx — paper-toned placeholders shown while data loads (no layout jump).
 
 function Pulse({ className = "" }) {
-  return <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />;
+  return <div className={`animate-pulse bg-paper-200 rounded-sm ${className}`} />;
 }
 
-// Single-card skeleton matching paper cards on dashboards
+// Card-shaped placeholder for dashboards
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-3">
+    <div className="bg-paper-50 border border-paper-300 rounded-sm p-5 space-y-3">
       <Pulse className="h-4 w-2/3" />
       <Pulse className="h-3 w-1/3" />
       <Pulse className="h-3 w-1/2" />
@@ -20,13 +19,13 @@ export function SkeletonCard() {
   );
 }
 
-// One table row skeleton (3 columns)
+// One table row placeholder (3 columns)
 export function SkeletonRow() {
   return (
     <tr>
-      <td className="px-6 py-4"><Pulse className="h-4 w-32" /></td>
-      <td className="px-6 py-4"><Pulse className="h-4 w-24" /></td>
-      <td className="px-6 py-4"><Pulse className="h-4 w-16" /></td>
+      <td className="px-5 py-3"><Pulse className="h-4 w-32" /></td>
+      <td className="px-5 py-3"><Pulse className="h-4 w-24" /></td>
+      <td className="px-5 py-3"><Pulse className="h-4 w-16" /></td>
     </tr>
   );
 }

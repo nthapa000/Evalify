@@ -8,9 +8,9 @@ describe("forms", () => {
   // Why: the teacher must see which step of paper creation they are on and which are done
   it("StepWizard marks finished steps with a check", () => {
     render(<StepWizard steps={["Details", "Answers", "Review"]} current={2} />);
-    expect(screen.getByText("✓")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument();
-    expect(screen.getByText("3")).toBeInTheDocument();
+    expect(screen.getByText("01 done")).toBeInTheDocument();
+    expect(screen.getByText("02")).toBeInTheDocument();
+    expect(screen.getByText("Answers").closest("li")).toHaveAttribute("aria-current", "step");
   });
 
   // Why: rubric points drive subjective grading; adding, starring (mandatory) and removing must update the rubric
@@ -21,9 +21,9 @@ describe("forms", () => {
     fireEvent.change(screen.getByPlaceholderText(/Type concept/), { target: { value: "an example" } });
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
     expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ key_concepts: ["energy from the sun", "an example"] }));
-    fireEvent.click(screen.getByTitle("Toggle mandatory"));
+    fireEvent.click(screen.getByRole("button", { name: 'Mark "energy from the sun" as required' }));
     expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ mandatory_concepts: ["energy from the sun"] }));
-    fireEvent.click(screen.getByText("×"));
+    fireEvent.click(screen.getByRole("button", { name: 'Remove "energy from the sun"' }));
     expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ key_concepts: [] }));
   });
 });
