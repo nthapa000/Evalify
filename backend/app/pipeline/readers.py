@@ -156,6 +156,21 @@ def read_ocr(ep: llm.Endpoint, q: Question, images: List[Image.Image]) -> Readin
     return out
 
 
+def read_plain(ep: llm.Endpoint, q: Question, images: List[Image.Image]) -> Reading:
+    """General model transcribing without a JSON schema (used for Gemma on long answers)."""
+    texts, latency, err, ph = [], 0.0, "", ""
+    for im in images:
+        r = llm.chat(ep, P.OCR_PROMPTS["general"] + "\nMark struck-out text as ~~like this~~.", [im], max_tokens=2048)
+        texts.append(clean_ocr(r.text))
+        latency, err, ph = latency + r.latency_s, err or r.error, r.prompt_hash
+    text = strip_label("\n".join(t for t in texts if t).strip(), q.label)
+    out = Reading(ep.name, ep.version, status="answered" if text else "blank", value=text, raw=text,
+                  latency_s=round(latency, 3), prompt_hash=ph, error=err)
+    if err and not text:
+        out.status = "error"
+    return out
+
+
 def clean_ocr(text: str) -> str:
     """HTML/markdown from OCR models → plain text (struck-out text kept as ~~x~~)."""
     t = re.sub(r"<del>(.*?)</del>", r"~~\1~~", text or "", flags=re.S)

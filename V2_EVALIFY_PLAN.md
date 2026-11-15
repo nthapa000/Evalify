@@ -69,23 +69,24 @@ pipeline was also safe but sent 22 and 32 answers to TAs.
   after the type-C run).
 
 ### 3.4 Type C — MCQ + numerical + subjective
-- MCQ and numerical parts: as §3.3.
-- Subjective answers:
+- MCQ and numerical parts: as §3.3 (Mendeley: ~1 real error in 1,000 MCQ, 98.7 % auto, 157 s/paper).
+- Subjective answers (measured on 50 Mendeley sheets, `eval/reports/mendeley_sweep/FINDINGS.md`):
   1. **Segmentation** (Qwen3.8) finds each written answer by its question number → one crop per answer
-     (answers continuing over pages are stitched).
-  2. **Two transcriptions** per answer: Qwen3.8 (verbatim prompt; best on paragraphs, CER 0.071) and an
-     OCR specialist (PaddleOCR-VL or GLM-OCR). Low similarity → flag.
-  3. **Grader 1 + grader 2** from different families (Qwen3.8 and Gemma 4) judge **each rubric point**:
-     quote the student's words, then verdict *present / partial / absent*. Code checks every quote really
-     appears in the transcript.
+     (answers continuing over pages are stitched). ~40 s/paper.
+  2. **Two transcriptions**: **Qwen3.8 + GLM-OCR** (all 10 reader pairs within MAE 0.659–0.672; this pair is
+     the fastest, 178 s/paper with the grader). Low similarity → flag. Gemma never reads single crops
+     (guided JSON fails on them).
+  3. **One grader: Gemma 4 + prompt v2** (`grade_prompt_v2`, p4) judges each rubric point: quote, then
+     *present / partial / absent*. Best of 5 set-ups (MAE 0.665 / 2, QWK 0.41; better than Qwen v1/v2,
+     Qwen thinking, Gemma v1 at 95 %). A second grader added no accuracy → not used. Thinking off.
   4. Python sums: 1 × marks per present point, 0.5 × per partial point, mandatory-point rule, cap at max.
-  5. Graders disagree by more than the threshold, low confidence, missing evidence, or a transcript
-     problem → TA.
-- Grader prompt: **v2** (`grade_prompt_v2`, prompt version p4) fixes spelling-neutral marking, hedged /
-  contradictory answers, bare keywords, instruction text inside answers, quote-before-verdict, half
-  credit. **(pending)** v1 vs v2 and thinking on/off are to be measured on all 50 Mendeley sheets against
-  the teacher's marks before v2 becomes the default.
-- **(pending)** which models grade (Qwen + Gemma now; gpt-oss as text-only option) is decided by the same run.
+  5. TA: answer not located (never an automatic 0), transcript problem, low confidence / missing evidence.
+- Known gap: the grader is 0.57 marks stricter than the Mendeley teacher (lenient teacher ≈ half; segmentation
+  faults; some over-strictness). **(pending, needs go-ahead)** segmentation fixes (struck-out text,
+  out-of-order answers, mixed crops) and **teacher calibration** (teacher marks ~5 sheets → examples in the
+  grader prompt). Type C stays TA-reviewed until these are measured.
+- Numbers inside free working (EDU-CIRCUIT-HW): best pair Chandra→Qwen + Gemma still 30 / 702 silent → papers
+  should give a **final-answer box** for numerical questions.
 
 ### 3.5 Routing to a TA (`backend/app/pipeline/routing.py`, thresholds in `infra/routing.yaml`)
 Page failed quality gate · readers disagree with no majority · OMR fill within 0.05 of the threshold ·
@@ -141,16 +142,13 @@ vector index), chunk size; evaluation = how much teachers edit the drafts.
 - Metrics: silent errors, auto-accept rate, TA items, read accuracy, CER/WER (transcripts),
   QWK / MAE / exact-match vs teacher marks (subjective), seconds per sheet.
 - Datasets: own test sheets (45; OMR, handwritten MCQ, MCQ+numerical), Tamaulipas OMR scans,
-  **Mendeley exam set (50 sheets, type C — main set)**, **EDU-CIRCUIT-HW** (numerical with working,
-  pending download by the user).
+  **Mendeley exam set (50 sheets, type C — main set)**, **EDU-CIRCUIT-HW** (numerical with working).
 - MLflow: model repo@revision, prompt version, thresholds, per-sheet outputs.
 
 ## 8. Next steps (in order)
 
-1. User reviews the 15 Mendeley rubrics (`eval/reports/mendeley/RUBRICS_REVIEW.md`).
-2. Run all 50 Mendeley sheets: grader v1 vs v2, thinking on/off, Qwen vs Gemma graders → compare with
-   teacher marks; pick the subjective setup.
-3. EDU-CIRCUIT-HW (after the user downloads it): numerical answers with working.
-4. Finalise the order; switch MCQ/numerical to whole-page majority; v2 grader default.
-5. Fix the glare gate and show-through ghosts; calibrate routing thresholds.
-6. TA review UI; then the RAG answer-key assistant (§6).
+1. ~~Rubric review; 50 Mendeley sheets; EDU-CIRCUIT-HW~~ — done 15 Nov (`eval/reports/RESULTS.md` runs 7, 8).
+2. Segmentation fixes for type C + teacher calibration; re-run Mendeley.
+3. Switch MCQ/numerical to whole-page majority; v2 grader (Gemma) default for subjective.
+4. Fix the glare gate and show-through ghosts; calibrate routing thresholds.
+5. TA review UI; then the RAG answer-key assistant (§6).

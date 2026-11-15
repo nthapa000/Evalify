@@ -299,3 +299,35 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - **Results of every dataset run are kept in Markdown**; index at `eval/reports/RESULTS.md` (user request).
 - Tie-break reader: user asked GLM-OCR vs Chandra → **GLM-OCR** (equal or better on every metric except one
   answer, ~5× faster, better on Mendeley); Chandra = backup.
+
+## 15 Nov 2026 — EDU-CIRCUIT-HW downloaded
+- User supplied the direct link (https://repository.gatech.edu/bitstreams/09496897-10b3-4675-bcf5-73b5b9802cd2/download).
+  The server cuts each connection after ~1 GB → resumed with `curl -C -` 8 times; complete zip 9.1 GB, 34,841 files
+  → `/scratch/m25csa019/evalify/datasets/edu_circuit_hw/`. Only images, rubrics, TA labels and expert transcripts
+  extracted (~1.9 GB); the other 7.1 GB are the paper's own GPT-5.1 / Gemini / Claude / Qwen-VL outputs (kept zipped).
+- **No licence file in the zip** (repo code is Apache-2.0; dataset licence still unconfirmed) → internal evaluation only.
+- Contents: 3,735 solution images (9 homeworks, ~29 students), 62 rubric JSONs (criteria M/E/C/U/NC with deduction
+  rules, `notes` hold the **final expected results**, e.g. "R = 12 Ω, v1 = −4 V"), TA-checked deductions
+  (`valset1.csv` 232 rows / 18 students / 58 questions; `obset.xlsx`), expert Markdown transcripts. Grading is
+  deduction-based on a 1.0-point scale (typical deductions 0.005–0.085). No problem statements (textbook copyright).
+
+## 15 Nov 2026 — type C (Mendeley 50) and EDU-CIRCUIT-HW results (runs 7, 8)
+- All runs finished on cn07; results in `eval/reports/mendeley_sweep/FINDINGS.md`, `eval/reports/edu_circuit/FINDINGS.md`,
+  indexed in `eval/reports/RESULTS.md` (combination tables with time per paper).
+- **Grader prompt v2 helped** (user asked): Gemma MAE 0.702 → 0.665 (significant), Qwen 0.782 → 0.726. Exact match
+  drops because half credit gives 1 where the teacher gave 0/2. Thinking mode: worse and 5× slower → off.
+- **Type C choice:** short answers = Qwen segmentation → transcripts **Qwen + GLM-OCR** (all 10 pairs within MAE
+  0.659–0.672, this one 30 % faster) → **one grader, Gemma 4 + prompt v2** (a second grader added no accuracy).
+  MCQ part = whole-page Gemma + Qwen + GLM-OCR majority (as type B).
+- **Grader is 0.57 marks (of 2) stricter than the teacher.** Hand review of 20 big disagreements: 10 teacher
+  lenient (wrong answers given 2/2), 6 grader too harsh, 4 segmentation faults (crossed-out attempt picked, mixed /
+  cut crops); 41 answers not found by segmentation → 0. Proposals: segmentation fixes; answer not found → TA;
+  **teacher calibration** (teacher marks ~5 sheets, used as examples in the grader prompt) — needs user go-ahead.
+- **Mendeley MCQ:** 12 of 13 "errors" where Gemma and Qwen agree are teacher-CSV errors (Student_34 row garbled,
+  Student_46 blanks, 6 typos) → ~1 real error / 1000 (Student_15 Q19, looped "A" read as "B").
+- **Gemma on single-answer crops fails** (guided JSON → "unclear" / runaway on 994/1000) → Gemma reads whole pages only.
+- **Reader accuracy (user asked "how good is the reader")**: own sheets whole-page Qwen/Gemma 94.5–100 %;
+  Mendeley MCQ Gemma 98.3 %, Qwen 97.7 %; EDU final numbers Chandra→Qwen 86.6 %, Gemma 83.9 %, Qwen 82.9 %,
+  GLM 78.9 %, Paddle 66 %. Short-answer grading is limited by the grader, not the reader.
+- **EDU-CIRCUIT-HW:** best = pair Chandra→Qwen + Gemma (30 silent / 702, 79.5 % auto, 55 s/solution); majority
+  doubles silent errors (63). Numbers inside free working are hard → numerical questions need a final-answer box.

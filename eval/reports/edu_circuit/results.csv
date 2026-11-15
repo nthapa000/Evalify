@@ -1,0 +1,76 @@
+arch,readers,items,silent_errors,auto_rate,ta_items,read_exact_auto,sec_per_solution
+single,chandra>qwen,702,81,1.0,0,0.856,47.4
+single,gemma,702,98,1.0,0,0.826,7.2
+single,glm>qwen,702,113,1.0,0,0.778,20.1
+single,paddle>qwen,702,198,1.0,0,0.64,21.5
+single,qwen,702,84,1.0,0,0.816,17.5
+pair,chandra>qwen + gemma,702,30,0.795,144,0.943,54.7
+pair,chandra>qwen + glm>qwen,702,38,0.785,151,0.92,67.5
+pair,chandra>qwen + paddle>qwen,702,34,0.645,249,0.916,69.0
+pair,chandra>qwen + qwen,702,37,0.818,128,0.925,64.9
+pair,gemma + glm>qwen,702,38,0.756,171,0.921,27.4
+pair,gemma + paddle>qwen,702,45,0.658,240,0.887,28.8
+pair,gemma + qwen,702,38,0.789,148,0.924,24.7
+pair,glm>qwen + paddle>qwen,702,61,0.687,220,0.838,41.7
+pair,glm>qwen + qwen,702,35,0.759,169,0.923,37.6
+pair,paddle>qwen + qwen,702,30,0.613,272,0.921,39.0
+pair+tiebreak,chandra>qwen + gemma + glm>qwen,702,30,0.795,144,0.943,74.8
+pair+majority,chandra>qwen + gemma + glm>qwen,702,70,0.966,24,0.882,74.8
+pair+tiebreak,chandra>qwen + gemma + paddle>qwen,702,30,0.795,144,0.943,76.2
+pair+majority,chandra>qwen + gemma + paddle>qwen,702,75,0.947,37,0.871,76.2
+pair+tiebreak,chandra>qwen + gemma + qwen,702,30,0.795,144,0.943,72.1
+pair+majority,chandra>qwen + gemma + qwen,702,63,0.966,24,0.892,72.1
+pair+tiebreak,chandra>qwen + glm>qwen + gemma,702,38,0.785,151,0.92,74.8
+pair+majority,chandra>qwen + glm>qwen + gemma,702,70,0.966,24,0.882,74.8
+pair+tiebreak,chandra>qwen + glm>qwen + paddle>qwen,702,38,0.785,151,0.92,89.1
+pair+majority,chandra>qwen + glm>qwen + paddle>qwen,702,85,0.957,30,0.842,89.1
+pair+tiebreak,chandra>qwen + glm>qwen + qwen,702,38,0.785,151,0.92,85.0
+pair+majority,chandra>qwen + glm>qwen + qwen,702,66,0.96,28,0.881,85.0
+pair+tiebreak,chandra>qwen + paddle>qwen + gemma,702,34,0.645,249,0.916,76.2
+pair+majority,chandra>qwen + paddle>qwen + gemma,702,75,0.947,37,0.871,76.2
+pair+tiebreak,chandra>qwen + paddle>qwen + glm>qwen,702,34,0.645,249,0.916,89.1
+pair+majority,chandra>qwen + paddle>qwen + glm>qwen,702,85,0.957,30,0.842,89.1
+pair+tiebreak,chandra>qwen + paddle>qwen + qwen,702,34,0.645,249,0.916,86.4
+pair+majority,chandra>qwen + paddle>qwen + qwen,702,71,0.947,37,0.878,86.4
+pair+tiebreak,chandra>qwen + qwen + gemma,702,37,0.818,128,0.925,72.1
+pair+majority,chandra>qwen + qwen + gemma,702,63,0.966,24,0.892,72.1
+pair+tiebreak,chandra>qwen + qwen + glm>qwen,702,37,0.818,128,0.925,85.0
+pair+majority,chandra>qwen + qwen + glm>qwen,702,66,0.96,28,0.881,85.0
+pair+tiebreak,chandra>qwen + qwen + paddle>qwen,702,37,0.818,128,0.925,86.4
+pair+majority,chandra>qwen + qwen + paddle>qwen,702,71,0.947,37,0.878,86.4
+pair+tiebreak,gemma + glm>qwen + chandra>qwen,702,38,0.756,171,0.921,74.8
+pair+majority,gemma + glm>qwen + chandra>qwen,702,70,0.966,24,0.882,74.8
+pair+tiebreak,gemma + glm>qwen + paddle>qwen,702,38,0.756,171,0.921,48.9
+pair+majority,gemma + glm>qwen + paddle>qwen,702,82,0.936,45,0.845,48.9
+pair+tiebreak,gemma + glm>qwen + qwen,702,38,0.756,171,0.921,44.8
+pair+majority,gemma + glm>qwen + qwen,702,71,0.957,30,0.876,44.8
+pair+tiebreak,gemma + paddle>qwen + chandra>qwen,702,45,0.658,240,0.887,76.2
+pair+majority,gemma + paddle>qwen + chandra>qwen,702,75,0.947,37,0.871,76.2
+pair+tiebreak,gemma + paddle>qwen + glm>qwen,702,45,0.658,240,0.887,48.9
+pair+majority,gemma + paddle>qwen + glm>qwen,702,82,0.936,45,0.845,48.9
+pair+tiebreak,gemma + paddle>qwen + qwen,702,45,0.658,240,0.887,46.3
+pair+majority,gemma + paddle>qwen + qwen,702,71,0.932,48,0.872,46.3
+pair+tiebreak,gemma + qwen + chandra>qwen,702,38,0.789,148,0.924,72.1
+pair+majority,gemma + qwen + chandra>qwen,702,63,0.966,24,0.892,72.1
+pair+tiebreak,gemma + qwen + glm>qwen,702,38,0.789,148,0.924,44.8
+pair+majority,gemma + qwen + glm>qwen,702,71,0.957,30,0.876,44.8
+pair+tiebreak,gemma + qwen + paddle>qwen,702,38,0.789,148,0.924,46.3
+pair+majority,gemma + qwen + paddle>qwen,702,71,0.932,48,0.872,46.3
+pair+tiebreak,glm>qwen + paddle>qwen + chandra>qwen,702,61,0.687,220,0.838,89.1
+pair+majority,glm>qwen + paddle>qwen + chandra>qwen,702,85,0.957,30,0.842,89.1
+pair+tiebreak,glm>qwen + paddle>qwen + gemma,702,61,0.687,220,0.838,48.9
+pair+majority,glm>qwen + paddle>qwen + gemma,702,82,0.936,45,0.845,48.9
+pair+tiebreak,glm>qwen + paddle>qwen + qwen,702,61,0.687,220,0.838,59.1
+pair+majority,glm>qwen + paddle>qwen + qwen,702,88,0.95,35,0.837,59.1
+pair+tiebreak,glm>qwen + qwen + chandra>qwen,702,35,0.759,169,0.923,85.0
+pair+majority,glm>qwen + qwen + chandra>qwen,702,66,0.96,28,0.881,85.0
+pair+tiebreak,glm>qwen + qwen + gemma,702,35,0.759,169,0.923,44.8
+pair+majority,glm>qwen + qwen + gemma,702,71,0.957,30,0.876,44.8
+pair+tiebreak,glm>qwen + qwen + paddle>qwen,702,35,0.759,169,0.923,59.1
+pair+majority,glm>qwen + qwen + paddle>qwen,702,88,0.95,35,0.837,59.1
+pair+tiebreak,paddle>qwen + qwen + chandra>qwen,702,30,0.613,272,0.921,86.4
+pair+majority,paddle>qwen + qwen + chandra>qwen,702,71,0.947,37,0.878,86.4
+pair+tiebreak,paddle>qwen + qwen + gemma,702,30,0.613,272,0.921,46.3
+pair+majority,paddle>qwen + qwen + gemma,702,71,0.932,48,0.872,46.3
+pair+tiebreak,paddle>qwen + qwen + glm>qwen,702,30,0.613,272,0.921,59.1
+pair+majority,paddle>qwen + qwen + glm>qwen,702,88,0.95,35,0.837,59.1

@@ -10,6 +10,8 @@
   "Student_2_p4.png"
  ],
  "located": "29/35",
+ "segment_s": 33.1,
+ "wall_s": 105.5,
  "questions": {
   "Q1": {
    "label": "Q1",
@@ -35,9 +37,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "blank",
      "value": "",
-     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 0.95,
+     "latency_s": 1.002,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.264,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -48,7 +61,7 @@
      "value": "",
      "raw": "48",
      "confidence": null,
-     "latency_s": 0.642,
+     "latency_s": 0.315,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -59,7 +72,7 @@
      "value": "B",
      "raw": "\\(h_{B}\\)",
      "confidence": null,
-     "latency_s": 0.307,
+     "latency_s": 0.109,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -70,7 +83,7 @@
      "value": "",
      "raw": "HB",
      "confidence": null,
-     "latency_s": 0.145,
+     "latency_s": 0.063,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -98,11 +111,22 @@
     "qwen38-27b-fp8": {
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
-     "status": "blank",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.047,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
      "value": "",
-     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
-     "confidence": 1.0,
-     "latency_s": 0.959,
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.279,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -113,7 +137,7 @@
      "value": "A",
      "raw": "2 A",
      "confidence": null,
-     "latency_s": 0.664,
+     "latency_s": 0.357,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -124,7 +148,7 @@
      "value": "A",
      "raw": "2^{A}",
      "confidence": null,
-     "latency_s": 0.205,
+     "latency_s": 0.102,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -135,7 +159,7 @@
      "value": "A",
      "raw": "2 $ A $",
      "confidence": null,
-     "latency_s": 0.152,
+     "latency_s": 0.082,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -165,9 +189,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
+     "raw": "{\"status\": \"answered\", \"options\": [\"A\"], \"confidence\": 0.95}",
      "confidence": 0.95,
-     "latency_s": 1.108,
+     "latency_s": 0.801,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.121,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -178,7 +213,7 @@
      "value": "A",
      "raw": "3\n\nA",
      "confidence": null,
-     "latency_s": 1.221,
+     "latency_s": 0.699,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -189,7 +224,7 @@
      "value": "A",
      "raw": "3 A",
      "confidence": null,
-     "latency_s": 0.274,
+     "latency_s": 0.17,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -200,7 +235,7 @@
      "value": "A",
      "raw": "3 A",
      "confidence": null,
-     "latency_s": 0.145,
+     "latency_s": 0.138,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -232,7 +267,18 @@
      "value": "A",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.105,
+     "latency_s": 1.112,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.484,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -243,7 +289,7 @@
      "value": "A",
      "raw": "4. A",
      "confidence": null,
-     "latency_s": 0.665,
+     "latency_s": 0.394,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -254,7 +300,7 @@
      "value": "A",
      "raw": "4\u3001A",
      "confidence": null,
-     "latency_s": 0.275,
+     "latency_s": 0.16,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -265,7 +311,7 @@
      "value": "A",
      "raw": "4. A",
      "confidence": null,
-     "latency_s": 0.096,
+     "latency_s": 0.136,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -295,9 +341,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.11,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.054,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.478,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -308,7 +365,7 @@
      "value": "B",
      "raw": "5. B",
      "confidence": null,
-     "latency_s": 0.666,
+     "latency_s": 0.399,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -319,7 +376,7 @@
      "value": "B",
      "raw": "5. B",
      "confidence": null,
-     "latency_s": 0.233,
+     "latency_s": 0.246,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -330,7 +387,7 @@
      "value": "B",
      "raw": "5. B",
      "confidence": null,
-     "latency_s": 0.091,
+     "latency_s": 0.109,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -362,7 +419,18 @@
      "value": "",
      "raw": "{\n  \"status\": \"unclear\",\n  \"options\": [],\n  \"confidence\": 0.0\n}",
      "confidence": 0.0,
-     "latency_s": 0.958,
+     "latency_s": 0.967,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.464,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -373,7 +441,7 @@
      "value": "B,C",
      "raw": "b. B C",
      "confidence": null,
-     "latency_s": 0.68,
+     "latency_s": 0.421,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -384,7 +452,7 @@
      "value": "",
      "raw": "6\u3001BC",
      "confidence": null,
-     "latency_s": 0.464,
+     "latency_s": 0.244,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -395,7 +463,7 @@
      "value": "B,C",
      "raw": "6. B C",
      "confidence": null,
-     "latency_s": 0.028,
+     "latency_s": 0.107,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -425,9 +493,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.093,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.242,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0.0}",
+     "confidence": 0.0,
+     "latency_s": 4.144,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -438,7 +517,7 @@
      "value": "A",
      "raw": "7.\n\nA",
      "confidence": null,
-     "latency_s": 1.234,
+     "latency_s": 0.736,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -449,7 +528,7 @@
      "value": "A",
      "raw": "7\u3001A",
      "confidence": null,
-     "latency_s": 0.462,
+     "latency_s": 0.17,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -460,7 +539,7 @@
      "value": "A",
      "raw": "7. A",
      "confidence": null,
-     "latency_s": 0.11,
+     "latency_s": 0.111,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -490,9 +569,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "C",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  , \"confidence\": 1.0}",
-     "confidence": 1.0,
-     "latency_s": 1.408,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.414,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.329,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -501,9 +591,9 @@
      "version": "datalab-to/chandra-ocr-2@af93b47dba",
      "status": "answered",
      "value": "C",
-     "raw": "8. C",
+     "raw": "8.\n\nC",
      "confidence": null,
-     "latency_s": 0.687,
+     "latency_s": 0.736,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -514,7 +604,7 @@
      "value": "C",
      "raw": "8. C",
      "confidence": null,
-     "latency_s": 0.459,
+     "latency_s": 0.454,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -525,7 +615,7 @@
      "value": "C",
      "raw": "8. C",
      "confidence": null,
-     "latency_s": 0.107,
+     "latency_s": 0.085,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -555,9 +645,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "C",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.079,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.243,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.334,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -568,7 +669,7 @@
      "value": "C",
      "raw": "9. c",
      "confidence": null,
-     "latency_s": 0.709,
+     "latency_s": 0.375,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -579,7 +680,7 @@
      "value": "C",
      "raw": "9.C",
      "confidence": null,
-     "latency_s": 0.308,
+     "latency_s": 0.443,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -590,7 +691,7 @@
      "value": "C",
      "raw": "9. C",
      "confidence": null,
-     "latency_s": 0.104,
+     "latency_s": 0.086,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -620,9 +721,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.084,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.093,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.074,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -633,7 +745,7 @@
      "value": "B",
      "raw": "10.B",
      "confidence": null,
-     "latency_s": 0.766,
+     "latency_s": 0.375,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -644,7 +756,7 @@
      "value": "B",
      "raw": "10.B",
      "confidence": null,
-     "latency_s": 0.286,
+     "latency_s": 0.441,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -655,7 +767,7 @@
      "value": "B",
      "raw": "10\u3001B",
      "confidence": null,
-     "latency_s": 0.107,
+     "latency_s": 0.069,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -685,9 +797,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.066,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.236,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.007,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -698,7 +821,7 @@
      "value": "B",
      "raw": "11. B",
      "confidence": null,
-     "latency_s": 0.796,
+     "latency_s": 0.384,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -709,7 +832,7 @@
      "value": "B",
      "raw": "11\u3001B",
      "confidence": null,
-     "latency_s": 0.208,
+     "latency_s": 0.441,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -720,7 +843,7 @@
      "value": "B",
      "raw": "11\u3001B",
      "confidence": null,
-     "latency_s": 0.089,
+     "latency_s": 0.125,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -750,9 +873,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "C",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 1.0\n}",
-     "confidence": 1.0,
-     "latency_s": 1.055,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.078,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0.0}",
+     "confidence": 0.0,
+     "latency_s": 3.465,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -763,7 +897,7 @@
      "value": "C",
      "raw": "12, c",
      "confidence": null,
-     "latency_s": 0.791,
+     "latency_s": 0.458,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -774,7 +908,7 @@
      "value": "C",
      "raw": "12\u3001C",
      "confidence": null,
-     "latency_s": 0.815,
+     "latency_s": 0.41,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -785,7 +919,7 @@
      "value": "C",
      "raw": "12. C",
      "confidence": null,
-     "latency_s": 0.081,
+     "latency_s": 0.04,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -815,9 +949,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 1.328,
+     "latency_s": 1.258,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0}",
+     "confidence": 0.0,
+     "latency_s": 1.998,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -828,7 +973,7 @@
      "value": "B",
      "raw": "13. B",
      "confidence": null,
-     "latency_s": 0.786,
+     "latency_s": 0.463,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -839,7 +984,7 @@
      "value": "B",
      "raw": "13\u3001B",
      "confidence": null,
-     "latency_s": 0.813,
+     "latency_s": 0.282,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -850,7 +995,7 @@
      "value": "B",
      "raw": "13\u3001B",
      "confidence": null,
-     "latency_s": 0.072,
+     "latency_s": 0.031,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -880,9 +1025,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "C",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  , \"confidence\": 0.9}",
      "confidence": 0.9,
-     "latency_s": 1.891,
+     "latency_s": 1.396,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.097,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -893,7 +1049,7 @@
      "value": "C",
      "raw": "14. ~~10~~ C",
      "confidence": null,
-     "latency_s": 0.987,
+     "latency_s": 0.526,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -904,7 +1060,7 @@
      "value": "C",
      "raw": "14\u3001C",
      "confidence": null,
-     "latency_s": 0.819,
+     "latency_s": 0.179,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -915,7 +1071,7 @@
      "value": "C",
      "raw": "14. C",
      "confidence": null,
-     "latency_s": 0.076,
+     "latency_s": 0.04,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -945,9 +1101,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 1.327,
+     "latency_s": 1.254,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0}",
+     "confidence": 0.0,
+     "latency_s": 1.66,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -958,7 +1125,7 @@
      "value": "A",
      "raw": "15. A",
      "confidence": null,
-     "latency_s": 0.757,
+     "latency_s": 0.437,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -969,7 +1136,7 @@
      "value": "A",
      "raw": "15\u3001A",
      "confidence": null,
-     "latency_s": 0.822,
+     "latency_s": 0.171,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -980,7 +1147,7 @@
      "value": "A",
      "raw": "15\u3001A",
      "confidence": null,
-     "latency_s": 0.075,
+     "latency_s": 0.029,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1012,7 +1179,18 @@
      "value": "C",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.24,
+     "latency_s": 1.245,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.616,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1023,7 +1201,7 @@
      "value": "C",
      "raw": "16. c",
      "confidence": null,
-     "latency_s": 0.754,
+     "latency_s": 0.412,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1034,7 +1212,7 @@
      "value": "C",
      "raw": "16\u3001C",
      "confidence": null,
-     "latency_s": 0.816,
+     "latency_s": 0.163,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1045,7 +1223,7 @@
      "value": "C",
      "raw": "16. C",
      "confidence": null,
-     "latency_s": 0.076,
+     "latency_s": 0.115,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1075,9 +1253,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 1.0\n}",
-     "confidence": 1.0,
-     "latency_s": 1.311,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.245,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 31.601,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1088,7 +1277,7 @@
      "value": "A",
      "raw": "17. A",
      "confidence": null,
-     "latency_s": 0.82,
+     "latency_s": 0.48,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1099,7 +1288,7 @@
      "value": "A",
      "raw": "17\u3001A",
      "confidence": null,
-     "latency_s": 0.794,
+     "latency_s": 0.158,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1110,7 +1299,7 @@
      "value": "A",
      "raw": "17. A",
      "confidence": null,
-     "latency_s": 0.023,
+     "latency_s": 0.116,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1140,9 +1329,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "C",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.241,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  , \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.419,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 31.589,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1153,7 +1353,7 @@
      "value": "C",
      "raw": "18. C",
      "confidence": null,
-     "latency_s": 0.806,
+     "latency_s": 0.457,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1164,7 +1364,7 @@
      "value": "C",
      "raw": "18\u3001C",
      "confidence": null,
-     "latency_s": 0.68,
+     "latency_s": 0.158,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1175,7 +1375,7 @@
      "value": "C",
      "raw": "18. C",
      "confidence": null,
-     "latency_s": 0.075,
+     "latency_s": 0.108,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1205,9 +1405,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n\"status\": \"answered\",\n\"options\": [\"B\"]\n  , \"confidence\": 1.0\n}",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 1.184,
+     "latency_s": 1.179,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 31.586,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1218,7 +1429,7 @@
      "value": "B",
      "raw": "19. B",
      "confidence": null,
-     "latency_s": 0.901,
+     "latency_s": 0.454,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1229,7 +1440,7 @@
      "value": "B",
      "raw": "19\u3001B",
      "confidence": null,
-     "latency_s": 0.494,
+     "latency_s": 0.156,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1240,7 +1451,7 @@
      "value": "B",
      "raw": "19\u3001B",
      "confidence": null,
-     "latency_s": 0.072,
+     "latency_s": 0.079,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1272,7 +1483,18 @@
      "value": "C",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.232,
+     "latency_s": 1.196,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 30.484,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1283,7 +1505,7 @@
      "value": "C",
      "raw": "20. C",
      "confidence": null,
-     "latency_s": 0.891,
+     "latency_s": 0.43,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1294,7 +1516,7 @@
      "value": "C",
      "raw": "20.C",
      "confidence": null,
-     "latency_s": 0.465,
+     "latency_s": 0.154,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1305,7 +1527,7 @@
      "value": "C",
      "raw": "20. C",
      "confidence": null,
-     "latency_s": 0.074,
+     "latency_s": 0.08,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1335,10 +1557,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "21. Supervised learning is to make the machine to\ndo what we target it to do.\nFor Example: \ntriangle square we have a label for every\nsign so machine will learn by knowing it label.",
-     "raw": "{\n    \"text\": \"21. Supervised learning is to make the machine to\\ndo what we target it to do.\\nFor Example: \\ntriangle square we have a label for every\\nsign so machine will learn by knowing it label.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
-     "confidence": 1.0,
-     "latency_s": 3.944,
+     "raw": "{\n    \"text\": \"21. Supervised learning is to make the machine to\\ndo what we target it to do.\\nFor Example: \\ntriangle square we have a label for every\\nsign so machine will learn by knowing it label.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.412,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Supervised learning is to make the machine to\ndo what we target it to do.\nFor Example: $\\triangle$ $\\square$ we have a label for every\ntriangle square\nsign so machine will learn by knowing it label.",
+     "raw": "Supervised learning is to make the machine to\ndo what we target it to do.\nFor Example: $\\triangle$ $\\square$ we have a label for every\ntriangle square\nsign so machine will learn by knowing it label.",
+     "confidence": null,
+     "latency_s": 6.115,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1348,7 +1581,7 @@
      "value": "Supervised learning is to make the machine to do what we forget it to do.\n\nFor Example: \\triangle \\square we have a label for every\ntriangle square\n\nsign so machine will learn by knowing it label.",
      "raw": "21. Supervised learning is to make the machine to do what we forget it to do.\n\nFor Example: \\triangle \\square we have a label for every\ntriangle square\n\nsign so machine will learn by knowing it label.",
      "confidence": null,
-     "latency_s": 2.19,
+     "latency_s": 1.652,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1359,7 +1592,7 @@
      "value": "Supervised learning is to make the machine to do what we target it to do.\nFor example: \u25b3 \u25a1 we have a label for every triangle square\nSign so has choice will learn by knowing it label.",
      "raw": "21. Supervised learning is to make the machine to do what we target it to do.\nFor example: \u25b3 \u25a1 we have a label for every triangle square\nSign so has choice will learn by knowing it label.",
      "confidence": null,
-     "latency_s": 0.455,
+     "latency_s": 0.153,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1370,7 +1603,7 @@
      "value": "Supervised learning is to make the machine to do what we target it to do.\nFor Example: triangle square we have a label for every sign so machine will learn by knowing it label.",
      "raw": "21. Supervised learning is to make the machine to do what we target it to do.\nFor Example: triangle square we have a label for every sign so machine will learn by knowing it label.",
      "confidence": null,
-     "latency_s": 0.307,
+     "latency_s": 0.276,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1402,8 +1635,19 @@
      "value": "22. Model M1 have 94% of Accuracy which is\ngive an highest linear regression that to predict,\nand for the other 30% it really not good\nfor the testing data set.",
      "raw": "{\n    \"text\": \"22. Model M1 have 94% of Accuracy which is\\ngive an highest linear regression that to predict,\\nand for the other 30% it really not good\\nfor the testing data set.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 3.923,
+     "latency_s": 2.4,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Model M1 have 94% of Accuracy which is\ngive an highest linear regression that to predict.\nand for the other 30% it really not good\nfor the testing data set.",
+     "raw": "Model M1 have 94% of Accuracy which is\ngive an highest linear regression that to predict.\nand for the other 30% it really not good\nfor the testing data set.",
+     "confidence": null,
+     "latency_s": 5.769,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1413,7 +1657,7 @@
      "value": "Model M_1 have 94% of Accuracy which is give an highest linear regression that to predict, and for the other 30% it really not good for the testing data set.",
      "raw": "22. Model M_1 have 94% of Accuracy which is give an highest linear regression that to predict, and for the other 30% it really not good for the testing data set.",
      "confidence": null,
-     "latency_s": 1.4,
+     "latency_s": 0.945,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1424,7 +1668,7 @@
      "value": "Model M1 have 94% of Accuracy which is\ngive an highest linear regression that to predict.\nand for the other 30% It really has good\nfor the testing data set.",
      "raw": "22. Model M1 have 94% of Accuracy which is\ngive an highest linear regression that to predict.\nand for the other 30% It really has good\nfor the testing data set.",
      "confidence": null,
-     "latency_s": 0.284,
+     "latency_s": 0.405,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1435,7 +1679,7 @@
      "value": "Model M1 have 99% of Accuracy which is give an highest linear regression that to predict. and for the other 30% it really not good for the testing data set.",
      "raw": "22. Model M1 have 99% of Accuracy which is give an highest linear regression that to predict. and for the other 30% it really not good for the testing data set.",
      "confidence": null,
-     "latency_s": 0.293,
+     "latency_s": 0.274,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1467,8 +1711,19 @@
      "value": "23. Regression analysis is for prediction and forecasting.\nthere are 2 Value in it which is independence\nand dependence value or we can call it as\ninput and output",
      "raw": "{\n  \"text\": \"23. Regression analysis is for prediction and forecasting.\\nthere are 2 Value in it which is independence\\nand dependence value or we can call it as\\ninput and output\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 3.458,
+     "latency_s": 2.195,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Regression analysis is for prediction and forecasting.\nthere are 2 Value in it which is independence\nand dependence value or we can call it as\nInput and output",
+     "raw": "Regression analysis is for prediction and forecasting.\nthere are 2 Value in it which is independence\nand dependence value or we can call it as\nInput and output",
+     "confidence": null,
+     "latency_s": 4.903,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1478,7 +1733,7 @@
      "value": "Regression analysis is for prediction and forecasting. There are 2 values in it which is independence and dependence value or we can call it as input and output.",
      "raw": "23. Regression analysis is for prediction and forecasting. There are 2 values in it which is independence and dependence value or we can call it as input and output.",
      "confidence": null,
-     "latency_s": 1.218,
+     "latency_s": 0.777,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1489,7 +1744,7 @@
      "value": "Regression analysis is for prediction and forcasting.\nthere are 2 value in it which is independence\nand dependence value or we can call it as\nInput and out put",
      "raw": "23. Regression analysis is for prediction and forcasting.\nthere are 2 value in it which is independence\nand dependence value or we can call it as\nInput and out put",
      "confidence": null,
-     "latency_s": 0.434,
+     "latency_s": 0.398,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1500,7 +1755,7 @@
      "value": "Regression analysis is for prediction and forecasting. There are 2 Value in it which is Independence and dependence value or we can call it as Input and output",
      "raw": "23. Regression analysis is for prediction and forecasting. There are 2 Value in it which is Independence and dependence value or we can call it as Input and output",
      "confidence": null,
-     "latency_s": 0.235,
+     "latency_s": 0.183,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1532,8 +1787,19 @@
      "value": "24. the two challenge in machine learning are.\n- It hard to make the machine to learn what\nwe want it to learn\n- take too much time",
      "raw": "{\n    \"text\": \"24. the two challenge in machine learning are.\\n- It hard to make the machine to learn what\\nwe want it to learn\\n- take too much time\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 3.228,
+     "latency_s": 2.041,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "the two Challenge In Machine learning are.\n\u2014 It hard to make the Machine to learn. what\nwe want it to learn\n\u2014 take ~~too much time.~~ much time",
+     "raw": "the two Challenge In Machine learning are.\n\u2014 It hard to make the Machine to learn. what\nwe want it to learn\n\u2014 take ~~too much time.~~ much time",
+     "confidence": null,
+     "latency_s": 5.238,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1543,7 +1809,7 @@
      "value": "the two challenge in Machine learning are.\n\n- It hard to make the Machine to learn what we want it to learn\n- take too ~~much time~~. much time",
      "raw": "24. the two challenge in Machine learning are.\n\n- It hard to make the Machine to learn what we want it to learn\n- take too ~~much time~~. much time",
      "confidence": null,
-     "latency_s": 1.671,
+     "latency_s": 1.216,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1554,7 +1820,7 @@
      "value": "the two Challenge In Machine Learning are.\n\u2014 It hard to make the Machine to learn. Why\n\u2014 We want it to learn\n\u2014 take too much time",
      "raw": "24 the two Challenge In Machine Learning are.\n\u2014 It hard to make the Machine to learn. Why\n\u2014 We want it to learn\n\u2014 take too much time",
      "confidence": null,
-     "latency_s": 0.413,
+     "latency_s": 0.377,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1565,7 +1831,7 @@
      "value": "2. the two challenge In Machine learning are.\n\u2014 It hard to make the Machine to learn. What\nwe want it to learn\n\u2014 take too much time. much time",
      "raw": "2. the two challenge In Machine learning are.\n\u2014 It hard to make the Machine to learn. What\nwe want it to learn\n\u2014 take too much time. much time",
      "confidence": null,
-     "latency_s": 0.233,
+     "latency_s": 0.208,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1595,10 +1861,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "25. Two major application of data science\n- Linear regression\n- Logistic Regression",
-     "raw": "{\n  \"text\": \"25. Two major application of data science\\n- Linear regression\\n- Logistic Regression\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "raw": "{\n    \"text\": \"25. Two major application of data science\\n- Linear regression\\n- Logistic Regression\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 2.944,
+     "latency_s": 1.407,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Two major application of data science\n- Linear regression\n- Logistic regression",
+     "raw": "Two major application of data science\n- Linear regression\n- Logistic regression",
+     "confidence": null,
+     "latency_s": 3.063,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1608,7 +1885,7 @@
      "value": "two major application of data science\n\n- Linear regression\n- Logistic regression\n\n35. Random Forest",
      "raw": "25. two major application of data science\n\n- Linear regression\n- Logistic regression\n\n35. Random Forest",
      "confidence": null,
-     "latency_s": 1.689,
+     "latency_s": 1.335,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1619,7 +1896,7 @@
      "value": "Two major applications of data science\n- Linear regression\n- Logistic regression",
      "raw": "25. Two major applications of data science\n- Linear regression\n- Logistic regression",
      "confidence": null,
-     "latency_s": 0.383,
+     "latency_s": 0.353,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1630,7 +1907,7 @@
      "value": "two major application of data science\n- Linear regression\n- Logistic regression",
      "raw": "25. two major application of data science\n- Linear regression\n- Logistic regression",
      "confidence": null,
-     "latency_s": 0.189,
+     "latency_s": 0.17,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1647,6 +1924,7 @@
    },
    "readings": {
     "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
     "chandra-ocr-2": null,
     "paddleocr-vl-1.6": null,
     "glm-ocr": null
@@ -1663,6 +1941,7 @@
    },
    "readings": {
     "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
     "chandra-ocr-2": null,
     "paddleocr-vl-1.6": null,
     "glm-ocr": null
@@ -1694,8 +1973,19 @@
      "value": "28. Data pre processing is the way to clean and make\nor prepare Data before using and it have many step\n- Data Cleansing\n- Data transform\n- Data\n-",
      "raw": "{\n    \"text\": \"28. Data pre processing is the way to clean and make\\nor prepare Data before using and it have many step\\n- Data Cleansing\\n- Data transform\\n- Data\\n-\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 3.968,
+     "latency_s": 1.866,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Data pre processing, is the way to Clean and make\nup prepare Data before Using and it have many step\n- Data Cleansing\n- Data transform\n- Data\n-",
+     "raw": "Data pre processing, is the way to Clean and make\nup prepare Data before Using and it have many step\n- Data Cleansing\n- Data transform\n- Data\n-",
+     "confidence": null,
+     "latency_s": 5.211,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1705,7 +1995,7 @@
      "value": "data to scale.\n\n28. Data pre processing is the way to clean and make\nor prepare Data before using and it have many step\n\n- Data Cleansing\n- Data transform\n- Data\n-",
      "raw": "data to scale.\n\n28. Data pre processing is the way to clean and make\nor prepare Data before using and it have many step\n\n- Data Cleansing\n- Data transform\n- Data\n-",
      "confidence": null,
-     "latency_s": 1.854,
+     "latency_s": 1.503,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1716,7 +2006,7 @@
      "value": "Data pre processing is the way to clean and make our prepare Data before using and it have many step-data cleansing\n- Data transform\n- Data",
      "raw": "28. Data pre processing is the way to clean and make our prepare Data before using and it have many step-data cleansing\n- Data transform\n- Data",
      "confidence": null,
-     "latency_s": 0.394,
+     "latency_s": 0.386,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1727,7 +2017,7 @@
      "value": "Data pre processing is the way to clean and make or prepare Data before using and it have many step\n- Data Cleansing\n- Data transform\n- Data\n-",
      "raw": "28. Data pre processing is the way to clean and make or prepare Data before using and it have many step\n- Data Cleansing\n- Data transform\n- Data\n-",
      "confidence": null,
-     "latency_s": 0.213,
+     "latency_s": 0.21,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1756,11 +2046,22 @@
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
-     "value": "29. data Normalization is required KNN because.\n1. to get the Categories output (0,1) from KNN.\n2. and it will understand and can make the\ndata to scale.",
-     "raw": "{\n  \"text\": \"29. data Normalization is required KNN because.\\n1. to get the Categories output (0,1) from KNN.\\n2. and it will understand and can make the\\ndata to scale.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
+     "value": "29. data Normalization is required KNN because.\n1. to get the Categories output (0, 1) from KNN.\n2. and it will understand and can make the\ndata to scale.",
+     "raw": "{\n    \"text\": \"29. data Normalization is required KNN because.\\n1. to get the Categories output (0, 1) from KNN.\\n2. and it will understand and can make the\\ndata to scale.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 4.369,
+     "latency_s": 2.035,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Input and output\n29, data normalization is required KNN because.\n1. to get the categories output (0, 1) from KNN.\n2. and it will understand and can make the\ndata to scale.",
+     "raw": "Input and output\n29, data normalization is required KNN because.\n1. to get the categories output (0, 1) from KNN.\n2. and it will understand and can make the\ndata to scale.",
+     "confidence": null,
+     "latency_s": 3.685,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1770,7 +2071,7 @@
      "value": "Input and output\n\n29. data Normalization is required KNN because.\n\n1. to get the categories output (0, 1) from KNN.\n\n2. and it will understand and can make the data to scale.",
      "raw": "Input and output\n\n29. data Normalization is required KNN because.\n\n1. to get the categories output (0, 1) from KNN.\n\n2. and it will understand and can make the data to scale.",
      "confidence": null,
-     "latency_s": 2.072,
+     "latency_s": 1.714,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1781,7 +2082,7 @@
      "value": "Input and output\n29. data normalization is required KNN because\n1. to get the Categories output (Co, 1) from KNN\n2. and 1+ will understand any can make the data to scale.",
      "raw": "Input and output\n29. data normalization is required KNN because\n1. to get the Categories output (Co, 1) from KNN\n2. and 1+ will understand any can make the data to scale.",
      "confidence": null,
-     "latency_s": 0.417,
+     "latency_s": 0.389,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1792,7 +2093,7 @@
      "value": "data normalization is required KNN because.\n1. to get the categories output (0,1) from KNN.\n2. and it will under stand and can make the data to scale.",
      "raw": "29. data normalization is required KNN because.\n1. to get the categories output (0,1) from KNN.\n2. and it will under stand and can make the data to scale.",
      "confidence": null,
-     "latency_s": 0.217,
+     "latency_s": 0.189,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1809,6 +2110,7 @@
    },
    "readings": {
     "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
     "chandra-ocr-2": null,
     "paddleocr-vl-1.6": null,
     "glm-ocr": null
@@ -1825,6 +2127,7 @@
    },
    "readings": {
     "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
     "chandra-ocr-2": null,
     "paddleocr-vl-1.6": null,
     "glm-ocr": null
@@ -1841,6 +2144,7 @@
    },
    "readings": {
     "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
     "chandra-ocr-2": null,
     "paddleocr-vl-1.6": null,
     "glm-ocr": null
@@ -1872,8 +2176,19 @@
      "value": "33. Gradient descent is an optimization algorithm\nwhich commonly uses to train machine learning and\nNeural Network",
      "raw": "{\"text\": \"33. Gradient descent is an optimization algorithm\\nwhich commonly uses to train machine learning and\\nNeural Network\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
      "confidence": 1.0,
-     "latency_s": 2.834,
+     "latency_s": 1.322,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "gradient descent is an optimization algorithm\nwhich commonly used to train machine learning and\nNeural Network",
+     "raw": "gradient descent is an optimization algorithm\nwhich commonly used to train machine learning and\nNeural Network",
+     "confidence": null,
+     "latency_s": 1.978,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1883,7 +2198,7 @@
      "value": "32. Gradient descent is an optimization algorithm which commonly used to train machine learning and Neural Network.",
      "raw": "32. Gradient descent is an optimization algorithm which commonly used to train machine learning and Neural Network.",
      "confidence": null,
-     "latency_s": 0.797,
+     "latency_s": 0.56,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1894,7 +2209,7 @@
      "value": "Gradient descent is an Optimization algorithm which commonly uses to train machine learning and neural Network",
      "raw": "33. Gradient descent is an Optimization algorithm which commonly uses to train machine learning and neural Network",
      "confidence": null,
-     "latency_s": 0.376,
+     "latency_s": 0.301,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1905,7 +2220,7 @@
      "value": "gradient descent is an optimization algorithm which commonly uses to train machine learning are Neural Net work",
      "raw": "33. gradient descent is an optimization algorithm which commonly uses to train machine learning are Neural Net work",
      "confidence": null,
-     "latency_s": 0.186,
+     "latency_s": 0.182,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1922,6 +2237,7 @@
    },
    "readings": {
     "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
     "chandra-ocr-2": null,
     "paddleocr-vl-1.6": null,
     "glm-ocr": null
@@ -1953,8 +2269,19 @@
      "value": "35. Radial Basis function kernel work ~~really~~ by\nfinding the right thing to ~~sff~~ support and\n~~the~~ making the good classification and also\nthe distance.",
      "raw": "{\n    \"text\": \"35. Radial Basis function kernel work ~~really~~ by\\nfinding the right thing to ~~sff~~ support and\\n~~the~~ making the good classification and also\\nthe distance.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 4.069,
+     "latency_s": 1.886,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "$\\rightarrow$ Radial Basis function kernel work ~~ready~~ by\nfinding the right thing to ~~SFF~~ support and\n~~the~~ making the good Classification and also\nthe distance.\n\npage(5)",
+     "raw": "$\\rightarrow$ Radial Basis function kernel work ~~ready~~ by\nfinding the right thing to ~~SFF~~ support and\n~~the~~ making the good Classification and also\nthe distance.\n\npage(5)",
+     "confidence": null,
+     "latency_s": 2.907,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1964,7 +2291,7 @@
      "value": "Radial Basis function kernel work ~~reality~~ by finding the right thing to ~~support~~ support and ~~the~~ making the good classification and also the distance.\n\nPage (5)",
      "raw": "35. Radial Basis function kernel work ~~reality~~ by finding the right thing to ~~support~~ support and ~~the~~ making the good classification and also the distance.\n\nPage (5)",
      "confidence": null,
-     "latency_s": 1.374,
+     "latency_s": 1.156,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1975,7 +2302,7 @@
      "value": "Radial Basis function kernel work reality by finding the right thing to support one.\n\nThe making the good Cla\u0938 et exation are also the distance.\n\nPage (5)",
      "raw": "35. Radial Basis function kernel work reality by finding the right thing to support one.\n\nThe making the good Cla\u0938 et exation are also the distance.\n\nPage (5)",
      "confidence": null,
-     "latency_s": 0.402,
+     "latency_s": 0.356,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1986,7 +2313,7 @@
      "value": "Radial Basis Function Kernel work really by finding the right thing to support and making the good classification and also the distance.\n\nPage (5)",
      "raw": "35. Radial Basis Function Kernel work really by finding the right thing to support and making the good classification and also the distance.\n\nPage (5)",
      "confidence": null,
-     "latency_s": 0.191,
+     "latency_s": 0.077,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }

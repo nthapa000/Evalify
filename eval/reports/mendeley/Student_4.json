@@ -10,6 +10,8 @@
   "Student_4_p4.png"
  ],
  "located": "35/35",
+ "segment_s": 40.1,
+ "wall_s": 118.6,
  "questions": {
   "Q1": {
    "label": "Q1",
@@ -35,9 +37,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 1.0\n}",
-     "confidence": 1.0,
-     "latency_s": 1.251,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.16,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.436,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -48,7 +61,7 @@
      "value": "B",
      "raw": "1. B",
      "confidence": null,
-     "latency_s": 0.667,
+     "latency_s": 0.295,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -59,7 +72,7 @@
      "value": "B",
      "raw": "1. B",
      "confidence": null,
-     "latency_s": 0.664,
+     "latency_s": 0.066,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -70,7 +83,7 @@
      "value": "B",
      "raw": "1. B",
      "confidence": null,
-     "latency_s": 0.163,
+     "latency_s": 0.059,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -102,7 +115,18 @@
      "value": "A",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.099,
+     "latency_s": 1.217,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.43,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -113,7 +137,7 @@
      "value": "A",
      "raw": "2. A",
      "confidence": null,
-     "latency_s": 0.683,
+     "latency_s": 0.294,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -124,7 +148,7 @@
      "value": "A",
      "raw": "2. A",
      "confidence": null,
-     "latency_s": 0.7,
+     "latency_s": 0.173,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -135,7 +159,7 @@
      "value": "A",
      "raw": "2. A",
      "confidence": null,
-     "latency_s": 0.16,
+     "latency_s": 0.054,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -167,7 +191,18 @@
      "value": "A",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.096,
+     "latency_s": 1.291,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.384,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -178,7 +213,7 @@
      "value": "A",
      "raw": "3. A",
      "confidence": null,
-     "latency_s": 0.731,
+     "latency_s": 0.357,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -189,7 +224,7 @@
      "value": "A",
      "raw": "3. A",
      "confidence": null,
-     "latency_s": 0.698,
+     "latency_s": 0.163,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -200,7 +235,7 @@
      "value": "A",
      "raw": "3. A",
      "confidence": null,
-     "latency_s": 0.199,
+     "latency_s": 0.096,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -230,9 +265,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.9\n}",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 0.9\n}",
      "confidence": 0.9,
-     "latency_s": 1.078,
+     "latency_s": 1.426,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.522,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -243,7 +289,7 @@
      "value": "A",
      "raw": "4. A",
      "confidence": null,
-     "latency_s": 0.738,
+     "latency_s": 0.371,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -254,7 +300,7 @@
      "value": "A",
      "raw": "4. A",
      "confidence": null,
-     "latency_s": 0.625,
+     "latency_s": 0.246,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -265,7 +311,7 @@
      "value": "A",
      "raw": "4. A",
      "confidence": null,
-     "latency_s": 0.152,
+     "latency_s": 0.09,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -293,11 +339,22 @@
     "qwen38-27b-fp8": {
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
-     "status": "answered",
-     "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.561,
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "confidence": 1.0,
+     "latency_s": 1.129,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.476,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -308,7 +365,7 @@
      "value": "B",
      "raw": "S. B.",
      "confidence": null,
-     "latency_s": 0.74,
+     "latency_s": 0.365,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -319,7 +376,7 @@
      "value": "B",
      "raw": "S.B",
      "confidence": null,
-     "latency_s": 0.8,
+     "latency_s": 0.245,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -330,7 +387,7 @@
      "value": "B",
      "raw": "S.B",
      "confidence": null,
-     "latency_s": 0.125,
+     "latency_s": 0.084,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -360,9 +417,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "blank",
      "value": "",
-     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 0.979,
+     "latency_s": 1.13,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.449,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -373,7 +441,7 @@
      "value": "",
      "raw": "6.4",
      "confidence": null,
-     "latency_s": 0.725,
+     "latency_s": 0.355,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -384,7 +452,7 @@
      "value": "C",
      "raw": "6.C",
      "confidence": null,
-     "latency_s": 0.809,
+     "latency_s": 0.155,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -395,7 +463,7 @@
      "value": "C",
      "raw": "6. C",
      "confidence": null,
-     "latency_s": 0.126,
+     "latency_s": 0.143,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -425,9 +493,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.9\n}",
-     "confidence": 0.9,
-     "latency_s": 1.025,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.288,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.376,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -438,7 +517,7 @@
      "value": "A",
      "raw": "7. A",
      "confidence": null,
-     "latency_s": 0.772,
+     "latency_s": 0.371,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -449,7 +528,7 @@
      "value": "A",
      "raw": "7. A",
      "confidence": null,
-     "latency_s": 0.8,
+     "latency_s": 0.248,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -460,7 +539,7 @@
      "value": "A",
      "raw": "7. A",
      "confidence": null,
-     "latency_s": 0.12,
+     "latency_s": 0.141,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -492,7 +571,18 @@
      "value": "",
      "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
      "confidence": 1.0,
-     "latency_s": 1.021,
+     "latency_s": 1.147,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.436,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -503,7 +593,7 @@
      "value": "C",
      "raw": "8. c",
      "confidence": null,
-     "latency_s": 0.755,
+     "latency_s": 0.376,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -514,7 +604,7 @@
      "value": "C",
      "raw": "8.c",
      "confidence": null,
-     "latency_s": 0.78,
+     "latency_s": 0.245,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -525,7 +615,7 @@
      "value": "C",
      "raw": "8. C",
      "confidence": null,
-     "latency_s": 0.105,
+     "latency_s": 0.136,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -555,9 +645,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "blank",
      "value": "",
-     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "raw": "{\"status\": \"blank\", \"options\": [] , \"confidence\": 100}",
      "confidence": 1.0,
-     "latency_s": 1.017,
+     "latency_s": 0.9,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.343,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -568,7 +669,7 @@
      "value": "A",
      "raw": "9. A",
      "confidence": null,
-     "latency_s": 0.757,
+     "latency_s": 0.369,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -579,7 +680,7 @@
      "value": "A",
      "raw": "g.A",
      "confidence": null,
-     "latency_s": 0.806,
+     "latency_s": 0.243,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -590,7 +691,7 @@
      "value": "A",
      "raw": "9. A",
      "confidence": null,
-     "latency_s": 0.097,
+     "latency_s": 0.077,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -622,7 +723,18 @@
      "value": "B",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 0.9\n}",
      "confidence": 0.9,
-     "latency_s": 1.187,
+     "latency_s": 1.348,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.01,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -633,7 +745,7 @@
      "value": "B",
      "raw": "10. B",
      "confidence": null,
-     "latency_s": 0.786,
+     "latency_s": 0.382,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -644,7 +756,7 @@
      "value": "B",
      "raw": "10.B",
      "confidence": null,
-     "latency_s": 0.935,
+     "latency_s": 0.216,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -655,7 +767,7 @@
      "value": "B",
      "raw": "10. B",
      "confidence": null,
-     "latency_s": 0.094,
+     "latency_s": 0.085,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -685,9 +797,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 1.046,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.305,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.059,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -698,7 +821,7 @@
      "value": "B",
      "raw": "11, B",
      "confidence": null,
-     "latency_s": 0.768,
+     "latency_s": 0.401,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -709,7 +832,7 @@
      "value": "B",
      "raw": "14. B",
      "confidence": null,
-     "latency_s": 0.87,
+     "latency_s": 0.216,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -720,7 +843,7 @@
      "value": "B",
      "raw": "11. B",
      "confidence": null,
-     "latency_s": 0.178,
+     "latency_s": 0.083,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -752,7 +875,18 @@
      "value": "C",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.044,
+     "latency_s": 1.159,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 34.713,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -763,7 +897,7 @@
      "value": "C",
      "raw": "12. C",
      "confidence": null,
-     "latency_s": 0.767,
+     "latency_s": 0.383,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -774,7 +908,7 @@
      "value": "C",
      "raw": "12.C",
      "confidence": null,
-     "latency_s": 0.728,
+     "latency_s": 0.214,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -785,7 +919,7 @@
      "value": "C",
      "raw": "12. C",
      "confidence": null,
-     "latency_s": 0.179,
+     "latency_s": 0.086,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -815,9 +949,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "blank",
      "value": "",
-     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 1.251,
+     "latency_s": 1.237,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.547,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -828,7 +973,7 @@
      "value": "B",
      "raw": "13. B",
      "confidence": null,
-     "latency_s": 0.767,
+     "latency_s": 0.382,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -839,7 +984,7 @@
      "value": "B",
      "raw": "13. B",
      "confidence": null,
-     "latency_s": 0.725,
+     "latency_s": 0.055,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -850,7 +995,7 @@
      "value": "B",
      "raw": "13. B",
      "confidence": null,
-     "latency_s": 0.174,
+     "latency_s": 0.083,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -882,7 +1027,18 @@
      "value": "C",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
      "confidence": 0.9,
-     "latency_s": 1.911,
+     "latency_s": 1.948,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.38,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -893,7 +1049,7 @@
      "value": "C",
      "raw": "14.c",
      "confidence": null,
-     "latency_s": 0.741,
+     "latency_s": 0.372,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -904,7 +1060,7 @@
      "value": "C",
      "raw": "14.c",
      "confidence": null,
-     "latency_s": 0.716,
+     "latency_s": 0.103,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -915,7 +1071,7 @@
      "value": "C",
      "raw": "14.c",
      "confidence": null,
-     "latency_s": 0.167,
+     "latency_s": 0.087,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -945,9 +1101,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
-     "confidence": 0.9,
-     "latency_s": 1.263,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.473,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.227,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -958,7 +1125,7 @@
      "value": "B",
      "raw": "15.B",
      "confidence": null,
-     "latency_s": 0.776,
+     "latency_s": 0.374,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -969,7 +1136,7 @@
      "value": "B",
      "raw": "15. B",
      "confidence": null,
-     "latency_s": 0.655,
+     "latency_s": 0.101,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -980,7 +1147,7 @@
      "value": "B",
      "raw": "15. B",
      "confidence": null,
-     "latency_s": 0.183,
+     "latency_s": 0.086,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1012,7 +1179,18 @@
      "value": "C",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.304,
+     "latency_s": 1.407,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.067,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1023,7 +1201,7 @@
      "value": "C",
      "raw": "16. c",
      "confidence": null,
-     "latency_s": 0.912,
+     "latency_s": 0.375,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1034,7 +1212,7 @@
      "value": "C",
      "raw": "16.C",
      "confidence": null,
-     "latency_s": 0.444,
+     "latency_s": 0.103,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1045,7 +1223,7 @@
      "value": "C",
      "raw": "16. C",
      "confidence": null,
-     "latency_s": 0.176,
+     "latency_s": 0.089,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1075,9 +1253,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "A",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 1.0\n}",
-     "confidence": 1.0,
-     "latency_s": 1.384,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.405,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.068,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1088,7 +1277,7 @@
      "value": "A",
      "raw": "17. A",
      "confidence": null,
-     "latency_s": 0.903,
+     "latency_s": 0.382,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1099,7 +1288,7 @@
      "value": "A",
      "raw": "17. A",
      "confidence": null,
-     "latency_s": 0.368,
+     "latency_s": 0.101,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1110,7 +1299,7 @@
      "value": "A",
      "raw": "17. A",
      "confidence": null,
-     "latency_s": 0.157,
+     "latency_s": 0.083,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1142,7 +1331,18 @@
      "value": "C",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.282,
+     "latency_s": 1.373,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.066,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1153,7 +1353,7 @@
      "value": "C",
      "raw": "18. C",
      "confidence": null,
-     "latency_s": 1.006,
+     "latency_s": 0.374,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1164,7 +1364,7 @@
      "value": "C",
      "raw": "18.C",
      "confidence": null,
-     "latency_s": 0.372,
+     "latency_s": 0.088,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1175,7 +1375,7 @@
      "value": "C",
      "raw": "18. C",
      "confidence": null,
-     "latency_s": 0.159,
+     "latency_s": 0.087,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1207,7 +1407,18 @@
      "value": "B",
      "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 1.282,
+     "latency_s": 1.37,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.057,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1218,7 +1429,7 @@
      "value": "B",
      "raw": "18. B",
      "confidence": null,
-     "latency_s": 1.161,
+     "latency_s": 0.39,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1229,7 +1440,7 @@
      "value": "B",
      "raw": "19. B",
      "confidence": null,
-     "latency_s": 0.363,
+     "latency_s": 0.085,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1240,7 +1451,7 @@
      "value": "B",
      "raw": "19. B",
      "confidence": null,
-     "latency_s": 0.153,
+     "latency_s": 0.086,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1270,9 +1481,20 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "B",
-     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
-     "confidence": 0.9,
-     "latency_s": 1.252,
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.325,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.756,
      "prompt_hash": "214f6299d030",
      "error": ""
     },
@@ -1283,7 +1505,7 @@
      "value": "B",
      "raw": "20. B",
      "confidence": null,
-     "latency_s": 1.197,
+     "latency_s": 0.365,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1294,7 +1516,7 @@
      "value": "B",
      "raw": "20. B",
      "confidence": null,
-     "latency_s": 0.3,
+     "latency_s": 0.086,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1305,7 +1527,7 @@
      "value": "B",
      "raw": "20. B",
      "confidence": null,
-     "latency_s": 0.15,
+     "latency_s": 0.087,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1335,10 +1557,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "Answer all Question\n21. Supervised Learning is the machine Learning algorithm\nin which dataset is label for the model so that it have\nhas the target to predict.",
-     "raw": "{\n  \"text\": \"Answer all Question\\n21. Supervised Learning is the machine Learning algorithm\\nin which dataset is label for the model so that it have\\nhas the target to predict.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "raw": "{\n    \"text\": \"Answer all Question\\n21. Supervised Learning is the machine Learning algorithm\\nin which dataset is label for the model so that it have\\nhas the target to predict.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
      "confidence": 1.0,
      "latency_s": 2.674,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Answer all Question\n\n21. Supervised Learning is the machine Learning algorithm in which dataset is label for the model so that it have has the target to predict.",
+     "raw": "Answer all Question\n\n21. Supervised Learning is the machine Learning algorithm in which dataset is label for the model so that it have has the target to predict.",
+     "confidence": null,
+     "latency_s": 4.923,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1348,7 +1581,7 @@
      "value": "Answer all Question\n21. Supervised Learning is the machine learning algorithm in which dataset is label for the model so that it have has the target to predict.",
      "raw": "Answer all Question\n21. Supervised Learning is the machine learning algorithm in which dataset is label for the model so that it have has the target to predict.",
      "confidence": null,
-     "latency_s": 2.485,
+     "latency_s": 0.857,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1359,7 +1592,7 @@
      "value": "Supercruised Learning is the machine learning algorithm in which dataset is labeled for the model so that it has the target to predict.",
      "raw": "21. Supercruised Learning is the machine learning algorithm in which dataset is labeled for the model so that it has the target to predict.",
      "confidence": null,
-     "latency_s": 0.451,
+     "latency_s": 0.103,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1370,7 +1603,7 @@
      "value": "Supervised Learning is the machine learning algorithm in which dataset is label for the model so that it have has the target to predict.",
      "raw": "21. Supervised Learning is the machine learning algorithm in which dataset is label for the model so that it have has the target to predict.",
      "confidence": null,
-     "latency_s": 0.393,
+     "latency_s": 0.067,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1402,8 +1635,19 @@
      "value": "has the target to predict.\n22. Model M1 seem do be overfitted that's the reason\nthat is so well in predict the data on the train set\nhowever it's so poorly predict what they haven't train\nwhich is not good for real time prediction.",
      "raw": "{\n    \"text\": \"has the target to predict.\\n22. Model M1 seem do be overfitted that's the reason\\nthat is so well in predict the data on the train set\\nhowever it's so poorly predict what they haven't train\\nwhich is not good for real time prediction.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 3.549,
+     "latency_s": 3.207,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "has the target to predict.\n22. Model M1 seem to be overfitted that's the reason\nthat is so well in predict the data on the train set\nhowever it's so poorly predict what they haven't train\nwhich is not good for real time prediction.",
+     "raw": "has the target to predict.\n22. Model M1 seem to be overfitted that's the reason\nthat is so well in predict the data on the train set\nhowever it's so poorly predict what they haven't train\nwhich is not good for real time prediction.",
+     "confidence": null,
+     "latency_s": 7.331,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1413,7 +1657,7 @@
      "value": "has the target to predict.\n\n22. Model M1 seem to be overfitted that's the reason that is so well in predict the data on the train set however it's so poorly predict what they haven't train which is not good for real time prediction.",
      "raw": "has the target to predict.\n\n22. Model M1 seem to be overfitted that's the reason that is so well in predict the data on the train set however it's so poorly predict what they haven't train which is not good for real time prediction.",
      "confidence": null,
-     "latency_s": 2.676,
+     "latency_s": 1.023,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1424,7 +1668,7 @@
      "value": "Model M1 seem to be overfitted that's the reason that is so well in predict the data on the train set however it's so poorly predict what they haven't train which is not good for real time prediction.",
      "raw": "22. Model M1 seem to be overfitted that's the reason that is so well in predict the data on the train set however it's so poorly predict what they haven't train which is not good for real time prediction.",
      "confidence": null,
-     "latency_s": 0.421,
+     "latency_s": 0.175,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1435,7 +1679,7 @@
      "value": "Model M1 seem to be overfitted that 's the reason that is so well in predict the data on the train set however it's so poorly predict what they haven't train which is not good for real time prediction.",
      "raw": "22. Model M1 seem to be overfitted that 's the reason that is so well in predict the data on the train set however it's so poorly predict what they haven't train which is not good for real time prediction.",
      "confidence": null,
-     "latency_s": 0.497,
+     "latency_s": 0.211,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1467,8 +1711,19 @@
      "value": "23. Regression analysis is the process of choosing\nand reducing the feature in the dataset so that it\ncan increase the accuracy of the ML model.",
      "raw": "{\"text\": \"23. Regression analysis is the process of choosing\\nand reducing the feature in the dataset so that it\\ncan increase the accuracy of the ML model.\", \"illegible_tokens\": 0, \"confidence\": 1}",
      "confidence": 1.0,
-     "latency_s": 2.126,
+     "latency_s": 2.18,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Regression analysis is the process of choosing and reducing the Feature in the dataset so that it can increase the accuracy of the ML model.",
+     "raw": "Regression analysis is the process of choosing and reducing the Feature in the dataset so that it can increase the accuracy of the ML model.",
+     "confidence": null,
+     "latency_s": 4.008,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1478,7 +1733,7 @@
      "value": "Regression analysis is the process of choosing and reducing the feature in the dataset so that it can increase the accuracy of the ML model.",
      "raw": "23. Regression analysis is the process of choosing and reducing the feature in the dataset so that it can increase the accuracy of the ML model.",
      "confidence": null,
-     "latency_s": 1.595,
+     "latency_s": 0.524,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1489,7 +1744,7 @@
      "value": "2.3. Regression analysis is the process of choosing and reducing the feature in the dataset so that it can increase the accuracy of the ML model.",
      "raw": "2.3. Regression analysis is the process of choosing and reducing the feature in the dataset so that it can increase the accuracy of the ML model.",
      "confidence": null,
-     "latency_s": 0.388,
+     "latency_s": 0.158,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1500,7 +1755,7 @@
      "value": "Regression analysis is the process of choosing and reducing the feature in the dataset so that it can increase the accuracy of the ML model.",
      "raw": "23. Regression analysis is the process of choosing and reducing the feature in the dataset so that it can increase the accuracy of the ML model.",
      "confidence": null,
-     "latency_s": 0.359,
+     "latency_s": 0.135,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1515,7 +1770,7 @@
      "page": "Student_4_p2.png",
      "bbox": [
       45,
-      31,
+      32,
       985,
       143
      ]
@@ -1530,10 +1785,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "24. The challenges in Machine Learning are to find the data\nset to train the model and to know which model is best for\nthe problem that we're solving.",
-     "raw": "{\n  \"text\": \"24. The challenges in Machine Learning are to find the data\\nset to train the model and to know which model is best for\\nthe problem that we're solving.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "raw": "{\"text\": \"24. The challenges in Machine Learning are to find the data\\nset to train the model and to know which model is best for\\nthe problem that we're solving.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
      "confidence": 1.0,
-     "latency_s": 2.384,
+     "latency_s": 2.277,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "The challenges in Machine Learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
+     "raw": "The challenges in Machine Learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
+     "confidence": null,
+     "latency_s": 4.42,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1543,7 +1809,7 @@
      "value": "The challenges in Machine Learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
      "raw": "24. The challenges in Machine Learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
      "confidence": null,
-     "latency_s": 1.665,
+     "latency_s": 0.676,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1554,7 +1820,7 @@
      "value": "The challenges in machine learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
      "raw": "24. The challenges in machine learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
      "confidence": null,
-     "latency_s": 0.398,
+     "latency_s": 0.152,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1565,7 +1831,7 @@
      "value": "The challenges in Machine Learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
      "raw": "24. The challenges in Machine Learning are to find the data set to train the model and to know which model is best for the problem that we're solving.",
      "confidence": null,
-     "latency_s": 0.349,
+     "latency_s": 0.144,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1580,7 +1846,7 @@
      "page": "Student_4_p2.png",
      "bbox": [
       45,
-      154,
+      155,
       968,
       500
      ]
@@ -1594,21 +1860,32 @@
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
-     "value": "25. Major applications of data science :\n- Health-Care : with enough data data scientist can use\nMachine Learning to predict and prevent the patient from\nheart attack or detect any symptom of some serious illness.\nalso they can use machine learning to come up with new cure for\nnew diseases.\n- ~~Self-driving car: with~~ the o.\n- Artificial Intelligeny: with machine learning we can create\nintelligent machine which know and sometime thinks like human.\n26. Structured data",
-     "raw": "{\n    \"text\": \"25. Major applications of data science :\\n- Health-Care : with enough data data scientist can use\\nMachine Learning to predict and prevent the patient from\\nheart attack or detect any symptom of some serious illness.\\nalso they can use machine learning to come up with new cure for\\nnew diseases.\\n- ~~Self-driving car: with~~ the o.\\n- Artificial Intelligeny: with machine learning we can create\\nintelligent machine which know and sometime thinks like human.\\n26. Structured data\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "value": "25. Major applications of data science:\n- Health-Care: with enough data data scientist can use\nMachine Learning to predict and prevent the patient from\nheart attack or detect any symptom of some serious illness.\nalso they can use machine learning to come up with new cure for\nnew diseases.\n- ~~Self-driving car: with the o~~\n- Artificial Intelligeny: with machine learning we can create\nintelligent machine which know and sometime thinks like human.\n26. Structured data is the organized data of",
+     "raw": "{\n  \"text\": \"25. Major applications of data science:\\n- Health-Care: with enough data data scientist can use\\nMachine Learning to predict and prevent the patient from\\nheart attack or detect any symptom of some serious illness.\\nalso they can use machine learning to come up with new cure for\\nnew diseases.\\n- ~~Self-driving car: with the o~~\\n- Artificial Intelligeny: with machine learning we can create\\nintelligent machine which know and sometime thinks like human.\\n26. Structured data is the organized data of\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 6.575,
+     "latency_s": 4.291,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Major applications of data science :\n- Health-Care : ~~whi~~ with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. also they can use machine Learning to come up with new cure for new diseases.\n- ~~Self-driving car: with the v~~\n- Artificial Intelligent : with machine learning we can create intelligent machine which know and sometime thinks like human.\n26. Structured data [?]",
+     "raw": "Major applications of data science :\n- Health-Care : ~~whi~~ with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. also they can use machine Learning to come up with new cure for new diseases.\n- ~~Self-driving car: with the v~~\n- Artificial Intelligent : with machine learning we can create intelligent machine which know and sometime thinks like human.\n26. Structured data [?]",
+     "confidence": null,
+     "latency_s": 8.919,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
      "reader": "chandra-ocr-2",
      "version": "datalab-to/chandra-ocr-2@af93b47dba",
      "status": "answered",
-     "value": "Major applications of data science:\n\n- Health-Care: with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. also they can use machine learning to come up with new cure for new diseases.\n\n~~- Self-driving car: with the v.~~\n\n- Artificial Intelligent: with machine learning we can create intelligent machine which know and sometime thinks like human.\n\n26. Structured data is the organized data.",
-     "raw": "25. Major applications of data science:\n\n- Health-Care: with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. also they can use machine learning to come up with new cure for new diseases.\n\n~~- Self-driving car: with the v.~~\n\n- Artificial Intelligent: with machine learning we can create intelligent machine which know and sometime thinks like human.\n\n26. Structured data is the organized data.",
+     "value": "Major applications of data science:\n\n- Health-Care: with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. also they can use machine learning to come up with new cure for new diseases.\n\n- ~~Self-driving car: with the v.~~\n\n- Artificial Intelligent: with machine learning we can create intelligent machine which know and sometime thinks like human.\n\n26. Structured data is the organized data.",
+     "raw": "25. Major applications of data science:\n\n- Health-Care: with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. also they can use machine learning to come up with new cure for new diseases.\n\n- ~~Self-driving car: with the v.~~\n\n- Artificial Intelligent: with machine learning we can create intelligent machine which know and sometime thinks like human.\n\n26. Structured data is the organized data.",
      "confidence": null,
-     "latency_s": 3.648,
+     "latency_s": 2.401,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1619,7 +1896,7 @@
      "value": "Major applications of data science:\n- Health-Care: with enough data data scientist can use\nMachine Learning to predict and prevent the patient from\nheart attack or defect any symptom of some serious illness.\nalso they can use machine learning to come up with new core for\nnew diseases.\n- Self-driving car: with the\n- Artificial Intelligence: with machine learning we can create\nintelligent machine which knows and sometimes thinks like human.",
      "raw": "25. Major applications of data science:\n- Health-Care: with enough data data scientist can use\nMachine Learning to predict and prevent the patient from\nheart attack or defect any symptom of some serious illness.\nalso they can use machine learning to come up with new core for\nnew diseases.\n- Self-driving car: with the\n- Artificial Intelligence: with machine learning we can create\nintelligent machine which knows and sometimes thinks like human.",
      "confidence": null,
-     "latency_s": 0.503,
+     "latency_s": 0.371,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1630,7 +1907,7 @@
      "value": "Major applications of data science:\n- Health-Care: with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. Also they can use machine learning to come up with new core for new diseases.\n- Self-driving car: with the v.\n- Artificial Intelligent: with machine learning we can create intelligent machine which know and sometime thinks like human.",
      "raw": "25. Major applications of data science:\n- Health-Care: with enough data data scientist can use Machine Learning to predict and prevent the patient from heart attack or detect any symptom of some serious illness. Also they can use machine learning to come up with new core for new diseases.\n- Self-driving car: with the v.\n- Artificial Intelligent: with machine learning we can create intelligent machine which know and sometime thinks like human.",
      "confidence": null,
-     "latency_s": 0.401,
+     "latency_s": 0.342,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1660,10 +1937,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "26. Structured data is the organized data that mostly\nrecorded in the form of spreadsheet, database, comma seperated\nvalue (CSV). While Semi-Structured data is a somewhat organize\ndata that store the data with the help of tag and it mostly\nin xml or html form.",
-     "raw": "{\n    \"text\": \"26. Structured data is the organized data that mostly\\nrecorded in the form of spreadsheet, database, comma seperated\\nvalue (CSV). While Semi-Structured data is a somewhat organize\\ndata that store the data with the help of tag and it mostly\\nin xml or html form.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
-     "confidence": 0.95,
-     "latency_s": 4.249,
+     "raw": "{\n  \"text\": \"26. Structured data is the organized data that mostly\\nrecorded in the form of spreadsheet, database, comma seperated\\nvalue (CSV). While Semi-Structured data is a somewhat organize\\ndata that store the data with the help of tag and it mostly\\nin xml or html form.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.857,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "structured data is the organized data that mostly\nrecorded in the form of spreadsheet, database, comma seperated\nvalue (csv). While Semi-Structured data is a somewhat organize\ndata that store the data with the help of tag and it mostly\nin xml or html form.",
+     "raw": "structured data is the organized data that mostly\nrecorded in the form of spreadsheet, database, comma seperated\nvalue (csv). While Semi-Structured data is a somewhat organize\ndata that store the data with the help of tag and it mostly\nin xml or html form.",
+     "confidence": null,
+     "latency_s": 4.682,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1673,7 +1961,7 @@
      "value": "Structured data is the organized data that mostly recorded in the form of spreadsheet, database, comma separated value (CSV). While semi-structured data is a somewhat organized data that store the data with the help of tag and it mostly in xml or html form.",
      "raw": "26. Structured data is the organized data that mostly recorded in the form of spreadsheet, database, comma separated value (CSV). While semi-structured data is a somewhat organized data that store the data with the help of tag and it mostly in xml or html form.",
      "confidence": null,
-     "latency_s": 2.065,
+     "latency_s": 0.792,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1684,7 +1972,7 @@
      "value": "Structured data is the organized data that mostly recorded in the form of spreadsheet, database, comma separated value (csv). While Semi-Structured data is a somewhat organized data that store the data with the help of tag and it mostly in xml or html form.",
      "raw": "26. Structured data is the organized data that mostly recorded in the form of spreadsheet, database, comma separated value (csv). While Semi-Structured data is a somewhat organized data that store the data with the help of tag and it mostly in xml or html form.",
      "confidence": null,
-     "latency_s": 0.408,
+     "latency_s": 0.225,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1695,7 +1983,7 @@
      "value": "Structured data is the organized data that mostly recorded in the form of spreadsheet, database, comma separated value (csv). While Semi-structured data is a somewhat organize data that store the data with the help of tag and it mostly in xml or html form.",
      "raw": "26. Structured data is the organized data that mostly recorded in the form of spreadsheet, database, comma separated value (csv). While Semi-structured data is a somewhat organize data that store the data with the help of tag and it mostly in xml or html form.",
      "confidence": null,
-     "latency_s": 0.409,
+     "latency_s": 0.221,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1710,7 +1998,7 @@
      "page": "Student_4_p2.png",
      "bbox": [
       38,
-      673,
+      674,
       970,
       833
      ]
@@ -1725,20 +2013,31 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "27. We can find an outlier in the data by identify\nwhether the data is out of the norm or we can use formula\nQ_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for\nupper boundary",
-     "raw": "{\n\"text\": \"27. We can find an outlier in the data by identify\\nwhether the data is out of the norm or we can use formula\\nQ_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for\\nupper boundary\",\n\"illegible_tokens\": 0,\n\"confidence\": 1.0\n}",
+     "raw": "{\"text\": \"27. We can find an outlier in the data by identify\\nwhether the data is out of the norm or we can use formula\\nQ_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for\\nupper boundary\", \"illegible_tokens\": 0, \"confidence\": 1}",
      "confidence": 1.0,
-     "latency_s": 3.935,
+     "latency_s": 2.537,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "We can find ~~an~~ an outlier in the data by identify whether the data is out of the norm or ~~we~~ we can use formula $Q_1 - 1.5\\text{ IQR}$ to find lower boundary or $Q_3 + 1.5\\text{ IQR}$ for upper boundry",
+     "raw": "We can find ~~an~~ an outlier in the data by identify whether the data is out of the norm or ~~we~~ we can use formula $Q_1 - 1.5\\text{ IQR}$ to find lower boundary or $Q_3 + 1.5\\text{ IQR}$ for upper boundry",
+     "confidence": null,
+     "latency_s": 5.373,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
      "reader": "chandra-ocr-2",
      "version": "datalab-to/chandra-ocr-2@af93b47dba",
      "status": "answered",
-     "value": "We can find ~~an~~ an outlier in the data by identify whether the data is out of the norm or we ~~can~~ use formula Q_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for upper boundary",
-     "raw": "27. We can find ~~an~~ an outlier in the data by identify whether the data is out of the norm or we ~~can~~ use formula Q_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for upper boundary",
+     "value": "We can find ~~an~~ an outlier in the data by identify whether the data is out of the norm or we ~~can~~ use formula\n\nQ_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for upper boundary",
+     "raw": "27. We can find ~~an~~ an outlier in the data by identify whether the data is out of the norm or we ~~can~~ use formula\n\nQ_1 - 1.5 IQR to find lower boundary or Q_3 + 1.5 IQR for upper boundary",
      "confidence": null,
-     "latency_s": 2.317,
+     "latency_s": 1.278,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1746,10 +2045,10 @@
      "reader": "paddleocr-vl-1.6",
      "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
      "status": "answered",
-     "value": "We can find an outlier in the data by identify\nwhether the data is out of the norm or we can use formula\n\\(Q_{1-1.5IQR}\\) to find lower boundary or \\(Q_{3+1.5IQR}\\) for\nupper boundary",
-     "raw": "27. We can find an outlier in the data by identify\nwhether the data is out of the norm or we can use formula\n\\(Q_{1-1.5IQR}\\) to find lower boundary or \\(Q_{3+1.5IQR}\\) for\nupper boundary",
+     "value": "We can find an outlier in the data by identify\nWhether the data is out of the norm or we can use formula\n\\(Q_{1-1.5IQR}\\) to find lower boundary or \\(Q_{3+1.5IQR}\\) for\nupper boundary",
+     "raw": "27. We can find an outlier in the data by identify\nWhether the data is out of the norm or we can use formula\n\\(Q_{1-1.5IQR}\\) to find lower boundary or \\(Q_{3+1.5IQR}\\) for\nupper boundary",
      "confidence": null,
-     "latency_s": 0.427,
+     "latency_s": 0.223,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1760,7 +2059,7 @@
      "value": "We can find an outlier in the data by identify whether the data is out of the norm or we can use formula $ Q_{1}-1.5 I Q R $ to find lower boundary or $ Q_{3}+1.5 I Q R $ for upper boundary",
      "raw": "27. We can find an outlier in the data by identify whether the data is out of the norm or we can use formula $ Q_{1}-1.5 I Q R $ to find lower boundary or $ Q_{3}+1.5 I Q R $ for upper boundary",
      "confidence": null,
-     "latency_s": 0.42,
+     "latency_s": 0.208,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1774,7 +2073,7 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      38,
+      35,
       30,
       960,
       137
@@ -1789,21 +2088,32 @@
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
-     "value": "28. Data pre-processing is the method to clean the data\nand reduce the unnecessary feature before we can used it\nfor training the model.\n29. Data normalization is required in K-NN because it help",
-     "raw": "{\"text\": \"28. Data pre-processing is the method to clean the data\\nand reduce the unnecessary feature before we can used it\\nfor training the model.\\n29. Data normalization is required in K-NN because it help\", \"illegible_tokens\": 0, \"confidence\": 1}",
-     "confidence": 1.0,
-     "latency_s": 2.95,
+     "value": "28. Data pre-processing is the method to clean the data\nand reduce the unnecessary feature before we can used it\nfor training the model.\ndata normalization is required in K-NN because it help",
+     "raw": "{\n    \"text\": \"28. Data pre-processing is the method to clean the data\\nand reduce the unnecessary feature before we can used it\\nfor training the model.\\ndata normalization is required in K-NN because it help\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.424,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Data pre-processing is the method to clean the data\n~~and~~ reduce the ~~unnecessary~~ feature before we can used it\nfor training the model.\na. Data normalization is required in k-NN because it help",
+     "raw": "Data pre-processing is the method to clean the data\n~~and~~ reduce the ~~unnecessary~~ feature before we can used it\nfor training the model.\na. Data normalization is required in k-NN because it help",
+     "confidence": null,
+     "latency_s": 3.914,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
      "reader": "chandra-ocr-2",
      "version": "datalab-to/chandra-ocr-2@af93b47dba",
      "status": "answered",
-     "value": "Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can use it for training the model.\n\na Data normalization is required in K-MN because it helps",
-     "raw": "28. Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can use it for training the model.\n\na Data normalization is required in K-MN because it helps",
+     "value": "Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can use it for training the model.\n\nas data normalization is required in K-NN because it helps",
+     "raw": "28. Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can use it for training the model.\n\nas data normalization is required in K-NN because it helps",
      "confidence": null,
-     "latency_s": 2.101,
+     "latency_s": 0.907,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1814,7 +2124,7 @@
      "value": "Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can use it for training the model.\nData normalization is required in K-NN because it helps",
      "raw": "28. Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can use it for training the model.\nData normalization is required in K-NN because it helps",
      "confidence": null,
-     "latency_s": 0.41,
+     "latency_s": 0.189,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1825,7 +2135,7 @@
      "value": "Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can used it for training the model.\nData normalization is requerred in K-NN because it help",
      "raw": "28. Data pre-processing is the method to clean the data and reduce the unnecessary feature before we can used it for training the model.\nData normalization is requerred in K-NN because it help",
      "confidence": null,
-     "latency_s": 0.405,
+     "latency_s": 0.136,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1839,8 +2149,8 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      42,
-      117,
+      45,
+      115,
       980,
       205
      ]
@@ -1854,21 +2164,32 @@
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
-     "value": "for training the model.\n29. Data normalization is required in K-MN because it help\nto maximize and minimize the value of the data.",
-     "raw": "{\n  \"text\": \"for training the model.\\n29. Data normalization is required in K-MN because it help\\nto maximize and minimize the value of the data.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "value": "for training the model.\n29. Data normalization is required in K-NN because it help\nto maximize and minimize the value of the data.",
+     "raw": "{\n  \"text\": \"for training the model.\\n29. Data normalization is required in K-NN because it help\\nto maximize and minimize the value of the data.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
      "confidence": 1.0,
-     "latency_s": 2.728,
+     "latency_s": 2.152,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "for training the model.\n29. Data normalization is required in K-NN because it help\nto maximize and minimize the value of the data.",
+     "raw": "for training the model.\n29. Data normalization is required in K-NN because it help\nto maximize and minimize the value of the data.",
+     "confidence": null,
+     "latency_s": 3.144,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
      "reader": "chandra-ocr-2",
      "version": "datalab-to/chandra-ocr-2@af93b47dba",
      "status": "answered",
-     "value": "for training the model.\n\neg. Data normalization is required in K-NN because it helps\n\nto maximize and minimize the value of the data.",
-     "raw": "for training the model.\n\neg. Data normalization is required in K-NN because it helps\n\nto maximize and minimize the value of the data.",
+     "value": "for training the model.\n29. Data normalization is required in K-NN because it helps to maximize and minimize the value of the data.",
+     "raw": "for training the model.\n29. Data normalization is required in K-NN because it helps to maximize and minimize the value of the data.",
      "confidence": null,
-     "latency_s": 2.124,
+     "latency_s": 0.574,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1876,10 +2197,10 @@
      "reader": "paddleocr-vl-1.6",
      "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
      "status": "answered",
-     "value": "For training the model.\n29. Data normalization is required in K-NN because it helps to maximize and minimize the value of the data.",
-     "raw": "For training the model.\n29. Data normalization is required in K-NN because it helps to maximize and minimize the value of the data.",
+     "value": "For training the model.\n29. Data normalization is required on K-NN because it helps to maximize and minimize the value of the data.",
+     "raw": "For training the model.\n29. Data normalization is required on K-NN because it helps to maximize and minimize the value of the data.",
      "confidence": null,
-     "latency_s": 0.386,
+     "latency_s": 0.17,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1890,7 +2211,7 @@
      "value": "for training the model.\n29. Data normalization is requered in K-NN because it help\nto maximize and minimize the value of the data.",
      "raw": "for training the model.\n29. Data normalization is requered in K-NN because it help\nto maximize and minimize the value of the data.",
      "confidence": null,
-     "latency_s": 0.363,
+     "latency_s": 0.143,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1904,9 +2225,9 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      48,
+      45,
       218,
-      102,
+      105,
       248
      ]
     }
@@ -1923,8 +2244,19 @@
      "value": "20.",
      "raw": "{\"text\": \"20.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
      "confidence": 1.0,
-     "latency_s": 1.161,
+     "latency_s": 1.102,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "blank",
+     "value": "",
+     "raw": "",
+     "confidence": null,
+     "latency_s": 0.62,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1934,7 +2266,7 @@
      "value": "20.",
      "raw": "20.",
      "confidence": null,
-     "latency_s": 0.721,
+     "latency_s": 0.402,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -1945,7 +2277,7 @@
      "value": "20.",
      "raw": "20.",
      "confidence": null,
-     "latency_s": 0.266,
+     "latency_s": 0.048,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -1956,7 +2288,7 @@
      "value": "",
      "raw": "30.",
      "confidence": null,
-     "latency_s": 0.29,
+     "latency_s": 0.049,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -1970,8 +2302,8 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      52,
-      293,
+      50,
+      292,
       945,
       382
      ]
@@ -1988,8 +2320,19 @@
      "value": "21. k in k-mean algorithm is the number of clustering\nthat the algorithm should use.",
      "raw": "{\"text\": \"21. k in k-mean algorithm is the number of clustering\\nthat the algorithm should use.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
      "confidence": 1.0,
-     "latency_s": 1.681,
+     "latency_s": 1.647,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "k in k-mean algorithm is the number of clustering that the algorithm should use.",
+     "raw": "k in k-mean algorithm is the number of clustering that the algorithm should use.",
+     "confidence": null,
+     "latency_s": 2.227,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -1999,7 +2342,7 @@
      "value": "21. k in k-mean algorithm is the number of clustering that the algorithm should use.",
      "raw": "21. k in k-mean algorithm is the number of clustering that the algorithm should use.",
      "confidence": null,
-     "latency_s": 1.129,
+     "latency_s": 0.585,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -2010,7 +2353,7 @@
      "value": "k in k-mean algorithm is the number of clustering that the algorithm should use.",
      "raw": "31. k in k-mean algorithm is the number of clustering that the algorithm should use.",
      "confidence": null,
-     "latency_s": 0.365,
+     "latency_s": 0.127,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -2021,7 +2364,7 @@
      "value": "21. k in k-mean algorithm is the number of clustering that the algorithm should use.",
      "raw": "21. k in k-mean algorithm is the number of clustering that the algorithm should use.",
      "confidence": null,
-     "latency_s": 0.318,
+     "latency_s": 0.113,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -2035,7 +2378,7 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      52,
+      50,
       385,
       890,
       478
@@ -2051,10 +2394,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "32. hyperparameters are weight, k in k-mean,\nnumber of neighbor in KNN.",
-     "raw": "{\"text\": \"32. hyperparameters are weight, k in k-mean,\\nnumber of neighbor in KNN.\", \"illegible_tokens\": 0, \"confidence\": 1}",
-     "confidence": 1.0,
-     "latency_s": 1.489,
+     "raw": "{\n    \"text\": \"32. hyperparameters are weight, k in k-mean,\\nnumber of neighbor in KNN.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.572,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "That the algorithm should use.\n32. hyperparameters are weight, k in k-mean,\nnumber of neighbor in KNN.",
+     "raw": "That the algorithm should use.\n32. hyperparameters are weight, k in k-mean,\nnumber of neighbor in KNN.",
+     "confidence": null,
+     "latency_s": 3.216,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -2064,7 +2418,7 @@
      "value": "hyperparameters are weight, k in k-mean, number of neighbor in KNN.",
      "raw": "32. hyperparameters are weight, k in k-mean, number of neighbor in KNN.",
      "confidence": null,
-     "latency_s": 1.089,
+     "latency_s": 0.585,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -2072,10 +2426,10 @@
      "reader": "paddleocr-vl-1.6",
      "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
      "status": "answered",
-     "value": "hyperparameters are weight, k in k-mean, number of neighbor in KMG.",
-     "raw": "32. hyperparameters are weight, k in k-mean, number of neighbor in KMG.",
+     "value": "hyperparameters are weight, k in k-mean, number of neighbor in KMA.",
+     "raw": "32. hyperparameters are weight, k in k-mean, number of neighbor in KMA.",
      "confidence": null,
-     "latency_s": 0.313,
+     "latency_s": 0.096,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -2083,10 +2437,10 @@
      "reader": "glm-ocr",
      "version": "zai-org/GLM-OCR@2e85a62840",
      "status": "answered",
-     "value": "hyperparameters are weight, k in k-mean, number of neighbor in KMA.",
-     "raw": "32. hyperparameters are weight, k in k-mean, number of neighbor in KMA.",
+     "value": "hyperparameters are weight, k in k-mean, number of neighbor in KMN.",
+     "raw": "32. hyperparameters are weight, k in k-mean, number of neighbor in KMN.",
      "confidence": null,
-     "latency_s": 0.314,
+     "latency_s": 0.105,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -2100,7 +2454,7 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      57,
+      55,
       485,
       125,
       510
@@ -2117,10 +2471,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "33,",
-     "raw": "{\"text\": \"33,\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "raw": "{\n  \"text\": \"33,\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1\n}",
      "confidence": 1.0,
-     "latency_s": 0.975,
+     "latency_s": 0.968,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "blank",
+     "value": "",
+     "raw": "",
+     "confidence": null,
+     "latency_s": 0.643,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -2130,7 +2495,7 @@
      "value": "",
      "raw": "33.",
      "confidence": null,
-     "latency_s": 0.762,
+     "latency_s": 0.311,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -2141,7 +2506,7 @@
      "value": "",
      "raw": "33.",
      "confidence": null,
-     "latency_s": 0.127,
+     "latency_s": 0.105,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -2152,7 +2517,7 @@
      "value": "",
      "raw": "33.",
      "confidence": null,
-     "latency_s": 0.054,
+     "latency_s": 0.074,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -2166,10 +2531,10 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      57,
+      55,
       545,
-      960,
-      720
+      965,
+      715
      ]
     }
    ],
@@ -2181,11 +2546,22 @@
      "reader": "qwen38-27b-fp8",
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
-     "value": "Q4. The first one rn good as the line has large margin\nan near the support vectors. While the second one rs not\nas in between the lrne we cian see some data that is out\nof the good. And the last one seem good but the lrne is\nso close each other.",
-     "raw": "{\n  \"text\": \"Q4. The first one rn good as the line has large margin\\nan near the support vectors. While the second one rs not\\nas in between the lrne we cian see some data that is out\\nof the good. And the last one seem good but the lrne is\\nso close each other.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
+     "value": "84. The first one rn good as the line has large margin\nan near the support vectors. While the second one rs not\nas in between the line we can see some data that is out\nof the good. And the last one seem good but the line is\nso close each other.",
+     "raw": "{\n  \"text\": \"84. The first one rn good as the line has large margin\\nan near the support vectors. While the second one rs not\\nas in between the line we can see some data that is out\\nof the good. And the last one seem good but the line is\\nso close each other.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
      "confidence": 0.95,
-     "latency_s": 4.705,
+     "latency_s": 2.429,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "84. The first one is good as the line has large margin\nan near the support vectors. While the second one is not\nas in between the line we can see ~~some~~ data that is out\nof the good. And the last one seem good but the line is\nso close each other.",
+     "raw": "84. The first one is good as the line has large margin\nan near the support vectors. While the second one is not\nas in between the line we can see ~~some~~ data that is out\nof the good. And the last one seem good but the line is\nso close each other.",
+     "confidence": null,
+     "latency_s": 4.345,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -2195,7 +2571,7 @@
      "value": "84. The first one is good as the line has large margin and near the support vectors. While the second one is not as is between the line we can see ~~some~~ data that is out of the good. And the last one seem good but the line is so close each other.",
      "raw": "84. The first one is good as the line has large margin and near the support vectors. While the second one is not as is between the line we can see ~~some~~ data that is out of the good. And the last one seem good but the line is so close each other.",
      "confidence": null,
-     "latency_s": 1.263,
+     "latency_s": 0.954,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
@@ -2206,7 +2582,7 @@
      "value": "84. The first one in good cos the line has large margin\nan near the support vectors. While the second one is not\nas in between the line we can see some data that is out\nof the good. And the last one seem good but the line is\nso close each other.",
      "raw": "84. The first one in good cos the line has large margin\nan near the support vectors. While the second one is not\nas in between the line we can see some data that is out\nof the good. And the last one seem good but the line is\nso close each other.",
      "confidence": null,
-     "latency_s": 0.2,
+     "latency_s": 0.181,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
@@ -2217,7 +2593,7 @@
      "value": "84. The first one in good as the line has large margin an near the support vectors . While the second one is not as in between the line we can see some data that is out of the good . And the last one seem good but the line is so close each other.",
      "raw": "84. The first one in good as the line has large margin an near the support vectors . While the second one is not as in between the line we can see some data that is out of the good . And the last one seem good but the line is so close each other.",
      "confidence": null,
-     "latency_s": 0.171,
+     "latency_s": 0.151,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }
@@ -2231,8 +2607,8 @@
     {
      "page": "Student_4_p3.png",
      "bbox": [
-      62,
-      753,
+      60,
+      752,
       135,
       785
      ]
@@ -2248,10 +2624,21 @@
      "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
      "status": "answered",
      "value": "35.",
-     "raw": "{\"text\": \"35.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "raw": "{\n  \"text\": \"35.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1\n}",
      "confidence": 1.0,
-     "latency_s": 1.165,
+     "latency_s": 0.943,
      "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "blank",
+     "value": "",
+     "raw": "",
+     "confidence": null,
+     "latency_s": 0.927,
+     "prompt_hash": "cb65b1211411",
      "error": ""
     },
     "chandra-ocr-2": {
@@ -2261,29 +2648,29 @@
      "value": "",
      "raw": "35.",
      "confidence": null,
-     "latency_s": 0.472,
+     "latency_s": 0.412,
      "prompt_hash": "c4f9912f02cc",
      "error": ""
     },
     "paddleocr-vl-1.6": {
      "reader": "paddleocr-vl-1.6",
      "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
-     "status": "blank",
-     "value": "",
-     "raw": "35.",
+     "status": "answered",
+     "value": "25.",
+     "raw": "25.",
      "confidence": null,
-     "latency_s": 0.048,
+     "latency_s": 0.053,
      "prompt_hash": "d715a33c90db",
      "error": ""
     },
     "glm-ocr": {
      "reader": "glm-ocr",
      "version": "zai-org/GLM-OCR@2e85a62840",
-     "status": "blank",
-     "value": "",
-     "raw": "35.",
+     "status": "answered",
+     "value": "25.",
+     "raw": "25.",
      "confidence": null,
-     "latency_s": 0.061,
+     "latency_s": 0.05,
      "prompt_hash": "77e8207573e1",
      "error": ""
     }

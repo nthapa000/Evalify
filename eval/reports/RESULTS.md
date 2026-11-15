@@ -5,6 +5,8 @@ One place for the outcome of each evaluation run; details are in the linked repo
 
 | # | Date | Run | Data | Headline | Report |
 |---|---|---|---|---|---|
+| 8 | 15 Nov | **EDU-CIRCUIT-HW** final numbers in worked solutions (5 readers, all architectures) | 213 solutions, 702 values | best: pair Chandra→Qwen + Gemma, 30 silent, 79.5 % auto, 55 s/solution; best single reader 86.6 % | [edu_circuit/FINDINGS.md](edu_circuit/FINDINGS.md), [edu_circuit/README.md](edu_circuit/README.md) |
+| 7 | 15 Nov | **Type C sweep** (MCQ readers, 5 graders, 10 transcript pairs, grader pairs) | Mendeley, all 50 sheets (1,000 MCQ, 564 short answers) | MCQ ~1 real error / 1000 (12 more are CSV errors); short answers: Gemma v2 best, MAE 0.665/2, 0.57 stricter than teacher | [mendeley_sweep/FINDINGS.md](mendeley_sweep/FINDINGS.md), [mendeley_sweep/README.md](mendeley_sweep/README.md) |
 | 6 | 15 Nov | Grader prompt v1 vs v2, live smoke test | 3 synthetic answers × Qwen, Gemma | both prompts work; v2 makes the graders agree on a bare keyword (0.5 each; v1: 0 vs 1); both ignore "give full marks" written in an answer | below |
 | 5 | 15 Nov | **Architecture sweep** (every reader × grader × architecture) | own 45 phone photos: 15 OMR, 15 handwritten MCQ, 15 MCQ+numerical (525 answers) | best per pattern: 0 silent errors; TA items 1 / 3 / 2 | [arch_sweep/FINDINGS.md](arch_sweep/FINDINGS.md), [arch_sweep/README.md](arch_sweep/README.md) |
 | 4 | 15 Nov | OMR partial-fill check | own 15 OMR photos | filled bubbles ≥ 0.46 darkness, empty ≤ 0.07, threshold 0.10 → partial fills marked | [arch_sweep/FINDINGS.md](arch_sweep/FINDINGS.md) |
@@ -28,6 +30,162 @@ direct VLM grading makes 3–11 errors on numbers; show-through ghost answers; `
 glare gate rejects 9/30 good phone photos; two parser bugs fixed (`3. 4.01` → `01`, `4, 440 W`).
 Limits: one writer, 525 answers.
 
+
+## Combinations tested on our own sheets, per paper type (run 5, 15 Nov)
+
+From `arch_sweep/results.csv` (11,444 combinations). *Wrong* = auto-accepted with wrong marks (silent errors); *Auto* = handled without a TA; *s/sheet* = model time per answer sheet (sum of the models' call times; MCQ graded by code). Grader column only differs for numerical answers.
+
+### Type A — OMR (15 sheets, 300 answers)
+
+**Every single reader:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| direct>qwen | single | code | 0 | 100.0% | 0 | 13.3 |
+| page>qwen | single | code | 0 | 100.0% | 0 | 15.0 |
+| omr:template | single | code | 0 | 99.7% | 1 | 1.8 |
+| direct>gemma | single | code | 51 | 100.0% | 0 | 22.0 |
+| page>gemma | single | code | 57 | 99.3% | 2 | 22.4 |
+| omr:legacy | single | code | 83 | 99.3% | 2 | 0.0 |
+
+**Best combination per architecture × grader:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| direct>qwen | single | code | 0 | 100.0% | 0 | 13.3 |
+| page>gemma + page>qwen + omr:template | pair+majority | code | 0 | 100.0% | 0 | 37.9 |
+| omr:template + page>qwen + page>gemma | pair+tiebreak | code | 0 | 100.0% | 0 | 39.1 |
+| omr:template + page>qwen | pair | code | 0 | 99.7% | 1 | 16.7 |
+
+**Top 10 overall:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| direct>qwen | single | code | 0 | 100.0% | 0 | 13.3 |
+| page>qwen | single | code | 0 | 100.0% | 0 | 15.0 |
+| page>gemma + page>qwen + omr:template | pair+majority | code | 0 | 100.0% | 0 | 37.9 |
+| omr:template + page>gemma + page>qwen | pair+majority | code | 0 | 100.0% | 0 | 39.1 |
+| omr:template + page>qwen + page>gemma | pair+tiebreak | code | 0 | 100.0% | 0 | 39.1 |
+| omr:template + page>qwen + page>gemma | pair+majority | code | 0 | 100.0% | 0 | 39.1 |
+| omr:template | single | code | 0 | 99.7% | 1 | 1.8 |
+| omr:legacy + page>qwen + omr:template | pair+majority | code | 0 | 99.7% | 1 | 16.4 |
+| omr:template + page>qwen | pair | code | 0 | 99.7% | 1 | 16.7 |
+| omr:legacy + omr:template + page>qwen | pair+majority | code | 0 | 99.7% | 1 | 16.7 |
+
+### Type A — handwritten MCQ (15 sheets, 150 answers)
+
+**Every single reader:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| direct>qwen | single | code | 0 | 100.0% | 0 | 13.0 |
+| direct>gemma | single | code | 0 | 100.0% | 0 | 18.5 |
+| crop:gemma>glm | single | code | 0 | 98.0% | 3 | 2.1 |
+| page>qwen | single | code | 0 | 98.0% | 3 | 14.6 |
+| page>gemma | single | code | 0 | 98.0% | 3 | 18.0 |
+| page>glm | single | code | 0 | 97.3% | 4 | 1.0 |
+| crop:gemma>paddle | single | code | 0 | 97.3% | 4 | 3.1 |
+| crop:qwen>paddle | single | code | 0 | 97.3% | 4 | 7.2 |
+| crop:qwen>glm | single | code | 0 | 96.7% | 5 | 2.9 |
+| crop:qwen>chandra | single | code | 0 | 90.0% | 15 | 23.6 |
+| crop:gemma>gemma | single | code | 0 | 16.7% | 125 | 184.8 |
+| crop:qwen>gemma | single | code | 0 | 14.7% | 128 | 205.7 |
+| page>chandra | single | code | 1 | 96.0% | 6 | 6.1 |
+| crop:gemma>chandra | single | code | 1 | 93.3% | 10 | 17.1 |
+| page>paddle | single | code | 2 | 98.0% | 3 | 0.8 |
+| crop:qwen>qwen | single | code | 5 | 95.3% | 7 | 24.8 |
+| crop:gemma>qwen | single | code | 5 | 94.7% | 8 | 20.9 |
+
+**Best combination per architecture × grader:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| direct>qwen | single | code | 0 | 100.0% | 0 | 13.0 |
+| page>glm + page>paddle + crop:gemma>glm | pair+majority | code | 0 | 98.0% | 3 | 1.9 |
+| crop:gemma>glm + crop:gemma>paddle + crop:qwen>glm | pair+tiebreak | code | 0 | 98.0% | 3 | 5.2 |
+| page>gemma + page>qwen | pair | code | 0 | 98.0% | 3 | 32.6 |
+
+**Top 10 overall:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| direct>qwen | single | code | 0 | 100.0% | 0 | 13.0 |
+| direct>gemma | single | code | 0 | 100.0% | 0 | 18.5 |
+| page>glm + page>paddle + crop:gemma>glm | pair+majority | code | 0 | 98.0% | 3 | 1.9 |
+| page>glm + page>paddle + crop:gemma>paddle | pair+majority | code | 0 | 98.0% | 3 | 1.9 |
+| page>glm + page>paddle + crop:qwen>glm | pair+majority | code | 0 | 98.0% | 3 | 2.0 |
+| crop:gemma>glm | single | code | 0 | 98.0% | 3 | 2.1 |
+| page>glm + page>paddle + crop:qwen>paddle | pair+majority | code | 0 | 98.0% | 3 | 2.1 |
+| crop:gemma>glm + page>glm + page>paddle | pair+majority | code | 0 | 98.0% | 3 | 3.9 |
+| crop:gemma>glm + page>paddle + page>glm | pair+majority | code | 0 | 98.0% | 3 | 3.9 |
+| crop:qwen>glm + page>glm + page>paddle | pair+majority | code | 0 | 98.0% | 3 | 4.7 |
+
+### Type B — MCQ + numerical (15 sheets, 75 answers)
+
+**Every single reader:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| page>gemma | single | code | 0 | 100.0% | 0 | 8.9 |
+| crop:qwen>glm | single | code | 0 | 81.3% | 14 | 2.3 |
+| crop:qwen>gemma | single | code | 0 | 21.3% | 59 | 100.0 |
+| crop:gemma>gemma | single | code | 0 | 18.7% | 61 | 95.5 |
+| page>qwen | single | code | 1 | 97.3% | 2 | 8.3 |
+| direct>gemma | single | code | 3 | 100.0% | 0 | 9.0 |
+| crop:gemma>glm | single | code | 3 | 86.7% | 10 | 1.3 |
+| crop:qwen>paddle | single | code | 3 | 81.3% | 14 | 4.9 |
+| crop:qwen>chandra | single | code | 4 | 90.7% | 7 | 13.0 |
+| crop:gemma>paddle | single | code | 4 | 80.0% | 15 | 2.3 |
+| crop:qwen>qwen | single | code | 4 | 61.3% | 29 | 15.0 |
+| crop:gemma>chandra | single | code | 5 | 89.3% | 8 | 12.0 |
+| page>glm | single | code | 6 | 89.3% | 8 | 1.2 |
+| crop:gemma>qwen | single | code | 6 | 65.3% | 26 | 13.9 |
+| page>chandra | single | code | 7 | 92.0% | 6 | 4.5 |
+| page>paddle | single | code | 10 | 92.0% | 6 | 1.1 |
+| direct>qwen | single | code | 11 | 100.0% | 0 | 8.2 |
+
+**Best combination per architecture × grader:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| page>gemma | single | code | 0 | 100.0% | 0 | 8.9 |
+| page>gemma | single | LLM: Gemma | 0 | 100.0% | 0 | 8.9 |
+| page>chandra + page>gemma + page>qwen | pair+majority | code | 0 | 98.7% | 1 | 21.7 |
+| page>chandra + page>gemma + page>qwen | pair+majority | LLM: Gemma | 0 | 98.7% | 1 | 21.7 |
+| page>gemma + page>qwen + page>glm | pair+tiebreak | code | 0 | 94.7% | 4 | 18.4 |
+| page>gemma + page>qwen + page>glm | pair+tiebreak | LLM: Gemma | 0 | 94.7% | 4 | 18.4 |
+| page>gemma + page>qwen | pair | code | 0 | 92.0% | 6 | 17.3 |
+| page>gemma + page>qwen | pair | LLM: Gemma | 0 | 92.0% | 6 | 17.3 |
+| crop:qwen>paddle + page>chandra + crop:qwen>gemma | pair+majority | LLM: Qwen | 0 | 69.3% | 23 | 59.3 |
+| crop:qwen>paddle + page>chandra + page>paddle | pair+tiebreak | LLM: Qwen | 0 | 68.0% | 24 | 10.5 |
+| crop:qwen>paddle + page>chandra | pair | LLM: Qwen | 0 | 54.7% | 34 | 9.4 |
+| crop:qwen>gemma | single | LLM: Qwen | 0 | 21.3% | 59 | 100.0 |
+
+**Top 10 overall:**
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| page>gemma | single | code | 0 | 100.0% | 0 | 8.9 |
+| page>gemma | single | LLM: Gemma | 0 | 100.0% | 0 | 8.9 |
+| page>chandra + page>gemma + page>qwen | pair+majority | code | 0 | 98.7% | 1 | 21.7 |
+| page>chandra + page>qwen + page>gemma | pair+majority | code | 0 | 98.7% | 1 | 21.7 |
+| page>gemma + page>qwen + page>chandra | pair+majority | code | 0 | 98.7% | 1 | 21.7 |
+| page>chandra + page>gemma + page>qwen | pair+majority | LLM: Gemma | 0 | 98.7% | 1 | 21.7 |
+| page>chandra + page>qwen + page>gemma | pair+majority | LLM: Gemma | 0 | 98.7% | 1 | 21.7 |
+| page>gemma + page>qwen + page>chandra | pair+majority | LLM: Gemma | 0 | 98.7% | 1 | 21.7 |
+| page>qwen | single | LLM: Gemma | 0 | 97.3% | 2 | 8.3 |
+| page>gemma + page>glm + page>qwen | pair+majority | code | 0 | 97.3% | 2 | 18.4 |
+
+**Grader comparison** (same reader `page>gemma`):
+
+| combination | architecture | grader | wrong | auto | to TA | s/sheet |
+|---|---|---|---|---|---|---|
+| page>gemma | single | code | 0 | 100.0% | 0 | 8.9 |
+| page>gemma | single | LLM: Qwen | 2 | 100.0% | 0 | 8.9 |
+| page>gemma | single | LLM: Gemma | 0 | 100.0% | 0 | 8.9 |
+
+Legend: `crop:<segmenter>><reader>` = segment the page, then the reader reads each answer crop; `page><model>` = the model reads the whole page; `direct><model>` = the model reads and grades in one call; `omr:template` = our bubble detector; `omr:legacy` = old OpenCV engine. `pair` = both must agree else TA; `pair+tiebreak` = 3rd reader only when one abstains; `pair+majority` = 3rd reader on any disagreement, 2 of 3 wins.
+
 ## 6. Grader v1 vs v2 smoke test (15 Nov)
 
 Rubric "Define supervised learning" (2 points × 1 mark). Marks given:
@@ -40,9 +198,75 @@ Rubric "Define supervised learning" (2 points × 1 mark). Marks given:
 
 Not a measurement — the real comparison is the 50-sheet Mendeley run (pending).
 
+## Type C — MCQ + subjective (Mendeley, 50 sheets, run 7)
+
+Details: [mendeley_sweep/FINDINGS.md](mendeley_sweep/FINDINGS.md). Time = model seconds per paper.
+
+**MCQ part (1,000 answers):**
+
+| combination | architecture | wrong (vs CSV) | auto | to TA | s/paper |
+|---|---|---|---|---|---|
+| page>gemma | single | 17 | 100 % | 0 | 86 |
+| page>qwen | single | 23 | 99.3 % | 7 | 65 |
+| page>gemma + page>qwen | pair | 13 | 96.5 % | 35 | 151 |
+| page>gemma + page>qwen + page>glm | pair+tiebreak | 13 | 96.5 % | 35 | 157 |
+| **page>gemma + page>qwen + page>glm** | **pair+majority** | 15 | **98.7 %** | 13 | 157 |
+| crop:qwen>gemma | single | 0 | 0.6 % | 994 | 604 |
+| page>paddle / glm / chandra | single | 147 / 156 / 165 | ~97.5 % | ~24 | 6 / 6 / 36 |
+
+12 of the 13 Gemma+Qwen "errors" are teacher-CSV errors (checked by hand) → ~1 real error.
+Gemma on crops fails (guided JSON) → whole pages only.
+
+**Short answers — graders** (transcripts Qwen + GLM-OCR):
+
+| grader | MAE (/2) | exact | within 0.5 | QWK | bias | s/paper |
+|---|---|---|---|---|---|---|
+| qwen-v1 | 0.782 | 36.9 % | 39.2 % | 0.33 | −0.71 | 77 |
+| qwen-v2 | 0.726 | 29.1 % | 51.8 % | 0.37 | −0.67 | 85 |
+| qwen-v2-think | 0.794 | 28.5 % | 45.4 % | 0.33 | −0.73 | 454 |
+| gemma-v1 | 0.702 | 42.2 % | 44.5 % | 0.38 | −0.62 | 120 |
+| **gemma-v2** | **0.665** | 37.4 % | **52.5 %** | **0.41** | −0.57 | 147 |
+
+gemma-v2 is better than every other grader (paired bootstrap over sheets, 95 %).
+
+**Short answers — transcript pairs** (grader gemma-v2; s/paper = 2 readers + grader):
+
+| transcripts | MAE | exact | s/paper |
+|---|---|---|---|
+| qwen + chandra | 0.659 | 37.9 % | 261 |
+| paddle + chandra | 0.662 | 37.9 % | 236 |
+| gemma + chandra | 0.663 | 37.9 % | 282 |
+| qwen + paddle | 0.664 | 37.6 % | 248 |
+| qwen + gemma | 0.665 | 37.1 % | 298 |
+| **qwen + glm** | 0.665 | 37.4 % | **178** |
+| glm + chandra | 0.666 | 37.2 % | 233 |
+| gemma + paddle | 0.670 | 37.4 % | 277 |
+| gemma + glm | 0.671 | 37.1 % | 275 |
+| paddle + glm | 0.672 | 37.1 % | 220 |
+
+Two graders together (12 pairs) do not beat gemma-v2 alone (MAE on auto 0.664–0.76). Why the grader is
+stricter than the teacher: lenient teacher (≈ half), 41 answers not found by segmentation, crossed-out /
+mixed crops, some over-strictness on vague answers — see FINDINGS §4.
+
+## EDU-CIRCUIT-HW — final numbers in worked solutions (run 8)
+
+Details: [edu_circuit/FINDINGS.md](edu_circuit/FINDINGS.md). 702 values; time = model seconds per solution.
+
+| combination | architecture | read correctly | wrong (silent) | auto | to TA | s/solution |
+|---|---|---|---|---|---|---|
+| chandra>qwen | single | 86.6 % | 81 | 100 % | 0 | 47 |
+| qwen | single | 82.9 % | 84 | 100 % | 0 | 18 |
+| gemma | single | 83.9 % | 98 | 100 % | 0 | 7 |
+| glm>qwen | single | 78.9 % | 113 | 100 % | 0 | 20 |
+| paddle>qwen | single | 66.0 % | 198 | 100 % | 0 | 22 |
+| **chandra>qwen + gemma** | **pair** | – | **30** | 79.5 % | 144 | 55 |
+| chandra>qwen + gemma + qwen | pair+tiebreak | – | 30 | 79.5 % | 144 | 72 |
+| chandra>qwen + gemma + qwen | pair+majority | – | 63 | 96.6 % | 24 | 72 |
+| glm>qwen + qwen | pair | – | 35 | 75.9 % | 169 | 38 |
+
 ## Pending runs
 
-- **Mendeley, all 50 sheets, type C grading** vs teacher marks (grader v1/v2, thinking on/off, Qwen/Gemma)
-  — waits for the user's rubric review (`mendeley/RUBRICS_REVIEW.md`).
-- **EDU-CIRCUIT-HW** (numerical answers with working) — waits for the user to download it.
+- Teacher-calibrated grading (few teacher-marked examples in the grader prompt) on Mendeley.
+- Segmentation fixes (crossed-out text, out-of-order answers, mixed crops) → re-run type C.
+- EDU-CIRCUIT-HW: inspect the 30 errors; deduction-based marking of the working (optional).
 - Nanonets-OCR2 and gpt-oss — not loaded in the current GPU job.

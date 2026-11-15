@@ -1,0 +1,2507 @@
+{
+ "sheet": "Student_27",
+ "pages": [
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_27_p1.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_27_p2.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_27_p3.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_27_p4.png"
+ ],
+ "skipped_blank_pages": [
+  "Student_27_p4.png"
+ ],
+ "located": "32/35",
+ "segment_s": 37.0,
+ "wall_s": 117.6,
+ "questions": {
+  "Q1": {
+   "label": "Q1",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q1.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      17,
+      272,
+      128,
+      307
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  , \"confidence\": 0.9}",
+     "confidence": 0.9,
+     "latency_s": 1.305,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.28,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "1).\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n<div data-bbox=\"117",
+     "confidence": null,
+     "latency_s": 31.415,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "1). B",
+     "confidence": null,
+     "latency_s": 0.099,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "1. B",
+     "confidence": null,
+     "latency_s": 0.187,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q2": {
+   "label": "Q2",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q2.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      21,
+      310,
+      111,
+      355
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.027,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.244,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "1)\n\n2)\n\n3)\n\n4)\n\n5)\n\n6)\n\n7)\n\n8)\n\n9)\n\n10)\n\n11)\n\n12)\n\n13)\n\n14)\n\n15)\n\n16)\n\n17)\n\n18)",
+     "confidence": null,
+     "latency_s": 6.151,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "2). C",
+     "confidence": null,
+     "latency_s": 0.055,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "2). C",
+     "confidence": null,
+     "latency_s": 0.182,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q3": {
+   "label": "Q3",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q3.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      11,
+      152,
+      114,
+      190
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 0.97,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.311,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "D",
+     "raw": "3).\nD",
+     "confidence": null,
+     "latency_s": 0.562,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "3). D",
+     "confidence": null,
+     "latency_s": 0.174,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "D",
+     "raw": "3). D",
+     "confidence": null,
+     "latency_s": 0.183,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q4": {
+   "label": "Q4",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q4.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      17,
+      195,
+      108,
+      232
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.184,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.409,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "4)\n)-\nB",
+     "confidence": null,
+     "latency_s": 0.905,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "4). B",
+     "confidence": null,
+     "latency_s": 0.108,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "4). B",
+     "confidence": null,
+     "latency_s": 0.161,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q5": {
+   "label": "Q5",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q5.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      21,
+      238,
+      100,
+      270
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 0.997,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "A,B,C,D,E",
+     "raw": "{\"status\": \"unclear\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\", \"C\", \"D\", \"E\", \"A\", \"B\",",
+     "confidence": null,
+     "latency_s": 36.39,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "5). A",
+     "confidence": null,
+     "latency_s": 0.36,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "51. A",
+     "confidence": null,
+     "latency_s": 0.248,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "51. A",
+     "confidence": null,
+     "latency_s": 0.153,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q6": {
+   "label": "Q6",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q6.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      28,
+      355,
+      150,
+      392
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  \r,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.174,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.315,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "6).\n~~A~~ ~~A~~ A",
+     "confidence": null,
+     "latency_s": 0.734,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "6). A",
+     "confidence": null,
+     "latency_s": 0.224,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "6). A A",
+     "confidence": null,
+     "latency_s": 0.293,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q7": {
+   "label": "Q7",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q7.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      25,
+      395,
+      97,
+      432
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.382,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "B",
+     "raw": "{\"status\": \"unclear\", \"options\": [\"B\"]",
+     "confidence": null,
+     "latency_s": 36.183,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "7). B",
+     "confidence": null,
+     "latency_s": 0.384,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "7). B",
+     "confidence": null,
+     "latency_s": 0.225,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "7). B",
+     "confidence": null,
+     "latency_s": 0.292,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q8": {
+   "label": "Q8",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q8.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      31,
+      438,
+      97,
+      468
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.363,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "B",
+     "raw": "{\"status\": \"unclear\", \"options\": [\"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\", \"B\",",
+     "confidence": null,
+     "latency_s": 36.177,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "8).\nB",
+     "confidence": null,
+     "latency_s": 0.658,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "8). B",
+     "confidence": null,
+     "latency_s": 0.388,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "81. B",
+     "confidence": null,
+     "latency_s": 0.293,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q9": {
+   "label": "Q9",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q9.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      31,
+      478,
+      100,
+      510
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  , \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 0.981,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0}",
+     "confidence": 0.0,
+     "latency_s": 4.166,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "9).\nA",
+     "confidence": null,
+     "latency_s": 0.713,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "g). A",
+     "confidence": null,
+     "latency_s": 0.386,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "9). A",
+     "confidence": null,
+     "latency_s": 0.292,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q10": {
+   "label": "Q10",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q10.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      28,
+      518,
+      103,
+      548
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.068,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0}",
+     "confidence": 0.0,
+     "latency_s": 3.815,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "10). B",
+     "confidence": null,
+     "latency_s": 0.476,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "10. B",
+     "confidence": null,
+     "latency_s": 0.384,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "10) B",
+     "confidence": null,
+     "latency_s": 0.292,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q11": {
+   "label": "Q11",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q11.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      28,
+      550,
+      100,
+      580
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  ,\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.398,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0.5}",
+     "confidence": 0.5,
+     "latency_s": 4.392,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "11).\nB",
+     "confidence": null,
+     "latency_s": 0.693,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "11). B",
+     "confidence": null,
+     "latency_s": 0.378,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "111. B",
+     "confidence": null,
+     "latency_s": 0.239,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q12": {
+   "label": "Q12",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q12.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      28,
+      582,
+      114,
+      610
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.028,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "C",
+     "raw": "{\"status\": \"unclear\", \"options\": [\"C\"]",
+     "confidence": null,
+     "latency_s": 36.052,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "12).\nC",
+     "confidence": null,
+     "latency_s": 0.695,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "12). C",
+     "confidence": null,
+     "latency_s": 0.313,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "12]. C",
+     "confidence": null,
+     "latency_s": 0.23,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q13": {
+   "label": "Q13",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q13.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      21,
+      615,
+      105,
+      648
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.706,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0}",
+     "confidence": 0.0,
+     "latency_s": 2.207,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "13).\n|\nB",
+     "confidence": null,
+     "latency_s": 0.987,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "13). B",
+     "confidence": null,
+     "latency_s": 0.527,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "13). B",
+     "confidence": null,
+     "latency_s": 0.118,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q14": {
+   "label": "Q14",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q14.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      25,
+      652,
+      108,
+      685
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.191,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.3,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "14).\n\nC",
+     "confidence": null,
+     "latency_s": 0.721,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "[4]. C",
+     "confidence": null,
+     "latency_s": 0.527,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "141. C",
+     "confidence": null,
+     "latency_s": 0.246,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q15": {
+   "label": "Q15",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q15.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      25,
+      685,
+      105,
+      718
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "D",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"D\"\n  ]\n  , \"confidence\": 0.9}",
+     "confidence": 0.9,
+     "latency_s": 1.402,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 34.955,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "15).\n\n15).",
+     "confidence": null,
+     "latency_s": 0.712,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "(S). D",
+     "confidence": null,
+     "latency_s": 0.526,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "D",
+     "raw": "(5). D",
+     "confidence": null,
+     "latency_s": 0.25,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q16": {
+   "label": "Q16",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q16.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      25,
+      720,
+      105,
+      752
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "D",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"D\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.711,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 35.924,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "D",
+     "raw": "16).\n\nD",
+     "confidence": null,
+     "latency_s": 0.671,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "(6). D",
+     "confidence": null,
+     "latency_s": 0.528,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "D",
+     "raw": "(6). D",
+     "confidence": null,
+     "latency_s": 0.243,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q17": {
+   "label": "Q17",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q17.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      28,
+      758,
+      133,
+      795
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "confidence": 1.0,
+     "latency_s": 1.094,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 32.329,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "17).\n\n~~B~~\n\nA",
+     "confidence": null,
+     "latency_s": 1.071,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "17). A",
+     "confidence": null,
+     "latency_s": 0.518,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "17) A",
+     "confidence": null,
+     "latency_s": 0.247,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q18": {
+   "label": "Q18",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q18.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      28,
+      795,
+      108,
+      838
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.118,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 32.149,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "18).\n\nB",
+     "confidence": null,
+     "latency_s": 0.719,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "18. B",
+     "confidence": null,
+     "latency_s": 0.362,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "18). B",
+     "confidence": null,
+     "latency_s": 0.246,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q19": {
+   "label": "Q19",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q19.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      25,
+      842,
+      111,
+      878
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.075,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0.0}",
+     "confidence": 0.0,
+     "latency_s": 3.883,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "19)\n\nB",
+     "confidence": null,
+     "latency_s": 0.722,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "(9) B",
+     "confidence": null,
+     "latency_s": 0.188,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "(9) B",
+     "confidence": null,
+     "latency_s": 0.241,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q20": {
+   "label": "Q20",
+   "kind": "mcq",
+   "crop": "crops/Student_27/Q20.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p1.png",
+     "bbox": [
+      31,
+      880,
+      122,
+      915
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.074,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 31.777,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "20.\n\nC",
+     "confidence": null,
+     "latency_s": 0.698,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "20. C",
+     "confidence": null,
+     "latency_s": 0.662,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "20). C",
+     "confidence": null,
+     "latency_s": 0.243,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S1": {
+   "label": "Q21",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S1.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      127,
+      988,
+      240
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "21. Supervised learning is use to predict the outcome by providing\ndata to be train and test. Example: Linear regression, naive bayes, k-nearest-N\nTwo major application on data science are finance, health care.",
+     "raw": "{\n  \"text\": \"21. Supervised learning is use to predict the outcome by providing\\ndata to be train and test. Example: Linear regression, naive bayes, k-nearest-N\\nTwo major application on data science are finance, health care.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.668,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Supervised learning is use to predict the out come by providing data to be train and test. Example. Linear regression, ~~b~~ naive bayes, kNearest-N\n\n25) Two major application on data science are finance, health care.",
+     "raw": "Supervised learning is use to predict the out come by providing data to be train and test. Example. Linear regression, ~~b~~ naive bayes, kNearest-N\n\n25) Two major application on data science are finance, health care.",
+     "confidence": null,
+     "latency_s": 7.611,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Supervised learning is used to predict the outcome by providing data to be train and test. Example: Linear regression, Naive Bayes, K nearest.\n22. Two major application in data science are finance, health care.\n23. Two major application in data science are finance, health care.",
+     "raw": "21. Supervised learning is used to predict the outcome by providing data to be train and test. Example: Linear regression, Naive Bayes, K nearest.\n22. Two major application in data science are finance, health care.\n23. Two major application in data science are finance, health care.",
+     "confidence": null,
+     "latency_s": 1.131,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Supervised learning is use to predict the outcome by providing data to be trained and tested. Example: Linear regression, na\u00efve bayes, k-heuristic. Two major application on data science are finance, health care.",
+     "raw": "21. Supervised learning is use to predict the outcome by providing data to be trained and tested. Example: Linear regression, na\u00efve bayes, k-heuristic. Two major application on data science are finance, health care.",
+     "confidence": null,
+     "latency_s": 1.028,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Supervised learning is use to predict He out come by providing data to be train and test. Example: Linear regression, machine bayes, K-nearest-N\nTwo major application on data science are finance, health care.",
+     "raw": "21. Supervised learning is use to predict He out come by providing data to be train and test. Example: Linear regression, machine bayes, K-nearest-N\nTwo major application on data science are finance, health care.",
+     "confidence": null,
+     "latency_s": 0.598,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S2": {
+   "label": "Q22",
+   "kind": "subjective",
+   "crop": null,
+   "boxes": [],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
+    "chandra-ocr-2": null,
+    "paddleocr-vl-1.6": null,
+    "glm-ocr": null
+   }
+  },
+  "S3": {
+   "label": "Q23",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S3.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      790,
+      915,
+      910
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "-epoch\n23). Regression analysis is way to analys the output of the prediction\nin regression problem.",
+     "raw": "{\"text\": \"-epoch\\n23). Regression analysis is way to analys the output of the prediction\\nin regression problem.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.793,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "-epoch\n\n23). Regression analysis is way to analys He output of He prediction in regression problem.",
+     "raw": "-epoch\n\n23). Regression analysis is way to analys He output of He prediction in regression problem.",
+     "confidence": null,
+     "latency_s": 3.621,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "-epoch\n\n23). Regression analysis is way to analyse the output of the prediction in regression problem.",
+     "raw": "-epoch\n\n23). Regression analysis is way to analyse the output of the prediction in regression problem.",
+     "confidence": null,
+     "latency_s": 0.878,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": ". Regression analysis is way to analyze the output of the prediction in regression problem.",
+     "raw": "23). Regression analysis is way to analyze the output of the prediction in regression problem.",
+     "confidence": null,
+     "latency_s": 0.662,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": ". Regression analysis is wag to analysis He output of He predctron in regression problem.",
+     "raw": "23). Regression analysis is wag to analysis He output of He predctron in regression problem.",
+     "confidence": null,
+     "latency_s": 0.395,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S4": {
+   "label": "Q24",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S4.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      490,
+      870,
+      580
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.5
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "28). Data pre processing is a type of\ncleaning data.\n24). Euclidade is a way to calculate the distance in kNN. Example:\nbecause imbalance data can",
+     "raw": "{\n    \"text\": \"28). Data pre processing is a type of\\ncleaning data.\\n24). Euclidade is a way to calculate the distance in kNN. Example:\\nbecause imbalance data can\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.496,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "28). Data pre processing is a type of [?]\ncleaning daba.\n\n24). Elucidate is a way to calculate the distance in kNN . Example:\n[?] because imbalance data can",
+     "raw": "28). Data pre processing is a type of [?]\ncleaning daba.\n\n24). Elucidate is a way to calculate the distance in kNN . Example:\n[?] because imbalance data can",
+     "confidence": null,
+     "latency_s": 6.383,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "28). Data pre processing is a type of cleaning data.\n24). Euclidean is a way to calculate the distance in kNN. Example:\n1. Because imbalanced data can",
+     "raw": "28). Data pre processing is a type of cleaning data.\n24). Euclidean is a way to calculate the distance in kNN. Example:\n1. Because imbalanced data can",
+     "confidence": null,
+     "latency_s": 0.845,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "28). Data preprocessing is a cleaning data.\n24). Elucidate is a way to calculate the distance in kNN. Example:\nbecause imbalance data can",
+     "raw": "28). Data preprocessing is a cleaning data.\n24). Elucidate is a way to calculate the distance in kNN. Example:\nbecause imbalance data can",
+     "confidence": null,
+     "latency_s": 0.708,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "28). Data pre processing is a type cleaning data.\n24). Elucidate is a way to calculate He distance in kNN. Example:",
+     "raw": "28). Data pre processing is a type cleaning data.\n24). Elucidate is a way to calculate He distance in kNN. Example:",
+     "confidence": null,
+     "latency_s": 0.578,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S5": {
+   "label": "Q25",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S5.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      200,
+      834,
+      280
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "data to be train and test. Example: \n25). Two major application of data science are finance, health care.\ndata is a type of data that are well label like",
+     "raw": "{\n    \"text\": \"data to be train and test. Example: \\n25). Two major application of data science are finance, health care.\\ndata is a type of data that are well label like\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 2.371,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "data to be train and test. Example: [?]\n\n25). Two major application in data science are finance, health care.\n\n~~[?] data~~ is a type of data that are well label like [?] that is partialy la",
+     "raw": "data to be train and test. Example: [?]\n\n25). Two major application in data science are finance, health care.\n\n~~[?] data~~ is a type of data that are well label like [?] that is partialy la",
+     "confidence": null,
+     "latency_s": 7.402,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "data to be train and test. Example: ...\n25). Two major application on data science are finance, health care.\n... data ~~are~~is a type of data that are well label like ... that is partially la...",
+     "raw": "data to be train and test. Example: ...\n25). Two major application on data science are finance, health care.\n... data ~~are~~is a type of data that are well label like ... that is partially la...",
+     "confidence": null,
+     "latency_s": 1.015,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": ". Two major application on data science are finance, health care.",
+     "raw": "25). Two major application on data science are finance, health care.",
+     "confidence": null,
+     "latency_s": 0.645,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": ". Two major application on data science are finance, health care.",
+     "raw": "25). Two major application on data science are finance, health care.",
+     "confidence": null,
+     "latency_s": 0.367,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S6": {
+   "label": "Q26",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S6.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      240,
+      980,
+      340
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "25). Two major application on data science are finance,\n26). Structured data ~~is~~ a type of data that are well label like csv, json\nSemi-Structured data is a type of data that is partially label.\n[?] can use visualization technique",
+     "raw": "{\n\"text\": \"25). Two major application on data science are finance,\\n26). Structured data ~~is~~ a type of data that are well label like csv, json\\nSemi-Structured data is a type of data that is partially label.\\n[?] can use visualization technique\",\n\"illegible_tokens\": 1,\n\"confidence\": 0.85\n}",
+     "confidence": 0.5,
+     "latency_s": 2.589,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "25). Two major application in data science are finance,\n26). Structured data ~~are~~ is a type of data that are well label like CSV, JSON\n~~the~~ Semi- Structured data is a type of data that is partially label.\n[?] can use visualization technique",
+     "raw": "25). Two major application in data science are finance,\n26). Structured data ~~are~~ is a type of data that are well label like CSV, JSON\n~~the~~ Semi- Structured data is a type of data that is partially label.\n[?] can use visualization technique",
+     "confidence": null,
+     "latency_s": 5.965,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "25). Two major application on data science are finance,\n26). Structured data ~~is a~~ is a type of data that are well label like CSV, JSON\n~~is~~ Semi-Structured data is a type of data that is partially label.\nIt can use visualization technique",
+     "raw": "25). Two major application on data science are finance,\n26). Structured data ~~is a~~ is a type of data that are well label like CSV, JSON\n~~is~~ Semi-Structured data is a type of data that is partially label.\nIt can use visualization technique",
+     "confidence": null,
+     "latency_s": 1.172,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "25). Two major application on data science are\n26). Structured data type of data heat are well labeled like csv, json\n27). Semi-Structured data is a type of data that is partially labeled.",
+     "raw": "25). Two major application on data science are\n26). Structured data type of data heat are well labeled like csv, json\n27). Semi-Structured data is a type of data that is partially labeled.",
+     "confidence": null,
+     "latency_s": 1.022,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "25). Two major application on data science are\n26). Structured data type of data Heat are well label like CSU,JSON\nSem- Structured data is a type of data that is partially label.",
+     "raw": "25). Two major application on data science are\n26). Structured data type of data Heat are well label like CSU,JSON\nSem- Structured data is a type of data that is partially label.",
+     "confidence": null,
+     "latency_s": 0.741,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S7": {
+   "label": "Q27",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S7.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      300,
+      970,
+      420
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "26)- Structured data ~~is~~ type of data that is partially labeled.\nSemi- Structured data is a type of data that is partially labeled.\n27)- To find out an Outlier in data we can use visualization technique\nlike Scatter plot or Box plot and with another methods.",
+     "raw": "{\n    \"text\": \"26)- Structured data ~~is~~ type of data that is partially labeled.\\nSemi- Structured data is a type of data that is partially labeled.\\n27)- To find out an Outlier in data we can use visualization technique\\nlike Scatter plot or Box plot and with another methods.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.746,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "26)- Structured data ~~are~~ type of data [?]\nSemi- Structured data is a type of data that is partly label.\n\n27)- To find out an Outlier in data we can use visualization technique\nlike Scatter plot or Box plot and with another methods.",
+     "raw": "26)- Structured data ~~are~~ type of data [?]\nSemi- Structured data is a type of data that is partly label.\n\n27)- To find out an Outlier in data we can use visualization technique\nlike Scatter plot or Box plot and with another methods.",
+     "confidence": null,
+     "latency_s": 5.5,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "26). Structured data ~~is~~ type of data that is fully labeled.\n~~is~~ Semi-Structured data is a type of data that is partially labeled.\n\n27). To find out an Outlier in data we can use visualization technique like Scatter plot or Box plot and with another methods.",
+     "raw": "26). Structured data ~~is~~ type of data that is fully labeled.\n~~is~~ Semi-Structured data is a type of data that is partially labeled.\n\n27). To find out an Outlier in data we can use visualization technique like Scatter plot or Box plot and with another methods.",
+     "confidence": null,
+     "latency_s": 1.32,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "26). Structured data type of data that is partially labeled.\n27). To find out an Outlier in data we can use usualization technique like Scatter plot or Box plot and with another methods.",
+     "raw": "26). Structured data type of data that is partially labeled.\n27). To find out an Outlier in data we can use usualization technique like Scatter plot or Box plot and with another methods.",
+     "confidence": null,
+     "latency_s": 1.006,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "26). Structured data type of data that is partially labeled Semr- Structured data is a type of data that is partially labeled\n27). To find out an Outlier in data we can use visualization technique like Scatter plot or Box plot and with another methods.",
+     "raw": "26). Structured data type of data that is partially labeled Semr- Structured data is a type of data that is partially labeled\n27). To find out an Outlier in data we can use visualization technique like Scatter plot or Box plot and with another methods.",
+     "confidence": null,
+     "latency_s": 0.774,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S8": {
+   "label": "Q28",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S8.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      400,
+      945,
+      530
+     ]
+    },
+    {
+     "page": "Student_27_p3.png",
+     "bbox": [
+      10,
+      252,
+      965,
+      400
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "27). To find out an ~~outlier~~\nlike Scatter plot or Box plot and with another ~~method~~\n28). Data pre processing is a ~~type of data that are~~ way to processing and\ncleaning data.\n~~a~~ way to calculate the distance in kNN. Example:\n35). Radial Basis function kernel in SVM\n22). Model M1 might picking the wrong algorithm for training or the\nway of evaluation is not correct, and it could be the un-balance\nof data without doing normalization or ~~good~~ right feature selection.",
+     "raw": "{\n    \"text\": \"27). To find out an ~~outlier~~\\nlike Scatter plot or Box plot and with another ~~method~~\\n28). Data pre processing is a ~~type of data that are~~ way to processing and\\ncleaning data.\\n~~a~~ way to calculate the distance in kNN. Example:\\n35). Radial Basis function kernel in SVM\\n22). Model M1 might picking the wrong algorithm for training or the\\nway of evaluation is not correct, and it could be the un-balance\\nof data without doing normalization or ~~good~~ right feature selection.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 4.001,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "27)- To find out an [?]\nlike Scatter plot or Box plot and with another mean\n\n28). Data pre processing is a type of data that are way to processing and\ncleaning data.\n[?] way to calculate the distance in kNN . Example:\n35). Radial Basis function kernel in SVM\n\n22). Model M1 might picking the wrong algorithm for training or the way of evaluation is not correct, and it could be the ~~th-balance~~ of data without doing normalization or good fe right feature selection.",
+     "raw": "27)- To find out an [?]\nlike Scatter plot or Box plot and with another mean\n\n28). Data pre processing is a type of data that are way to processing and\ncleaning data.\n[?] way to calculate the distance in kNN . Example:\n35). Radial Basis function kernel in SVM\n\n22). Model M1 might picking the wrong algorithm for training or the way of evaluation is not correct, and it could be the ~~th-balance~~ of data without doing normalization or good fe right feature selection.",
+     "confidence": null,
+     "latency_s": 8.681,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "27). To find out an outlier like Scatter plot or Box plot and with another method.\n28). Data pre processing is a type of data that are way to processing and cleaning data.\n1. To calculate the distance in kNN. Example:\n35). Radial Basis function kernel in SVM\n\n22). Model M1 might picking the wrong algorithm for training or the way of evaluation is not correct, and it could be the \\thetath-balance of data without doing normalization or ~~good~~ the right feature selection.",
+     "raw": "27). To find out an outlier like Scatter plot or Box plot and with another method.\n28). Data pre processing is a type of data that are way to processing and cleaning data.\n1. To calculate the distance in kNN. Example:\n35). Radial Basis function kernel in SVM\n\n22). Model M1 might picking the wrong algorithm for training or the way of evaluation is not correct, and it could be the \\thetath-balance of data without doing normalization or ~~good~~ the right feature selection.",
+     "confidence": null,
+     "latency_s": 2.266,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "27). To find out an like Scatter plot or Box plot and with another\n28). Data pre processing is a type of data that are way to processing and cleaning data.\n35). Radial Basis function kernel in 22). Model M1 might picking He wrong algorithm for training or He way of evaluation is not correct, and it could be He th-balance of data without doing normalization or go right feature selection.",
+     "raw": "27). To find out an like Scatter plot or Box plot and with another\n28). Data pre processing is a type of data that are way to processing and cleaning data.\n35). Radial Basis function kernel in 22). Model M1 might picking He wrong algorithm for training or He way of evaluation is not correct, and it could be He th-balance of data without doing normalization or go right feature selection.",
+     "confidence": null,
+     "latency_s": 1.28,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": ". Data pre processing is a type of data that are way to processing and cleaning data.\n28). Model Mt might pick up the wrong algorithm for training or He way of evaluation is not correct, and it could be He th-balance of data without doing normalization or good right feature selection.",
+     "raw": "28). Data pre processing is a type of data that are way to processing and cleaning data.\n28). Model Mt might pick up the wrong algorithm for training or He way of evaluation is not correct, and it could be He th-balance of data without doing normalization or good right feature selection.",
+     "confidence": null,
+     "latency_s": 0.775,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S9": {
+   "label": "Q29",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S9.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      550,
+      885,
+      670
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.5
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "24). Euclidate is a way to calculate the distance\n29. Data normalization is required because mbalance data can\neffect the result.\nKNN stand for K",
+     "raw": "{\n    \"text\": \"24). Euclidate is a way to calculate the distance\\n29. Data normalization is required because mbalance data can\\neffect the result.\\nKNN stand for K\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 2.129,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "24). Elucidate is a way to calculate the distance\n\n29. Data normalization is required because imbalance data can effeat the result of .\n\n[?] stand for k",
+     "raw": "24). Elucidate is a way to calculate the distance\n\n29. Data normalization is required because imbalance data can effeat the result of .\n\n[?] stand for k",
+     "confidence": null,
+     "latency_s": 4.396,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "24). Elucidate is a way to calculate the distance.\n\n29. Data normalization is required because imbalance data can affect the result.\n\n\\log_{10} k stand for k",
+     "raw": "24). Elucidate is a way to calculate the distance.\n\n29. Data normalization is required because imbalance data can affect the result.\n\n\\log_{10} k stand for k",
+     "confidence": null,
+     "latency_s": 1.49,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "24). Elucidate is a way to calculate the distance\n29. Data normalization is required because imbalance data can\neffect the result.\n\nLerewitz stand for k",
+     "raw": "24). Elucidate is a way to calculate the distance\n29. Data normalization is required because imbalance data can\neffect the result.\n\nLerewitz stand for k",
+     "confidence": null,
+     "latency_s": 0.642,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "24). Elucidate is a way to calculate the distance\n\n29. Data normalization is required because imbalance data can affect the result.",
+     "raw": "24). Elucidate is a way to calculate the distance\n\n29. Data normalization is required because imbalance data can affect the result.",
+     "confidence": null,
+     "latency_s": 0.566,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S10": {
+   "label": "Q30",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S10.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p3.png",
+     "bbox": [
+      10,
+      104,
+      650,
+      150
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "30). Continuous attribute can be discretized by",
+     "raw": "{\"text\": \"30). Continuous attribute can be discretized by\", \"illegible_tokens\": 0, \"confidence\": 1}",
+     "confidence": 1.0,
+     "latency_s": 1.225,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": ". Continuous attribute can be discretized by",
+     "raw": ". Continuous attribute can be discretized by",
+     "confidence": null,
+     "latency_s": 1.602,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": ". Continuous attribute can be discretized by",
+     "raw": "30). Continuous attribute can be discretized by",
+     "confidence": null,
+     "latency_s": 0.416,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": ". Continuous attribute can be discretized by",
+     "raw": "30). Continuous attribute can be discretized by",
+     "confidence": null,
+     "latency_s": 0.367,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": ". Continuous attribute can be discretized by",
+     "raw": "30). Continuous attribute can be discretized by",
+     "confidence": null,
+     "latency_s": 0.352,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S11": {
+   "label": "Q31",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S11.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      650,
+      555,
+      720
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "31). k in k-means algorithm stand for k",
+     "raw": "{\n  \"text\": \"31). k in k-means algorithm stand for k\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.406,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "29. [?]\neffeat the result of .\n\n31). k in k-means algorithm stand for k\n[?] of machine learni",
+     "raw": "29. [?]\neffeat the result of .\n\n31). k in k-means algorithm stand for k\n[?] of machine learni",
+     "confidence": null,
+     "latency_s": 2.882,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "29. ~~effect~~ the result ~~of~~.\n\n31). k in k-means algorithm stand for k\n\nloss of machine learning",
+     "raw": "29. ~~effect~~ the result ~~of~~.\n\n31). k in k-means algorithm stand for k\n\nloss of machine learning",
+     "confidence": null,
+     "latency_s": 1.52,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "29. effect the result.\n31). k in k-means algorithm stand for k",
+     "raw": "29. effect the result.\n31). k in k-means algorithm stand for k",
+     "confidence": null,
+     "latency_s": 0.38,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": ". k in k-means algorithm stand for k",
+     "raw": "31). k in k-means algorithm stand for k",
+     "confidence": null,
+     "latency_s": 0.355,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S12": {
+   "label": "Q32",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S12.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p2.png",
+     "bbox": [
+      0,
+      700,
+      755,
+      800
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "31). k in k-means algorithm stand for\n32). Some hyperparameters of machine learning algorithms:\n-epoch",
+     "raw": "{\"text\": \"31). k in k-means algorithm stand for\\n32). Some hyperparameters of machine learning algorithms:\\n-epoch\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.329,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "31). k in k-means algorithm stand for [?]\n32). Some hyperparameters of machine learning algorithms :\n-epoch",
+     "raw": "31). k in k-means algorithm stand for [?]\n32). Some hyperparameters of machine learning algorithms :\n-epoch",
+     "confidence": null,
+     "latency_s": 2.276,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "31). k in k-means algorithm stand for k\n32). Some hyperparameters of machine learning algorithms:\n-epoch",
+     "raw": "31). k in k-means algorithm stand for k\n32). Some hyperparameters of machine learning algorithms:\n-epoch",
+     "confidence": null,
+     "latency_s": 0.917,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "31). k in k-means algorithm stand for\n32). Some hyperparameters of machine learning algorithms:\n-epoch",
+     "raw": "31). k in k-means algorithm stand for\n32). Some hyperparameters of machine learning algorithms:\n-epoch",
+     "confidence": null,
+     "latency_s": 0.35,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "31). k in k-means algorithm stand for\n32). Some hyperparameters of machine learning algorithms :\n-epoch",
+     "raw": "31). k in k-means algorithm stand for\n32). Some hyperparameters of machine learning algorithms :\n-epoch",
+     "confidence": null,
+     "latency_s": 0.375,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S13": {
+   "label": "Q33",
+   "kind": "subjective",
+   "crop": null,
+   "boxes": [],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
+    "chandra-ocr-2": null,
+    "paddleocr-vl-1.6": null,
+    "glm-ocr": null
+   }
+  },
+  "S14": {
+   "label": "Q34",
+   "kind": "subjective",
+   "crop": null,
+   "boxes": [],
+   "gold": {
+    "marks": null,
+    "note": "blank/NC in teacher CSV"
+   },
+   "readings": {
+    "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
+    "chandra-ocr-2": null,
+    "paddleocr-vl-1.6": null,
+    "glm-ocr": null
+   }
+  },
+  "S15": {
+   "label": "Q35",
+   "kind": "subjective",
+   "crop": "crops/Student_27/S15.jpg",
+   "boxes": [
+    {
+     "page": "Student_27_p3.png",
+     "bbox": [
+      10,
+      213,
+      560,
+      278
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "35). Radial Basis function kernel in sum",
+     "raw": "{\"text\": \"35). Radial Basis function kernel in sum\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 0.953,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": ". Radial Basis function kernel in SVM",
+     "raw": ". Radial Basis function kernel in SVM",
+     "confidence": null,
+     "latency_s": 1.257,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": ". Radial Basis function kernel in SVM",
+     "raw": "35). Radial Basis function kernel in SVM",
+     "confidence": null,
+     "latency_s": 0.495,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": ". Radial Basis function kernel in SUM",
+     "raw": "35). Radial Basis function kernel in SUM",
+     "confidence": null,
+     "latency_s": 0.243,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": ". Radial Basis function kernel in SUM",
+     "raw": "35). Radial Basis function kernel in SUM",
+     "confidence": null,
+     "latency_s": 0.166,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  }
+ }
+}

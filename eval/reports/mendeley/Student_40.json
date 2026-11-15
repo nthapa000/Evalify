@@ -1,0 +1,2559 @@
+{
+ "sheet": "Student_40",
+ "pages": [
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_40_p1.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_40_p2.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_40_p3.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_40_p4.png"
+ ],
+ "skipped_blank_pages": [
+  "Student_40_p4.png"
+ ],
+ "located": "33/35",
+ "segment_s": 43.1,
+ "wall_s": 125.0,
+ "questions": {
+  "Q1": {
+   "label": "Q1",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q1.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      122,
+      100,
+      152
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 0.98,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.153,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "1.\n\nA",
+     "confidence": null,
+     "latency_s": 1.215,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "1. A",
+     "confidence": null,
+     "latency_s": 0.17,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "1. A",
+     "confidence": null,
+     "latency_s": 0.156,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q2": {
+   "label": "Q2",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q2.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      159,
+      100,
+      192
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.299,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.03,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "2.\n\nC",
+     "confidence": null,
+     "latency_s": 1.192,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "2. C",
+     "confidence": null,
+     "latency_s": 0.167,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "2. C",
+     "confidence": null,
+     "latency_s": 0.136,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q3": {
+   "label": "Q3",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q3.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      195,
+      100,
+      230
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.077,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.028,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "3.\n\nB",
+     "confidence": null,
+     "latency_s": 1.236,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "3. B",
+     "confidence": null,
+     "latency_s": 0.302,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "3. B",
+     "confidence": null,
+     "latency_s": 0.132,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q4": {
+   "label": "Q4",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q4.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      238,
+      100,
+      272
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.068,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.176,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "4.\n\nC",
+     "confidence": null,
+     "latency_s": 1.22,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "4. C",
+     "confidence": null,
+     "latency_s": 0.246,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "4. C",
+     "confidence": null,
+     "latency_s": 0.235,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q5": {
+   "label": "Q5",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q5.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      283,
+      100,
+      318
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.062,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.875,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "5.\nC",
+     "confidence": null,
+     "latency_s": 1.109,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "5. C",
+     "confidence": null,
+     "latency_s": 0.304,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "5. C",
+     "confidence": null,
+     "latency_s": 0.233,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q6": {
+   "label": "Q6",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q6.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      328,
+      100,
+      362
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"A\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.355,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.829,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "6.\n\nA",
+     "confidence": null,
+     "latency_s": 1.252,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "6. A",
+     "confidence": null,
+     "latency_s": 0.303,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "6. A",
+     "confidence": null,
+     "latency_s": 0.231,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q7": {
+   "label": "Q7",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q7.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      372,
+      100,
+      405
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"A\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.361,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.738,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "7.\nA",
+     "confidence": null,
+     "latency_s": 1.119,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "7. A",
+     "confidence": null,
+     "latency_s": 0.302,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "7. A",
+     "confidence": null,
+     "latency_s": 0.153,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q8": {
+   "label": "Q8",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q8.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      413,
+      100,
+      448
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.056,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.713,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "8.\n\nC",
+     "confidence": null,
+     "latency_s": 1.251,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "8. C",
+     "confidence": null,
+     "latency_s": 0.301,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "8. C",
+     "confidence": null,
+     "latency_s": 0.153,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q9": {
+   "label": "Q9",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q9.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      460,
+      100,
+      495
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.069,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.709,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "9.\nC",
+     "confidence": null,
+     "latency_s": 1.146,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "g. C",
+     "confidence": null,
+     "latency_s": 0.304,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "9. C",
+     "confidence": null,
+     "latency_s": 0.157,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q10": {
+   "label": "Q10",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q10.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      505,
+      100,
+      540
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  , \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.25,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.081,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "10\nB",
+     "confidence": null,
+     "latency_s": 1.167,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "10 B",
+     "confidence": null,
+     "latency_s": 0.303,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "10 B",
+     "confidence": null,
+     "latency_s": 0.134,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q11": {
+   "label": "Q11",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q11.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      552,
+      100,
+      587
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.063,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.76,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "11.\nC",
+     "confidence": null,
+     "latency_s": 1.159,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "11. C",
+     "confidence": null,
+     "latency_s": 0.44,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "11. C",
+     "confidence": null,
+     "latency_s": 0.153,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q12": {
+   "label": "Q12",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q12.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      587,
+      100,
+      625
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  , \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.258,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.9,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "12.\n\nC",
+     "confidence": null,
+     "latency_s": 1.289,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "12. C",
+     "confidence": null,
+     "latency_s": 0.439,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "12. C",
+     "confidence": null,
+     "latency_s": 0.152,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q13": {
+   "label": "Q13",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q13.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      632,
+      100,
+      667
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.244,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.802,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "13.\nA",
+     "confidence": null,
+     "latency_s": 1.169,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "13. A",
+     "confidence": null,
+     "latency_s": 0.36,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "13. A",
+     "confidence": null,
+     "latency_s": 0.151,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q14": {
+   "label": "Q14",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q14.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      685,
+      100,
+      720
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.209,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.799,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "14.\n\nC",
+     "confidence": null,
+     "latency_s": 1.291,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "14. C",
+     "confidence": null,
+     "latency_s": 0.44,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "14. C",
+     "confidence": null,
+     "latency_s": 0.149,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q15": {
+   "label": "Q15",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q15.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      732,
+      100,
+      767
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.337,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.793,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "15.\nA",
+     "confidence": null,
+     "latency_s": 1.172,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "15. A",
+     "confidence": null,
+     "latency_s": 0.439,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "15. A",
+     "confidence": null,
+     "latency_s": 0.157,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q16": {
+   "label": "Q16",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q16.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      778,
+      100,
+      813
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 1.206,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.637,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "16.\n\nc",
+     "confidence": null,
+     "latency_s": 1.292,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "16. C",
+     "confidence": null,
+     "latency_s": 0.441,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "16. C",
+     "confidence": null,
+     "latency_s": 0.155,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q17": {
+   "label": "Q17",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q17.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      825,
+      100,
+      860
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.335,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.638,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "17.\nB",
+     "confidence": null,
+     "latency_s": 1.172,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "17. B",
+     "confidence": null,
+     "latency_s": 0.439,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "17. B",
+     "confidence": null,
+     "latency_s": 0.149,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q18": {
+   "label": "Q18",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q18.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      862,
+      100,
+      897
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"C\"\n  ]\n  , \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.617,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.634,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "18.\n\nC",
+     "confidence": null,
+     "latency_s": 1.694,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "18. C",
+     "confidence": null,
+     "latency_s": 0.439,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "18. C",
+     "confidence": null,
+     "latency_s": 0.154,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q19": {
+   "label": "Q19",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q19.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      900,
+      100,
+      935
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"],\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.196,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.632,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "19.\nB",
+     "confidence": null,
+     "latency_s": 1.195,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "19. B",
+     "confidence": null,
+     "latency_s": 0.436,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "19. B",
+     "confidence": null,
+     "latency_s": 0.255,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q20": {
+   "label": "Q20",
+   "kind": "mcq",
+   "crop": "crops/Student_40/Q20.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p1.png",
+     "bbox": [
+      0,
+      945,
+      100,
+      985
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 1.14,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.628,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "20 / c",
+     "confidence": null,
+     "latency_s": 0.772,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "unclear",
+     "value": "",
+     "raw": "2019",
+     "confidence": null,
+     "latency_s": 0.467,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "20 C",
+     "confidence": null,
+     "latency_s": 0.254,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S1": {
+   "label": "Q21",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S1.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      334,
+      970,
+      518
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "Supervised learning is a type of machine learning algorithm\nthat use labeled dataset ~~in~~ to train in order to identify the relationship\nbetween ~~each dataset~~ and to predict dependent variable.\n\u2193 dependent and independent variable.",
+     "raw": "{\"text\": \"Supervised learning is a type of machine learning algorithm\\nthat use labeled dataset ~~in~~ to train in order to identify the relationship\\nbetween ~~each dataset~~ and to predict dependent variable.\\n\u2193 dependent and independent variable.\", \"illegible_tokens\": 0, \"confidence\": 1}",
+     "confidence": 1.0,
+     "latency_s": 2.424,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Supervised learning is a type of machine learning algorithm\nthat use labeled dataset in to train in order to identify the relationship\nbetween ~~each dataset~~ and to predict dependent variable.\n$\\searrow$ dependent and independent variable.",
+     "raw": "Supervised learning is a type of machine learning algorithm\nthat use labeled dataset in to train in order to identify the relationship\nbetween ~~each dataset~~ and to predict dependent variable.\n$\\searrow$ dependent and independent variable.",
+     "confidence": null,
+     "latency_s": 7.107,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "200 little dataset for training to learn the relationship\n\n21.\n\nSupervised learning is a type of machine learning algorithm that use labeled dataset ~~in~~ to train in order to identify the relationship between ~~each dataset~~ and to predict dependent variable.\n\n\u2193 dependent and independent variable.",
+     "raw": "200 little dataset for training to learn the relationship\n\n21.\n\nSupervised learning is a type of machine learning algorithm that use labeled dataset ~~in~~ to train in order to identify the relationship between ~~each dataset~~ and to predict dependent variable.\n\n\u2193 dependent and independent variable.",
+     "confidence": null,
+     "latency_s": 3.706,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Supervised learning is a type of machine learning algorithm that are labeled dataset in to train in order to identify the relationship between \\(\\underline{\\text{and}}\\) to predict dependent variable. \\(\\underline{\\text{dependent}}\\) and independent variable.",
+     "raw": "21. Supervised learning is a type of machine learning algorithm that are labeled dataset in to train in order to identify the relationship between \\(\\underline{\\text{and}}\\) to predict dependent variable. \\(\\underline{\\text{dependent}}\\) and independent variable.",
+     "confidence": null,
+     "latency_s": 0.908,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Supervised learning is a type of machine learning algorithm that are labeled dataset to train in order to identify the relationship between each dataset and to predict dependent variable.\ndependent and independent variable.",
+     "raw": "21. Supervised learning is a type of machine learning algorithm that are labeled dataset to train in order to identify the relationship between each dataset and to predict dependent variable.\ndependent and independent variable.",
+     "confidence": null,
+     "latency_s": 0.47,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S2": {
+   "label": "Q22",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S2.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      725,
+      851,
+      818
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "group\n2. I think model M1 is not accurate. I think the data\nthat is used to train the model is wrong or imbalance.",
+     "raw": "{\"text\": \"group\\n2. I think model M1 is not accurate. I think the data\\nthat is used to train the model is wrong or imbalance.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.979,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "group\nI think model M1 is not accurate. I think the data\nthat is used to train the model is wrong or imbalance.",
+     "raw": "group\nI think model M1 is not accurate. I think the data\nthat is used to train the model is wrong or imbalance.",
+     "confidence": null,
+     "latency_s": 5.294,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Group\n\n22. I think model M1 is not accurate. I think the data that is used to train the model is wrong or imbalanced.\n\nRegression test is used to check the accuracy of the model.",
+     "raw": "Group\n\n22. I think model M1 is not accurate. I think the data that is used to train the model is wrong or imbalanced.\n\nRegression test is used to check the accuracy of the model.",
+     "confidence": null,
+     "latency_s": 2.787,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "group\n\n22. I think model M1 is not accurate. I think the data that is used to train the model is wrong or imbalance.",
+     "raw": "group\n\n22. I think model M1 is not accurate. I think the data that is used to train the model is wrong or imbalance.",
+     "confidence": null,
+     "latency_s": 0.536,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "I think model M1 is not accurate. I think the data that is used to train the model is wrong or imbalance.",
+     "raw": "22. I think model M1 is not accurate. I think the data that is used to train the model is wrong or imbalance.",
+     "confidence": null,
+     "latency_s": 0.286,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S3": {
+   "label": "Q23",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S3.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      818,
+      940,
+      975
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "Regression technique is a way of visualising a data that is\ncontinuous. When visualise you will see the regression will\nminimize the data distance between all points.",
+     "raw": "{\n  \"text\": \"Regression technique is a way of visualising a data that is\\ncontinuous. When visualise you will see the regression will\\nminimize the data distance between all points.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.338,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "~~that is used to train the model is wrong or imbalance.~~\n\n23 Regression technique is a way of visualising a datathat is ~~continuou~~yous . When visualise you will see the regression will minimize the data distance between all points.",
+     "raw": "~~that is used to train the model is wrong or imbalance.~~\n\n23 Regression technique is a way of visualising a datathat is ~~continuou~~yous . When visualise you will see the regression will minimize the data distance between all points.",
+     "confidence": null,
+     "latency_s": 7.333,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "that is used to train the model is wrong or imbalance.\n\n23\n\nRegression technique is a way of visualising a data that is continuous. When visualise you will see the regression will minimize the ~~data~~ distance between all points.\n\n\u2461",
+     "raw": "that is used to train the model is wrong or imbalance.\n\n23\n\nRegression technique is a way of visualising a data that is continuous. When visualise you will see the regression will minimize the ~~data~~ distance between all points.\n\n\u2461",
+     "confidence": null,
+     "latency_s": 3.554,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Regression technique is a way of visualising a data that is continuous. When visualise you will see the regression will minimize the data distance between all points.",
+     "raw": "23 Regression technique is a way of visualising a data that is continuous. When visualise you will see the regression will minimize the data distance between all points.",
+     "confidence": null,
+     "latency_s": 0.504,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Regression technique is a way of visualising a data that is continuous. When visualise you will see the regression will minimize the data distance between all points. $ \\textcircled{2} $",
+     "raw": "Regression technique is a way of visualising a data that is continuous. When visualise you will see the regression will minimize the data distance between all points. $ \\textcircled{2} $",
+     "confidence": null,
+     "latency_s": 0.487,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S4": {
+   "label": "Q24",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S4.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      204,
+      830,
+      334
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "- social - media (Facebook, Twitter)\n4. Elucidate any two challenges of Machine learning.\n- Data being unreadable or too many ~~ero~~ error data\n- Too little dataset for the us to feed to the machine",
+     "raw": "{\n    \"text\": \"- social - media (Facebook, Twitter)\\n4. Elucidate any two challenges of Machine learning.\\n- Data being unreadable or too many ~~ero~~ error data\\n- Too little dataset for the us to feed to the machine\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.707,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "- social - media (facebook, tiktok)\n24. Elucidate any two challenges of Machine learning.\n\n- Data being unreadable or too many ~~ere~~ error data\n- Too little dataset for the us to feed to the machine",
+     "raw": "- social - media (facebook, tiktok)\n24. Elucidate any two challenges of Machine learning.\n\n- Data being unreadable or too many ~~ere~~ error data\n- Too little dataset for the us to feed to the machine",
+     "confidence": null,
+     "latency_s": 5.719,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "- social - media (Facebook, Twitter, ...)\n\n24.\n\nElucidate any two challenges of Machine learning.\n\n- Data being unreadable or too many ~~ext~~ error data\n- Too little dataset for the us to feed to the machine",
+     "raw": "- social - media (Facebook, Twitter, ...)\n\n24.\n\nElucidate any two challenges of Machine learning.\n\n- Data being unreadable or too many ~~ext~~ error data\n- Too little dataset for the us to feed to the machine",
+     "confidence": null,
+     "latency_s": 3.308,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "- Social media Facebook, Facebook\nElucidate any two challenges of Machine learning.\n- Data being unreadable or too many error data\n- Too little dataset for the us to feed to the machine",
+     "raw": "- Social media Facebook, Facebook\nElucidate any two challenges of Machine learning.\n- Data being unreadable or too many error data\n- Too little dataset for the us to feed to the machine",
+     "confidence": null,
+     "latency_s": 0.621,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Elucidate any two challenges of Machine learning.\nData being unreadble or too many error data\nToo little dataset for the us to feed to the machine",
+     "raw": "24. Elucidate any two challenges of Machine learning.\nData being unreadble or too many error data\nToo little dataset for the us to feed to the machine",
+     "confidence": null,
+     "latency_s": 0.481,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S5": {
+   "label": "Q25",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S5.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      77,
+      725,
+      204
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "25. List out any two major applications of data science:\n- e-commerce\n- social-media (Facebook, TikTok)",
+     "raw": "{\n  \"text\": \"25. List out any two major applications of data science:\\n- e-commerce\\n- social-media (Facebook, TikTok)\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.908,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "List out any two major applications of data science:\n\n- e-comerce\n\n- social-media (Facebook, TikTok)",
+     "raw": "List out any two major applications of data science:\n\n- e-comerce\n\n- social-media (Facebook, TikTok)",
+     "confidence": null,
+     "latency_s": 3.101,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "List out any two major applications of data science:\n\n- e-commerce\n\n- social - media (Facebook, TikTok)\n\nExplain the two steps of Machine Learning",
+     "raw": "25. List out any two major applications of data science:\n\n- e-commerce\n\n- social - media (Facebook, TikTok)\n\nExplain the two steps of Machine Learning",
+     "confidence": null,
+     "latency_s": 2.795,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "List out any two major applications of data science:\n- e-commerce\n- social media (Facebook, TikTok)",
+     "raw": "List out any two major applications of data science:\n- e-commerce\n- social media (Facebook, TikTok)",
+     "confidence": null,
+     "latency_s": 0.454,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "List out any two major applications of data science:\n- e-commerce\n- social-media (Facebook, TikTok)",
+     "raw": "25. List out any two major applications of data science:\n- e-commerce\n- social-media (Facebook, TikTok)",
+     "confidence": null,
+     "latency_s": 0.223,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S6": {
+   "label": "Q26",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S6.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p3.png",
+     "bbox": [
+      22,
+      465,
+      980,
+      598
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "26. + ~~star~~ structured data: all data have same format same value\n+ semi-structured ~~dta~~ data: data have different format but\nsame value.",
+     "raw": "{\n    \"text\": \"26. + ~~star~~ structured data: all data have same format same value\\n+ semi-structured ~~dta~~ data: data have different format but\\nsame value.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.125,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "two clause).\n+ structured data: all data have same format same value\n+ semi-structured ~~dto~~ data: data have different format but same value.",
+     "raw": "two clause).\n+ structured data: all data have same format same value\n+ semi-structured ~~dto~~ data: data have different format but same value.",
+     "confidence": null,
+     "latency_s": 3.515,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "two classes.\n\n26.\n\n+ ~~star~~ structured data: all data have same format same value\n\n+ semi-structured ~~data~~ data: data have different format but same value.",
+     "raw": "two classes.\n\n26.\n\n+ ~~star~~ structured data: all data have same format same value\n\n+ semi-structured ~~data~~ data: data have different format but same value.",
+     "confidence": null,
+     "latency_s": 2.778,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "two clause.\n+ star structured data: all data have same format same value\n+ semi-structured data data: data have different format but\nsame value.",
+     "raw": "26. two clause.\n+ star structured data: all data have same format same value\n+ semi-structured data data: data have different format but\nsame value.",
+     "confidence": null,
+     "latency_s": 0.413,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "+ star structured data: all data have same format same value\n+ semi-structured data: data have different format but same value.",
+     "raw": "26.\n+ star structured data: all data have same format same value\n+ semi-structured data: data have different format but same value.",
+     "confidence": null,
+     "latency_s": 0.437,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S7": {
+   "label": "Q27",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S7.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      574,
+      888,
+      725
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "27. We detect outlier in data by using visualization technique by\ndividing them in to book plot or scatter plot. Data that is far away\nfrom the ~~graph~~ is the outliers.\nfar\nfurthe\ngroup",
+     "raw": "{\n    \"text\": \"27. We detect outlier in data by using visualization technique by\\ndividing them in to book plot or scatter plot. Data that is far away\\nfrom the ~~graph~~ is the outliers.\\nfar\\nfurthe\\ngroup\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.446,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "We detect outlier in data by using visualization technique by dividing them in to book plot or scatter plot. Data that is far away ~~furthest~~ from the graph is the outlier.\ngroup",
+     "raw": "We detect outlier in data by using visualization technique by dividing them in to book plot or scatter plot. Data that is far away ~~furthest~~ from the graph is the outlier.\ngroup",
+     "confidence": null,
+     "latency_s": 4.195,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "We detect outlier in data by using visualization technique by dividing them in to box plot or scatter plot. Data that is ~~far~~ away from the ~~graph~~ group is the outlier. further\n\n28. I think that M... it... I...",
+     "raw": "27.\n\nWe detect outlier in data by using visualization technique by dividing them in to box plot or scatter plot. Data that is ~~far~~ away from the ~~graph~~ group is the outlier. further\n\n28. I think that M... it... I...",
+     "confidence": null,
+     "latency_s": 2.662,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "We detect outlier in data by using visualization technique by dividing them into book plot or scatter plot. Data that is far away from the growth is the outlier.\ngroup",
+     "raw": "27. We detect outlier in data by using visualization technique by dividing them into book plot or scatter plot. Data that is far away from the growth is the outlier.\ngroup",
+     "confidence": null,
+     "latency_s": 0.357,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "We detect outlier in data by using visualization technique by dividing them into book plot or scatter plot. Data that is far away from the graph is the outlier. Group",
+     "raw": "27. We detect outlier in data by using visualization technique by dividing them into book plot or scatter plot. Data that is far away from the graph is the outlier. Group",
+     "confidence": null,
+     "latency_s": 0.389,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S8": {
+   "label": "Q28",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S8.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p2.png",
+     "bbox": [
+      0,
+      0,
+      970,
+      70
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "28. Data pre processing is a technique to make the data is readable by the\nmachine in order to make any use of the data.",
+     "raw": "{\n  \"text\": \"28. Data pre processing is a technique to make the data is readable by the\\nmachine in order to make any use of the data.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.948,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Data pre processing is a technique to make ~~the data is~~ readable by the machine in order to make any use of the data.",
+     "raw": "Data pre processing is a technique to make ~~the data is~~ readable by the machine in order to make any use of the data.",
+     "confidence": null,
+     "latency_s": 2.651,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Data pre processing is a technique to make sure the data is readable by the machine in order to make any use of the data.",
+     "raw": "28. Data pre processing is a technique to make sure the data is readable by the machine in order to make any use of the data.",
+     "confidence": null,
+     "latency_s": 0.804,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Data pre processing is a technique to make the data is readable by the machine in order to make any use of the data.",
+     "raw": "Data pre processing is a technique to make the data is readable by the machine in order to make any use of the data.",
+     "confidence": null,
+     "latency_s": 0.181,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Data pre processing is a technique to make the data is readble by the machine in order to make any use of the data.",
+     "raw": "28. Data pre processing is a technique to make the data is readble by the machine in order to make any use of the data.",
+     "confidence": null,
+     "latency_s": 0.266,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S9": {
+   "label": "Q29",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S9.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p3.png",
+     "bbox": [
+      30,
+      818,
+      945,
+      920
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "29. Data nominalize is required in KNN is because the calculation\nto find out the distance required ~~feature~~ featured value.",
+     "raw": "{\n  \"text\": \"29. Data nominalize is required in KNN is because the calculation\\nto find out the distance required ~~feature~~ featured value.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 1.846,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Data nomalize it required in KNN is because the calculation to find out the distance required ~~setaut~~ featured value.",
+     "raw": "Data nomalize it required in KNN is because the calculation to find out the distance required ~~setaut~~ featured value.",
+     "confidence": null,
+     "latency_s": 2.753,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Data normalize is required in KNN is because the calculation to find out the distance required ~~feature~~ featured value.",
+     "raw": "29. Data normalize is required in KNN is because the calculation to find out the distance required ~~feature~~ featured value.",
+     "confidence": null,
+     "latency_s": 1.175,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Data normalize is required in KNN is because the calculation to find out the distance required feature value.",
+     "raw": "29. Data normalize is required in KNN is because the calculation to find out the distance required feature value.",
+     "confidence": null,
+     "latency_s": 0.416,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Data normalize is required in KNN is because the calculation to find out the distance required fetu featured value.",
+     "raw": "29. Data normalize is required in KNN is because the calculation to find out the distance required fetu featured value.",
+     "confidence": null,
+     "latency_s": 0.235,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S10": {
+   "label": "Q30",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S10.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p3.png",
+     "bbox": [
+      30,
+      623,
+      900,
+      703
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "30. Continuous attributes are discretized by grouping them into\ndifferent branch.",
+     "raw": "{\"text\": \"30. Continuous attributes are discretized by grouping them into\\ndifferent branch.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.383,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Continuous attributes are discretized by grouping them into different branch.",
+     "raw": "Continuous attributes are discretized by grouping them into different branch.",
+     "confidence": null,
+     "latency_s": 2.223,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Continuous attributes are discretized by grouping them into different branch.",
+     "raw": "30. Continuous attributes are discretized by grouping them into different branch.",
+     "confidence": null,
+     "latency_s": 1.008,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Continuous attributes are discretized by grouping them into different branch.",
+     "raw": "30. Continuous attributes are discretized by grouping them into different branch.",
+     "confidence": null,
+     "latency_s": 0.388,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Continuous attributes are discretized by grouping them into different branch.",
+     "raw": "30. Continuous attributes are discretized by grouping them into different branch.",
+     "confidence": null,
+     "latency_s": 0.328,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S11": {
+   "label": "Q31",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S11.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p3.png",
+     "bbox": [
+      22,
+      112,
+      900,
+      207
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "31. K in K-means algorithm is the number of centres\nof group of class that has similarity.\nI think the class form to part because the distan",
+     "raw": "{\"text\": \"31. K in K-means algorithm is the number of centres\\nof group of class that has similarity.\\nI think the class form to part because the distan\", \"illegible_tokens\": 0, \"confidence\": 0.95}",
+     "confidence": 0.95,
+     "latency_s": 1.839,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "K in K-means algorithm ~~It~~ is the number of centreds\nof group of class that has similarity.\nI think the classifier [?] because the [?]\nFirst",
+     "raw": "K in K-means algorithm ~~It~~ is the number of centreds\nof group of class that has similarity.\nI think the classifier [?] because the [?]\nFirst",
+     "confidence": null,
+     "latency_s": 3.716,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "K in K-means algorithm F^* is the number of centroids of group of class that has similarity.\n\n32. I think the first class is \\rightarrow most because the distance",
+     "raw": "31. K in K-means algorithm F^* is the number of centroids of group of class that has similarity.\n\n32. I think the first class is \\rightarrow most because the distance",
+     "confidence": null,
+     "latency_s": 2.44,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "k in k-means algorithm It is the number of centreds of group of class that has similarity.",
+     "raw": "31. k in k-means algorithm It is the number of centreds of group of class that has similarity.",
+     "confidence": null,
+     "latency_s": 0.381,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "K in K-means algorithm $ H $ is the number of centreds of group of class that has similarity.",
+     "raw": "31. K in K-means algorithm $ H $ is the number of centreds of group of class that has similarity.",
+     "confidence": null,
+     "latency_s": 0.33,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S12": {
+   "label": "Q32",
+   "kind": "subjective",
+   "crop": null,
+   "boxes": [],
+   "gold": {
+    "marks": null,
+    "note": "blank/NC in teacher CSV"
+   },
+   "readings": {
+    "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
+    "chandra-ocr-2": null,
+    "paddleocr-vl-1.6": null,
+    "glm-ocr": null
+   }
+  },
+  "S13": {
+   "label": "Q33",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S13.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p3.png",
+     "bbox": [
+      30,
+      735,
+      410,
+      770
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "33. Gradient descent",
+     "raw": "{\"text\": \"33. Gradient descent\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 0.862,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Gradient descent",
+     "raw": "Gradient descent",
+     "confidence": null,
+     "latency_s": 1.057,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Gradient descent",
+     "raw": "33. Gradient descent",
+     "confidence": null,
+     "latency_s": 0.826,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Gradient descent",
+     "raw": "33. Gradient descent",
+     "confidence": null,
+     "latency_s": 0.353,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Gradient descent",
+     "raw": "33. Gradient descent",
+     "confidence": null,
+     "latency_s": 0.257,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S14": {
+   "label": "Q34",
+   "kind": "subjective",
+   "crop": "crops/Student_40/S14.jpg",
+   "boxes": [
+    {
+     "page": "Student_40_p3.png",
+     "bbox": [
+      22,
+      195,
+      980,
+      460
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "of group of class that has similarity.\n34. I think the first classifier is good because the distance\nbetween two classes data points is as far as it can be.\nThe second is not good because some data points cross\nthe line.\nThe third is not good because the spread distance is too small between\ntwo classes.",
+     "raw": "{\n    \"text\": \"of group of class that has similarity.\\n34. I think the first classifier is good because the distance\\nbetween two classes data points is as far as it can be.\\nThe second is not good because some data points cross\\nthe line.\\nThe third is not good because the spread distance is too small between\\ntwo classes.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.434,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "of group or class that has similarity.\n32. First\nI think the classifier is good because the distance\nbetween two classes data points is as far as it can be.\nThe second is not good because some data points cross\nthe line.\nThe third is not good because the distance spread is too small between\ntwo classes.",
+     "raw": "of group or class that has similarity.\n32. First\nI think the classifier is good because the distance\nbetween two classes data points is as far as it can be.\nThe second is not good because some data points cross\nthe line.\nThe third is not good because the distance spread is too small between\ntwo classes.",
+     "confidence": null,
+     "latency_s": 4.844,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "or group of class that has similarity.\n\n34.\n\nI think the first classifier is good because the distance between two classes data points is as far as it can be.\n\nThe second is not good because some data points cross the line.\n\nThe third is not good because the distance ~~spread~~ is too small between two classes.",
+     "raw": "or group of class that has similarity.\n\n34.\n\nI think the first classifier is good because the distance between two classes data points is as far as it can be.\n\nThe second is not good because some data points cross the line.\n\nThe third is not good because the distance ~~spread~~ is too small between two classes.",
+     "confidence": null,
+     "latency_s": 4.283,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "I think the classifier is good because the distance between two classes data points is as far as it can be. The second is not good because some data points cross the line. The third is not good because the distance is too small between two classes.",
+     "raw": "34. I think the classifier is good because the distance between two classes data points is as far as it can be. The second is not good because some data points cross the line. The third is not good because the distance is too small between two classes.",
+     "confidence": null,
+     "latency_s": 0.345,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "324.\nof group of class that has similarity.\nI think the classifier is good because the distance\nbetween two classes data points is as far as it can be.\nThe second is not good because some data points cross\nthe line.\nThe third is not good because the distance spread is too small between\ntwo classes.",
+     "raw": "324.\nof group of class that has similarity.\nI think the classifier is good because the distance\nbetween two classes data points is as far as it can be.\nThe second is not good because some data points cross\nthe line.\nThe third is not good because the distance spread is too small between\ntwo classes.",
+     "confidence": null,
+     "latency_s": 0.378,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S15": {
+   "label": "Q35",
+   "kind": "subjective",
+   "crop": null,
+   "boxes": [],
+   "gold": {
+    "marks": null,
+    "note": "blank/NC in teacher CSV"
+   },
+   "readings": {
+    "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
+    "chandra-ocr-2": null,
+    "paddleocr-vl-1.6": null,
+    "glm-ocr": null
+   }
+  }
+ }
+}

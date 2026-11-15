@@ -1,0 +1,2629 @@
+{
+ "sheet": "Student_15",
+ "pages": [
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_15_p1.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_15_p2.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_15_p3.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_15_p4.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_15_p5.png",
+  "/csehome/m25csa019/Evalify/eval/data/mendeley/images/Student_15_p6.png"
+ ],
+ "skipped_blank_pages": [
+  "Student_15_p5.png",
+  "Student_15_p6.png"
+ ],
+ "located": "34/35",
+ "segment_s": 44.7,
+ "wall_s": 130.6,
+ "questions": {
+  "Q1": {
+   "label": "Q1",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q1.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      88,
+      115,
+      188,
+      138
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\n  \"status\": \"unclear\",\n  \"options\": []",
+     "confidence": null,
+     "latency_s": 23.448,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.034,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "D",
+     "raw": "1. D D",
+     "confidence": null,
+     "latency_s": 0.303,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "1. D",
+     "confidence": null,
+     "latency_s": 0.101,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "1. Q",
+     "confidence": null,
+     "latency_s": 0.057,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q2": {
+   "label": "Q2",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q2.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      86,
+      150,
+      158,
+      170
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.23,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.972,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "2. 6",
+     "confidence": null,
+     "latency_s": 0.288,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "unclear",
+     "value": "",
+     "raw": "2. F",
+     "confidence": null,
+     "latency_s": 0.244,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "2. F",
+     "confidence": null,
+     "latency_s": 0.054,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q3": {
+   "label": "Q3",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q3.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      88,
+      184,
+      183,
+      204
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "D",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"D\"\n  ]\n  , \"confidence\": 0.9}",
+     "confidence": 0.9,
+     "latency_s": 2.788,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.033,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "D",
+     "raw": "3. D",
+     "confidence": null,
+     "latency_s": 0.295,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "3. D",
+     "confidence": null,
+     "latency_s": 0.232,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "3. $ \\textcircled{1} $",
+     "confidence": null,
+     "latency_s": 0.162,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q4": {
+   "label": "Q4",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q4.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      88,
+      215,
+      188,
+      237
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"A\"\n  ],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.938,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.609,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "4. \\emptyset",
+     "confidence": null,
+     "latency_s": 0.336,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "unclear",
+     "value": "",
+     "raw": "4. \\(\\theta\\)",
+     "confidence": null,
+     "latency_s": 0.164,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "4. $ \\theta $",
+     "confidence": null,
+     "latency_s": 0.116,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q5": {
+   "label": "Q5",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q5.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      91,
+      247,
+      193,
+      267
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "D",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"D\"\n  ]\n  , \"confidence\": 0.9}",
+     "confidence": 0.9,
+     "latency_s": 2.848,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.557,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "5. \u2460",
+     "confidence": null,
+     "latency_s": 0.336,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "5. D",
+     "confidence": null,
+     "latency_s": 0.39,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "D",
+     "raw": "5. D",
+     "confidence": null,
+     "latency_s": 0.101,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q6": {
+   "label": "Q6",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q6.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      93,
+      279,
+      188,
+      302
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "confidence": 1.0,
+     "latency_s": 2.165,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.977,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "6. C",
+     "confidence": null,
+     "latency_s": 0.384,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "C. C",
+     "confidence": null,
+     "latency_s": 0.388,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "C. C",
+     "confidence": null,
+     "latency_s": 0.098,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q7": {
+   "label": "Q7",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q7.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      91,
+      316,
+      163,
+      339
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\n    \"B\"\n  ]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 3.149,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.876,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "7. B",
+     "confidence": null,
+     "latency_s": 0.349,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "7. B",
+     "confidence": null,
+     "latency_s": 0.389,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "7. B",
+     "confidence": null,
+     "latency_s": 0.077,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q8": {
+   "label": "Q8",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q8.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      103,
+      356,
+      191,
+      377
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  ,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.571,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.824,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "8. C",
+     "confidence": null,
+     "latency_s": 0.365,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "8. C",
+     "confidence": null,
+     "latency_s": 0.373,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "8. C",
+     "confidence": null,
+     "latency_s": 0.059,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q9": {
+   "label": "Q9",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q9.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      98,
+      394,
+      191,
+      415
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "confidence": 1.0,
+     "latency_s": 2.157,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.725,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "8. 10",
+     "confidence": null,
+     "latency_s": 0.385,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "9. D",
+     "confidence": null,
+     "latency_s": 0.346,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "9. 2",
+     "confidence": null,
+     "latency_s": 0.105,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q10": {
+   "label": "Q10",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q10.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      103,
+      432,
+      178,
+      453
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.214,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.995,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "10. B",
+     "confidence": null,
+     "latency_s": 0.382,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "10. B",
+     "confidence": null,
+     "latency_s": 0.397,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "10. B",
+     "confidence": null,
+     "latency_s": 0.093,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q11": {
+   "label": "Q11",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q11.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      103,
+      468,
+      171,
+      489
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"],\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 2.436,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.284,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "11. A",
+     "confidence": null,
+     "latency_s": 0.38,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "11. A",
+     "confidence": null,
+     "latency_s": 0.402,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "11. A",
+     "confidence": null,
+     "latency_s": 0.103,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q12": {
+   "label": "Q12",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q12.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      106,
+      505,
+      176,
+      527
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "B",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"B\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 2.476,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 39.983,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "12. B",
+     "confidence": null,
+     "latency_s": 0.383,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "12. D",
+     "confidence": null,
+     "latency_s": 0.398,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "12. B",
+     "confidence": null,
+     "latency_s": 0.106,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q13": {
+   "label": "Q13",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q13.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      106,
+      537,
+      178,
+      558
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 2.674,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0}",
+     "confidence": 0.0,
+     "latency_s": 4.577,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "13. C",
+     "confidence": null,
+     "latency_s": 0.382,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "13. C",
+     "confidence": null,
+     "latency_s": 0.4,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "13. C",
+     "confidence": null,
+     "latency_s": 0.098,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q14": {
+   "label": "Q14",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q14.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      108,
+      570,
+      183,
+      593
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "C",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"C\"]\n  , \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 2.717,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "C",
+     "raw": "{\"status\": \"unclear\", \"options\": [\"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\", \"C\",",
+     "confidence": null,
+     "latency_s": 37.332,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "14. c",
+     "confidence": null,
+     "latency_s": 0.377,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "14. C",
+     "confidence": null,
+     "latency_s": 0.388,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "14. C",
+     "confidence": null,
+     "latency_s": 0.091,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q15": {
+   "label": "Q15",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q15.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      106,
+      608,
+      203,
+      630
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 3.103,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.33,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "15. (A)",
+     "confidence": null,
+     "latency_s": 0.442,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "15. A",
+     "confidence": null,
+     "latency_s": 0.208,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A",
+     "raw": "15. A",
+     "confidence": null,
+     "latency_s": 0.102,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q16": {
+   "label": "Q16",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q16.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      108,
+      644,
+      178,
+      667
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "B"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "D",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"D\"],\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 2.723,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 37.173,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "B",
+     "raw": "16. B",
+     "confidence": null,
+     "latency_s": 0.453,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "B",
+     "raw": "16. B",
+     "confidence": null,
+     "latency_s": 0.206,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "B",
+     "raw": "16. B",
+     "confidence": null,
+     "latency_s": 0.108,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q17": {
+   "label": "Q17",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q17.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      108,
+      687,
+      178,
+      709
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "A",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"A\"]\n  ,\n  \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 3.218,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.746,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A",
+     "raw": "17. A",
+     "confidence": null,
+     "latency_s": 0.448,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A",
+     "raw": "17. A",
+     "confidence": null,
+     "latency_s": 0.21,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "17. \u65e5",
+     "confidence": null,
+     "latency_s": 0.1,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q18": {
+   "label": "Q18",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q18.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      113,
+      720,
+      186,
+      740
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "D"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "D",
+     "raw": "{\n  \"status\": \"answered\",\n  \"options\": [\"D\"]\n  , \"confidence\": 0.9\n}",
+     "confidence": 0.9,
+     "latency_s": 2.982,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.217,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "D",
+     "raw": "18. D",
+     "confidence": null,
+     "latency_s": 0.426,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "D",
+     "raw": "18. D",
+     "confidence": null,
+     "latency_s": 0.192,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "D",
+     "raw": "18. D",
+     "confidence": null,
+     "latency_s": 0.098,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q19": {
+   "label": "Q19",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q19.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      113,
+      756,
+      191,
+      777
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "A"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\n  \"status\": \"unclear\",\n  \"options\": []\n  , \"confidence\": 0.0\n}",
+     "confidence": 0.0,
+     "latency_s": 2.91,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []",
+     "confidence": null,
+     "latency_s": 36.214,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "unclear",
+     "value": "",
+     "raw": "19. 0",
+     "confidence": null,
+     "latency_s": 0.414,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "unclear",
+     "value": "",
+     "raw": "19. \\(\\theta\\)",
+     "confidence": null,
+     "latency_s": 0.205,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "unclear",
+     "value": "",
+     "raw": "19. $ \\theta $",
+     "confidence": null,
+     "latency_s": 0.098,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "Q20": {
+   "label": "Q20",
+   "kind": "mcq",
+   "crop": "crops/Student_15/Q20.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p1.png",
+     "bbox": [
+      108,
+      790,
+      196,
+      812
+     ]
+    }
+   ],
+   "gold": {
+    "answer": "C"
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "blank",
+     "value": "",
+     "raw": "{\n  \"status\": \"blank\",\n  \"options\": []\n  , \"confidence\": 100\n}",
+     "confidence": 1.0,
+     "latency_s": 2.723,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "unclear",
+     "value": "",
+     "raw": "{\"status\": \"unclear\", \"options\": []  , \"confidence\": 0.0}",
+     "confidence": 0.0,
+     "latency_s": 3.884,
+     "prompt_hash": "214f6299d030",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "C",
+     "raw": "20. C",
+     "confidence": null,
+     "latency_s": 0.371,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "C",
+     "raw": "20. C",
+     "confidence": null,
+     "latency_s": 0.097,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "C",
+     "raw": "20. C",
+     "confidence": null,
+     "latency_s": 0.082,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S1": {
+   "label": "Q21",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S1.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p2.png",
+     "bbox": [
+      78,
+      33,
+      968,
+      165
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 2.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "Answer\n21. Supervised learning : try mode relationship and dependencies\nbetween the target predict of output value and the feature input\nnew data such the predict of output value base on the relationship\n22. The two challenges of Machine learning :",
+     "raw": "{\n    \"text\": \"Answer\\n21. Supervised learning : try mode relationship and dependencies\\nbetween the target predict of output value and the feature input\\nnew data such the predict of output value base on the relationship\\n22. The two challenges of Machine learning :\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 6.219,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "Supervised learning : try to mode relationship and depedecries between the target predict of output value and the feature input new data such the predict of output value base on the relationship\n\nQ. The two challenges of Machine learning :",
+     "raw": "Supervised learning : try to mode relationship and depedecries between the target predict of output value and the feature input new data such the predict of output value base on the relationship\n\nQ. The two challenges of Machine learning :",
+     "confidence": null,
+     "latency_s": 6.386,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Supervised learning : try to find relationship and dependencies between the target predict of output value and the feature input new data such the predict of output value base on the relationship\n\n2. The two challenges of Machine learning :",
+     "raw": "Answer\n\n21. Supervised learning : try to find relationship and dependencies between the target predict of output value and the feature input new data such the predict of output value base on the relationship\n\n2. The two challenges of Machine learning :",
+     "confidence": null,
+     "latency_s": 1.494,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Supervised learning: try mode to relationship and depedecies between the target predict of output value and the feature input new data such the predict of output value base on the relationship. The two challenges of Machine learning:",
+     "raw": "Answer\n21. Supervised learning: try mode to relationship and depedecies between the target predict of output value and the feature input new data such the predict of output value base on the relationship. The two challenges of Machine learning:",
+     "confidence": null,
+     "latency_s": 0.264,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Supervised learning : try mode relationship and depedecies between the target predict of output value and the feature input new data such the predict of output value base on the relationship\n22. The two challenges of Machine learning :",
+     "raw": "Answer\n21. Supervised learning : try mode relationship and depedecies between the target predict of output value and the feature input new data such the predict of output value base on the relationship\n22. The two challenges of Machine learning :",
+     "confidence": null,
+     "latency_s": 0.263,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S2": {
+   "label": "Q22",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S2.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p2.png",
+     "bbox": [
+      78,
+      550,
+      988,
+      985
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "and polynomial regress\nQ2. A model M\u2081 gives 99% of accuracy for training dataset\nand it gives 30% of accuracy for testing dataset. for the model\nM\u2081 mean we need to training machine first before testing it.\nExample: we have one Robot and want it to detect the color\nand the color that we have are three such as red, yellow, blue\nSo first we need to train the robot of model M\u2081 and make it known\nreally\nall color and then take it to test to know it can know all the color\nthis\nor not. We do like to make it must easy and make them do\ncheck any mistake.",
+     "raw": "{\n    \"text\": \"and polynomial regress\\nQ2. A model M\u2081 gives 99% of accuracy for training dataset\\nand it gives 30% of accuracy for testing dataset. for the model\\nM\u2081 mean we need to training machine first before testing it.\\nExample: we have one Robot and want it to detect the color\\nand the color that we have are three such as red, yellow, blue\\nSo first we need to train the robot of model M\u2081 and make it known\\nreally\\nall color and then take it to test to know it can know all the color\\nthis\\nor not. We do like to make it must easy and make them do\\ncheck any mistake.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 10.951,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "and polynomial regression\n\nQ2. A model $M_1$ gives $99\\%$ of accurracy for training dataset\nand it gives $30\\%$ of accuracy for testing dataset. For the model\n$M_1$ mean we need to training machine first before testing it.\n\nExample : we have one Robot and want it to dedict the color\nand the color that we have are threes such as red, yellor, blue\nSo first ~~we need't~~ to train the robot of model $M_1$ and make it known\nrealy\nall color and then take it to test to know if it can know all the color\nthis\nor not. We do like to make it it must easy and make them do\ncheck any mistack ,",
+     "raw": "and polynomial regression\n\nQ2. A model $M_1$ gives $99\\%$ of accurracy for training dataset\nand it gives $30\\%$ of accuracy for testing dataset. For the model\n$M_1$ mean we need to training machine first before testing it.\n\nExample : we have one Robot and want it to dedict the color\nand the color that we have are threes such as red, yellor, blue\nSo first ~~we need't~~ to train the robot of model $M_1$ and make it known\nrealy\nall color and then take it to test to know if it can know all the color\nthis\nor not. We do like to make it it must easy and make them do\ncheck any mistack ,",
+     "confidence": null,
+     "latency_s": 14.032,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "and polynomial regression\n\nQ2. A model M_1 gives 99% of accuracy for training dataset and it gives 30% of accuracy for testing dataset. For the model M_1 mean we need to training machine first before testing it.\n\nExample: we have one robot and want it to detect the color and the color that we have are three such as red, yellow, blue. So first we need to train the robot of model M_1 and make it know all color and then take it to test to know if it really can know all the color or not. We do like this to make it ~~not~~ must easy and make them to check any mistake.",
+     "raw": "and polynomial regression\n\nQ2. A model M_1 gives 99% of accuracy for training dataset and it gives 30% of accuracy for testing dataset. For the model M_1 mean we need to training machine first before testing it.\n\nExample: we have one robot and want it to detect the color and the color that we have are three such as red, yellow, blue. So first we need to train the robot of model M_1 and make it know all color and then take it to test to know if it really can know all the color or not. We do like this to make it ~~not~~ must easy and make them to check any mistake.",
+     "confidence": null,
+     "latency_s": 2.455,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "and polynomial\n\n2. B model M\u2081 gives 99% of accuracy for training dataset\nand it gives 30% of accuracy for testing dataset. For the model\nM\u2081 mean we need to train machine first before testing it.\nExample: we have one Robot and want it to dedict the color\nand the color that we have are three's such as red, yellow, blue\nSo first we need to train the robot of model M\u2081 and make it known\nreally\nall color and then take it to test to know. It can know all the color\nthis\nor not. We do like to make it must easy and make them do\ncheck any mistake.",
+     "raw": "and polynomial\n\n2. B model M\u2081 gives 99% of accuracy for training dataset\nand it gives 30% of accuracy for testing dataset. For the model\nM\u2081 mean we need to train machine first before testing it.\nExample: we have one Robot and want it to dedict the color\nand the color that we have are three's such as red, yellow, blue\nSo first we need to train the robot of model M\u2081 and make it known\nreally\nall color and then take it to test to know. It can know all the color\nthis\nor not. We do like to make it must easy and make them do\ncheck any mistake.",
+     "confidence": null,
+     "latency_s": 0.609,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A model $M_i$ gives 99% of accuracy for training dataset and it gives 30% of accuracy for testing dataset. For the model $M_i$ mean we need to train machine first before testing it.\n\nExample: we have one robot and want it to detect the color and the color that we have are three such as red, yellow, blue. So first we need to train the robot of model $M_i$ and make it known all color and then take it to test to know it. It can know all the color or not. We do like to make it must easy and make them to check any mistake.",
+     "raw": "22. A model $M_i$ gives 99% of accuracy for training dataset and it gives 30% of accuracy for testing dataset. For the model $M_i$ mean we need to train machine first before testing it.\n\nExample: we have one robot and want it to detect the color and the color that we have are three such as red, yellow, blue. So first we need to train the robot of model $M_i$ and make it known all color and then take it to test to know it. It can know all the color or not. We do like to make it must easy and make them to check any mistake.",
+     "confidence": null,
+     "latency_s": 0.448,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S3": {
+   "label": "Q23",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S3.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p2.png",
+     "bbox": [
+      78,
+      410,
+      985,
+      558
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "23. Regression analysis is the assumptions of multivariate normality\nand make it process with simple regression, multiple regression,\nand polynomial regression.",
+     "raw": "{\n    \"text\": \"23. Regression analysis is the assumptions of multivariate normality\\nand make it process with simple regression, multiple regression,\\nand polynomial regression.\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 4.615,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "it's device the data is clear [?] [?]\n\n23. Regression analysis is the assumptions of multivariate normality\nand make it process with simple Regression, multiple regression,\nand polynomial regression.\n\naccuracy for training dataset",
+     "raw": "it's device the data is clear [?] [?]\n\n23. Regression analysis is the assumptions of multivariate normality\nand make it process with simple Regression, multiple regression,\nand polynomial regression.\n\naccuracy for training dataset",
+     "confidence": null,
+     "latency_s": 4.668,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "it's device the data is clear\n23. Regression analysis is the assumptions of multivariate normality and make it process with simple regression, multiple regression, and polynomial regression.\n\naccuracy for training dataset",
+     "raw": "it's device the data is clear\n23. Regression analysis is the assumptions of multivariate normality and make it process with simple regression, multiple regression, and polynomial regression.\n\naccuracy for training dataset",
+     "confidence": null,
+     "latency_s": 1.078,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Regression analysis is the assumptions of multivariate normality and make it process with simple regression, multiple regression, and polynomial regression. accuracy for training dataset",
+     "raw": "23. Regression analysis is the assumptions of multivariate normality and make it process with simple regression, multiple regression, and polynomial regression. accuracy for training dataset",
+     "confidence": null,
+     "latency_s": 0.247,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "Regression analysis is the assumptions of multivariate normality and make it process with simple regression, multiple regression, and polynomial regression.",
+     "raw": "23. Regression analysis is the assumptions of multivariate normality and make it process with simple regression, multiple regression, and polynomial regression.",
+     "confidence": null,
+     "latency_s": 0.238,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S4": {
+   "label": "Q24",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S4.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p2.png",
+     "bbox": [
+      78,
+      165,
+      690,
+      280
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "24. The two challenges of Machine learning:\n- supervised\n- unsuper vised",
+     "raw": "{\"text\": \"24. The two challenges of Machine learning:\\n- supervised\\n- unsuper vised\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 3.208,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "The two challenges of Machine learning :\n- supervised\n- unsupervised",
+     "raw": "The two challenges of Machine learning :\n- supervised\n- unsupervised",
+     "confidence": null,
+     "latency_s": 1.73,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "The two challenges of Machine learning:\n\n- Supervised\n- Unsupervised",
+     "raw": "24. The two challenges of Machine learning:\n\n- Supervised\n- Unsupervised",
+     "confidence": null,
+     "latency_s": 0.887,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "The two challenges of Machine learning:\n- Supervised\n- Unsupervised",
+     "raw": "24. The two challenges of Machine learning:\n- Supervised\n- Unsupervised",
+     "confidence": null,
+     "latency_s": 0.186,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "The two challenges of Machine learning:\n- supervised\n- unsupervised",
+     "raw": "24. The two challenges of Machine learning:\n- supervised\n- unsupervised",
+     "confidence": null,
+     "latency_s": 0.239,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S5": {
+   "label": "Q25",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S5.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p3.png",
+     "bbox": [
+      78,
+      102,
+      988,
+      208
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "25. The two major applications of data Science\n- Quantitative data : it have two types discrete and Continuous\n- Qualitative data : it have two types Nominal and ordinal",
+     "raw": "{\n    \"text\": \"25. The two major applications of data Science\\n- Quantitative data : it have two types discrete and Continuous\\n- Qualitative data : it have two types Nominal and ordinal\",\n    \"illegible_tokens\": 0,\n    \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 4.828,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "The two major applications of data science\n- Quantitative data : it have two types discrete and Continuous\n- Qualitative data : it have two types Nominal and ordinal",
+     "raw": "The two major applications of data science\n- Quantitative data : it have two types discrete and Continuous\n- Qualitative data : it have two types Nominal and ordinal",
+     "confidence": null,
+     "latency_s": 3.358,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "The two major applications of data science\n\n- Quantitative data : it have two types discrete and Continuous\n- Qualitative data : it have two types Nominal and ordinal",
+     "raw": "25. The two major applications of data science\n\n- Quantitative data : it have two types discrete and Continuous\n- Qualitative data : it have two types Nominal and ordinal",
+     "confidence": null,
+     "latency_s": 1.053,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "The two major applications of data Science\n- Qualitative data: it has two types: discrete and continuous\n- Qualitative data: it has two types: nominal and ordinal",
+     "raw": "25. The two major applications of data Science\n- Qualitative data: it has two types: discrete and continuous\n- Qualitative data: it has two types: nominal and ordinal",
+     "confidence": null,
+     "latency_s": 0.247,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "The two major applications of data science\n- Qualitative data : it have two types describe and Continuous\n- Qualitative data : it have two types nominal and ordinal",
+     "raw": "25. The two major applications of data science\n- Qualitative data : it have two types describe and Continuous\n- Qualitative data : it have two types nominal and ordinal",
+     "confidence": null,
+     "latency_s": 0.249,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S6": {
+   "label": "Q26",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S6.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p3.png",
+     "bbox": [
+      78,
+      215,
+      988,
+      410
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "26. structured data and semi-structured data\n- structured data :\n- semi-structured data : the combination between supervise\nand unsupervise. it's work with small amount of supervise value\nand large amount of unsupervise value.",
+     "raw": "{\n  \"text\": \"26. structured data and semi-structured data\\n- structured data :\\n- semi-structured data : the combination between supervise\\nand unsupervise. it's work with small amount of supervise value\\nand large amount of unsupervise value.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 5.559,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "- Structured data and semi-structured data\n\n- structured data :\n\n- semi-structured data : the combination between supervise\nand unsupervise. it's work with ~~small~~ amount of supervise value\nand large amont of unsupervise value.",
+     "raw": "- Structured data and semi-structured data\n\n- structured data :\n\n- semi-structured data : the combination between supervise\nand unsupervise. it's work with ~~small~~ amount of supervise value\nand large amont of unsupervise value.",
+     "confidence": null,
+     "latency_s": 5.053,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "- Structured data and semi-structured data\n\n- structured data:\n\n- semi-structured data: the combination between supervise and unsupervise. it's work with small amount of supervise value and large amount of unsupervise value.",
+     "raw": "26. - Structured data and semi-structured data\n\n- structured data:\n\n- semi-structured data: the combination between supervise and unsupervise. it's work with small amount of supervise value and large amount of unsupervise value.",
+     "confidence": null,
+     "latency_s": 1.363,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Structured data and semi-structured data\n- structured data:\n- semi-structured data: the combination between supervise and unsupervise. It's work with small amount of supervise value and large amount of unsupervise value.",
+     "raw": "26. Structured data and semi-structured data\n- structured data:\n- semi-structured data: the combination between supervise and unsupervise. It's work with small amount of supervise value and large amount of unsupervise value.",
+     "confidence": null,
+     "latency_s": 0.289,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "- structured data and semi-structured data\n- structured data:\n- semi-structured data: the combination between supervise and unsupervise. it's work with small amount of supervise value and large amount of unsupervise value.",
+     "raw": "26. - structured data and semi-structured data\n- structured data:\n- semi-structured data: the combination between supervise and unsupervise. it's work with small amount of supervise value and large amount of unsupervise value.",
+     "confidence": null,
+     "latency_s": 0.257,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S7": {
+   "label": "Q27",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S7.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p3.png",
+     "bbox": [
+      78,
+      408,
+      988,
+      565
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "and large amount of unsupervise Value.\n27. To find out an outlier in the data is we need to got the\npoint that near the outlier point and combine it again and\nagain until can't find the point ~~of out of data~~ that not\nit the group.",
+     "raw": "{\"text\": \"and large amount of unsupervise Value.\\n27. To find out an outlier in the data is we need to got the\\npoint that near the outlier point and combine it again and\\nagain until can't find the point ~~of out of data~~ that not\\nit the group.\", \"illegible_tokens\": 0, \"confidence\": 0.95}",
+     "confidence": 0.95,
+     "latency_s": 5.344,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "and large amont of unsupervise Value.\n\n27. To ~~find~~ out an outlier in the data is we need to get the point that near the outlrer point and combine it again and again until can't find the point of out of data that not it the group.",
+     "raw": "and large amont of unsupervise Value.\n\n27. To ~~find~~ out an outlier in the data is we need to get the point that near the outlrer point and combine it again and again until can't find the point of out of data that not it the group.",
+     "confidence": null,
+     "latency_s": 5.593,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "and large amount of unsupervised value.\n\n27. To find out an outlier in the data is we need to get the point that near the outlier point and combine it again and again until can't find the point ~~out of data~~ that not fit the group.",
+     "raw": "and large amount of unsupervised value.\n\n27. To find out an outlier in the data is we need to get the point that near the outlier point and combine it again and again until can't find the point ~~out of data~~ that not fit the group.",
+     "confidence": null,
+     "latency_s": 1.259,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "and large amount of unsupervised value.\n\n87. To find out an outlier in the data is we need to get the point that near the outlier point and combine it again and again until can't find the point that not it the group.",
+     "raw": "and large amount of unsupervised value.\n\n87. To find out an outlier in the data is we need to get the point that near the outlier point and combine it again and again until can't find the point that not it the group.",
+     "confidence": null,
+     "latency_s": 0.254,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "and large amount of unsupervise value.\n87. To find out an outlier in the data is we need to get the point that near the outlier point and combine it again and again until can't find the point of out of data that not it the group.",
+     "raw": "and large amount of unsupervise value.\n87. To find out an outlier in the data is we need to get the point that near the outlier point and combine it again and again until can't find the point of out of data that not it the group.",
+     "confidence": null,
+     "latency_s": 0.282,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S8": {
+   "label": "Q28",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S8.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p3.png",
+     "bbox": [
+      78,
+      565,
+      945,
+      670
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "it the group.\n28. Data pre- processing is the data that can make\ndata look clean.",
+     "raw": "{\n  \"text\": \"it the group.\\n28. Data pre- processing is the data that can make\\ndata look clean.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 3.594,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "it the group .\n28. Data pre-proprocessing is the data that can make\ndata ~~look~~ clean .\ndiscretized the variable of",
+     "raw": "it the group .\n28. Data pre-proprocessing is the data that can make\ndata ~~look~~ clean .\ndiscretized the variable of",
+     "confidence": null,
+     "latency_s": 2.75,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "if the group.\n\n28. Data pre-processing is the data that can make data look clean.\n\ndiscretized the variable of",
+     "raw": "if the group.\n\n28. Data pre-processing is the data that can make data look clean.\n\ndiscretized the variable of",
+     "confidence": null,
+     "latency_s": 1.182,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "Data pre-processing is the data that can make data look clean.",
+     "raw": "28. Data pre-processing is the data that can make data look clean.",
+     "confidence": null,
+     "latency_s": 0.161,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "it the group.\n28. Data pre-proprocessing is the data that can make data look clean.",
+     "raw": "it the group.\n28. Data pre-proprocessing is the data that can make data look clean.",
+     "confidence": null,
+     "latency_s": 0.185,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S9": {
+   "label": "Q29",
+   "kind": "subjective",
+   "crop": null,
+   "boxes": [],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": null,
+    "gemma4-31b-fp8": null,
+    "chandra-ocr-2": null,
+    "paddleocr-vl-1.6": null,
+    "glm-ocr": null
+   }
+  },
+  "S10": {
+   "label": "Q30",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S10.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p3.png",
+     "bbox": [
+      83,
+      660,
+      895,
+      778
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "data look clean.\n30. Continuous attributes are discretized the variable of\nthe output and input value.",
+     "raw": "{\n  \"text\": \"data look clean.\\n30. Continuous attributes are discretized the variable of\\nthe output and input value.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 1.0\n}",
+     "confidence": 1.0,
+     "latency_s": 3.598,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "data ~~look~~ clean.\n\n30. Continuous attributes are discretized the variable of\nthe output and input value.\n\n[?] k-NN because [?]",
+     "raw": "data ~~look~~ clean.\n\n30. Continuous attributes are discretized the variable of\nthe output and input value.\n\n[?] k-NN because [?]",
+     "confidence": null,
+     "latency_s": 2.763,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "data look clean.\n\n30. Continuous attributes are discretized the variable of the output and input value.\n\n1 - k-NN because of",
+     "raw": "data look clean.\n\n30. Continuous attributes are discretized the variable of the output and input value.\n\n1 - k-NN because of",
+     "confidence": null,
+     "latency_s": 1.214,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "data look clean.\n30. Continuous attributes are discretized the variable of the output and Input value.",
+     "raw": "data look clean.\n30. Continuous attributes are discretized the variable of the output and Input value.",
+     "confidence": null,
+     "latency_s": 0.164,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "data look clean.\n30. Continuous attributes are discretized the variable of the output and input value.",
+     "raw": "data look clean.\n30. Continuous attributes are discretized the variable of the output and input value.",
+     "confidence": null,
+     "latency_s": 0.166,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S11": {
+   "label": "Q31",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S11.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p3.png",
+     "bbox": [
+      83,
+      775,
+      925,
+      880
+     ]
+    },
+    {
+     "page": "Student_15_p4.png",
+     "bbox": [
+      84,
+      0,
+      995,
+      80
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "the output and input.\neg. data normalization is required in k-NN because it\nuse to find categorical variables value.\n31. k in k-means algorithm is used to calculation the value of \u03a3.",
+     "raw": "{\n  \"text\": \"the output and input.\\neg. data normalization is required in k-NN because it\\nuse to find categorical variables value.\\n31. k in k-means algorithm is used to calculation the value of \u03a3.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 4.745,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "the output and input.\n\n29. data normalization is required in k-NN because it\nuse to find categorical variables value.\n31. k in k.means algorithm is used to calculation the value \u2463\nof $\\Sigma$.",
+     "raw": "the output and input.\n\n29. data normalization is required in k-NN because it\nuse to find categorical variables value.\n31. k in k.means algorithm is used to calculation the value \u2463\nof $\\Sigma$.",
+     "confidence": null,
+     "latency_s": 4.998,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "the output and input.\n\neg. data normalization is required in k-NN because it use to find categorical variables value.\n31. K in K-means algorithm is used to calculate the value of \\epsilon.",
+     "raw": "the output and input.\n\neg. data normalization is required in k-NN because it use to find categorical variables value.\n31. K in K-means algorithm is used to calculate the value of \\epsilon.",
+     "confidence": null,
+     "latency_s": 1.366,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "2g. data normalization is required in k-NN because it\nUse to find Categorical Variables Value.\n31. k in k.means algorithm is used to calculation the value \u2463 of 2.",
+     "raw": "2g. data normalization is required in k-NN because it\nUse to find Categorical Variables Value.\n31. k in k.means algorithm is used to calculation the value \u2463 of 2.",
+     "confidence": null,
+     "latency_s": 0.295,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "29. data normalization is required in K-NN because it\nuse to find categorical variables value.\n31. k in k. means algorithm is used to calculation the value $ \\textcircled{4} $ of .",
+     "raw": "29. data normalization is required in K-NN because it\nuse to find categorical variables value.\n31. k in k. means algorithm is used to calculation the value $ \\textcircled{4} $ of .",
+     "confidence": null,
+     "latency_s": 0.308,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S12": {
+   "label": "Q32",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S12.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p4.png",
+     "bbox": [
+      84,
+      95,
+      995,
+      180
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "32. The name few hyperparameters of machine learning algorithm\nis Support vector machine (SVM).",
+     "raw": "{\"text\": \"32. The name few hyperparameters of machine learning algorithm\\nis Support vector machine (SVM).\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 2.9,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "42. The name few hyperparameters of machine learning algorithm\nis Suport vector machine (SVM).",
+     "raw": "42. The name few hyperparameters of machine learning algorithm\nis Suport vector machine (SVM).",
+     "confidence": null,
+     "latency_s": 2.26,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "Q2. The name few hyperparameters of machine learning algorithm is Support vector machine (SVM).",
+     "raw": "Q2. The name few hyperparameters of machine learning algorithm is Support vector machine (SVM).",
+     "confidence": null,
+     "latency_s": 0.479,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "The name few hyperparameters of machine learning algorithms support vector machine (SVM)",
+     "raw": "The name few hyperparameters of machine learning algorithms support vector machine (SVM)",
+     "confidence": null,
+     "latency_s": 0.088,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "22. The name few hyperparameters of machine learning algorithm is Support vector machine (SVM).",
+     "raw": "22. The name few hyperparameters of machine learning algorithm is Support vector machine (SVM).",
+     "confidence": null,
+     "latency_s": 0.127,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S13": {
+   "label": "Q33",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S13.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p4.png",
+     "bbox": [
+      84,
+      185,
+      910,
+      275
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "33. gradient descent is the algorithm that we used to\nfind output of regression.",
+     "raw": "{\"text\": \"33. gradient descent is the algorithm that we used to\\nfind output of regression.\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 2.597,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "gradien descent is the algorithm that we used to\nfind output of regression.",
+     "raw": "gradien descent is the algorithm that we used to\nfind output of regression.",
+     "confidence": null,
+     "latency_s": 2.227,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "gradient descent is the algorithm that we used to find output of regression.",
+     "raw": "33. gradient descent is the algorithm that we used to find output of regression.",
+     "confidence": null,
+     "latency_s": 0.541,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "gradient descent is the algorithm that we used to find output of regression.",
+     "raw": "33. gradient descent is the algorithm that we used to find output of regression.",
+     "confidence": null,
+     "latency_s": 0.148,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "gradien descent is the algorithm that we used to find output of regression.",
+     "raw": "33. gradien descent is the algorithm that we used to find output of regression.",
+     "confidence": null,
+     "latency_s": 0.147,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S14": {
+   "label": "Q34",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S14.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p2.png",
+     "bbox": [
+      78,
+      285,
+      975,
+      415
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 1.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "34. For Linear boundaries identified by three different SVM classifiers\nas shown below, the first picture is good choose way because\ncorrect\nit's device the data is clear and line is set data by group.",
+     "raw": "{\n  \"text\": \"34. For Linear boundaries identified by three different SVM classifiers\\nas shown below, the first picture is good choose way because\\ncorrect\\nit's device the data is clear and line is set data by group.\",\n  \"illegible_tokens\": 0,\n  \"confidence\": 0.95\n}",
+     "confidence": 0.95,
+     "latency_s": 4.31,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "For Linear boundaries identified by three different SVM classifiers as shown below, the first picture is good ~~enough~~ way because it's device the data is clear and line is set data by group.\ncorret\n^",
+     "raw": "For Linear boundaries identified by three different SVM classifiers as shown below, the first picture is good ~~enough~~ way because it's device the data is clear and line is set data by group.\ncorret\n^",
+     "confidence": null,
+     "latency_s": 3.885,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "- group\n\n34. For linear boundaries identified by three different SVM classifiers as shown below, the first picture is good ~~choice~~ way because it's device the data is clear and line is set data by correct group.\n\nmultivariate normality",
+     "raw": "- group\n\n34. For linear boundaries identified by three different SVM classifiers as shown below, the first picture is good ~~choice~~ way because it's device the data is clear and line is set data by correct group.\n\nmultivariate normality",
+     "confidence": null,
+     "latency_s": 1.357,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "For linear boundaries identified by three different SVM classifiers as shown below, the first picture is good change way because correct it's device the data is clear and fine is set data by group.",
+     "raw": "34. For linear boundaries identified by three different SVM classifiers as shown below, the first picture is good change way because correct it's device the data is clear and fine is set data by group.",
+     "confidence": null,
+     "latency_s": 0.176,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "For linear boundaries identified by three different svm classifiers as shown below, the first picture is good change way because it's device the data is clear and line is set data by group.",
+     "raw": "34. For linear boundaries identified by three different svm classifiers as shown below, the first picture is good change way because it's device the data is clear and line is set data by group.",
+     "confidence": null,
+     "latency_s": 0.16,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  },
+  "S15": {
+   "label": "Q35",
+   "kind": "subjective",
+   "crop": "crops/Student_15/S15.jpg",
+   "boxes": [
+    {
+     "page": "Student_15_p4.png",
+     "bbox": [
+      84,
+      305,
+      775,
+      345
+     ]
+    }
+   ],
+   "gold": {
+    "marks": 0.0
+   },
+   "readings": {
+    "qwen38-27b-fp8": {
+     "reader": "qwen38-27b-fp8",
+     "version": "Qwen/Qwen3.8-27B-FP8@c3a462cc3d",
+     "status": "answered",
+     "value": "35. A Radial basis function kernel work in",
+     "raw": "{\"text\": \"35. A Radial basis function kernel work in\", \"illegible_tokens\": 0, \"confidence\": 1.0}",
+     "confidence": 1.0,
+     "latency_s": 1.977,
+     "prompt_hash": "402f5ebd7c6b",
+     "error": ""
+    },
+    "gemma4-31b-fp8": {
+     "reader": "gemma4-31b-fp8",
+     "version": "RedHatAI/gemma-4-31B-it-FP8-block@d7242548c4",
+     "status": "answered",
+     "value": "A Radial basis function kernel work on [?]",
+     "raw": "A Radial basis function kernel work on [?]",
+     "confidence": null,
+     "latency_s": 1.461,
+     "prompt_hash": "cb65b1211411",
+     "error": ""
+    },
+    "chandra-ocr-2": {
+     "reader": "chandra-ocr-2",
+     "version": "datalab-to/chandra-ocr-2@af93b47dba",
+     "status": "answered",
+     "value": "A Radial basis function kernel work in ...",
+     "raw": "35. A Radial basis function kernel work in ...",
+     "confidence": null,
+     "latency_s": 0.474,
+     "prompt_hash": "c4f9912f02cc",
+     "error": ""
+    },
+    "paddleocr-vl-1.6": {
+     "reader": "paddleocr-vl-1.6",
+     "version": "PaddlePaddle/PaddleOCR-VL-1.6@132c45f52c",
+     "status": "answered",
+     "value": "A Radial basis function kernel work in",
+     "raw": "35. A Radial basis function kernel work in",
+     "confidence": null,
+     "latency_s": 0.148,
+     "prompt_hash": "d715a33c90db",
+     "error": ""
+    },
+    "glm-ocr": {
+     "reader": "glm-ocr",
+     "version": "zai-org/GLM-OCR@2e85a62840",
+     "status": "answered",
+     "value": "A Radial basis function kernel work in",
+     "raw": "35. A Radial basis function kernel work in",
+     "confidence": null,
+     "latency_s": 0.148,
+     "prompt_hash": "77e8207573e1",
+     "error": ""
+    }
+   }
+  }
+ }
+}

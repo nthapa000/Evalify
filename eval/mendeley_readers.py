@@ -26,7 +26,8 @@ from app.pipeline import llm, quality, readers  # noqa: E402
 import dataset  # noqa: E402
 
 REPORTS = ROOT / "eval" / "reports" / "mendeley"
-READERS = ["qwen38-27b-fp8", "chandra-ocr-2", "paddleocr-vl-1.6", "glm-ocr"]
+READERS = ["qwen38-27b-fp8", "gemma4-31b-fp8", "chandra-ocr-2", "paddleocr-vl-1.6", "glm-ocr"]
+VLMS = {"qwen38-27b-fp8", "gemma4-31b-fp8"}       # general readers (JSON prompts); the rest are OCR models
 
 
 def endpoint(name: str):
@@ -57,10 +58,11 @@ def main():
         qs = readers.questions_for(sh.paper)
 
         # Segment once, keeping the boxes so the report can say where each crop came from
-        crops, boxes = {}, {}
+        crops, boxes, seg_s = {}, {}, 0.0
         for pi, page in enumerate(pages):
             from app.prompts import prompt_pipeline as P
             r = llm.chat(seg, P.segment_prompt([q.label for q in qs]), [page], schema=P.SEGMENT_SCHEMA, max_tokens=4096)
+            seg_s += r.latency_s                                       # segmentation time per sheet
             for a in (r.data or {}).get("answers", []):
                 q = next((q for q in qs if q.label.upper() == str(a.get("label", "")).upper()), None)
                 if q and len(a.get("bbox") or []) == 4:
@@ -87,7 +89,14 @@ def main():
             ep = eps[name]
             if ep is None or q.id not in crops:
                 return name, q.id, None
-            r = readers.read_general(ep, q, crops[q.id]) if name.startswith("qwen") else readers.read_ocr(ep, q, crops[q.id])
+            if name in VLMS and not (q.kind == "subjective" and name.startswith("gemma")):
+                r = readers.read_general(ep, q, crops[q.id])
+            elif name in VLMS:
+                # Gemma + guided JSON on long answers runs away on whitespace (minutes per call):
+                # transcribe written answers with the plain-text prompt instead
+                r = readers.read_plain(ep, q, crops[q.id])
+            else:
+                r = readers.read_ocr(ep, q, crops[q.id])
             return name, q.id, asdict(r)
 
         results: dict = {q.id: {"label": q.label, "kind": q.kind, "crop": files.get(q.id),
@@ -99,7 +108,8 @@ def main():
 
         (REPORTS / f"{sh.sheet_id}.json").write_text(json.dumps(
             {"sheet": sh.sheet_id, "pages": sh.pages, "skipped_blank_pages": [Path(p).name for p in skipped],
-             "located": f"{len(crops)}/{len(qs)}", "questions": results}, indent=1))
+             "located": f"{len(crops)}/{len(qs)}", "segment_s": round(seg_s, 1),
+             "wall_s": round(time.time() - t0, 1), "questions": results}, indent=1))
         print(f"{sh.sheet_id}: located {len(crops)}/{len(qs)} answers, {time.time() - t0:.0f}s")
 
 

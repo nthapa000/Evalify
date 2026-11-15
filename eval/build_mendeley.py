@@ -105,7 +105,7 @@ def paper() -> dict:
 def mark(v: str):
     """Teacher mark cell → float, or None for blank / NC (not attempted / not corrected)."""
     v = (v or "").strip()
-    return None if v in ("", "NC") else float(v)
+    return None if v.upper() in ("", "NC", "NM") else float(v)        # NC / NM = not corrected / not marked
 
 
 def main():
