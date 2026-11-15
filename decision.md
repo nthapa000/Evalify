@@ -431,3 +431,25 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
    used as they are (measured: ≈ 0.5 marks/answer stricter than a lenient teacher) → setup screen should say so.
 - Still open: calibration method when used (per-question shift vs few-shot + shift); order of work
   (pipeline into the main code vs UI review).
+
+## 15 Nov 2026 — calibration method, order of work, test-first
+- Calibration (optional, teacher-only): **per-question shift** is the method; **few-shot + shift** kept as the
+  documented alternative (MAE 0.36 vs 0.38, ~5× grader time) in V2_EVALIFY_PLAN.md.
+- Order: **(a) move the new pipeline into the main backend first**, then the UI.
+- **From now on test-centric for UI and backend flow** (user): tests first; tests that run without MongoDB/GPUs
+  (fake model replies), frontend tests (Vitest), one end-to-end flow, small tests for eval helpers — closing the
+  gaps found today pragmatically, not necessarily all at once.
+
+## 15 Nov 2026 — v2 pipeline moved into the backend (test-first)
+- Tests written first: `test_page_reading.py` (14), `test_calibration.py` (5), `test_pipeline_flow.py` (6, whole
+  orchestrator on a type-C paper with fake model replies, no GPU / MongoDB). 69 DB-free tests pass.
+- New `app/pipeline/page_reading.py` (whole-page readers A/B + C on disagreement, majority; subjective
+  transcription by label, crossed-out attempt dropped when rewritten) and `app/pipeline/calibration.py`
+  (per-question shift; optional `paper["calibration"]`). `orchestrator.py` now uses them: one grader (Gemma v2,
+  transcripts only), rubric mark + calibrated mark kept, each flagged question has ONE `review_reason` for the TA.
+  New roles in `infra/models.yaml`: page_reader_a/b/c, transcriber_a/b, grader (old roles kept).
+- Live check on real models: own sheet 2A_s01 all correct, 0 flagged, 7 s; Mendeley Student_3 all 20 MCQ correct,
+  rewrite of Q22 used, 74 s / 4 pages.
+- Open (asked user): unanswered questions. "Not found → TA" flags 170 items on Mendeley to catch 9 real misses
+  (161 truly unanswered). Alternative: not found by both transcribers → "no answer found", 0, not flagged; the
+  student sees it and can use the one re-evaluation request.

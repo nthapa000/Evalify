@@ -1,11 +1,11 @@
-# orchestrator.py — the two-reader grading pipeline for one submission.
+# orchestrator.py — the v2 grading pipeline for one submission (V2_EVALIFY_PLAN.md §3).
 #
-#   pages → quality gate → (OMR | segment + reader A + reader B) per question
-#   → MCQ / numeric scored in code → subjective graded per concept
-#   → routing rules mark what a TA must check.
+#   pages → quality gate → OMR template | whole-page readers A + B (+ C on disagreement, 2 of 3)
+#   → MCQ / numeric scored in code → subjective: whole-page transcription by label → one grader (v2)
+#   → optional teacher calibration → questions the pipeline is unsure of are flagged for a TA with one reason.
 #
-# Output keeps the legacy detail format (mcqDetail / numericalDetail /
-# subjectiveDetail) and adds needs_review / review_reasons / readings per question.
+# Output keeps the legacy detail format (mcqDetail / numericalDetail / subjectiveDetail) and adds
+# needs_review / review_reason(s) / readings per question.
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from typing import Dict, List
 import cv2
 import numpy as np
 
-from app.pipeline import llm, numeric, quality, readers, routing
+from app.pipeline import calibration, llm, numeric, page_reading, quality, readers, routing
 from app.pipeline.grader import grade
 from app.pipeline.readers import Question, Reading
 from app.pipeline.scoring import grade_mcq, grade_numerical
@@ -74,13 +74,14 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
     review = []
     for d in mcq_detail + num_detail + subj_detail:
         r = reads.get(d["question"], {"reasons": [], "a": Reading(), "b": Reading()})
-        if "final" in r and r["final"] is not r["a"]:
-            d["accepted_by"] = "readers B + C (A abstained)" if r["final"] is r["b"] else "readers A + C (B abstained)"
+        if r.get("accepted") and r.get("final") is r.get("b"):
+            d["accepted_by"] = "readers B + C (majority)"
         reasons = sheet_reasons + r["reasons"] + d.pop("_grader_reasons", [])
-        d.update(needs_review=bool(reasons), review_reasons=reasons,
+        # The TA view shows one short reason; the full list is kept for the record
+        d.update(needs_review=bool(reasons), review_reason=reasons[0] if reasons else "", review_reasons=reasons,
                  readings={k: asdict(r[k]) for k in ("a", "b", "c") if k in r})
         if reasons:
-            review.append({"question": d["question"], "reasons": reasons})
+            review.append({"question": d["question"], "reason": reasons[0], "reasons": reasons})
 
     return {
         "answers": answers, "mcq_detail": mcq_detail, "numerical_detail": num_detail,
@@ -146,46 +147,32 @@ def _read_omr_template(files, template: dict, questions: List[Question], pages) 
 
 
 def _read_handwritten(pages, questions: List[Question]):
-    """Segment pages, then run reader A and reader B on every answer in parallel."""
-    ep_a = llm.resolve("reader_a")
+    """Whole-page reading (no crops): MCQ / numerical by majority of readers A, B, C;
+    subjective answers transcribed page by page and grouped by the question number the student wrote."""
+    ep_a = llm.resolve("page_reader_a")
     if ep_a is None:
         raise RuntimeError("no reader model is reachable")
-    ep_b = llm.resolve("reader_b", exclude=(ep_a.name,))
-    ep_c = llm.resolve("reader_c", exclude=(ep_a.name, ep_b.name if ep_b else ""))
-    crops = readers.segment(pages, questions, llm.resolve("segmenter"))
-
-    def read_one(q: Question):
-        # Fall back to whole pages if the segmenter did not locate this answer
-        imgs = crops.get(q.id) or pages
-        a = readers.read_general(ep_a, q, imgs)
-        b = readers.read_ocr(ep_b, q, imgs) if ep_b else Reading()
-        agreed = readers.agree(q.kind, a, b)
-        sim = readers.text_similarity(a.value, b.value) if q.kind == "subjective" and b.value else None
-        if q.kind == "subjective" and sim is not None:
-            agreed = sim >= routing.thresholds()["transcript_min_similarity"]
-        reasons = routing.reader_reasons(q.kind, a, b, agreed, sim)
-        final, c = a, Reading()
-
-        # Abstention (one reader answered, the other blank/unclear/failed): ask a third reader.
-        # If it confirms the answering reader, 2 of 3 agree → accept; a real conflict
-        # (both answered, different values) always stays with the TA.
-        if q.kind != "subjective" and ep_c and abstained(a) != abstained(b):
-            answered = b if abstained(a) else a
-            c = readers.read_ocr(ep_c, q, imgs)
-            if readers.agree(q.kind, c, answered) is True:
-                final = answered
-                reasons = [r for r in reasons if r.startswith(("page ", "answer not located"))]
-            else:
-                reasons.append(f"tie-break reader did not confirm ({c.reader}: {c.value or c.status!r})")
-
-        if q.id not in crops and crops:
-            reasons.append("answer not located on the sheet (read from full page)")
-        return q.id, {"a": a, "b": b, "c": c, "final": final, "reasons": reasons, "images": imgs}
-
-    with ThreadPoolExecutor(WORKERS) as pool:
-        reads = dict(pool.map(read_one, questions))
+    ep_b = llm.resolve("page_reader_b", exclude=(ep_a.name,))
+    ep_c = llm.resolve("page_reader_c", exclude=(ep_a.name, ep_b.name if ep_b else ""))
+    reads = page_reading.read_closed_form(pages, questions, ep_a, ep_b, ep_c, workers=WORKERS)
     models = {"reader_a": ep_a.version, "reader_b": ep_b.version if ep_b else "none",
               "reader_c": ep_c.version if ep_c else "none"}
+
+    # Subjective answers: two transcribers from different families
+    subj = [q for q in questions if q.kind == "subjective"]
+    if subj:
+        tr_a = llm.resolve("transcriber_a")
+        tr_b = llm.resolve("transcriber_b", exclude=(tr_a.name,) if tr_a else ())
+        texts, _secs = page_reading.transcribe_subjective(pages, questions, tr_a, tr_b) if tr_a else ({}, {})
+        for q in subj:
+            ta, tb = texts.get(q.id, ("", ""))
+            found = bool(ta.strip() or tb.strip())
+            a = Reading(tr_a.name if tr_a else "", tr_a.version if tr_a else "", "answered" if ta else "blank", ta)
+            b = Reading(tr_b.name if tr_b else "", tr_b.version if tr_b else "", "answered" if tb else "blank", tb)
+            # Never an automatic 0: an answer we could not find goes to a TA
+            reasons = [] if found else ["answer not found on the page"]
+            reads[q.id] = {"a": a, "b": b, "final": a, "accepted": found, "reasons": reasons}
+        models.update(transcriber_a=tr_a.version if tr_a else "none", transcriber_b=tr_b.version if tr_b else "none")
     return reads, models
 
 
@@ -197,16 +184,16 @@ def abstained(r: Reading) -> bool:
 # ── Subjective grading ───────────────────────────────────────────────────────
 
 def _grade_subjective(paper, questions, reads, pages):
-    """Grader 1 (and grader 2 when a different model is up) per subjective answer."""
+    """One grader (Gemma + prompt v2) per subjective answer; optional teacher calibration on top."""
     subj = [q for q in questions if q.kind == "subjective"]
     if not subj:
         return 0.0, [], {}
-    g1_ep = llm.resolve("grader_1")
-    g2_ep = llm.resolve("grader_2", exclude=(g1_ep.name,)) if g1_ep else None
+    g_ep = llm.resolve("grader")
     rubrics = paper.get("subjectiveRubrics", [])
     texts = paper.get("subjectiveQuestions", [])
     per_q = paper.get("subjectiveQuestionMarks", {})
     default = float(paper.get("subjectiveMarks", 5))
+    cal = paper.get("calibration")                      # optional, teacher-only (per-question shift)
 
     def grade_one(i_q):
         i, q = i_q
@@ -217,37 +204,36 @@ def _grade_subjective(paper, questions, reads, pages):
         q_text = texts[i] if i < len(texts) else f"Question {i + 1}"
         a_txt, b_txt = r["a"].value, r["b"].value
 
-        # Blank answer: no grader call, zero marks, no review needed if both readers agree
-        if r["a"].status == "blank" and r["b"].status in ("blank", "missing"):
-            return _subj_row(q, q_text, "", max_marks, 0.0, None, None, [])
-        if g1_ep is None:
-            return _subj_row(q, q_text, a_txt, max_marks, 0.0, None, None, ["no grader model is reachable"])
+        # Not found on the page: no grader call, 0 for now, the TA decides (reason already in reads)
+        if not (a_txt.strip() or b_txt.strip()):
+            return _subj_row(q, q_text, "", max_marks, 0.0, None, [], cal)
+        if g_ep is None:
+            return _subj_row(q, q_text, a_txt, max_marks, 0.0, None, ["no grader model is reachable"], cal)
 
-        # Graders see the question, model answer, concepts, both transcripts and the crop
-        args = (q_text, rubric, a_txt, b_txt, r.get("images") or pages, paper.get("subject", ""), max_marks)
-        g1 = grade(g1_ep, *args)
-        g2 = grade(g2_ep, *args) if g2_ep else None
-        return _subj_row(q, q_text, a_txt, max_marks, g1.marks, g1, g2, routing.grader_reasons(g1, g2))
+        # Transcripts only (the measured set-up; whole pages would show the grader other answers too)
+        g = grade(g_ep, q_text, rubric, a_txt, b_txt, [], paper.get("subject", ""), max_marks, version="v2")
+        return _subj_row(q, q_text, a_txt, max_marks, g.marks, g, routing.grader_reasons(g), cal)
 
     with ThreadPoolExecutor(WORKERS) as pool:
         detail = list(pool.map(grade_one, enumerate(subj)))
-    models = {"grader_1": g1_ep.version if g1_ep else "none", "grader_2": g2_ep.version if g2_ep else "none"}
+    models = {"grader": g_ep.version if g_ep else "none", "calibration": "per-question shift" if cal else "none"}
     return sum(d["marks_earned"] for d in detail), detail, models
 
 
-def _subj_row(q, q_text, answer, max_marks, marks, g1, g2, reasons) -> dict:
-    """Subjective detail row in the legacy shape + per-concept evidence."""
+def _subj_row(q, q_text, answer, max_marks, marks, g1, reasons, cal=None) -> dict:
+    """Subjective detail row in the legacy shape + per-concept evidence + rubric / calibrated marks."""
     decisions = g1.decisions if g1 else []
+    calibrated = calibration.apply(cal, q.id, marks, max_marks) if cal and g1 else None
     return {
         "question": q.id, "question_text": q_text, "student_answer": answer[:2000] or None,
-        "marks_available": max_marks, "marks_earned": marks,
+        "marks_available": max_marks, "marks_earned": calibrated if calibrated is not None else marks,
+        "rubric_marks": marks, "calibrated_marks": calibrated,
         "status": "graded_by_llm" if answer else "unanswered",
         "concepts_found": [d.concept for d in decisions if d.present],
         "concepts_missing": [d.concept for d in decisions if not d.present],
         "mandatory_met": g1.mandatory_met if g1 else True,
         "feedback": "; ".join(f"{d.concept}: \"{d.evidence}\"" for d in decisions if d.present),
         "concepts": [asdict(d) for d in decisions],
-        "second_grader_marks": g2.marks if g2 else None,
-        "graders": [g.version for g in (g1, g2) if g],
+        "graders": [g1.version] if g1 else [],
         "_grader_reasons": reasons,
     }

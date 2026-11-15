@@ -65,8 +65,7 @@ Tamaulipas real scans: 99.3 %.
 6. Code grades: MCQ exact set; numerical rule from §2 (`numeric.compare`).
 Measured (own sheets): 0 silent errors; MCQ 147/150 auto, MCQ+numerical 73/75 auto. The old crop-based
 pipeline was also safe but sent 22 and 32 answers to TAs.
-- **(pending)** switch the code from the crop pipeline to this whole-page majority (needs the user's go-ahead
-  after the type-C run).
+- **In the code (15 Nov):** `app/pipeline/page_reading.py`, used by `orchestrator.py`; roles page_reader_a/b/c.
 
 ### 3.4 Type C — MCQ + numerical + subjective
 - MCQ and numerical parts: as §3.3 (Mendeley: ~1 real error in 1,000 MCQ, 98.7 % auto, 157 s/paper).
@@ -84,7 +83,10 @@ pipeline was also safe but sent 22 and 32 answers to TAs.
   5. TA: answer not located (never an automatic 0), transcript problem, low confidence / missing evidence.
 - **Teacher calibration** (optional, teacher-only; runs 9–10): the teacher marks 3–5 sheets; the mean difference teacher − grader is added
   to every mark (rounded to 0.5, clipped): MAE 0.62 → 0.43, within 0.5: 55 % → 83 %. Teacher setting; both
-  the rubric mark and the calibrated mark are kept.
+  the rubric mark and the calibrated mark are kept. **Method: per-question shift** (each question's mean
+  teacher − grader difference, shrunk towards the overall shift; 10 sheets: MAE 0.38, within 0.5: 83 %, no extra
+  GPU time). **Alternative: few-shot + global shift** — the grader also sees the teacher's marked answers to the
+  same question (prompt p6 `examples`); MAE 0.36, within 0.5: 86 %, bias ≈ 0, but ~5× grader time (run 10).
 - Known gap (before run 9): the grader is 0.57 marks stricter than the Mendeley teacher (lenient teacher ≈ half; segmentation
   faults; some over-strictness). **(pending, needs go-ahead)** segmentation fixes (struck-out text,
   out-of-order answers, mixed crops) and **teacher calibration** (teacher marks ~5 sheets → examples in the
@@ -159,7 +161,7 @@ vector index), chunk size; evaluation = how much teachers edit the drafts.
 
 1. ~~Rubric review; 50 Mendeley sheets; EDU-CIRCUIT-HW~~ — done 15 Nov (`eval/reports/RESULTS.md` runs 7, 8).
 2. ~~Segmentation fixes for type C + teacher calibration~~ — done (run 9). Next: UI review to match the pipeline (user asked, after models load).
-3. Switch MCQ/numerical to whole-page majority; v2 grader (Gemma) default for subjective.
+3. ~~Switch MCQ/numerical to whole-page majority; v2 grader (Gemma) default for subjective~~ — done 15 Nov (test-first).
 4. Fix the glare gate and show-through ghosts; calibrate routing thresholds.
 5. TA review UI; then the RAG answer-key assistant (§6).
 6. (later, user request) Student-facing marking breakdown: per question and rubric point — evidence quote,

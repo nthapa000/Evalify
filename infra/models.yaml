@@ -158,3 +158,13 @@ roles:
   reader_c:         [glm-ocr, gemma4-31b-fp8, chandra-ocr-2, nanonets-ocr2-3b, paddleocr-vl-1.6]
   grader_1:         [qwen38-27b-fp8, gemma4-31b-fp8]
   grader_2:         [gemma4-31b-fp8, gpt-oss-20b]
+  # ── v2 pipeline (runs 5–10): whole pages, no answer crops ──
+  # MCQ / numerical: A and B read every page; C reads the page only when A and B disagree (2 of 3 decide)
+  page_reader_a:    [gemma4-31b-fp8, qwen38-27b-fp8]
+  page_reader_b:    [qwen38-27b-fp8, gemma4-31b-fp8]
+  page_reader_c:    [glm-ocr, chandra-ocr-2, paddleocr-vl-1.6]
+  # Subjective: whole-page transcription grouped by question number (A: JSON, B: plain text with [[Qnn]])
+  transcriber_a:    [qwen38-27b-fp8, gemma4-31b-fp8]
+  transcriber_b:    [gemma4-31b-fp8, qwen38-27b-fp8]
+  # One grader (a second grader added no accuracy, run 7); Gemma + prompt v2 was best
+  grader:           [gemma4-31b-fp8, qwen38-27b-fp8]
