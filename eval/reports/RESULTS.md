@@ -293,6 +293,11 @@ K = 3 ≈ K = 10. Global shift is stable over splits (0.41–0.44); the others v
 Few-shot (grader sees the teacher's marked answers, 2 splits): MAE 0.48, exact 46–48 % (best), bias −0.31,
 grader 42–50 s/answer (≈ 4× slower) → global shift chosen.
 
+**Teacher vs grader marks, side by side** (final set-up, every answer and per-sheet totals):
+[mendeley_marks/marks_table.md](mendeley_marks/marks_table.md) (`python eval/mendeley_marks_table.py`).
+Per-sheet totals on the 45 non-calibration sheets: raw grader off by 5.8 marks on average (correlation with the
+teacher 0.87); calibrated off by 2.1 marks (correlation 0.93, rank correlation 0.92).
+
 ## Pending runs
 
 - Few-shot + global shift combined (needs few-shot grades on the calibration sheets themselves).
