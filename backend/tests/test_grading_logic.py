@@ -14,11 +14,13 @@ from app.services.subjective_grader import _result
     ("1.2×10⁻³", ["0.0012"]), ("1.2e-3", ["1.2*10^-3"]), ("1,234.5", ["1234.5"]),
     ("x = 3.5", ["3.5"]), ("\\frac{3}{4}", ["0.75"]),
 ])
+# Why: the teacher's numerical rule: equivalent ways of writing the key value are correct
 def test_numeric_equivalent_forms(student, key):
     assert numeric.compare(student, key).status == "correct"
 
 
 # Numeric comparison: tolerance, wrong values, units, blanks, garbage
+# Why: values outside ±tolerance, other units' numbers and junk must be wrong (unit ignored, no conversion)
 def test_numeric_tolerance_and_failures():
     assert numeric.compare("9.79", {"answer": "9.8", "tolerance": 0.02}).status == "correct"
     assert numeric.compare("9.70", {"answer": "9.8", "tolerance": 0.02}).status == "wrong"
@@ -36,6 +38,7 @@ def test_numeric_tolerance_and_failures():
 
 
 # Two readers agree when they wrote the same number differently
+# Why: two readers agreeing on a number is how the pipeline accepts it without a TA
 def test_numbers_agree():
     assert numeric.numbers_agree("0.5", "1/2") is True
     assert numeric.numbers_agree("0.5", "0.6") is False
@@ -43,6 +46,7 @@ def test_numbers_agree():
 
 
 # MCQ grading: exact set match, over/under-fill, negative marking
+# Why: MCQ is graded by exact option set, including multi-answer questions
 def test_grade_mcq():
     paper = {"mcqAnswers": {"Q1": "A", "Q2": "A,C", "Q3": "B"}, "mcqMarks": 4,
              "config": {"negativeMaking": True}}
@@ -52,6 +56,7 @@ def test_grade_mcq():
 
 
 # Numerical grading uses numeric.compare (legacy list keys still work)
+# Why: numerical grading in code gives full marks only within tolerance
 def test_grade_numerical():
     paper = {"numericalAnswers": {"N1": ["0.5"], "N2": ["10"]}, "numericalMarks": 5}
     score, detail = grade_numerical({"N1": "1/2", "N2": "11"}, paper, 2)
@@ -59,6 +64,7 @@ def test_grade_numerical():
 
 
 # Vision-model output parsing: sectioned JSON, sheet-label remap, regex fallback
+# Why: the legacy reader's text output must still be parsed into answers
 def test_parse_answers():
     raw = '{"mcq":{"Q1":"c","Q2":"ca"},"numerical":{"Q3":"5/8, 0.625"},"subjective":{"S1":"plants"}}'
     assert parse_answers(raw, 2, 1, 1) == {"Q1": "C", "Q2": "A,C", "N1": "5/8", "S1": "plants"}
@@ -67,6 +73,7 @@ def test_parse_answers():
 
 
 # Subjective marks are recomputed in Python; missing mandatory concept → 0
+# Why: marks are added up in Python from the grader's per-point verdicts, never taken from the model
 def test_subjective_marks_in_python():
     rubric = {"key_concepts": ["chlorophyll", "sunlight", "glucose"],
               "mandatory_concepts": ["sunlight"], "marks_per_concept": 2}
@@ -82,6 +89,7 @@ def test_subjective_marks_in_python():
     ("19.6 m/s", {"answer": "19.6", "tolerance": 0.05, "unit": "m/s"}), ("440W", {"answer": "440", "tolerance": 0.5, "unit": "W"}),
     ("50km/hr", {"answer": "50", "tolerance": 0.01, "unit": "km/h"}), ("-7C", {"answer": "-7", "tolerance": 0.01, "unit": "°C"}),
 ])
+# Why: every answer written on our own test papers must grade as the key says
 def test_test_paper_answers(student, key):
     res = numeric.compare(student, key)
     assert res.status == "correct" and "unit_ignored" not in res.flags

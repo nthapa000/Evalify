@@ -456,3 +456,22 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - **Decided (user):** when both transcribers / readers find no answer, the student did not answer → **0 marks, not
   sent to a TA**. (Mendeley: avoids 161 useless TA items; the 9 real misses can come back via the student's
   re-evaluation request.) Test `test_unanswered_question_is_zero_and_not_flagged` written first.
+
+## 15 Nov 2026 — UI phase, backend part (user: "do everything in UI first … test-centric … previous code must have tests too … read CLAUDE.md")
+- CLAUDE.md now says: never credit/mention Claude in commits; every test gets a one-line "why" comment. The 10
+  unpushed commits were rewritten to drop the co-author line (code unchanged; old refs kept on branch
+  `backup/pre-msg-cleanup`).
+- **Tests run without MongoDB/GPUs**: conftest uses an in-memory MongoDB (mongomock-motor); EVALIFY_TEST_REAL_MONGO=1
+  uses a real server (always database `evalify_test`). CI no longer needs a MongoDB service. 155 backend tests.
+- **demo.env** (repo root, committed — fake credentials): 4 teachers (Computer Science, Physics, Mathematics, Data
+  Science), 7 TAs (one in two subjects), students per subject 30 / 20 / 15 / 50 (Data Science = 50 to match the
+  Mendeley sheets). Format and parser in `app/db/demo_users.py`; seeding is idempotent.
+  `.gitignore` inline comments were silently breaking its `!` exceptions — fixed.
+- New backend: TA login (`/auth/ta/login`, own JWT secret); students see/submit only enrolled subjects; answer-sheet
+  pages for student / paper's teacher / subject TA; one re-evaluation request per paper; TA router (`/ta/subjects`,
+  `/ta/queue?tab=flagged|reevaluation`, `/ta/items/{id}`, `/ta/items/{id}/marks` — final marks, history,
+  `ta_log` audit); results with marks history (students do not see TA names); optional teacher calibration
+  (`/papers/{id}/calibration/marks/{sid}`, `/apply`, DELETE) — hand-marked sheets final, TA marks never overwritten.
+- Bugs found by the new tests and fixed: any user could read any student's result; upload response crashed on the
+  Mongo `_id`; 422 handler crashed on custom validation messages; Gemma whitespace runaway skipped the JSON retry and
+  looked like a blank answer; `any_live()` checked the old reader role.

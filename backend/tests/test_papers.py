@@ -1,103 +1,88 @@
-# test_papers.py — Tests for paper CRUD endpoints.
+# test_papers.py — paper CRUD and which papers each role can see.
 
 import pytest
+
 from tests.conftest import auth_headers
+from tests.helpers import make_paper
 
 
+# Why: creating a paper is the teacher's first step; the subject is forced to the teacher's own subject
 @pytest.mark.asyncio
 async def test_create_paper(client, teacher_token):
-    """Teacher should be able to create a paper."""
-    resp = await client.post(
-        "/api/papers",
-        headers=auth_headers(teacher_token),
-        json={
-            "name": "Test Paper 1",
-            "subject": "Testing",
-            "type": "mcq",
-            "typeLabel": "MCQ Only",
-            "totalMarks": 20,
-            "mcqCount": 10,
-            "mcqMarks": 2,
-            "mcqAnswers": {"Q1": "A", "Q2": "B"},
-        },
-    )
-    assert resp.status_code == 200
-    data = resp.json()
-    assert data["name"] == "Test Paper 1"
-    assert "id" in data
-    assert data["resultCount"] == 0
+    data = await make_paper(client, teacher_token, name="Test Paper 1", subject="Something else")
+    assert data["name"] == "Test Paper 1" and "id" in data
+    assert data["subject"] == "Computer Science" and data["resultCount"] == 0
 
 
+# Why: the dashboard lists only the logged-in teacher's papers
 @pytest.mark.asyncio
-async def test_list_papers(client, teacher_token):
-    """Teacher should see at least the paper we just created."""
-    resp = await client.get(
-        "/api/papers",
-        headers=auth_headers(teacher_token),
-    )
+async def test_list_papers_only_own(client, teacher_token, physics_teacher_token):
+    await make_paper(client, teacher_token, name="CS paper")
+    await make_paper(client, physics_teacher_token, name="Physics paper")
+    resp = await client.get("/api/papers", headers=auth_headers(teacher_token))
     assert resp.status_code == 200
-    papers = resp.json()
-    assert len(papers) >= 1
-    assert any(p["name"] == "Test Paper 1" for p in papers)
+    assert [p["name"] for p in resp.json()] == ["CS paper"]
 
 
+# Why: opening one paper must return its stored details
 @pytest.mark.asyncio
 async def test_get_paper_detail(client, teacher_token):
-    """Fetching a specific paper by ID should return its details."""
-    # First create a paper
-    create_resp = await client.post(
-        "/api/papers",
-        headers=auth_headers(teacher_token),
-        json={
-            "name": "Detail Test",
-            "subject": "Math",
-            "type": "mcq",
-            "typeLabel": "MCQ Only",
-            "totalMarks": 10,
-            "mcqCount": 5,
-            "mcqMarks": 2,
-        },
-    )
-    paper_id = create_resp.json()["id"]
-
-    # Fetch it
-    resp = await client.get(
-        f"/api/papers/{paper_id}",
-        headers=auth_headers(teacher_token),
-    )
-    assert resp.status_code == 200
-    assert resp.json()["name"] == "Detail Test"
+    paper = await make_paper(client, teacher_token, name="Detail Test")
+    resp = await client.get(f"/api/papers/{paper['id']}", headers=auth_headers(teacher_token))
+    assert resp.status_code == 200 and resp.json()["name"] == "Detail Test"
 
 
+# Why: malformed ids and unknown papers give clear errors instead of crashing
+@pytest.mark.asyncio
+async def test_get_paper_bad_and_missing_id(client, teacher_token):
+    assert (await client.get("/api/papers/not-an-id", headers=auth_headers(teacher_token))).status_code == 400
+    assert (await client.get("/api/papers/" + "0" * 24, headers=auth_headers(teacher_token))).status_code == 404
+
+
+# Why: students must never be able to create papers
 @pytest.mark.asyncio
 async def test_student_cannot_create_paper(client, student_token):
-    """Students should not be allowed to create papers (403)."""
-    resp = await client.post(
-        "/api/papers",
-        headers=auth_headers(student_token),
-        json={
-            "name": "Student Paper",
-            "subject": "Hack",
-            "type": "mcq",
-            "typeLabel": "MCQ Only",
-            "totalMarks": 10,
-            "mcqCount": 5,
-            "mcqMarks": 2,
-        },
-    )
+    resp = await client.post("/api/papers", json={"name": "x"}, headers=auth_headers(student_token))
     assert resp.status_code == 403
 
 
+# Why: a student sees papers of the subjects they are enrolled in, each with their submission status
 @pytest.mark.asyncio
-async def test_available_papers(client, student_token):
-    """Student should see available papers with submission status."""
-    resp = await client.get(
-        "/api/papers/available",
-        headers=auth_headers(student_token),
-    )
-    assert resp.status_code == 200
-    papers = resp.json()
-    assert isinstance(papers, list)
-    # Each paper should have submissionStatus field
-    for p in papers:
-        assert "submissionStatus" in p
+async def test_available_papers_only_enrolled_subjects(client, teacher_token, other_student_token):
+    await make_paper(client, teacher_token, name="CS only")              # PH2025001 is not in Computer Science
+    resp = await client.get("/api/papers/available", headers=auth_headers(other_student_token))
+    assert resp.status_code == 200 and resp.json() == []
+
+
+# Why: an enrolled student sees the paper and that they have not submitted yet
+@pytest.mark.asyncio
+async def test_available_papers_status(client, teacher_token, student_token):
+    await make_paper(client, teacher_token, name="CS paper")
+    papers = (await client.get("/api/papers/available", headers=auth_headers(student_token))).json()
+    assert [p["name"] for p in papers] == ["CS paper"]
+    assert papers[0]["submissionStatus"] == "not_submitted" and papers[0]["submissionId"] is None
+
+
+# Why: only the owning teacher may delete a paper
+@pytest.mark.asyncio
+async def test_delete_paper_owner_only(client, teacher_token, physics_teacher_token):
+    paper = await make_paper(client, teacher_token)
+    other = await client.delete(f"/api/papers/{paper['id']}", headers=auth_headers(physics_teacher_token))
+    assert other.status_code == 404
+    own = await client.delete(f"/api/papers/{paper['id']}", headers=auth_headers(teacher_token))
+    assert own.status_code == 200
+
+
+# Why: uploads accept only PDF / JPEG / PNG and are served back by name
+@pytest.mark.asyncio
+async def test_upload_and_serve_file(client, teacher_token, tmp_path, monkeypatch):
+    from app.routers import papers
+    monkeypatch.setattr(papers, "PAPER_UPLOAD_DIR", str(tmp_path))
+    bad = await client.post("/api/papers/files/upload", headers=auth_headers(teacher_token),
+                            files={"file": ("notes.txt", b"hello", "text/plain")})
+    assert bad.status_code == 400
+    ok = await client.post("/api/papers/files/upload", headers=auth_headers(teacher_token),
+                           files={"file": ("key.pdf", b"%PDF-1.4 test", "application/pdf")})
+    assert ok.status_code == 200
+    served = await client.get(ok.json()["url"])
+    assert served.status_code == 200 and served.content.startswith(b"%PDF")

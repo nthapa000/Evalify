@@ -99,8 +99,8 @@ def resolve(role: str, exclude: tuple = ()) -> Optional[Endpoint]:
 
 
 def any_live() -> bool:
-    """True if at least one reader is up (else the evaluator uses the legacy Ollama path)."""
-    return resolve("reader_a") is not None
+    """True if at least one v2 page reader is up (else the evaluator uses the legacy Ollama path)."""
+    return resolve("page_reader_a") is not None
 
 
 def image_part(image) -> dict:
@@ -150,8 +150,9 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
         _health.pop(ep.base_url, None)          # re-check health next time
     reply.latency_s = round(time.time() - t0, 3)
 
-    if schema is not None and reply.text:
-        reply.data = parse_json(reply.text)
+    # Also when the text is empty: a whitespace runaway strips to "" and still needs the retry / an error
+    if schema is not None and not reply.error:
+        reply.data = parse_json(reply.text) if reply.text else None
         # Guided decoding can loop on whitespace until max_tokens (seen with Gemma 4):
         # retry once unconstrained, asking for the same JSON keys
         if reply.data is None and finish == "length" and "response_format" in body:

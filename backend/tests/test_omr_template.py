@@ -78,6 +78,7 @@ def as_photo(img, seed: int = 2):
     return cv2.GaussianBlur(out, (3, 3), 0)
 
 
+# Why: the OMR template must find every bubble on the teacher's blank sheet
 @pytest.mark.parametrize("layout", ["horizontal", "vertical"])
 def test_template_learns_layout(layout):
     blank, pos = make_blank(layout)
@@ -86,6 +87,7 @@ def test_template_learns_layout(layout):
     assert tpl["questions"] == 24 and tpl["options"] == 4 and not tpl["warnings"]
 
 
+# Why: a phone photo of a filled OMR sheet must be read through the template (partial fills count)
 @pytest.mark.parametrize("layout", ["horizontal", "vertical"])
 def test_reads_phone_photo(layout):
     blank, pos = make_blank(layout)
@@ -97,6 +99,7 @@ def test_reads_phone_photo(layout):
     assert got == truth
 
 
+# Why: a photo that is not this OMR sheet must not be read as one
 def test_unrelated_photo_is_not_aligned():
     blank, _ = make_blank("horizontal")
     tpl = T.build_template(blank, mcq_count=24, use_vlm=False)
@@ -105,6 +108,7 @@ def test_unrelated_photo_is_not_aligned():
 
 
 # Full pipeline: paper with a learned template → photographed sheet → scores + routing
+# Why: a paper with a confirmed OMR template must be graded with it
 def test_orchestrator_uses_template(tmp_path, monkeypatch):
     from app.pipeline import orchestrator
     monkeypatch.chdir(tmp_path)

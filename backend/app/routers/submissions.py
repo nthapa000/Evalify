@@ -1,4 +1,4 @@
-# submissions.py — students upload answer sheets; evaluation runs in the background.
+# submissions.py — students upload answer sheets (evaluated in the background), view pages, ask for re-evaluation.
 
 from __future__ import annotations
 
@@ -9,10 +9,12 @@ from typing import List
 from bson import ObjectId
 from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, field_validator
 
 from app.db.mongodb import papers_col, submissions_col, users_col
 from app.models.submission import SubmissionOut, SubmissionStatusOut
-from app.routers.auth import get_current_user, require_student
+from app.routers.auth import get_current_user, require_student, user_subjects
+from app.services.access import require_view
 
 router = APIRouter(prefix="/submissions", tags=["submissions"])
 UPLOAD_DIR = "uploads"
@@ -51,6 +53,10 @@ async def submit_paper(background_tasks: BackgroundTasks,
     paper = await papers_col().find_one({"_id": ObjectId(paper_id)})
     if not paper:
         raise HTTPException(status_code=404, detail="Paper not found.")
+    # Only students enrolled in the paper's subject may submit (enrolment from demo.env)
+    subjects = await user_subjects(current_user)
+    if subjects and paper.get("subject") not in subjects:
+        raise HTTPException(status_code=403, detail="You are not enrolled in this paper's subject.")
     student = await users_col().find_one({"_id": ObjectId(current_user["sub"])})
 
     # Save pages in upload order as uploads/<sub_id>_p<i><ext>
@@ -74,15 +80,14 @@ async def submit_paper(background_tasks: BackgroundTasks,
     await submissions_col().insert_one(doc)
     from app.services.evaluator import evaluate_submission
     background_tasks.add_task(evaluate_submission, str(sub_id))
-    return {**doc, "id": str(sub_id)}
+    # The raw Mongo _id is not JSON; the API exposes it as "id"
+    return {**{k: v for k, v in doc.items() if k != "_id"}, "id": str(sub_id)}
 
 
 @router.get("/{submission_id}/file")
 async def get_submission_file(submission_id: str, user: dict = Depends(get_current_user)):
-    """Serve the first page to its student or to any teacher."""
-    doc = await _get_submission(submission_id)
-    if user["role"] == "student" and doc["student_id"] != user["sub"]:
-        raise HTTPException(status_code=403, detail="Access denied.")
+    """Serve the first page to its student, the paper's teacher or a TA of the subject."""
+    doc, _ = await require_view(user, submission_id)
     path = doc.get("file_path", "")
     if not path or not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Answer sheet file not found on server.")
@@ -96,3 +101,59 @@ async def get_submission_status(submission_id: str, user: dict = Depends(get_cur
     """Poll status; includes the result once evaluated."""
     doc = await _get_submission(submission_id)
     return {"id": str(doc["_id"]), "status": doc["status"], "result": doc.get("result")}
+
+
+# ── Pages (student, the paper's teacher, TAs of the subject) ─────────────────
+
+def _pages(doc: dict) -> list:
+    """Page files of a submission in upload order."""
+    return doc.get("file_paths") or ([doc["file_path"]] if doc.get("file_path") else [])
+
+
+@router.get("/{submission_id}/pages")
+async def page_count(submission_id: str, user: dict = Depends(get_current_user)):
+    """How many pages the answer sheet has (the viewer then loads /pages/{i})."""
+    doc, _ = await require_view(user, submission_id)
+    return {"count": len(_pages(doc))}
+
+
+@router.get("/{submission_id}/pages/{index}")
+async def page_file(submission_id: str, index: int, user: dict = Depends(get_current_user)):
+    """One page image (0-based index)."""
+    doc, _ = await require_view(user, submission_id)
+    pages = _pages(doc)
+    if not 0 <= index < len(pages) or not os.path.exists(pages[index]):
+        raise HTTPException(status_code=404, detail="Page not found.")
+    ext = os.path.splitext(pages[index])[1].lower()
+    return FileResponse(pages[index], media_type="image/png" if ext == ".png" else "image/jpeg")
+
+
+# ── Re-evaluation request (one per submission) ───────────────────────────────
+
+class ReevaluationRequest(BaseModel):
+    remark: str
+
+    @field_validator("remark")
+    @classmethod
+    def not_empty(cls, v: str) -> str:
+        """The TA needs to know what to re-check."""
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("Please say which questions to re-check and why.")
+        if len(v) > 2000:
+            raise ValueError("Keep the remark under 2000 characters.")
+        return v
+
+
+@router.post("/{submission_id}/reevaluation")
+async def request_reevaluation(submission_id: str, body: ReevaluationRequest,
+                               user: dict = Depends(require_student)):
+    """The student's one re-evaluation request for this paper; a TA of the subject answers it."""
+    doc, _ = await require_view(user, submission_id)
+    if doc.get("status") != "evaluated":
+        raise HTTPException(status_code=409, detail="The paper has not been evaluated yet.")
+    if doc.get("reevaluation"):
+        raise HTTPException(status_code=409, detail="You have already asked for re-evaluation of this paper.")
+    req = {"remark": body.remark, "status": "pending", "requestedAt": datetime.now(timezone.utc).isoformat()}
+    await submissions_col().update_one({"_id": doc["_id"]}, {"$set": {"reevaluation": req}})
+    return {"id": submission_id, "reevaluation": req}

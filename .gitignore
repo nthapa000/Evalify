@@ -27,7 +27,10 @@ yarn-error.log*
 
 # ── Environment / Secrets ────────────────────────────────────────────────────
 *.env
-!*.env.example          # keep example files in git
+# keep example files, the demo user list (fake credentials) and test fixtures in git
+!*.env.example
+!demo.env
+!backend/tests/fixtures/*.env
 .env.*
 !.env.example
 

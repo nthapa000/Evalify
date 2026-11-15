@@ -27,6 +27,14 @@ class Settings(BaseSettings):
     SEED_STUDENT_ROLL: str = "CS2025001"
     SEED_STUDENT_PASSWORD: str = "Student@123"
 
+    # TA auth (third role)
+    TA_JWT_SECRET: str = "change_me_ta_jwt_secret_32_chars_x"
+    TA_JWT_EXPIRE_MINUTES: int = 480
+
+    # Demo users (teachers, TAs, students) come from this file; no admin UI yet
+    EVALIFY_DEMO_ENV: str = str(PROJECT_ROOT / "demo.env")
+    BCRYPT_ROUNDS: int = 12            # tests lower this to keep seeding fast
+
     class Config:
         env_file = (str(PROJECT_ROOT / "teacher_credentials.env"),
                     str(PROJECT_ROOT / "student_credentials.env"))

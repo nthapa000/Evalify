@@ -11,6 +11,7 @@ from app.pipeline.textdist import cer, wer
 
 
 # Sheet numbering: numerical continues the Q-labels, subjective uses S-labels
+# Why: question ids and sheet labels must follow the paper (continuous numbering for type C)
 def test_questions_for():
     paper = {"type": "mcq_numerical_subjective", "mcqCount": 2, "numericalCount": 1, "subjectiveCount": 1}
     qs = readers.questions_for(paper)
@@ -19,6 +20,7 @@ def test_questions_for():
 
 
 # OCR-specialist output cleaning and parsing
+# Why: letters and final numbers must be pulled out of free OCR text
 def test_ocr_parsing():
     html = "<p>Q3: <del>B</del> D</p>"
     text = readers.clean_ocr(html)
@@ -30,6 +32,7 @@ def test_ocr_parsing():
 
 
 # Reader agreement per question type
+# Why: reader agreement rules per question type (letters, numbers, text)
 def test_agree():
     a = Reading(status="answered", value="0.5")
     assert readers.agree("numerical", a, Reading(status="answered", value="1/2")) is True
@@ -38,6 +41,7 @@ def test_agree():
 
 
 # Marks summed in Python with the mandatory rule
+# Why: per-point decisions turn into marks with the mandatory-point rule
 def test_concept_scoring():
     rubric = {"key_concepts": ["a", "b", "c"], "mandatory_concepts": ["b"], "marks_per_concept": 2}
     g = GradeResult(decisions=[ConceptDecision("a", True), ConceptDecision("b", True), ConceptDecision("c", False)])
@@ -52,12 +56,14 @@ def test_concept_scoring():
 
 
 # Evidence must actually appear in a transcript
+# Why: the grader's evidence quote must really appear in the transcript (else flagged)
 def test_quote_in():
     assert quote_in("light energy is absorbed", "Chlorophyll: light energy is absorbed by leaves")
     assert not quote_in("glucose is produced", "light energy is absorbed")
 
 
 # Routing rules fire for disagreement, low confidence and grader gaps
+# Why: each routing rule must produce its TA reason
 def test_routing():
     a, b = Reading(status="answered", value="A", confidence=0.4), Reading(status="answered", value="B")
     reasons = routing.reader_reasons("mcq", a, b, agreed=False)
@@ -69,12 +75,14 @@ def test_routing():
 
 
 # CER / WER
+# Why: character/word error rates used to compare transcripts must be right
 def test_textdist():
     assert cer("abc", "abc") == 0 and round(cer("abcd", "abed"), 2) == 0.25
     assert wer("the cat sat", "the cat sat down") == 1 / 3
 
 
 # Quality gate: a sharp synthetic page passes, a blurred copy fails
+# Why: blurred or blank pages must be detected before reading
 def test_quality_gate(tmp_path):
     page = np.full((2200, 1600, 3), 255, np.uint8)
     for y in range(150, 2100, 60):
@@ -88,6 +96,7 @@ def test_quality_gate(tmp_path):
 
 
 # Abstention = no usable answer; only then is the tie-break reader asked
+# Why: which reader results count as 'no answer' for the tie-break
 def test_abstained():
     from app.pipeline.orchestrator import abstained
     assert abstained(Reading(status="blank")) and abstained(Reading(status="unclear", value=""))
@@ -96,6 +105,7 @@ def test_abstained():
 
 
 # Label stripping must not eat the integer part of a decimal answer ("3. 4.01" → "4.01", not "01")
+# Why: regression: '3. 4.01' must keep the decimal 4.01 (was read as 01)
 def test_label_strip_keeps_decimals():
     from app.pipeline.readers import parse_final_number, strip_label
     assert parse_final_number(strip_label("3. 4.01", "Q3")) == "4.01"
@@ -104,6 +114,7 @@ def test_label_strip_keeps_decimals():
 
 
 # Students often write a comma after the question number ("4, 440 W"); "4,440" stays a number
+# Why: regression: a label written with a comma ('4, 440 W') must be stripped
 def test_label_strip_comma():
     from app.pipeline.readers import parse_final_number, strip_label
     assert parse_final_number(strip_label("4, 440 W", "Q4")) == "440 W"
@@ -111,6 +122,7 @@ def test_label_strip_comma():
 
 
 # Grader v2: a partial concept earns half its marks; mandatory still needs a full "present"
+# Why: prompt v2's partial verdict is worth half a point
 def test_score_partial_credit():
     res = GradeResult(decisions=[ConceptDecision("a", present=True), ConceptDecision("b", partial=True)])
     score(res, {"marks_per_concept": 1})
@@ -121,6 +133,7 @@ def test_score_partial_credit():
 
 
 # A ruled frame printed on white paper must not be treated as the paper edge (margin labels were cut off)
+# Why: regression: a ruled box on the sheet is not the paper edge (it cut off margin numbers)
 def test_find_page_ignores_printed_frame():
     import cv2
     import numpy as np

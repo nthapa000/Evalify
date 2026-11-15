@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 from app.db.mongodb import papers_col, submissions_col
 from app.models.paper import PaperCreate, PaperOut
-from app.routers.auth import get_current_user, require_teacher
+from app.routers.auth import get_current_user, require_teacher, user_subjects
 
 router = APIRouter(prefix="/papers", tags=["papers"])
 PAPER_UPLOAD_DIR = "uploads/papers"
@@ -80,9 +80,12 @@ async def list_papers(user: dict = Depends(require_teacher)):
 
 @router.get("/available")
 async def available_papers(user: dict = Depends(get_current_user)):
-    """All papers, each with this student's submission status."""
+    """Papers of the student's enrolled subjects, each with this student's submission status."""
     papers = []
-    async for doc in papers_col().find().sort("createdAt", -1):
+    # Enrolment comes from demo.env; a user with no subjects listed (older data) sees every paper
+    subjects = await user_subjects(user)
+    query = {"subject": {"$in": subjects}} if subjects else {}
+    async for doc in papers_col().find(query).sort("createdAt", -1):
         paper = _to_dict(doc)
         sub = await submissions_col().find_one({"student_id": user["sub"], "paper_id": paper["id"]})
         paper["submissionStatus"] = sub["status"] if sub else "not_submitted"

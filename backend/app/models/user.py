@@ -16,6 +16,12 @@ class StudentLoginRequest(BaseModel):
     password: str
 
 
+# TA login (email + password), same as the teacher's
+class TaLoginRequest(BaseModel):
+    email: str
+    password: str
+
+
 class LoginResponse(BaseModel):
     token: str
     user: Dict[str, Any]

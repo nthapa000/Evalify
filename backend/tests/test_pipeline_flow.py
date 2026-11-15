@@ -88,6 +88,7 @@ def rows(out):
     return {d["question"]: d for d in out["mcq_detail"] + out["numerical_detail"] + out["subjective_detail"]}
 
 
+# Why: end to end: MCQ answers accepted by agreement or majority and graded by the key
 def test_mcq_majority_and_scores(pipeline):
     d = rows(run(pipeline))
     assert d["Q1"]["status"] == "correct" and not d["Q1"]["needs_review"]
@@ -95,11 +96,13 @@ def test_mcq_majority_and_scores(pipeline):
     assert not d["Q2"]["needs_review"]                  # 2 of 3 readers agree → no TA
 
 
+# Why: end to end: the teacher's rule — the number counts, the written unit does not
 def test_numerical_unit_ignored(pipeline):
     d = rows(run(pipeline))
     assert d["N1"]["status"] == "correct" and d["N1"]["marks_earned"] == 2
 
 
+# Why: end to end: the grader's present/partial verdicts give 1 / 0.5 per rubric point
 def test_subjective_graded_with_half_credit(pipeline):
     d = rows(run(pipeline))
     assert d["S1"]["marks_earned"] == pytest.approx(1.5)
@@ -116,6 +119,7 @@ def test_unanswered_question_is_zero_and_not_flagged(pipeline):
     assert out["review"] == []
 
 
+# Why: end to end: a paper's calibration shifts the mark and the rubric mark is kept
 def test_teacher_calibration_applied_and_rubric_mark_kept(pipeline):
     paper = {**PAPER, "calibration": {"global": 0.5, "per_question": {"S1": 0.5}}}
     d = rows(run(pipeline, paper))
@@ -124,6 +128,7 @@ def test_teacher_calibration_applied_and_rubric_mark_kept(pipeline):
     assert d["S1"]["marks_earned"] == pytest.approx(2.0)
 
 
+# Why: end to end: no majority → flagged for the TA with the readers' answers in the reason
 def test_disagreement_without_majority_flags_with_reason(pipeline, monkeypatch):
     def chat(ep, prompt, images=(), schema=None, **kw):
         if prompt.startswith("Text Recognition"):

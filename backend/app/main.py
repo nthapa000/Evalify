@@ -9,13 +9,14 @@ if not hasattr(_bcrypt, "__about__"):
     _bcrypt.__about__ = type("_about", (), {"__version__": _bcrypt.__version__})()
 
 from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.db.mongodb import close_db, connect_db
 from app.db.seed import seed_users
-from app.routers import auth, papers, results, submissions
+from app.routers import auth, calibration, papers, results, submissions, ta
 
 
 @asynccontextmanager
@@ -30,7 +31,8 @@ async def lifespan(app: FastAPI):
 async def log_validation_error(request: Request, exc: RequestValidationError):
     """Print 422 details (helps debug frontend payloads) and return them."""
     print(f"❌ 422 on {request.method} {request.url.path}: {exc.errors()}")
-    return JSONResponse(status_code=422, content={"detail": exc.errors()})
+    # errors() can hold exception objects (custom validators); encode them so the 422 itself does not crash
+    return JSONResponse(status_code=422, content={"detail": jsonable_encoder(exc.errors(), custom_encoder={Exception: str})})
 
 
 # App instance
@@ -46,7 +48,7 @@ app.add_middleware(
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 # All routes live under /api (matches the frontend's Axios baseURL)
-for r in (auth, papers, submissions, results):
+for r in (auth, papers, calibration, submissions, results, ta):
     app.include_router(r.router, prefix="/api")
 
 
