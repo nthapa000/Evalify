@@ -331,3 +331,44 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   GLM 78.9 %, Paddle 66 %. Short-answer grading is limited by the grader, not the reader.
 - **EDU-CIRCUIT-HW:** best = pair Chandra→Qwen + Gemma (30 silent / 702, 79.5 % auto, 55 s/solution); majority
   doubles silent errors (63). Numbers inside free working are hard → numerical questions need a final-answer box.
+
+## 15 Nov 2026 — segmentation fixes and teacher calibration (user: "start Step 1, Step 2 … continue exploring")
+- User's concern: calibration is hard because we do not have the teacher's real rubric. Approach chosen: learn
+  from the **teacher's own marks** on a few sheets (needs no rubric) — tested on held-out sheets.
+- **Bug found and fixed — page cleaning cut off margin labels** (`quality.find_page`): a ruled box printed on the
+  sheet was taken for the paper edge and the page was cropped to it, removing the question numbers written in
+  the margin (7 of 200 Mendeley pages; Student_46 lost answers 27–32). Now a quadrilateral counts as the paper
+  only if the area outside it is darker (a desk), not white paper. Own phone photos unaffected. Unit test added.
+- Segmentation experiment (`eval/mendeley_seg.py`, results `eval/reports/mendeley_seg/`), grader fixed to Gemma v2:
+  - *seg2*: new box prompt `segment_prompt_v2` (check every label, skip crossed-out copy, ignore show-through,
+    no two answers in one box);
+  - *pagetext*: no boxes — Qwen transcribes each whole page grouped by label (`page_text_prompt`, JSON) and Gemma
+    does the same as plain text with `[[Qnn]]` markers (`page_text_plain_prompt`; Gemma's JSON mode runs away).
+    All question labels (MCQ too) are passed so "7. A" is not read as Q27. GLM-OCR was dropped here: it loses
+    labels written in the margin.
+  - Answers not located → TA (no automatic 0) in the scoring.
+- Calibration, post-hoc (`eval/mendeley_calibrate.py`, CPU only): 5 teacher-marked sheets, tested on the other 45,
+  20 random splits. Global shift: MAE 0.602 → 0.430, within-0.5 56 % → 83 %, QWK 0.47 → 0.59, stable over splits;
+  3 sheets ≈ 10 sheets. Per-question shift / mark mapping slightly lower MAE but unstable.
+- Calibration, few-shot (prompt p6): `grade(..., examples=[(answer, teacher mark)])` shows the grader the
+  calibration sheets' answers to the same question with the teacher's marks. Running.
+
+## 15 Nov 2026 — GPU job restarted; UI review queued
+- User asked to restart the GPU job for a fresh 36 h window after the runs finished: job 48695 cancelled,
+  **48707** submitted (cn07, A6000 48 GB + PRO 6000 96 GB again — cn07 GPUs are untyped in Slurm, so a
+  2 × 96 GB pair cannot be requested).
+- Bug in my experiment script: seg2 and pagetext grading wrote one shared `grades.json` at the same time →
+  293 seg2 grades overwritten. Fixed with one cache file per variant; the missing grades are regraded.
+- **Next (user, not started yet):** once the models are loaded, review the UI so it matches the new pipeline
+  (whole-page reading, TA routing for answers not found, grader v2, teacher calibration, etc.).
+
+## 15 Nov 2026 — run 9 results: segmentation + calibration chosen
+- Segmentation (`eval/reports/mendeley_seg/README.md`): both new variants find 555/564 answers (old: 523);
+  TA items 41 → 9. MAE: pagetext 0.630, seg2 0.650, old 0.665 (not significant) → **pagetext chosen**
+  (Qwen JSON + Gemma plain-text whole-page transcription by label; picks the rewrite over a crossed-out attempt;
+  no GLM-OCR for subjective answers). seg2 kept as fallback (faster reading, 80 vs 187 s/paper).
+- Calibration: **global shift from 3–5 teacher-marked sheets** (MAE 0.62 → 0.43, within 0.5: 55 → 83 %, stable).
+  Few-shot examples: more exact matches but still strict and 4× slower → not chosen now.
+- Proposal for the product: calibration is a teacher setting; keep both the rubric mark and the calibrated mark.
+- Testing approach (user asked): 25 DB-free unit tests + 10 MongoDB tests + dataset evaluation; proposed
+  test-first for the UI phase (API tests, Vitest component tests, one end-to-end test with fake model replies).

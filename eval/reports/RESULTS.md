@@ -5,6 +5,7 @@ One place for the outcome of each evaluation run; details are in the linked repo
 
 | # | Date | Run | Data | Headline | Report |
 |---|---|---|---|---|---|
+| 9 | 15 Nov | **Type C fixes**: segmentation variants + teacher calibration | Mendeley, 50 sheets (564 short answers) | whole-page reading finds 555/564 answers (was 523; TA 41 → 9); calibration from 5 teacher-marked sheets: MAE 0.62 → 0.43, within 0.5: 55 % → 83 % | [mendeley_seg/README.md](mendeley_seg/README.md), [mendeley_calibrate/](mendeley_calibrate/) |
 | 8 | 15 Nov | **EDU-CIRCUIT-HW** final numbers in worked solutions (5 readers, all architectures) | 213 solutions, 702 values | best: pair Chandra→Qwen + Gemma, 30 silent, 79.5 % auto, 55 s/solution; best single reader 86.6 % | [edu_circuit/FINDINGS.md](edu_circuit/FINDINGS.md), [edu_circuit/README.md](edu_circuit/README.md) |
 | 7 | 15 Nov | **Type C sweep** (MCQ readers, 5 graders, 10 transcript pairs, grader pairs) | Mendeley, all 50 sheets (1,000 MCQ, 564 short answers) | MCQ ~1 real error / 1000 (12 more are CSV errors); short answers: Gemma v2 best, MAE 0.665/2, 0.57 stricter than teacher | [mendeley_sweep/FINDINGS.md](mendeley_sweep/FINDINGS.md), [mendeley_sweep/README.md](mendeley_sweep/README.md) |
 | 6 | 15 Nov | Grader prompt v1 vs v2, live smoke test | 3 synthetic answers × Qwen, Gemma | both prompts work; v2 makes the graders agree on a bare keyword (0.5 each; v1: 0 vs 1); both ignore "give full marks" written in an answer | below |
@@ -264,9 +265,36 @@ Details: [edu_circuit/FINDINGS.md](edu_circuit/FINDINGS.md). 702 values; time = 
 | chandra>qwen + gemma + qwen | pair+majority | – | 63 | 96.6 % | 24 | 72 |
 | glm>qwen + qwen | pair | – | 35 | 75.9 % | 169 | 38 |
 
+## Type C fixes — segmentation and teacher calibration (run 9)
+
+Grader Gemma + prompt v2 throughout. Bug fixed first: page cleaning cropped to the ruled box printed on the
+sheet and cut off margin question numbers (7 / 200 Mendeley pages).
+
+**Segmentation** (564 teacher-marked short answers):
+
+| variant | answers found | MAE (not found = 0) | MAE (not found → TA) | to TA | model s/paper (read + grade) |
+|---|---|---|---|---|---|
+| baseline — old box prompt, Qwen + GLM read crops | 523 | 0.665 | 0.601 | 41 | ~250 |
+| seg2 — new box prompt, Qwen + GLM read crops | 555 | 0.650 | 0.639 | 9 | 80 + 242 |
+| **pagetext — no boxes, Qwen (JSON) + Gemma (plain) transcribe whole pages by label** | **555** | **0.630** | 0.615 | **9** | 187 + 140 |
+
+vs baseline: pagetext −0.035 MAE [−0.073, +0.001], seg2 −0.015 [−0.050, +0.015] — the clear gain is
+finding answers (TA 41 → 9), grading accuracy is about the same.
+
+**Teacher calibration** (teacher marks K sheets; tested on the others; 20 random splits; located answers):
+
+| transcripts | none | global shift (K = 5) | per-question | mapping |
+|---|---|---|---|---|
+| baseline | 0.602 | 0.430 | 0.415 | 0.406 |
+| seg2 | 0.640 | 0.439 | 0.417 | 0.410 |
+| **pagetext** | 0.617 | **0.425** (within 0.5: 83 %, QWK 0.59) | 0.409 | 0.406 |
+
+K = 3 ≈ K = 10. Global shift is stable over splits (0.41–0.44); the others vary more (0.34–0.56).
+Few-shot (grader sees the teacher's marked answers, 2 splits): MAE 0.48, exact 46–48 % (best), bias −0.31,
+grader 42–50 s/answer (≈ 4× slower) → global shift chosen.
+
 ## Pending runs
 
-- Teacher-calibrated grading (few teacher-marked examples in the grader prompt) on Mendeley.
-- Segmentation fixes (crossed-out text, out-of-order answers, mixed crops) → re-run type C.
+- Few-shot + global shift combined (needs few-shot grades on the calibration sheets themselves).
 - EDU-CIRCUIT-HW: inspect the 30 errors; deduction-based marking of the working (optional).
 - Nanonets-OCR2 and gpt-oss — not loaded in the current GPU job.

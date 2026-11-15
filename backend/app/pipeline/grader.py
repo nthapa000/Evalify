@@ -44,7 +44,7 @@ class GradeResult:
 
 def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, transcript_b: str,
           images: List[Image.Image], subject: str = "", max_marks: Optional[float] = None,
-          thinking: bool = False, version: str = "v1") -> GradeResult:
+          thinking: bool = False, version: str = "v1", examples: Optional[list] = None) -> GradeResult:
     """Ask one grader for per-concept decisions, then score them in Python."""
     concepts = list(rubric.get("key_concepts", []))
     res = GradeResult(grader=ep.name, version=ep.version)
@@ -58,7 +58,8 @@ def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, tran
     allow_partial = bool(rubric.get("allow_partial", True))
     if version == "v2":
         prompt, schema = P.grade_prompt_v2(question, rubric.get("model_answer", ""), concepts, transcript_a,
-                                           transcript_b, subject, allow_partial), P.GRADE_SCHEMA_V2
+                                           transcript_b, subject, allow_partial,
+                                           examples=examples, max_marks=max_marks), P.GRADE_SCHEMA_V2
     else:
         prompt, schema = P.grade_prompt(question, rubric.get("model_answer", ""), concepts,
                                         transcript_a, transcript_b, subject), P.GRADE_SCHEMA

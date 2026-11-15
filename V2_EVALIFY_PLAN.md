@@ -71,17 +71,21 @@ pipeline was also safe but sent 22 and 32 answers to TAs.
 ### 3.4 Type C — MCQ + numerical + subjective
 - MCQ and numerical parts: as §3.3 (Mendeley: ~1 real error in 1,000 MCQ, 98.7 % auto, 157 s/paper).
 - Subjective answers (measured on 50 Mendeley sheets, `eval/reports/mendeley_sweep/FINDINGS.md`):
-  1. **Segmentation** (Qwen3.8) finds each written answer by its question number → one crop per answer
-     (answers continuing over pages are stitched). ~40 s/paper.
-  2. **Two transcriptions**: **Qwen3.8 + GLM-OCR** (all 10 reader pairs within MAE 0.659–0.672; this pair is
-     the fastest, 178 s/paper with the grader). Low similarity → flag. Gemma never reads single crops
-     (guided JSON fails on them).
+  1–2. **No crops: whole-page transcription grouped by question label** (run 9): Qwen3.8 (`page_text_prompt`,
+     JSON) and Gemma 4 (`page_text_plain_prompt`, plain text with [[Qnn]] markers — its JSON mode runs away)
+     each transcribe every page; code joins pages by label, drops a crossed-out attempt when there is a
+     rewrite. All labels (MCQ too) are passed so "7. A" is not taken for Q27. Finds 555/564 answers (old box
+     segmentation 523). ~187 s/paper. Fallback: `segment_prompt_v2` boxes + Qwen/GLM crops (80 s/paper).
+     GLM-OCR is not used for subjective answers (drops margin labels).
   3. **One grader: Gemma 4 + prompt v2** (`grade_prompt_v2`, p4) judges each rubric point: quote, then
      *present / partial / absent*. Best of 5 set-ups (MAE 0.665 / 2, QWK 0.41; better than Qwen v1/v2,
      Qwen thinking, Gemma v1 at 95 %). A second grader added no accuracy → not used. Thinking off.
   4. Python sums: 1 × marks per present point, 0.5 × per partial point, mandatory-point rule, cap at max.
   5. TA: answer not located (never an automatic 0), transcript problem, low confidence / missing evidence.
-- Known gap: the grader is 0.57 marks stricter than the Mendeley teacher (lenient teacher ≈ half; segmentation
+- **Teacher calibration** (run 9): the teacher marks 3–5 sheets; the mean difference teacher − grader is added
+  to every mark (rounded to 0.5, clipped): MAE 0.62 → 0.43, within 0.5: 55 % → 83 %. Teacher setting; both
+  the rubric mark and the calibrated mark are kept.
+- Known gap (before run 9): the grader is 0.57 marks stricter than the Mendeley teacher (lenient teacher ≈ half; segmentation
   faults; some over-strictness). **(pending, needs go-ahead)** segmentation fixes (struck-out text,
   out-of-order answers, mixed crops) and **teacher calibration** (teacher marks ~5 sheets → examples in the
   grader prompt). Type C stays TA-reviewed until these are measured.
@@ -148,7 +152,7 @@ vector index), chunk size; evaluation = how much teachers edit the drafts.
 ## 8. Next steps (in order)
 
 1. ~~Rubric review; 50 Mendeley sheets; EDU-CIRCUIT-HW~~ — done 15 Nov (`eval/reports/RESULTS.md` runs 7, 8).
-2. Segmentation fixes for type C + teacher calibration; re-run Mendeley.
+2. ~~Segmentation fixes for type C + teacher calibration~~ — done (run 9). Next: UI review to match the pipeline (user asked, after models load).
 3. Switch MCQ/numerical to whole-page majority; v2 grader (Gemma) default for subjective.
 4. Fix the glare gate and show-through ghosts; calibrate routing thresholds.
 5. TA review UI; then the RAG answer-key assistant (§6).

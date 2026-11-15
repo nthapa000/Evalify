@@ -118,3 +118,16 @@ def test_score_partial_credit():
     res = GradeResult(decisions=[ConceptDecision("a", partial=True), ConceptDecision("b", present=True)])
     score(res, {"marks_per_concept": 1, "mandatory_concepts": ["a"]})
     assert res.marks == 0.0
+
+
+# A ruled frame printed on white paper must not be treated as the paper edge (margin labels were cut off)
+def test_find_page_ignores_printed_frame():
+    import cv2
+    import numpy as np
+    from app.pipeline import quality
+    sheet = np.full((1000, 700, 3), 250, np.uint8)
+    cv2.rectangle(sheet, (90, 80), (660, 950), (40, 40, 40), 3)          # printed answer box
+    assert quality.find_page(sheet) is None
+    photo = np.full((1000, 700, 3), 90, np.uint8)                          # dark desk
+    cv2.rectangle(photo, (60, 50), (640, 960), (250, 250, 250), -1)        # white paper on it
+    assert quality.find_page(photo) is not None

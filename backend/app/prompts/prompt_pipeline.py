@@ -4,7 +4,7 @@
 # silently fix student mistakes, so every reader prompt forbids correction.
 # TEMPLATE_VERSION is logged to MLflow; bump it whenever a prompt changes.
 
-TEMPLATE_VERSION = "p4"   # p2: label-independent closed-form prompts; p3: page / direct-grade / OMR-VLM / numeric-grader prompts; p4: grade_prompt_v2
+TEMPLATE_VERSION = "p6"   # p6: optional teacher examples in grade_prompt_v2; p5: segment_prompt_v2 + page_text_prompt; p2: label-independent closed-form prompts; p3: page / direct-grade / OMR-VLM / numeric-grader prompts; p4: grade_prompt_v2
 
 # ── Segmentation: find each answer's label + box on a page ──────────────────
 
@@ -33,6 +33,78 @@ Find every answer on this page. For each one return:
   continues an answer from the previous page without a new label (use the label
   it continues).
 Return only answers that are present. Do not read or correct the content."""
+
+
+# Segmentation v2 (p5): fixes found on the Mendeley sheets — answers missed on clean pages,
+# crossed-out first attempts picked, answers written out of order, two answers in one box.
+def segment_prompt_v2(labels: list) -> str:
+    """Box per answer, with an explicit check of every expected label."""
+    return f"""This is one page of a student's handwritten exam answer sheet.
+The expected question labels are: {", ".join(labels)}.
+Students often write only the number (e.g. "27." or "27|" for Q27) and may answer in ANY order.
+
+Go through the page from top to bottom and find EVERY answer that starts with one of these labels.
+Before you finish, check each expected label once more against the page so none is missed.
+
+For each answer return:
+- "label": the expected label it answers (map "27.", "Q27", "Ans 27" to the expected label);
+- "bbox": [x0, y0, x1, y1] in 0–1000 coordinates of the page width and height, covering the answer from
+  its label down to the line before the next label — never two answers in one box;
+- "continues_from_previous_page": true only for text at the very top with no label that continues the
+  previous page's last answer (use that answer's label).
+Rules:
+- If the same label appears twice and one copy is fully crossed out, return only the copy that is not
+  crossed out. A fully crossed-out answer with no rewrite is still returned.
+- Ignore faint, mirrored text that shows through from the back of the paper.
+- Ignore labels that are not in the expected list (e.g. multiple-choice answers).
+Do not read or correct the content."""
+
+
+# Whole-page transcription grouped by question (p5): no boxes at all; code joins pages by label.
+PAGE_TEXT_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["answers"],
+    "properties": {"answers": {"type": "array", "items": {
+        "type": "object", "additionalProperties": False,
+        "required": ["label", "text", "fully_crossed_out"],
+        "properties": {"label": {"type": "string"}, "text": {"type": "string"},
+                       "fully_crossed_out": {"type": "boolean"}}}}}}
+
+
+def page_text_prompt(labels: list) -> str:
+    """Transcribe every written answer on the page, grouped by its question label."""
+    return f"""This is one page of a student's handwritten exam answer sheet.
+The expected question labels are: {", ".join(labels)}.
+Students often write only the number (e.g. "27." for Q27) and may answer in ANY order.
+
+Transcribe every answer on this page that belongs to one of these labels. For each return:
+- "label": the expected label (map "27.", "Q27", "Ans 27" to it). Text at the very top of the page with
+  no label that continues an answer from the previous page gets the label "CONTINUED";
+- "text": EXACTLY what the student wrote for that answer, without the label. Do NOT correct spelling,
+  grammar or facts, do not complete sentences. Keep line breaks. Leave out words or lines that are
+  struck out; if the whole answer is struck out, transcribe it anyway;
+- "fully_crossed_out": true only if the student struck out the entire answer.
+If the same label appears twice (a crossed-out attempt and a rewrite), return both.
+Use the number the student wrote next to the answer, never the position on the page.
+Ignore faint, mirrored text showing through from the back of the paper, and labels not in the list."""
+
+
+# Plain-text twin of page_text_prompt for models whose JSON decoding runs away (Gemma): split in code.
+def page_text_plain_prompt(labels: list) -> str:
+    """Whole-page transcription with [[label]] markers instead of JSON."""
+    return f"""This is one page of a student's handwritten exam answer sheet.
+The expected question labels are: {", ".join(labels)}.
+Students often write only the number (e.g. "27." for Q27) and may answer in ANY order.
+
+Transcribe every answer on this page. Start each answer on a new line with its label in double
+brackets, e.g. [[Q27]], followed by EXACTLY what the student wrote (without the label).
+- Use the number the student wrote next to the answer, never the position on the page.
+- Text at the very top of the page with no label that continues an answer from the previous page:
+  start it with [[CONTINUED]].
+- Do NOT correct spelling, grammar or facts; do not complete sentences. Keep line breaks.
+- Leave out struck-out words or lines. If an entire answer is struck out, start it with
+  [[Qnn CROSSED]] and transcribe it.
+- Ignore faint, mirrored text showing through from the back of the paper, and labels not in the list.
+Output only the transcription."""
 
 
 # ── Reader A (general VLM): verbatim transcription ──────────────────────────
@@ -260,9 +332,22 @@ GRADE_SCHEMA_V2 = {
 
 
 def grade_prompt_v2(question: str, model_answer: str, concepts: list, transcript_a: str,
-                    transcript_b: str, subject: str = "", allow_partial: bool = True) -> str:
-    """Per-concept verdicts with the quote first; marks are still summed in Python."""
+                    transcript_b: str, subject: str = "", allow_partial: bool = True,
+                    examples: list = None, max_marks: float = None) -> str:
+    """Per-concept verdicts with the quote first; marks are still summed in Python.
+    examples = [(answer text, teacher's mark)] for this question from teacher-marked sheets (calibration)."""
     concept_lines = "\n".join(f"{i + 1}. {c}" for i, c in enumerate(concepts))
+    # Teacher calibration (p6): other students' answers with this teacher's marks set the strictness
+    calib = ""
+    if examples:
+        shown = "\n".join(f"- marked {m:g}/{max_marks or len(concepts):g}: \"{' '.join(str(a).split())[:400]}\""
+                          for a, m in examples)
+        calib = f"""
+How THIS teacher marks this question — other students' answers with the teacher's marks
+(examples only, never quote them as evidence). Apply the same level of strictness: if the teacher
+gives credit for a vague or partly correct idea, count that idea as "partial" or "present" here too.
+{shown}
+"""
     partial = ('- "partial": the idea is there but incomplete or only half right.\n' if allow_partial else "")
     verdicts = '"present", "partial" or "absent"' if allow_partial else '"present" or "absent"'
     return f"""You are an experienced university examiner checking ONE handwritten answer against a rubric.
@@ -284,7 +369,7 @@ TRANSCRIPTION B>>>
 
 Rubric points:
 {concept_lines}
-
+{calib}
 For EACH rubric point, in the same order and independently of the others:
 1. "evidence": first copy the exact words from the student's answer that address this point
    ("" if nothing does).

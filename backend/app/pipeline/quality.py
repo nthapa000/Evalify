@@ -62,8 +62,23 @@ def find_page(bgr: np.ndarray) -> Optional[np.ndarray]:
                     key=cv2.contourArea, reverse=True)[:5]:
         approx = cv2.approxPolyDP(c, 0.02 * cv2.arcLength(c, True), True)
         if len(approx) == 4 and cv2.contourArea(approx) >= 0.4 * img.shape[0] * img.shape[1]:
+            if _is_printed_frame(img, approx):
+                continue
             return _order_corners(approx.reshape(4, 2) / small)
     return None
+
+
+# A ruled box drawn on the sheet is not the paper edge: warping to it cut off the question numbers
+# written in the margin (Mendeley Student_46 lost answers 27–32). Paper edge ⇒ darker background outside.
+def _is_printed_frame(img: np.ndarray, quad: np.ndarray, min_gap: float = 25.0) -> bool:
+    """True when the area outside the quadrilateral is about as bright as inside (white paper, not a desk)."""
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    mask = np.zeros(gray.shape, np.uint8)
+    cv2.fillConvexPoly(mask, quad.reshape(-1, 2).astype(np.int32), 255)
+    outside = gray[mask == 0]
+    if outside.size < 0.03 * gray.size:            # quad fills the photo: nothing to cut off
+        return False
+    return float(np.median(outside)) >= float(np.median(gray[mask > 0])) - min_gap
 
 
 def warp_page(bgr: np.ndarray, corners: np.ndarray) -> np.ndarray:
