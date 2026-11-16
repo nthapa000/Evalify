@@ -734,3 +734,16 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - 17 Nov 01:31 — #8 + FP8 KV measured (Data Science part re-run after the other session's driver died at 00:21):
   206 / 217 DS sheets/h vs 156 / 157 (+32 / +38 %), MAE 0.646 / 0.639, MCQ accuracy unchanged, no errors. One-page
   no gain (Qwen at 38 GB now busiest). Recommended as production layout; user to decide.
+
+## 17 Nov 2026 — README rewritten
+
+- User asked for a new README.md: no emoji, explain the directory layout and the use of each file, and explain
+  clearly how to set the project up on a new machine.
+- The old README described the Ollama-based version (start.sh, Ollama models, emoji headings). Rewritten for the
+  current v2 pipeline: how it works (roles, paper types, Start evaluation batch flow, components), requirements,
+  setup on any machine (Docker / own / in-memory MongoDB, backend, frontend, dummy data, optional vLLM model
+  servers with download + endpoints file), setup on the IIT Jodhpur cluster (scratch env, user-space MongoDB,
+  Slurm GPU job, app.sh, port forwarding), demo accounts, tests, configuration variables, full directory layout
+  with a table per folder, troubleshooting, and links to the plan / decision / experiment documents.
+- docker-compose.dev.yml: README says to start only its mongodb + mlflow services (its backend/frontend
+  services are still the Ollama version). Not changed.
