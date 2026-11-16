@@ -2,6 +2,7 @@
 
 import { Link } from "react-router-dom";
 import { useTeacherPapers } from "../../hooks/usePapers";
+import useAuthStore from "../../store/authStore";
 import PageWrapper from "../../components/layout/PageWrapper";
 import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
@@ -45,14 +46,23 @@ function PaperRow({ paper }) {
 
 export default function TeacherDashboard() {
   const { papers, loading } = useTeacherPapers();
+  // The teacher's subject comes with the login (demo.env)
+  const user = useAuthStore((s) => s.user);
+  const subject = user?.subject || user?.subjects?.[0] || "";
 
   return (
     <PageWrapper>
       {/* Header + create button */}
       <div className="flex items-end justify-between mb-6">
         <div>
-          <p className="kicker">Teacher</p>
+          <p className="kicker">Teacher{user?.name ? ` / ${user.name}` : ""}</p>
           <h1 className="text-3xl text-gray-900">My papers</h1>
+          {/* Subject the teacher teaches (all their papers are for it) */}
+          {subject && (
+            <p className="mt-2 text-sm text-gray-700">
+              Subject: <span data-testid="teacher-subject" className="font-medium text-gray-900">{subject}</span>
+            </p>
+          )}
           <p className="text-sm text-gray-500 mt-1">Create exam papers and follow every student's result.</p>
         </div>
         <Link to="/teacher/papers/create"><Button>Create paper</Button></Link>

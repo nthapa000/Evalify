@@ -31,6 +31,13 @@ describe("Teacher pages", () => {
     expect(screen.getByText("Not released")).toBeInTheDocument();     // results hidden from students until released
   });
 
+  // Why: user report (17 Nov) — the teacher must see their own subject on the home page, even with no papers yet
+  it("dashboard shows the teacher's subject", async () => {
+    api.routes["GET /papers"] = [];
+    renderAt(<TeacherDashboard />);
+    expect(await screen.findByTestId("teacher-subject")).toHaveTextContent("Computer Science");
+  });
+
   // Why: the paper view shows the subjective questions and rubric points the wizard saved (plain strings +
   // subjectiveRubrics; it used to expect objects and showed empty questions)
   it("paper view shows key and questions", async () => {
