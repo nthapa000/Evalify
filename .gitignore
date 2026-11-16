@@ -80,3 +80,6 @@ eval/data/*/images/
 slurm-*.out
 
 eval/reports/*/crops/
+
+# Placeholder page written by backend/app/db/demo_data.py (regenerated on demand)
+backend/uploads/demo_answer_sheet.png
