@@ -81,5 +81,6 @@ slurm-*.out
 
 eval/reports/*/crops/
 
-# Placeholder page written by backend/app/db/demo_data.py (regenerated on demand)
-backend/uploads/demo_answer_sheet.png
+# Copies of the own-dataset photos and papers made by backend/app/db/demo_data.py
+backend/uploads/demo/
+backend/uploads/papers/demo_*
