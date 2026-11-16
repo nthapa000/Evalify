@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import os
+
 import re
 from dataclasses import dataclass, field
 from typing import List, Optional
@@ -59,7 +61,8 @@ def grade(ep: llm.Endpoint, question: str, rubric: dict, transcript_a: str, tran
     if version == "v2":
         prompt, schema = P.grade_prompt_v2(question, rubric.get("model_answer", ""), concepts, transcript_a,
                                            transcript_b, subject, allow_partial,
-                                           examples=examples, max_marks=max_marks), P.GRADE_SCHEMA_V2
+                                           examples=examples, max_marks=max_marks,
+                                           layout=os.environ.get("EVALIFY_GRADE_LAYOUT", "standard")), P.GRADE_SCHEMA_V2
     else:
         prompt, schema = P.grade_prompt(question, rubric.get("model_answer", ""), concepts,
                                         transcript_a, transcript_b, subject), P.GRADE_SCHEMA

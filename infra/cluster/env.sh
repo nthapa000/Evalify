@@ -30,8 +30,8 @@ export TMPDIR="$EVALIFY_SCRATCH/tmp"
 
 # Runtime state written by the serving job (endpoints file, logs)
 export EVALIFY_RUN_DIR="$EVALIFY_SCRATCH/run"
-export EVALIFY_ENDPOINTS_FILE="$EVALIFY_RUN_DIR/endpoints.json"
-export EVALIFY_LOG_DIR="$EVALIFY_SCRATCH/logs"
+export EVALIFY_ENDPOINTS_FILE="${EVALIFY_ENDPOINTS_FILE:-$EVALIFY_RUN_DIR/endpoints.json}"   # a second job can publish elsewhere
+export EVALIFY_LOG_DIR="${EVALIFY_LOG_DIR:-$EVALIFY_SCRATCH/logs}"   # a second job keeps its own server logs
 
 mkdir -p "$HF_HUB_CACHE" "$VLLM_CACHE_ROOT" "$TORCH_HOME" "$TRITON_CACHE_DIR" \
          "$TORCHINDUCTOR_CACHE_DIR" "$XDG_CACHE_HOME" "$PIP_CACHE_DIR" \

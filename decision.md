@@ -613,3 +613,119 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   per-page (reading + transcription) and per-answer (grading) tokens, 15 written answers assumed: ~109k tokens per
   sheet (estimate 5-8 % above measured 4/6-page sheets). 700 sheets: API $14-22 (~₹1,200-1,900), own servers
   ₹0 extra and ~12 h of GPU time. 700 one-page quizzes: API under $1, own servers ~17 min. OMR: no model at all.
+
+## 16 Nov 2026 — discussion: few-shot prompting for Type 3, recap of the prompt experiments
+- User asked whether few-shot prompting would help Type 3 if accuracy is the main goal, and for a recap of the
+  prompt experiments. Answered from runs 6, 7 and 10 (no new run): prompt v2 vs v1 (Gemma MAE 0.702 → 0.665,
+  significant; Qwen 0.782 → 0.726; thinking mode worse), and few-shot with 10 teacher-marked sheets
+  (alone 0.45; + global shift 0.36, best; per-question shift alone 0.38; few-shot ~5× slower grading).
+- Point made: few-shot needs teacher-marked examples (it is a form of calibration); without them it is not
+  possible. Its own gain is mostly bias removal, which a shift does for free; few-shot + shift is ~0.02 MAE better.
+- No decision; pipeline unchanged.
+
+## 16 Nov 2026 — exploration: inference speed-ups, and when evaluation runs (user asked; nothing changed)
+- Found from the vLLM logs of job 48707: both big models hit their KV-cache limit during the throughput run
+  (Gemma 100 %, up to 61 requests waiting; Qwen 98.5 %). Gemma on the A6000 has room for only 48,200 tokens of
+  KV cache (~1.5 full-length requests); Qwen 178,176. Chandra + PaddleOCR (26 GB) are loaded but unused.
+  Prefix-cache hit rate 8-10 %, image cache 84 %.
+- Proposed speed-ups (to measure with exp_throughput, accuracy re-checked): production profile without the unused
+  OCR models (more KV for Qwen), FP8 KV cache, smaller Qwen page images, prompt order for prefix caching,
+  larger Gemma prefill budget, a controlled evaluation queue. Speculative decoding: low priority.
+- When evaluation runs: right after each student upload (FastAPI background task in the backend process, no
+  queue, no limit on how many run at once, not resumed if the backend restarts — such sheets stay "processing").
+
+## 16 Nov 2026 — why Chandra OCR 2 is ~5x slower than GLM-OCR (user asked; measured, nothing changed)
+- Arch sweep (30 one-page sheets, whole page): GLM-OCR 1.14 s/page, Chandra 5.68 s/page (5.0x).
+- Live probe on job 48707, same pages, real pipeline prompts: Chandra reads FEWER image tokens (2,730 vs 3,552)
+  but writes far more: it outputs layout HTML with a bounding box and label for every line
+  (`<div data-bbox=... data-label="Text"><p>1. D</p></div>`) even though our prompt asks for simple tags.
+  Data Science page: 807 vs 123 output tokens (6.6x), and each token is ~2x slower (Chandra ~5B params,
+  10.6 GB vs GLM-OCR 2.7 GB) → 5.9 s vs 0.44 s. One-page sheet: 93 vs 33 tokens, 0.81 vs 0.18 s.
+- Removing PaddleOCR + Chandra from production is proposed but NOT yet decided (awaiting user).
+- User: for a future subject with more complex text (e.g. Intro to CS, 700 sheets) Chandra might read better than
+  GLM-OCR. Answer: possible (Chandra was best on EDU worked solutions, 86.6 %), but it was worst on Mendeley
+  short answers (CER 0.181) and written answers are transcribed by Qwen + Gemma, not the third reader. Proposed:
+  keep Chandra as an optional serving profile, decide per subject with a small labelled test set (e.g. 20-30
+  handwritten code answers). Awaiting user.
+
+## 16 Nov 2026 — inference-optimisation experiments started (user: test first through the pipeline, no UI change)
+- User asked to test techniques 1-5 (drop Chandra/PaddleOCR, FP8 KV cache, smaller Qwen images, larger Gemma
+  prefill budget, fixed-part-first grading prompt) against the previous run, restart the job on cn07, stop loading
+  Chandra + PaddleOCR, give Gemma more room, and log everything in a new file → `INFERENCE_OPTIMIZATION.md`.
+- Found: QoS `mtech` = 2 GPUs per user (`QOSMaxGRESPerUser`), so a second 2-GPU job cannot run next to 48707.
+  Plan: measure the baseline on 48707 first (new script `eval/exp_inference.py`, speed + accuracy + KV/queue),
+  then release 48707 and run all steps in one switchable job (`infra/cluster/serve_switch.sbatch`, ports 82xx,
+  own endpoints file / logs). "Gemma more room" tested as profile `opt-swap` (Gemma on the 96 GB card).
+- Client-side switches added, off by default (pipeline unchanged unless set): `EVALIFY_IMAGE_MAX_PIXELS`
+  (per-model image cap), `EVALIFY_GRADE_LAYOUT=fixed_first` (same words, rubric before transcriptions; standard
+  layout verified byte-identical). serve.py: per-profile extra vLLM args. 20 new tests; 233 backend tests pass.
+- User rule: release the current GPU job only when cn07 has 2 free GPUs apart from ours (saved to memory).
+- User asked to research prefill/decode disaggregation for our paper types, to experiment AFTER techniques 1-5.
+  Findings logged in INFERENCE_OPTIMIZATION.md (#7): vLLM says it does not raise throughput; needs a full model
+  copy per instance; our GPUs have no P2P link (KV copies via host). Cheaper alternatives proposed: mixing paper
+  types in one batch, priority scheduling; true P/D split only if 4 GPUs (fat_gpu QoS).
+- User decision: prefill/decode disaggregation and the proposed alternatives (mixed paper-type batches, priority
+  scheduling, Qwen P/D split on 4 GPUs) do not help our application → not implemented, not tested. Only
+  techniques 1-5 are run.
+
+## 16 Nov 2026 — user decisions: production without Chandra/PaddleOCR, test 2nd Gemma, UI exam flow later
+- User: Chandra and PaddleOCR must not run on the GPUs (had been said before). Done: production profile `tier1`
+  = Gemma (A6000) + Qwen + GLM-OCR (PRO 6000); `page_reader_c` = GLM-OCR only (down → TA); default profile of
+  serve_models.sbatch / serve.py is now `tier1`; V2_EVALIFY_PLAN.md model table updated. Models stay in
+  models.yaml for experiments only.
+- User: test how well a second copy of Gemma works → #8. Added: profile entries with `replica: N` (published as
+  `model#N`, served under the model's name); the backend sends each request to the least busy copy. Profile
+  `opt-gemma2` (Gemma 44 GB on A6000; Qwen 42 + GLM 8 + Gemma#2 38 on PRO 6000). Runs after #3 and #5.
+- UI changes AFTER the experiments (user asked to be reminded; saved to memory): exam window → students upload
+  under TA supervision (15 min); uploads stored only; teacher view with the paper + all entries and a
+  "Start evaluation" button that sends the whole set overnight; "Release results" locked until all TA queries are
+  resolved. User asked how to make that whole-set batch faster without lowering grading quality (answered in chat
+  and in INFERENCE_OPTIMIZATION.md "Whole-set batch" section).
+- 16 Nov evening: #1b (Gemma on PRO 6000) rejected (slower: the A6000 has no native FP8, whichever model is
+  there becomes the bottleneck). #4 with 8,192 does not start on the A6000 → measured with 4,096 + max-model-len
+  16,384. #2 FP8 KV impossible for Gemma on the A6000 (SM86) → measured for Qwen only; FlashInfer link error fixed
+  with lib64 / libcudart.so symlinks in the vLLM env (setup_vllm_env.sh updated).
+
+## 16 Nov — Dummy data in MongoDB
+- User asked: "can you add dummy data from backend in mongo db".
+- Added `backend/app/db/demo_data.py` (`python -m app.db.demo_data`, `--clear` to remove). It uses the demo.env users
+  and writes 6 papers (2 CS, 2 Physics, 1 Maths, 1 Data Science) with 70 submissions covering every state:
+  evaluated, flagged for TA, TA reviewed, re-evaluation pending / resolved, and still processing; 3 papers released.
+- Every dummy document has `demo: true`; re-running replaces only those, real papers and submissions stay.
+- MCQ / numerical marks use the real scoring code on random answers; written-answer marks are random rubric
+  decisions (not model output). All dummy sheets show one placeholder page image.
+- Tests: backend/tests/test_demo_data.py (16); full suite 256 passed. Seeded into evalify_db on the login node.
+- Follow-up (user): "can you use the dataset created by me as the dummy dataset" → demo_data.py now loads the
+  user's own labelled sets (eval/data/own_omr, own_mcq, own_mcqnum: 45 photographed sheets) instead of random
+  papers. 5 Physics papers (OMR 20 Q, handwritten MCQ 10 Q, 2A, 2B, 2C) for physics.teacher@evalify.local;
+  sheet sNN submitted by PH2025<NNN> (same mapping as uploads/Pattern1-2). Marks = real scoring code on the gold
+  labels, so they match expected_results.md. To show the TA / re-evaluation screens, flagged and re-evaluation
+  sheets carry one MCQ deliberately misread; the TA or re-evaluation decision restores the gold mark.
+  Real photos and question papers are copied to backend/uploads/demo and uploads/papers/demo_* (git-ignored).
+  OMR, handwritten MCQ, 2A and 2C released; MCQ and 2B not released. Re-seeded evalify_db: 5 papers, 45 sheets.
+- 16 Nov 23:40 — Experiments #3 and #5 done. #3 (smaller Qwen images) rejected: no speed gain, Qwen's readings
+  change (agreement 84-86 % vs 96 % noise floor, more TA items). #5 (fixed part first) +6-9 % data-science speed
+  but MAE 0.650 → 0.67 and agreement 93.5 % → not kept (quality must not drop); user can decide otherwise.
+  #8 first start failed: second Gemma (38 GB) did not fit the 92 % of the PRO 6000's real 95.6 GB; test used
+  nominal 96 GB → test now uses nvidia-smi sizes, profile resized (Qwen 38, Gemma#2 41). #8 restarted.
+- 17 Nov 00:10 — #8 second Gemma failed again (41 GB → 6.25 GiB KV, 16k request needs 13.76 GiB). opt-gemma2
+  (BF16 KV) gives no data; opt-gemma2-fp8 changed to request limit 8,192 + FP8 KV (starts ~00:13 via the
+  other session's driver, evalify-45, which was told). GPUs idle 23:42-00:13 while that driver waited.
+
+## 17 Nov — "Start evaluation" button (teacher) — whole-set batch
+- User: "there is no need to implement the exam window i mean upload window for now or exam schedule. All i want is
+  that their should be start evaluation button from teacher end. which starts the execution". So: no schedule, no
+  upload window, no release lock for now.
+- Uploads are only stored (status "submitted"); nothing is evaluated on upload any more.
+- Teacher results page has an Evaluation panel: "N answer sheets waiting", **Start evaluation**, then progress
+  "Stage 1 of 2: Reading answer sheets" / "Stage 2 of 2: Grading answers" with counts; table reloads at the end.
+  Students see "Submitted / Waiting for evaluation", then "Being evaluated".
+- Backend: POST /api/papers/{id}/evaluate, GET /api/papers/{id}/evaluation; app/services/batch_runner.py runs #9:
+  every sheet read first (orchestrator.read_sheet, readings stored on the submission), then every sheet graded
+  (orchestrator.grade_sheet); 32 sheets in flight per stage. State in MongoDB (batches + submission status) →
+  resumes after a backend restart. A failed sheet becomes "error" and is picked up by the next Start evaluation.
+- Optional model swap between the stages (EVALIFY_BATCH_PROFILE_FILE / _READ_PROFILE / _GRADE_PROFILE) is built
+  but off: to be measured with a grader-only GPU profile before turning it on.
+- Demo data: its "processing" sheets are now "submitted" (MCQ Basic Science, 2B) so the button can be tried.
+- Tests: backend test_batch_evaluation.py (11), frontend EvaluationPanel.test.jsx (5) + notice / subject / results
+  page tests; backend 266 passed, frontend 88 passed.

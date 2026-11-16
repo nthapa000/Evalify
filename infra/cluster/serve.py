@@ -30,8 +30,8 @@ import yaml
 
 ROOT = Path(os.environ.get("EVALIFY_HOME", Path(__file__).resolve().parents[2]))
 REG = yaml.safe_load((ROOT / "infra" / "models.yaml").read_text())
-ENDPOINTS = Path(os.environ["EVALIFY_ENDPOINTS_FILE"])
-LOGS = Path(os.environ["EVALIFY_LOG_DIR"])
+ENDPOINTS = Path(os.environ.get("EVALIFY_ENDPOINTS_FILE", "/tmp/evalify-endpoints.json"))
+LOGS = Path(os.environ.get("EVALIFY_LOG_DIR", "/tmp"))
 HOST = socket.gethostname().split(".")[0]
 START_TIMEOUT_S = 40 * 60          # first start compiles kernels; can be slow
 
@@ -65,13 +65,25 @@ def publish() -> None:
         tmp.replace(ENDPOINTS)
 
 
+def serve_cmd(entry: dict, model: dict) -> list:
+    """vllm serve command: the model's own args, then the profile entry's extra `args` (later flags win)."""
+    # Profile-level args let one model run with different settings (inference-optimisation experiments)
+    return ["vllm", "serve", model["repo"], "--revision", model["revision"], "--served-model-name", entry["model"],
+            "--host", "0.0.0.0", "--port", str(entry["port"]), "--gpu-memory-utilization", str(entry["mem"]),
+            *[str(a) for a in model.get("vllm_args", [])], *[str(a) for a in entry.get("args", [])]]
+
+
+def endpoint_key(entry: dict) -> str:
+    """Name in the endpoints file: the model, or model#N for an extra copy (the backend balances over copies)."""
+    return f"{entry['model']}#{entry['replica']}" if entry.get("replica") else entry["model"]
+
+
 def start_gpu(gpu: str, servers: list) -> None:
     """Start this GPU's servers one at a time; each must be healthy before the next."""
     for s in servers:
         name, port, m = s["model"], s["port"], REG["models"][s["model"]]
-        cmd = ["vllm", "serve", m["repo"], "--revision", m["revision"], "--served-model-name", name,
-               "--host", "0.0.0.0", "--port", str(port), "--gpu-memory-utilization", str(s["mem"]),
-               *[str(a) for a in m.get("vllm_args", [])]]
+        cmd = serve_cmd(s, m)
+        name = endpoint_key(s)                 # "gemma4-31b-fp8#2" for a second copy (same served name)
         log(f"GPU {gpu}: starting {name} on :{port}")
         # Placement GPU i → the i-th device Slurm allocated to this job
         device = os.environ.get("CUDA_VISIBLE_DEVICES", "0,1").split(",")[int(gpu)]
@@ -137,7 +149,7 @@ def shutdown(*_) -> None:
 
 
 if __name__ == "__main__":
-    PROFILE = sys.argv[1] if len(sys.argv) > 1 else "tier1-bakeoff"
+    PROFILE = sys.argv[1] if len(sys.argv) > 1 else "tier1"
     if PROFILE not in REG["profiles"]:
         sys.exit(f"unknown profile {PROFILE!r}; choose from {list(REG['profiles'])}")
     entries = REG["profiles"][PROFILE]

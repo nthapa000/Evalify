@@ -24,6 +24,11 @@ PY="$VLLM_ENV/bin/python"
 # make FlashInfer's JIT builds fail with "compiler and toolkit headers incompatible"
 "$PY" -m uv pip install --python "$PY" "nvidia-cuda-nvcc==13.0.*" "nvidia-cuda-crt==13.0.*" \
   "nvidia-nvvm==13.0.*" "nvidia-cuda-cccl==13.0.*"
+# FlashInfer JIT kernels (e.g. FP8 KV cache) link with -L$CUDA_HOME/lib64 -lcudart, but the wheel only ships
+# lib/libcudart.so.13 → add the lib64 and unversioned links (found 16 Nov, "cannot find -lcudart")
+CU13="$VLLM_ENV/lib/python3.12/site-packages/nvidia/cu13"
+[ -e "$CU13/lib64" ] || ln -s lib "$CU13/lib64"
+[ -e "$CU13/lib/libcudart.so" ] || ln -s libcudart.so.13 "$CU13/lib/libcudart.so"
 
 "$PY" - <<'EOF'
 import vllm, torch, transformers

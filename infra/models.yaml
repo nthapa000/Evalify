@@ -134,12 +134,48 @@ profiles:
     - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
     - {model: gpt-oss-20b,      port: 8113, gb: 22}
 
-  # Production shape after the bake-off (edit to the winners).
+  # Production (16 Nov, user decision): only the models the pipeline uses — no Chandra / PaddleOCR on the GPUs.
+  # Gemma on the RTX A6000; Qwen + GLM-OCR share the RTX PRO 6000. vLLM flags follow INFERENCE_OPTIMIZATION.md.
   tier1:
-    - {model: qwen38-27b-fp8,   port: 8101, gb: 56}
+    - {model: qwen38-27b-fp8,   port: 8101, gb: 76}
     - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
-    - {model: paddleocr-vl-1.6, port: 8103, gb: 8}
-    - {model: chandra-ocr-2,    port: 8102, gb: 16}
+    - {model: glm-ocr,          port: 8104, gb: 10}
+
+  # ── Inference-optimisation experiments (16 Nov, eval/exp_inference.py; INFERENCE_OPTIMIZATION.md) ──
+  # Job via serve_switch.sbatch on the usual pair (RTX A6000 48 GB + RTX PRO 6000 96 GB; QoS = 2 GPUs per user),
+  # ports 82xx. Only the models the pipeline uses (no Chandra / PaddleOCR). Numbers = techniques in INFERENCE_OPTIMIZATION.md.
+  opt-lean:                          # #1: Gemma keeps the A6000; Qwen + GLM-OCR get the whole PRO 6000
+    - {model: qwen38-27b-fp8,   port: 8201, gb: 76}
+    - {model: gemma4-31b-fp8,   port: 8211, gb: 44}
+    - {model: glm-ocr,          port: 8204, gb: 10}
+  opt-swap:                          # #1b: Gemma on the PRO 6000 (more room), Qwen on the A6000
+    - {model: gemma4-31b-fp8,   port: 8211, gb: 76}
+    - {model: qwen38-27b-fp8,   port: 8201, gb: 44}
+    - {model: glm-ocr,          port: 8204, gb: 10}
+  opt-batch:                         # #1 + #4: Gemma prefill budget 2,496 → 4,096 tokens per step. 8,192 does not
+    # start on the A6000 (only 9.5 GiB KV left < one 32k request); longest Gemma request ≈ 9k tokens → limit 16,384
+    - {model: qwen38-27b-fp8,   port: 8201, gb: 76}
+    - {model: gemma4-31b-fp8,   port: 8211, gb: 44, args: ["--max-num-batched-tokens", "4096", "--max-model-len", "16384"]}
+    - {model: glm-ocr,          port: 8204, gb: 10}
+  opt-fp8kv:                         # #1 + #2: FP8 KV cache for Qwen only (PRO 6000). Gemma cannot: vLLM's Triton
+    # attention on the A6000 (SM86) has no FP8 KV ("native FP8 requires SM89+", 16 Nov)
+    - {model: qwen38-27b-fp8,   port: 8201, gb: 76, args: ["--kv-cache-dtype", "fp8"]}
+    - {model: gemma4-31b-fp8,   port: 8211, gb: 44}
+    - {model: glm-ocr,          port: 8204, gb: 10}
+  # #8 sizes: serve.py fills 92% of the real cards (A6000 47.99 GB, PRO 6000 95.6 GB → 87.9 GB): 38 + 8 + 41 = 87
+  opt-gemma2:                        # #8 (user request): a second Gemma copy on the PRO 6000, requests balanced
+    - {model: qwen38-27b-fp8,   port: 8201, gb: 38}
+    - {model: glm-ocr,          port: 8204, gb: 8}
+    - {model: gemma4-31b-fp8,   port: 8211, gb: 44}
+    - {model: gemma4-31b-fp8,   port: 8212, gb: 41, replica: 2,
+       args: ["--max-model-len", "16384"]}
+
+  opt-gemma2-fp8:                    # #8 + #2: same, FP8 KV on the two models on the PRO 6000 (more room for both)
+    - {model: qwen38-27b-fp8,   port: 8201, gb: 38, args: ["--kv-cache-dtype", "fp8"]}
+    - {model: glm-ocr,          port: 8204, gb: 8}
+    - {model: gemma4-31b-fp8,   port: 8211, gb: 44}
+    - {model: gemma4-31b-fp8,   port: 8212, gb: 41, replica: 2,
+       args: ["--max-model-len", "8192", "--kv-cache-dtype", "fp8"]}   # 41 GB leaves 6.25 GiB KV (23:42 failure)
 
   # One small GPU (A30 / A6000): reader + grader + one OCR model.
   tier2:
@@ -162,7 +198,7 @@ roles:
   # MCQ / numerical: A and B read every page; C reads the page only when A and B disagree (2 of 3 decide)
   page_reader_a:    [gemma4-31b-fp8, qwen38-27b-fp8]
   page_reader_b:    [qwen38-27b-fp8, gemma4-31b-fp8]
-  page_reader_c:    [glm-ocr, chandra-ocr-2, paddleocr-vl-1.6]
+  page_reader_c:    [glm-ocr]               # Chandra / PaddleOCR no longer served (16 Nov); GLM-OCR down → TA
   # Subjective: whole-page transcription grouped by question number (A: JSON, B: plain text with [[Qnn]])
   transcriber_a:    [qwen38-27b-fp8, gemma4-31b-fp8]
   transcriber_b:    [gemma4-31b-fp8, qwen38-27b-fp8]

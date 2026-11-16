@@ -60,7 +60,7 @@ Tamaulipas real scans: 99.3 %.
 2. **Qwen3.8 27B** reads the whole page independently.
 3. Gemma and Qwen agree → accept.
 4. Disagree / one abstains → **GLM-OCR** reads the whole page (lines parsed as "N. answer"); 2 of 3
-   agree → accept (Chandra OCR 2 is the backup tie-breaker if GLM-OCR is down).
+   agree → accept (if GLM-OCR is down the question goes to a TA).
 5. Still no majority → TA.
 6. Code grades: MCQ exact set; numerical rule from §2 (`numeric.compare`).
 Measured (own sheets): 0 silent errors; MCQ 147/150 auto, MCQ+numerical 73/75 auto. The old crop-based
@@ -109,10 +109,10 @@ no admin UI for users. **Implemented 15 Nov** (backend + UI, test-first).
 
 | Role | Model (pinned in `infra/models.yaml`) |
 |---|---|
-| Page reader 1 / grader 2 | Gemma 4 31B FP8 |
-| Page reader 2 / OMR check / segmenter / transcriber A / grader 1 | Qwen3.8 27B FP8 |
-| Tie-break reader | GLM-OCR (backup: Chandra OCR 2) |
-| Transcriber B (subjective) | PaddleOCR-VL 1.6 or GLM-OCR |
+| Page reader A, transcriber B (plain text), **grader** (prompt v2) | Gemma 4 31B FP8 (RTX A6000) |
+| Page reader B, transcriber A (JSON), OMR check | Qwen3.8 27B FP8 (RTX PRO 6000) |
+| Tie-break reader (MCQ / numerical, only when A and B disagree) | GLM-OCR (RTX PRO 6000); if down → TA |
+| Removed from the GPUs (16 Nov, user decision) | Chandra OCR 2, PaddleOCR-VL 1.6 (never called by the pipeline; kept in `models.yaml` for experiments) |
 | Not used | legacy OpenCV OMR (83/300 wrong), Gemma for OMR (57/300 wrong), LLM numeric grading (Qwen broke the tolerance rule) |
 | Not yet tested | Nanonets-OCR2-3B, gpt-oss-20b (not loaded in the current GPU job) |
 

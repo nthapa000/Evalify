@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # serve_models.sbatch — run the vLLM servers of one serving profile on 2 GPUs of cn07.
 #
-#   sbatch infra/cluster/serve_models.sbatch                  # tier1-bakeoff (all candidates)
-#   sbatch infra/cluster/serve_models.sbatch tier1            # production shape
+#   sbatch infra/cluster/serve_models.sbatch                  # tier1: production (Gemma, Qwen, GLM-OCR)
+#   sbatch infra/cluster/serve_models.sbatch tier1-bakeoff    # all candidates (experiments only)
 #   EVALIFY_AFTER_READY="bash eval/run_bakeoff.sh" sbatch --export=ALL infra/cluster/serve_models.sbatch
 #
 # Endpoints appear in $EVALIFY_ENDPOINTS_FILE (on /scratch) as servers come up.
@@ -42,4 +42,4 @@ echo "node=$(hostname) job=$SLURM_JOB_ID gpus=$CUDA_VISIBLE_DEVICES"
 nvidia-smi --query-gpu=index,name,memory.total,memory.used --format=csv
 
 # serve.py maps profile GPUs 0/1 onto the devices Slurm allocated
-exec "$VLLM_ENV/bin/python" "$EVALIFY_HOME/infra/cluster/serve.py" "${1:-tier1-bakeoff}"
+exec "$VLLM_ENV/bin/python" "$EVALIFY_HOME/infra/cluster/serve.py" "${1:-tier1}"

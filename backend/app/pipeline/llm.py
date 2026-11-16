@@ -177,6 +177,34 @@ def resolve(role: str, exclude: tuple = ()) -> Optional[Endpoint]:
     return None
 
 
+# Extra copies of a model ("name#2" in the endpoints file): each request goes to the least busy copy
+_inflight: dict = {}                     # base_url → requests this process has in flight
+_inflight_lock = threading.Lock()
+_copies_cache: dict = {}                 # model name → (checked_at, [base_url, ...])
+
+
+def copies(ep: "Endpoint") -> list:
+    """Live base URLs serving ep's model: its own plus any "name#N" copies (cached 10 s)."""
+    t, urls = _copies_cache.get(ep.name, (0.0, None))
+    if urls is None or time.time() - t > 10:
+        found = _endpoint_urls()
+        # Only for endpoints that come from the endpoints file (never re-route an explicitly given URL)
+        urls = [u for n, u in sorted(found.items()) if n.startswith(ep.name + "#") and _is_up(u)] \
+            if found.get(ep.name) == ep.base_url else []
+        urls = [ep.base_url] + [u for u in urls if u != ep.base_url]
+        _copies_cache[ep.name] = (time.time(), urls)
+    return urls
+
+
+def pick_url(ep: "Endpoint") -> str:
+    """The copy with the fewest requests in flight from this process (ties: the first listed)."""
+    urls = copies(ep)
+    if len(urls) == 1:
+        return urls[0]
+    with _inflight_lock:
+        return min(urls, key=lambda u: _inflight.get(u, 0))
+
+
 def any_live() -> bool:
     """True if at least one v2 page reader is up (else the evaluator uses the legacy Ollama path)."""
     return resolve("page_reader_a") is not None
@@ -194,6 +222,28 @@ def image_part(image) -> dict:
     return {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{base64.b64encode(raw).decode()}"}}
 
 
+def max_pixels(model: str) -> int:
+    """Pixel cap for page images sent to `model` (0 = none), from EVALIFY_IMAGE_MAX_PIXELS='{"model": pixels}'."""
+    # Inference experiment #3: fewer image tokens for one model (Qwen spends ~10x Gemma's tokens per page)
+    try:
+        return int(json.loads(os.environ.get("EVALIFY_IMAGE_MAX_PIXELS", "") or "{}").get(model, 0))
+    except (ValueError, AttributeError):
+        return 0
+
+
+def cap_pixels(image, limit: int):
+    """Downscale (keeping the aspect ratio) so width x height <= limit; path or PIL image in, PIL or as-is out."""
+    if not limit:
+        return image
+    from PIL import Image
+    img = Image.open(image) if isinstance(image, (str, Path)) else image
+    w, h = img.size
+    if w * h <= limit:
+        return image
+    scale = (limit / (w * h)) ** 0.5
+    return img.convert("RGB").resize((max(1, int(w * scale)), max(1, int(h * scale))), Image.LANCZOS)
+
+
 def prompt_hash(*parts: str) -> str:
     """Short stable hash of a prompt template (logged so prompt changes are traceable)."""
     return hashlib.sha256("\n".join(parts).encode()).hexdigest()[:12]
@@ -204,7 +254,8 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
          template_id: str = "", stage: str = "") -> Reply:
     """One deterministic chat call; with `schema`, output is constrained to that JSON schema."""
     # Images first, then the instruction (what most VLMs are trained on)
-    content = [image_part(im) for im in images] + [{"type": "text", "text": prompt}]
+    cap = max_pixels(ep.name)                    # optional per-model image size cap (off by default)
+    content = [image_part(cap_pixels(im, cap)) for im in images] + [{"type": "text", "text": prompt}]
     messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]
     body: dict = {"model": ep.name, "messages": messages, "max_tokens": max_tokens,
                   "temperature": 0.0, "seed": 0}
@@ -220,8 +271,11 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
     t0 = time.time()
     finish = ""
     requests_made = 1
+    url = pick_url(ep)                           # one server, or the least busy copy of this model
+    with _inflight_lock:
+        _inflight[url] = _inflight.get(url, 0) + 1
     try:
-        r = requests.post(f"{ep.base_url}/chat/completions", json=body, timeout=TIMEOUT_S)
+        r = requests.post(f"{url}/chat/completions", json=body, timeout=TIMEOUT_S)
         r.raise_for_status()
         payload = r.json()
         reply.prompt_tokens, reply.completion_tokens = _usage(payload)
@@ -229,7 +283,10 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
         reply.text, finish = (choice["message"].get("content") or "").strip(), choice.get("finish_reason", "")
     except Exception as e:
         reply.error = f"{type(e).__name__}: {e}"
-        _health.pop(ep.base_url, None)          # re-check health next time
+        _health.pop(url, None)                  # re-check health next time
+    finally:
+        with _inflight_lock:
+            _inflight[url] -= 1
     reply.latency_s = round(time.time() - t0, 3)
 
     # Also when the text is empty: a whitespace runaway strips to "" and still needs the retry / an error
@@ -243,7 +300,7 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
                 "type": "text", "text": prompt + "\nReply with one JSON object with keys: "
                 + ", ".join(schema.get("required", [])) + ". No other text."}]}]
             try:
-                r = requests.post(f"{ep.base_url}/chat/completions", json=retry, timeout=TIMEOUT_S)
+                r = requests.post(f"{url}/chat/completions", json=retry, timeout=TIMEOUT_S)
                 requests_made += 1
                 payload = r.json()
                 pt, ct = _usage(payload)                    # the retry is a second paid request
