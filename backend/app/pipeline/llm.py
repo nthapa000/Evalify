@@ -196,6 +196,24 @@ def copies(ep: "Endpoint") -> list:
     return urls
 
 
+def _too_long(r) -> bool:
+    """The server refused the request as longer than its --max-model-len (the smaller second Gemma copy)."""
+    text = (getattr(r, "text", "") or "").lower()
+    return getattr(r, "status_code", 200) == 400 and ("context length" in text or "max_model_len" in text
+                                                       or "maximum model length" in text)
+
+
+def _post(url: str, body: dict):
+    """POST one chat request to a server, counting it as in flight there while it runs."""
+    with _inflight_lock:
+        _inflight[url] = _inflight.get(url, 0) + 1
+    try:
+        return requests.post(f"{url}/chat/completions", json=body, timeout=TIMEOUT_S)
+    finally:
+        with _inflight_lock:
+            _inflight[url] -= 1
+
+
 def pick_url(ep: "Endpoint") -> str:
     """The copy with the fewest requests in flight from this process (ties: the first listed)."""
     urls = copies(ep)
@@ -272,10 +290,14 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
     finish = ""
     requests_made = 1
     url = pick_url(ep)                           # one server, or the least busy copy of this model
-    with _inflight_lock:
-        _inflight[url] = _inflight.get(url, 0) + 1
     try:
-        r = requests.post(f"{url}/chat/completions", json=body, timeout=TIMEOUT_S)
+        r = _post(url, body)
+        # Too long for this copy (the second Gemma copy takes 8,192 tokens): resend to another copy of the model
+        if _too_long(r):
+            other = [u for u in copies(ep) if u != url]
+            if other:
+                url = other[0]
+                r = _post(url, body)
         r.raise_for_status()
         payload = r.json()
         reply.prompt_tokens, reply.completion_tokens = _usage(payload)
@@ -284,9 +306,6 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
     except Exception as e:
         reply.error = f"{type(e).__name__}: {e}"
         _health.pop(url, None)                  # re-check health next time
-    finally:
-        with _inflight_lock:
-            _inflight[url] -= 1
     reply.latency_s = round(time.time() - t0, 3)
 
     # Also when the text is empty: a whitespace runaway strips to "" and still needs the retry / an error
@@ -300,7 +319,7 @@ def chat(ep: Endpoint, prompt: str, images: list = (), schema: Optional[dict] = 
                 "type": "text", "text": prompt + "\nReply with one JSON object with keys: "
                 + ", ".join(schema.get("required", [])) + ". No other text."}]}]
             try:
-                r = requests.post(f"{url}/chat/completions", json=retry, timeout=TIMEOUT_S)
+                r = _post(url, retry)
                 requests_made += 1
                 payload = r.json()
                 pt, ct = _usage(payload)                    # the retry is a second paid request

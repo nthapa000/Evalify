@@ -134,9 +134,19 @@ profiles:
     - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
     - {model: gpt-oss-20b,      port: 8113, gb: 22}
 
-  # Production (16 Nov, user decision): only the models the pipeline uses — no Chandra / PaddleOCR on the GPUs.
-  # Gemma on the RTX A6000; Qwen + GLM-OCR share the RTX PRO 6000. vLLM flags follow INFERENCE_OPTIMIZATION.md.
+  # Production: only the models the pipeline uses (16 Nov, user decision: no Chandra / PaddleOCR on the GPUs).
+  # Production since 17 Nov (user decision): the measured #8 layout (opt-gemma2-fp8) on production ports.
+  # A6000: Gemma. PRO 6000: Qwen (FP8 KV), GLM-OCR and a second Gemma copy (FP8 KV, max 8,192 tokens per request;
+  # longer requests are resent to the first copy, llm.chat). Data Science +32-38 % sheets/h, marks unchanged.
+  # Previous production (Qwen 76 GB, Gemma 44, GLM-OCR 10) is profile tier1-single.
   tier1:
+    - {model: qwen38-27b-fp8,   port: 8101, gb: 38, args: ["--kv-cache-dtype", "fp8"]}
+    - {model: glm-ocr,          port: 8104, gb: 8}
+    - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
+    - {model: gemma4-31b-fp8,   port: 8112, gb: 41, replica: 2,
+       args: ["--max-model-len", "8192", "--kv-cache-dtype", "fp8"]}
+
+  tier1-single:                      # production until 16 Nov: one Gemma copy, Qwen with the most room
     - {model: qwen38-27b-fp8,   port: 8101, gb: 76}
     - {model: gemma4-31b-fp8,   port: 8111, gb: 44}
     - {model: glm-ocr,          port: 8104, gb: 10}

@@ -747,3 +747,19 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
   with a table per folder, troubleshooting, and links to the plan / decision / experiment documents.
 - docker-compose.dev.yml: README says to start only its mongodb + mlflow services (its backend/frontend
   services are still the Ollama version). Not changed.
+- 17 Nov — User asked for a checkbox .md file for checking every part of the project by hand. Added
+  MANUAL_CHECKLIST.md (14 sections: set-up, login, teacher home, paper wizard per type, paper page, student upload,
+  Start evaluation, results / hand-marking / calibration, TA, release, student results and re-evaluation, look and
+  feel, security, GPU job; expected result per item, notes per section, summary table). Linked from README.
+- 17 Nov — User: "yes i agree #8 in production layout". Done:
+  - `tier1` (production) = the measured #8 layout: A6000 Gemma 44 GB; PRO 6000 Qwen 38 GB FP8 KV, GLM-OCR 8 GB,
+    Gemma copy 2 41 GB FP8 KV max 8,192 tokens (port 8112). Old production kept as `tier1-single` to go back.
+  - Safeguard (my recommendation, agreed): a request refused by a copy as too long is resent to another copy of the
+    model (llm.chat). Tests first: tier1 equals opt-gemma2-fp8, tier1 fits our GPUs, too-long resend, one server
+    still errors. Backend 270 tests pass.
+  - App connected to the running servers (job 48725 still on opt-gemma2-fp8 = same layout, 82xx ports): backend
+    restarted with EVALIFY_ENDPOINTS_FILE=endpoints-opt.json. When this job ends, start production with
+    `sbatch infra/cluster/serve_models.sbatch` (tier1, writes endpoints.json) and restart the backend without the
+    override.
+  - "Start evaluation" run on the 4 waiting dummy sheets (MCQ Basic Science 3, 2B 1): all evaluated, 0 errors,
+    every mark equal to the gold labels (RESULTS.md row 15).

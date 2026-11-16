@@ -68,7 +68,7 @@ Browser ──► Frontend (React + Vite, port 5173)
                │                          └─► MLflow (optional, one run per evaluated sheet)
                ▼
             Model servers (vLLM, OpenAI-compatible API, one server per model on the GPUs)
-               Gemma 4 31B FP8   reader A, transcriber, grader
+               Gemma 4 31B FP8   reader A, transcriber, grader (two copies, each request to the less busy one)
                Qwen 3.8 27B FP8  reader B, transcriber
                GLM-OCR           reader C (tie-breaker)
 ```
@@ -86,7 +86,7 @@ model); handwritten sheets end with an error and can be evaluated again once the
 | Python | backend, tests, evaluation scripts | 3.11 |
 | Node.js + npm | frontend | Node 18 or newer (tested with 22) |
 | MongoDB | data | 7.x (Docker, a system install or the user-space script for the cluster) |
-| NVIDIA GPUs + CUDA driver | model servers, only for handwritten sheets | About 140 GB of GPU memory for the production layout (for example one 48 GB and one 96 GB card) |
+| NVIDIA GPUs + CUDA driver | model servers, only for handwritten sheets | About 135 GB of GPU memory for the production layout `tier1` (one 48 GB and one 96 GB card); `tier1-single` drops the second Gemma copy |
 | Conda + vLLM | model servers | vLLM 0.32.0 (pinned in `infra/cluster/env.sh`) |
 | Disk | model weights | About 70 GB for the three production models |
 | Docker (optional) | quick local MongoDB + MLflow | 20.10+ with Compose v2 |
@@ -543,6 +543,7 @@ labelled-set format and how to run it.
 | `INFERENCE_OPTIMIZATION.md` | Speed experiments on the GPUs and their results |
 | `dataset.md` | Datasets used for evaluation and their licence limits |
 | `decision.md` | Log of every design decision, with the reason |
+| `MANUAL_CHECKLIST.md` | Checklist for testing every part of the app by hand |
 | `Phase0.md` ... `Phase6.md` | Phase-by-phase build notes of the first version |
 | `eval/README.md` | Evaluation harness |
 | `eval/reports/RESULTS.md` | Results of every evaluation run |

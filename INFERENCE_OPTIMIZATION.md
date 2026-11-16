@@ -226,3 +226,15 @@ limit 8,192). Requests go to the Gemma copy with fewer requests in flight (`llm.
 - One-page sheets: no gain (1,843 / 2,285 vs 2,111 / 2,226): with 38 GB Qwen is now the busiest model (KV 99-100 %,
   up to 98 waiting on data science). Short MCQ papers are fast either way.
 - **Recommendation: make this the production layout** (`tier1`), Qwen and the second Gemma with FP8 KV.
+
+### Adopted as production (17 Nov, user decision)
+
+- `tier1` in `infra/models.yaml` is now the #8 layout (same sizes and flags as `opt-gemma2-fp8`, production ports
+  81xx; Gemma copy 2 on 8112). The previous production layout is kept as `tier1-single`.
+- Safeguard added in `llm.chat`: a request the second Gemma copy refuses as longer than its 8,192 tokens is sent
+  again to another copy of the model (copy 1, 16,384 tokens). Tests: `test_too_long_request_moves_to_other_copy`,
+  `test_too_long_with_one_server_is_an_error`.
+- Checked through the app: "Start evaluation" on the 4 waiting dummy sheets, all marks equal to the gold labels,
+  0 errors (RESULTS.md row 15).
+- Watch on real classes: TA flag rate (7 / 15 vs 6 / 13 in the measurement). Going back = run profile `tier1-single`.
+

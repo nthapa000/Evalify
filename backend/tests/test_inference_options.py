@@ -169,9 +169,25 @@ def test_parse_metrics():
 
 # Why: user decision (16 Nov) — Chandra and PaddleOCR must not be loaded on the GPUs in production
 def test_production_profile_has_no_unused_models():
-    names = [e["model"] for e in serve.REG["profiles"]["tier1"]]
-    assert sorted(names) == ["gemma4-31b-fp8", "glm-ocr", "qwen38-27b-fp8"]
+    names = {e["model"] for e in serve.REG["profiles"]["tier1"]}
+    assert names == {"gemma4-31b-fp8", "glm-ocr", "qwen38-27b-fp8"}
     assert serve.REG["roles"]["page_reader_c"] == ["glm-ocr"]
+
+
+# Why: user decision (17 Nov) — production uses the measured #8 layout (second Gemma copy, FP8 KV) unchanged
+def test_production_is_the_measured_gemma2_fp8_layout():
+    strip = lambda es: sorted((e["model"], e["gb"], e.get("replica", 1), tuple(e.get("args", []))) for e in es)
+    tier1, measured = serve.REG["profiles"]["tier1"], serve.REG["profiles"]["opt-gemma2-fp8"]
+    assert strip(tier1) == strip(measured)
+    assert all(e["port"] // 100 == 81 for e in tier1)               # production ports, separate from experiments
+
+
+# Why: the production layout must place every server on our GPU pair (else a model is silently skipped)
+def test_production_profile_fits_our_gpus():
+    entries = serve.REG["profiles"]["tier1"]
+    plan = serve.place(entries, [49140 / 1024, 97887 / 1024])
+    assert sorted(serve.endpoint_key(e) for es in plan.values() for e in es) == \
+        sorted(serve.endpoint_key(e) for e in entries)
 
 
 # Why: a second copy is published as "model#N" but served under the model's own name, so requests stay valid
@@ -213,3 +229,31 @@ def test_chat_spreads_requests_over_copies(monkeypatch):
 def test_copies_ignored_for_unlisted_endpoint(monkeypatch):
     _two_copies(monkeypatch)
     assert llm.copies(llm.Endpoint("gemma4-31b-fp8", "http://elsewhere", {})) == ["http://elsewhere"]
+
+
+class _TooLong:
+    """vLLM's answer when a request is longer than the server's --max-model-len."""
+    status_code = 400
+    text = '{"error": {"message": "This model\'s maximum context length is 8192 tokens. However, you requested 9000 tokens."}}'
+
+    def raise_for_status(self):
+        raise llm.requests.HTTPError("400 Client Error: Bad Request")
+
+
+# Why: the second Gemma copy only takes 8,192 tokens; a longer request must be resent to the full-length copy
+def test_too_long_request_moves_to_other_copy(monkeypatch):
+    ep = _two_copies(monkeypatch)
+    hit = []
+    monkeypatch.setattr(llm.requests, "post", lambda url, json=None, timeout=None:
+                        hit.append(url) or (_TooLong() if url.startswith("http://g2") else _Resp()))
+    llm._inflight["http://g1"] = 1                      # copy 1 is busy, so the request first goes to copy 2
+    reply = llm.chat(ep, "read")
+    assert hit == ["http://g2/chat/completions", "http://g1/chat/completions"]
+    assert reply.error == "" and reply.text == "ok" and llm._inflight == {"http://g1": 1, "http://g2": 0}
+
+
+# Why: with a single server there is nowhere to resend, so the length error must still reach the pipeline
+def test_too_long_with_one_server_is_an_error(monkeypatch):
+    monkeypatch.setattr(llm.requests, "post", lambda url, json=None, timeout=None: _TooLong())
+    reply = llm.chat(llm.Endpoint("x", "http://x", {}), "read")
+    assert "400" in reply.error
