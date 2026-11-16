@@ -729,3 +729,8 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
 - Demo data: its "processing" sheets are now "submitted" (MCQ Basic Science, 2B) so the button can be tried.
 - Tests: backend test_batch_evaluation.py (11), frontend EvaluationPanel.test.jsx (5) + notice / subject / results
   page tests; backend 266 passed, frontend 88 passed.
+- 17 Nov — User: teacher's subject was not visible on the home page. Teacher dashboard header now shows
+  "Teacher / <name>" and "Subject: <subject>" from the login (shown even with no papers). Test added.
+- 17 Nov 01:31 — #8 + FP8 KV measured (Data Science part re-run after the other session's driver died at 00:21):
+  206 / 217 DS sheets/h vs 156 / 157 (+32 / +38 %), MAE 0.646 / 0.639, MCQ accuracy unchanged, no errors. One-page
+  no gain (Qwen at 38 GB now busiest). Recommended as production layout; user to decide.

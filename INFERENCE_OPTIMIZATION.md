@@ -48,7 +48,7 @@ cannot run next to job 48707; the baseline is measured first, then 48707 is rele
 | 4 | Gemma prefill budget per step 2,496 → 4,096 tokens (`--max-num-batched-tokens`) | profile `opt-batch` | 8,192 does not start on the A6000 (too little KV left); 4,096 + request limit 16,384 measured |
 | 5 | Grading prompt with the fixed part (rubric, rules) first, transcriptions last, so the server can reuse it | `EVALIFY_GRADE_LAYOUT=fixed_first` | +6-9 % speed but marks worse (MAE 0.650 → 0.67): **not kept** unless the user accepts that |
 | 6 | Speculative decoding | - | not planned: our output is read from images, not copied from the prompt, so draft tokens rarely match |
-| 8 | Second Gemma copy on the PRO 6000, requests to the least busy copy (user request) | profile `opt-gemma2` | after #3 and #5 |
+| 8 | Second Gemma copy on the PRO 6000, requests to the least busy copy (user request) | profile `opt-gemma2-fp8` | **+32-38 % on data science, marks unchanged: recommended for production**; without FP8 KV it does not fit |
 | 9 | Whole-set batch for the teacher's "Start evaluation" (stages + model swap) | see section below | proposal, not built |
 | 7 | Prefill / decode disaggregation (user idea) | - | researched, see below; **not implemented** (user decision, 16 Nov) |
 
@@ -206,3 +206,23 @@ Second try (23:37): all four servers placed, but Gemma#2 failed at 23:42: at 41 
 KV after the weights, and a 16,384-token request needs 13.76 GiB (Gemma's KV is large: ~0.86 MB per token).
 `opt-gemma2` (BF16 KV) therefore cannot run usefully next to Qwen. `opt-gemma2-fp8` changed to request limit
 8,192 with FP8 KV (Blackwell supports it): about 15k tokens of room, vs 48,200 for the A6000 copy.
+
+### #8 result: second Gemma copy + FP8 KV (job 48725, 00:19-01:31, 17 Nov)
+
+Layout: A6000 = Gemma (44 GB); PRO 6000 = Qwen 38 GB (FP8 KV), GLM-OCR 8 GB, Gemma copy 2 41 GB (FP8 KV, request
+limit 8,192). Requests go to the Gemma copy with fewer requests in flight (`llm.pick_url`).
+
+| Set-up | one-page 16 / 32 (sheets/h) | data-science 16 / 32 (sheets/h) | DS written MAE | DS same as baseline | DS TA items |
+|---|---|---|---|---|---|
+| baseline | 1,950 / 2,249 | 156 / 157 | 0.650 / 0.650 | 96.1 % (noise floor) | 6 / 13 |
+| #1 `opt-lean` (production) | 2,111 / 2,226 | 155 / 158 | 0.647 / 0.644 | 96.2 % / 95.6 % | 6 / 17 |
+| **#8 `opt-gemma2-fp8`** | 1,843 / 2,285 | **206 / 217** | 0.646 / 0.639 | 93.9 % / 95.1 % | 7 / 15 |
+
+- Data science **+32 % / +38 %** (48 sheets in 795 s instead of 1,096 s). Both Gemma copies share the work evenly
+  (peaks 22 / 24 running); no request errors (the 8,192 limit was enough).
+- Marks unchanged: MCQ / numerical 97.6-97.7 % as before, written-answer MAE equal or slightly lower, TA items in the
+  usual range. Agreement 93.9-95.1 % is a little under the 96 % noise floor, as in #2 (FP8 KV on Qwen): the same
+  small reading differences, not a quality loss (accuracy is unchanged).
+- One-page sheets: no gain (1,843 / 2,285 vs 2,111 / 2,226): with 38 GB Qwen is now the busiest model (KV 99-100 %,
+  up to 98 waiting on data science). Short MCQ papers are fast either way.
+- **Recommendation: make this the production layout** (`tier1`), Qwen and the second Gemma with FP8 KV.

@@ -38,6 +38,10 @@ wherever it runs) and Qwen servers during the batch. Steps and decisions: `INFER
 | lean-qwen1.0mp | data-science | 32 | 48 | 1104 s | **157** | 1,282 | 100% / 131 | 68% / 39 | 0 |
 | lean-fixedfirst | data-science | 16 | 48 | 1047 s | **165** | 1,893 | 100% / 59 | 43% / 38 | 0 |
 | lean-fixedfirst | data-science | 32 | 48 | 1008 s | **172** | 1,994 | 100% / 125 | 85% / 84 | 0 |
+| opt-gemma2-fp8 | one-page | 16 | 30 | 59 s | **1843** | 2,401 | 46% / 0 | 82% / 11 | 0 |
+| opt-gemma2-fp8 | one-page | 32 | 30 | 47 s | **2284** | 2,979 | 80% / 0 | 99% / 18 | 0 |
+| opt-gemma2-fp8 | data-science | 16 | 48 | 839 s | **206** | 2,392 | 100% / 18 | 100% / 43 | 0 |
+| opt-gemma2-fp8 | data-science | 32 | 48 | 795 s | **217** | 2,524 | 100% / 46 | 100% / 98 | 0 |
 
 ## Accuracy
 
@@ -77,3 +81,7 @@ workload and concurrency (the baseline against itself at another concurrency is 
 | lean-qwen1.0mp | data-science | 32 | 938/960 (97.7%) | 0.655 | 22 | 1845/2190 (84.2%) |
 | lean-fixedfirst | data-science | 16 | 937/960 (97.6%) | 0.671 | 14 | 2069/2214 (93.5%) |
 | lean-fixedfirst | data-science | 32 | 937/960 (97.6%) | 0.673 | 21 | 2077/2216 (93.7%) |
+| opt-gemma2-fp8 | one-page | 16 | 203/225 (90.2%) | - | 5 | 169/169 (100.0%) |
+| opt-gemma2-fp8 | one-page | 32 | 206/225 (91.6%) | - | 6 | 166/166 (100.0%) |
+| opt-gemma2-fp8 | data-science | 16 | 938/960 (97.7%) | 0.646 | 7 | 2081/2216 (93.9%) |
+| opt-gemma2-fp8 | data-science | 32 | 937/960 (97.6%) | 0.639 | 15 | 2098/2207 (95.1%) |
