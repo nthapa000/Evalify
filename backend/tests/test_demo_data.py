@@ -36,8 +36,8 @@ def test_submission_totals(state):
     spec = demo_data.PAPERS[2]                              # MCQ + numerical paper 2A
     paper, sheet = _paper(spec), demo_data.load_sheets(spec)[0]
     sub = demo_data.build_submission(paper, sheet, STUDENT, state, random.Random(1))
-    if state == "processing":
-        assert sub["status"] == "processing" and sub["result"] is None
+    if state == "submitted":
+        assert sub["status"] == "submitted" and sub["result"] is None
         return
     assert sub["result"]["totalScore"] == M.recompute(sub)["totalScore"]
     if state in ("evaluated", "ta_done", "reeval_resolved"):     # a person's decision restores the gold mark

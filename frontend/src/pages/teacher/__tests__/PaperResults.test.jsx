@@ -22,6 +22,7 @@ beforeEach(() => {
                   sub("s2", "Priya Patel", { ta_review: { status: "done" }, reevaluation: { status: "pending" },
                                              teacher_marks: { S1: 2, S2: 1.5 } })] };
   api.routes["PUT /papers/p1/calibration/marks/s1"] = { teacher_marks: { S1: 2, S2: 1.5 } };
+  api.routes["GET /papers/p1/evaluation"] = { waiting: 2, batch: null };
   api.routes["POST /papers/p1/calibration/apply"] = { answers: 2, sheets: 1, updated_submissions: 1, global: 1, per_question: {} };
 });
 
@@ -84,5 +85,12 @@ describe("Teacher paper results", () => {
     page();
     await screen.findByTestId("row-s1");
     expect(screen.queryByRole("button", { name: /Apply calibration/ })).toBeNull();
+  });
+
+  // Why: the "Start evaluation" button for the whole class sits on the teacher's results page
+  it("offers Start evaluation for the waiting sheets", async () => {
+    page();
+    expect(await screen.findByText(/2 answer sheets waiting/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start evaluation" })).toBeEnabled();
   });
 });

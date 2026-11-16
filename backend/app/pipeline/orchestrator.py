@@ -33,13 +33,61 @@ def run(paper: dict, files: List[str], sheet_type: str) -> dict:
     """Evaluate one submission; returns answers, per-section details, scores and review info."""
     # Count the tokens of every model call made for this sheet (returned as out["usage"])
     with llm.UsageMeter() as meter:
-        out = _run(paper, files, sheet_type)
+        out = _grade(paper, _read(paper, files, sheet_type))
     out["usage"] = meter.summary()
     return out
 
 
-def _run(paper: dict, files: List[str], sheet_type: str) -> dict:
-    """The evaluation itself (see run)."""
+# Batch evaluation (teacher's "Start evaluation") runs the two halves separately: every sheet of the class is
+# read first, then every sheet is graded (only the grader model is needed in the second stage).
+def read_sheet(paper: dict, files: List[str], sheet_type: str) -> dict:
+    """First half of run(): quality gate + reading. Returns a JSON-safe state to store with the submission."""
+    with llm.UsageMeter() as meter:
+        st = _read(paper, files, sheet_type)
+    return {**st, "reads": dump_reads(st["reads"]), "quality": [asdict(r) for r in st["quality"]],
+            "usage_calls": list(meter.calls)}
+
+
+def grade_sheet(paper: dict, state: dict) -> dict:
+    """Second half of run(): scoring + subjective grading on a stored read_sheet() state (same output as run)."""
+    with llm.UsageMeter() as meter:
+        meter.calls.extend(state.get("usage_calls", []))          # reading tokens count for the sheet too
+        out = _grade(paper, {**state, "reads": load_reads(state["reads"])})
+    out["usage"] = meter.summary()
+    return out
+
+
+def dump_reads(reads: Dict[str, dict]) -> Dict[str, dict]:
+    """Readings → plain dicts; "final" is stored as the name of the reader it is (it is the same object)."""
+    out = {}
+    for q, r in reads.items():
+        d = {k: v for k, v in r.items() if k not in ("a", "b", "c", "final")}
+        d.update({k: asdict(r[k]) for k in ("a", "b", "c") if k in r})
+        if "final" in r:
+            same = next((k for k in ("a", "b", "c") if r.get(k) is r["final"]), None)
+            d["final_is"] = same
+            if same is None:
+                d["final"] = asdict(r["final"])
+        out[q] = d
+    return out
+
+
+def load_reads(data: Dict[str, dict]) -> Dict[str, dict]:
+    """Inverse of dump_reads (restores "final" as the same Reading object as its reader)."""
+    out = {}
+    for q, d in data.items():
+        r = {k: v for k, v in d.items() if k not in ("a", "b", "c", "final", "final_is")}
+        r.update({k: Reading(**d[k]) for k in ("a", "b", "c") if k in d})
+        if d.get("final_is"):
+            r["final"] = r[d["final_is"]]
+        elif "final" in d:
+            r["final"] = Reading(**d["final"])
+        out[q] = r
+    return out
+
+
+def _read(paper: dict, files: List[str], sheet_type: str) -> dict:
+    """Steps 1-2: ingest + quality gate, then read every answer."""
     t0 = time.time()
     questions = readers.questions_for(paper)
 
@@ -63,6 +111,15 @@ def _run(paper: dict, files: List[str], sheet_type: str) -> dict:
         reads, models = _read_omr(pages, questions), {"reader_a": "opencv_omr"}
     else:
         reads, models = _read_handwritten(pages, questions)
+    return {"reads": reads, "models": models, "quality": reports, "sheet_reasons": sheet_reasons,
+            "read_s": round(time.time() - t0, 3)}
+
+
+def _grade(paper: dict, st: dict) -> dict:
+    """Steps 3-5 on the readings of _read (or of a stored read_sheet state)."""
+    t0 = time.time()
+    questions = readers.questions_for(paper)
+    reads, models, sheet_reasons = st["reads"], dict(st["models"]), st["sheet_reasons"]
     # Grade whatever reader A read, even if it said "unclear" (that question is routed anyway)
     answers = {qid: r.get("final", r["a"]).value for qid, r in reads.items() if r.get("final", r["a"]).value}
 
@@ -76,7 +133,7 @@ def _run(paper: dict, files: List[str], sheet_type: str) -> dict:
             numeric.compare(d["student_answer"], paper.get("numericalAnswers", {}).get(d["question"])))
 
     # 4. Subjective: per-concept grading on both transcripts
-    subj_score, subj_detail, grader_models = _grade_subjective(paper, questions, reads, pages)
+    subj_score, subj_detail, grader_models = _grade_subjective(paper, questions, reads, None)
     models.update(grader_models)
 
     # 5. Attach readings + review flags to every detail row
@@ -92,12 +149,13 @@ def _run(paper: dict, files: List[str], sheet_type: str) -> dict:
         if reasons:
             review.append({"question": d["question"], "reason": reasons[0], "reasons": reasons})
 
+    quality_out = [q if isinstance(q, dict) else asdict(q) for q in st["quality"]]
     return {
         "answers": answers, "mcq_detail": mcq_detail, "numerical_detail": num_detail,
         "subjective_detail": subj_detail, "mcq_score": mcq_score, "n_correct": n_correct,
         "numerical_score": num_score, "subjective_score": subj_score,
-        "review": review, "quality": [asdict(r) for r in reports], "models": models,
-        "prompt_version": TEMPLATE_VERSION, "latency_s": round(time.time() - t0, 3),
+        "review": review, "quality": quality_out, "models": models,
+        "prompt_version": TEMPLATE_VERSION, "latency_s": round(st.get("read_s", 0) + time.time() - t0, 3),
     }
 
 

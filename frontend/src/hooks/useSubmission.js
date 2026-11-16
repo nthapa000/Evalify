@@ -43,7 +43,7 @@ export function useSubmitAnswerSheet() {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      addToast("Answer sheet submitted! AI evaluation started.", "info");
+      addToast("Answer sheet submitted. It is evaluated when your teacher starts the evaluation.", "info");
       return res.data;
     } catch (e) {
       addToast("Submission failed. Check your connection or file size.", "error");
@@ -75,8 +75,9 @@ export function useSubmissionStatus(submissionId) {
         if (s === "evaluated") {
           setResult(r);
           clearInterval(intervalRef.current);
-        } else if (s === "awaiting_release") {
-          clearInterval(intervalRef.current);          // marked; results come when the teacher releases them
+        } else if (s === "awaiting_release" || s === "submitted") {
+          // Marked (results come at release) or stored until the teacher starts evaluation: stop polling
+          clearInterval(intervalRef.current);
         } else if (s === "error") {
           addToast("Evaluation failed. Please try re-uploading.", "error");
           clearInterval(intervalRef.current);

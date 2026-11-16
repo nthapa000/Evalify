@@ -17,4 +17,11 @@ describe("EvaluationNotice", () => {
     expect(screen.getByRole("heading", { name: "Your answer sheet is being evaluated" })).toBeInTheDocument();
     expect(screen.getByText(/teacher releases the results/)).toBeInTheDocument();
   });
+
+  // Why: uploads are only stored now; the student learns the sheet was received and waits for the teacher
+  it("explains that a submitted sheet waits for the teacher to start evaluation", () => {
+    render(<EvaluationNotice status="submitted" />);
+    expect(screen.getByRole("heading", { name: "Your answer sheet has been submitted" })).toBeInTheDocument();
+    expect(screen.getByText(/teacher starts the evaluation/)).toBeInTheDocument();
+  });
 });

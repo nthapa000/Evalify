@@ -3,6 +3,20 @@
 
 export default function EvaluationNotice({ status, paperName }) {
   const marking = status !== "awaiting_release";
+  // Uploads are stored until the teacher starts evaluation for the whole class
+  if (status === "submitted") {
+    return (
+      <section className="max-w-xl border border-paper-900 bg-paper-50 rounded-sm p-8">
+        <p className="kicker">Status{paperName ? ` / ${paperName}` : ""}</p>
+        <h2 className="font-serif text-2xl text-paper-900 mt-1">Your answer sheet has been submitted</h2>
+        <div className="h-px bg-paper-300 my-5" />
+        <p className="text-sm text-paper-700">
+          It is stored safely and will be evaluated with the rest of the class when your teacher starts the evaluation.
+        </p>
+        <p className="text-xs text-paper-500 mt-3">You can leave this page; your result will be under the paper's subject.</p>
+      </section>
+    );
+  }
   return (
     <section className="max-w-xl border border-paper-900 bg-paper-50 rounded-sm p-8">
       <p className="kicker">Status{paperName ? ` / ${paperName}` : ""}</p>

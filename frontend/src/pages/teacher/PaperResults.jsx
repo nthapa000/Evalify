@@ -12,6 +12,7 @@ import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
 import Modal from "../../components/ui/Modal";
 import StatLedger from "../../components/ui/StatLedger";
+import EvaluationPanel from "../../components/results/EvaluationPanel";
 import { SkeletonRow } from "../../components/ui/Skeleton";
 import api from "../../services/api";
 import useToastStore from "../../store/toastStore";
@@ -154,6 +155,9 @@ export default function PaperResults() {
           ]} />
         </div>
       )}
+
+      {/* "Start evaluation" for every submitted sheet; the table reloads when the batch finishes */}
+      <EvaluationPanel paperId={paperId} onFinished={refetch} />
 
       {/* Release results to students (hidden until then; TAs can finish flagged answers first) */}
       {paper && data && (

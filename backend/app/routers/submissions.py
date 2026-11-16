@@ -1,4 +1,4 @@
-# submissions.py — students upload answer sheets (evaluated in the background), view pages, ask for re-evaluation.
+# submissions.py — students upload answer sheets (stored until the teacher starts evaluation), view pages, ask for re-evaluation.
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from typing import List
 
 from bson import ObjectId
-from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
 
@@ -32,12 +32,11 @@ async def _get_submission(submission_id: str) -> dict:
 
 
 @router.post("", response_model=SubmissionOut)
-async def submit_paper(background_tasks: BackgroundTasks,
-                       paper_id: str = Query(..., description="MongoDB _id of the exam paper"),
+async def submit_paper(paper_id: str = Query(..., description="MongoDB _id of the exam paper"),
                        sheet_type: str = Query("omr", description="'omr' or 'handwritten'"),
                        files: List[UploadFile] = File(...),
                        current_user: dict = Depends(require_student)):
-    """Save one or more page images and start evaluation in the background."""
+    """Save one or more page images; the sheet waits for the teacher's "Start evaluation" (user decision, 17 Nov)."""
     # Validate inputs
     if sheet_type not in ("omr", "handwritten"):
         raise HTTPException(status_code=400, detail="sheet_type must be 'omr' or 'handwritten'.")
@@ -69,17 +68,15 @@ async def submit_paper(background_tasks: BackgroundTasks,
             fh.write(await upload.read())
         paths.append(path)
 
-    # Create the submission record, then queue evaluation
+    # Create the submission record (evaluated later with the whole class: routers/evaluation.py)
     doc = {
         "_id": sub_id, "paper_id": paper_id, "paper_name": paper["name"],
         "student_id": current_user["sub"], "student_name": student["name"] if student else "Unknown",
         "roll_no": current_user["roll_no"], "file_path": paths[0], "file_paths": paths,
         "file_ext": os.path.splitext(paths[0])[1], "page_count": len(paths), "sheet_type": sheet_type,
-        "status": "processing", "submittedAt": datetime.now(timezone.utc).isoformat(), "result": None,
+        "status": "submitted", "submittedAt": datetime.now(timezone.utc).isoformat(), "result": None,
     }
     await submissions_col().insert_one(doc)
-    from app.services.evaluator import evaluate_submission
-    background_tasks.add_task(evaluate_submission, str(sub_id))
     # The raw Mongo _id is not JSON; the API exposes it as "id"
     return {**{k: v for k, v in doc.items() if k != "_id"}, "id": str(sub_id)}
 

@@ -54,4 +54,7 @@ def results_released(paper: dict | None) -> bool:
 def student_status(sub: dict, paper: dict | None) -> str:
     """Status shown to a student: an evaluated sheet stays "awaiting_release" until the teacher releases results."""
     s = sub.get("status", "processing")
+    # Batch stages are internal: the student only sees that the sheet is being evaluated
+    if s in ("queued", "reading", "read", "grading"):
+        return "processing"
     return "awaiting_release" if s == "evaluated" and not results_released(paper) else s

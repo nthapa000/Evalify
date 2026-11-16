@@ -12,6 +12,7 @@ import { formatDate, paperTypeLabel, statusLabel } from "../../utils/formatters"
 // Badge colour per submission status
 const STATUS_VARIANT = {
   not_submitted: "neutral",
+  submitted:     "info",
   processing:    "warning",
   awaiting_release: "warning",
   evaluated:     "success",
@@ -71,6 +72,12 @@ export default function SubjectPage() {
                   <Link to={`/student/submit/${paper.id}`} className="flex-1">
                     <Button size="sm" className="w-full">Upload Answer Sheet</Button>
                   </Link>
+                )}
+                {/* Stored until the teacher starts evaluation for the class */}
+                {paper.submissionStatus === "submitted" && (
+                  <Button size="sm" variant="secondary" disabled className="flex-1">
+                    Waiting for evaluation
+                  </Button>
                 )}
                 {/* Being marked, or marked but not released by the teacher yet */}
                 {(paper.submissionStatus === "processing" || paper.submissionStatus === "awaiting_release") && (

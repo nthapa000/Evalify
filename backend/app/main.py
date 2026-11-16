@@ -16,7 +16,8 @@ from fastapi.responses import JSONResponse
 
 from app.db.mongodb import close_db, connect_db
 from app.db.seed import seed_users
-from app.routers import auth, calibration, papers, results, submissions, ta
+from app.routers import auth, calibration, evaluation, papers, results, submissions, ta
+from app.services import batch_runner
 
 
 @asynccontextmanager
@@ -24,6 +25,8 @@ async def lifespan(app: FastAPI):
     """Connect + seed MongoDB on startup, close on shutdown."""
     await connect_db()
     await seed_users()
+    # Continue any "Start evaluation" batch that a restart interrupted
+    await batch_runner.recover()
     yield
     await close_db()
 
@@ -48,7 +51,7 @@ app.add_middleware(
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 # All routes live under /api (matches the frontend's Axios baseURL)
-for r in (auth, papers, calibration, submissions, results, ta):
+for r in (auth, papers, evaluation, calibration, submissions, results, ta):
     app.include_router(r.router, prefix="/api")
 
 

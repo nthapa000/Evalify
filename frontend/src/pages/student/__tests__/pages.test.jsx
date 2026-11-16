@@ -46,6 +46,15 @@ describe("Student pages", () => {
     expect(screen.queryByRole("link", { name: /View Result/ })).toBeNull();
   });
 
+  // Why: a stored sheet (teacher has not started evaluation) shows "Submitted" and a disabled waiting button
+  it("subject page shows submitted sheets as waiting", async () => {
+    api.routes["GET /papers/available"] = [{ ...PAPERS[0], submissionStatus: "submitted", submissionId: "s1" }];
+    renderAt(<SubjectPage />, { path: "/student/subjects/:subject", route: "/student/subjects/Computer%20Science" });
+    expect(await screen.findByText("Submitted")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Waiting for evaluation" })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: "Upload Answer Sheet" })).toBeNull();
+  });
+
   // Why: the upload page opens for the chosen paper
   it("upload page renders for a paper", async () => {
     renderAt(<Submission />, { path: "/student/submit/:paperId", route: "/student/submit/p1" });

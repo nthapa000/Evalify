@@ -32,18 +32,18 @@ TP = REPO / "eval" / "test_papers"
 PAGE_DIR = "uploads/demo"                                 # sheet photos, relative to backend/ like real uploads
 PAPER_DIR = "uploads/papers"                              # served by /api/papers/files/<name>
 SUBJECT, ROLL_PREFIX, TEACHER_EMAIL = "Physics", "PH2025", "physics.teacher@evalify.local"
-STATES = ("evaluated", "flagged", "ta_done", "reeval_pending", "reeval_resolved", "processing")
+STATES = ("evaluated", "flagged", "ta_done", "reeval_pending", "reeval_resolved", "submitted")
 
 # One entry per paper: dataset set, paper JSON, question paper PDF, released?, mix of states cycled over its sheets
 PAPERS = [
     {"set": "own_omr", "paper": "omr_basic_science.json", "pdf": "omr/omr_question_paper.pdf", "released": True,
      "states": ["evaluated", "evaluated", "reeval_pending", "evaluated", "ta_done", "reeval_resolved"]},
     {"set": "own_mcq", "paper": "mcq_basic_science.json", "pdf": "mcq/mcq_question_paper.pdf", "released": False,
-     "states": ["evaluated", "flagged", "evaluated", "ta_done", "processing"]},
+     "states": ["evaluated", "flagged", "evaluated", "ta_done", "submitted"]},
     {"set": "own_mcqnum", "paper": "paper_2A.json", "pdf": "mcq_num/paper_2A_question_paper.pdf", "released": True,
      "states": ["evaluated", "reeval_pending", "evaluated", "reeval_resolved", "ta_done"]},
     {"set": "own_mcqnum", "paper": "paper_2B.json", "pdf": "mcq_num/paper_2B_question_paper.pdf", "released": False,
-     "states": ["flagged", "evaluated", "processing", "ta_done", "evaluated"]},
+     "states": ["flagged", "evaluated", "submitted", "ta_done", "evaluated"]},
     {"set": "own_mcqnum", "paper": "paper_2C.json", "pdf": "mcq_num/paper_2C_question_paper.pdf", "released": True,
      "states": ["evaluated", "evaluated", "evaluated", "reeval_pending", "evaluated"]},
 ]
@@ -98,9 +98,9 @@ def build_submission(paper: dict, sheet: dict, student: dict, state: str, rng: r
     sub = {"_id": ObjectId(), "paper_id": str(paper["_id"]), "paper_name": paper["name"],
            "student_id": str(student["_id"]), "student_name": student.get("name", ""), "roll_no": student.get("roll_no", ""),
            "file_path": pages[0], "file_paths": pages, "file_ext": Path(pages[0]).suffix, "page_count": len(pages),
-           "sheet_type": sheet.get("sheet_type", "handwritten"), "status": "processing",
+           "sheet_type": sheet.get("sheet_type", "handwritten"), "status": "submitted",
            "submittedAt": submitted.isoformat(), "result": None, "dataset_sheet": sheet["sheet_id"], "demo": True}
-    if state == "processing":                             # uploaded, not evaluated yet
+    if state == "submitted":                             # uploaded and stored, waiting for "Start evaluation"
         return sub
 
     # Real scoring code on the user's gold answers (what the student actually wrote)

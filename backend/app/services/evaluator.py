@@ -1,4 +1,4 @@
-# evaluator.py — evaluates one submission (runs as a FastAPI background task).
+# evaluator.py — evaluates one submission (one-shot, or in two stages for the teacher's batch: batch_runner.py).
 #
 # Flow: load submission + paper → two-reader pipeline (app/pipeline) when models
 # are reachable, else the legacy single-model Ollama path → save → log to MLflow.
@@ -34,6 +34,25 @@ _omr = OMREngine()
 _ollama = OllamaEngine()
 
 
+async def read_submission(submission_id: str) -> None:
+    """Batch stage 1: read the sheet and store the readings (status "read"); grading follows in stage 2 via
+    evaluate_submission. Sheets not read by the model pipeline (legacy path) are evaluated fully here."""
+    try:
+        sub = await submissions_col().find_one({"_id": ObjectId(submission_id)})
+        paper = await papers_col().find_one({"_id": ObjectId(sub["paper_id"])}) if sub else None
+        if not paper:
+            return await _set_error(ObjectId(submission_id), "Paper not found in database")
+        sheet_type = sub.get("sheet_type", "omr")
+        if not _use_pipeline(sheet_type):
+            return await evaluate_submission(submission_id)
+        files = sub.get("file_paths") or [sub.get("file_path", "")]
+        state = await asyncio.to_thread(orchestrator.read_sheet, paper, files, sheet_type)
+        await submissions_col().update_one({"_id": sub["_id"]}, {"$set": {"status": "read", "read_state": state}})
+    except Exception as exc:
+        traceback.print_exc()
+        await _set_error(ObjectId(submission_id), str(exc))
+
+
 async def evaluate_submission(submission_id: str) -> None:
     """Evaluate one submission end to end and persist the result."""
     t0 = time.time()
@@ -57,7 +76,11 @@ async def evaluate_submission(submission_id: str) -> None:
 
         # Two-reader pipeline when models are up (OMR needs none); else legacy Ollama path
         if _use_pipeline(sheet_type):
-            out = await asyncio.to_thread(orchestrator.run, paper, files, sheet_type)
+            # Batch evaluation: the sheet was read in stage 1 (read_submission) → only grade it now
+            if sub.get("read_state") is not None:
+                out = await asyncio.to_thread(orchestrator.grade_sheet, paper, sub["read_state"])
+            else:
+                out = await asyncio.to_thread(orchestrator.run, paper, files, sheet_type)
             mcq_score, n_correct, mcq_detail = out["mcq_score"], out["n_correct"], out["mcq_detail"]
             num_score, num_detail = out["numerical_score"], out["numerical_detail"]
             subj_score, subj_detail = out["subjective_score"], out["subjective_detail"]
@@ -90,7 +113,7 @@ async def evaluate_submission(submission_id: str) -> None:
             "mcqDetail": mcq_detail, "numericalDetail": num_detail, "subjectiveDetail": subj_detail,
             "review": review, "pipeline": {k: out[k] for k in ("models", "quality", "prompt_version", "usage") if k in out} if out else None,
             "evaluatedAt": datetime.now(timezone.utc).isoformat(),
-        }})
+        }, "$unset": {"read_state": ""}})
 
         # Log metrics + model versions to MLflow (never fails the evaluation)
         _log_mlflow(submission_id, paper, ptype, sheet_type, engine, n_mcq, n_num, n_subj, {

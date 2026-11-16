@@ -20,7 +20,7 @@ def no_evaluation(monkeypatch, tmp_path):
     monkeypatch.setattr(evaluator, "evaluate_submission", skip)
 
 
-# Why: a student uploads page photos and gets a submission that is being evaluated
+# Why: a student uploads page photos and gets a submission that waits for the teacher's "Start evaluation"
 @pytest.mark.asyncio
 async def test_submit_pages(client, teacher_token, student_token):
     paper = await make_paper(client, teacher_token)
@@ -29,7 +29,7 @@ async def test_submit_pages(client, teacher_token, student_token):
                              files=[("files", ("p1.png", PNG, "image/png")), ("files", ("p2.png", PNG, "image/png"))])
     assert resp.status_code == 200, resp.text
     data = resp.json()
-    assert data["status"] == "processing" and data["page_count"] == 2 and data["roll_no"] == "CS2025001"
+    assert data["status"] == "submitted" and data["page_count"] == 2 and data["roll_no"] == "CS2025001"
 
 
 # Why: PDFs and other files are refused (the pipeline reads photos of pages)
