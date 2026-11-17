@@ -115,8 +115,9 @@ async def evaluate_submission(submission_id: str) -> None:
             "evaluatedAt": datetime.now(timezone.utc).isoformat(),
         }, "$unset": {"read_state": ""}})
 
-        # Log metrics + model versions to MLflow (never fails the evaluation)
-        _log_mlflow(submission_id, paper, ptype, sheet_type, engine, n_mcq, n_num, n_subj, {
+        # Log metrics + model versions to MLflow (never fails the evaluation); in a worker thread so a slow or
+        # dead MLflow server cannot freeze the backend (it once blocked every sheet for 60 s)
+        await asyncio.to_thread(_log_mlflow, submission_id, paper, ptype, sheet_type, engine, n_mcq, n_num, n_subj, {
             "mcq_score": mcq_score, "numerical_score": num_score, "subjective_score": subj_score,
             "total_score": total, "max_score": max_score,
             "accuracy": n_correct / n_mcq if n_mcq else 0,

@@ -54,7 +54,8 @@ async def seed_users(users: dict | None = None) -> None:
     users = users or load_demo_users()
     for t in users["teachers"]:
         await _upsert({"role": "teacher", "email": t["email"]},
-                      {"name": t["name"], "subject": t["subject"], "subjects": [t["subject"]]}, t["password"])
+                      {"name": t["name"], "subject": t["subject"], "subjects": t.get("subjects") or [t["subject"]]},
+                      t["password"])
     for ta in users["tas"]:
         await _upsert({"role": "ta", "email": ta["email"]}, {"name": ta["name"], "subjects": ta["subjects"]},
                       ta["password"])

@@ -209,3 +209,44 @@ def test_reads_round_trip_through_json():
     back = orchestrator.load_reads(json.loads(json.dumps(orchestrator.dump_reads(reads))))
     assert back["Q1"]["final"] is back["Q1"]["b"] and back["Q1"]["b"].value == "C" and back["Q1"]["reasons"] == ["x"]
     assert "final" not in back["Q2"] and back["Q2"]["a"] == a
+
+
+# Why: if a batch crashes its unfinished sheets must become errors, so the teacher can send them again with
+# "Start evaluation" (before, they stayed "reading" forever and the button stayed disabled)
+@pytest.mark.asyncio
+async def test_crashed_batch_sheets_can_be_restarted(client, db, physics_teacher_token, student_token, other_student_token, monkeypatch):
+    paper = await make_paper(client, physics_teacher_token)
+    await _upload(client, student_token, paper["id"])
+    await _upload(client, other_student_token, paper["id"])
+    h = auth_headers(physics_teacher_token)
+    bid = (await client.post(f"/api/papers/{paper['id']}/evaluate", headers=h)).json()["id"]
+    done = (await db["submissions"].find({"batch_id": bid}).to_list(None))[0]
+    await db["submissions"].update_one({"_id": done["_id"]}, {"$set": {"status": "evaluated"}})   # one sheet finished
+
+    async def boom(_bid):
+        raise RuntimeError("database connection lost")
+    monkeypatch.setattr(batch_runner, "run_batch", boom)
+    await batch_runner._guarded(bid)
+    batch = await db["batches"].find_one({"_id": ObjectId(bid)})
+    assert batch["status"] == "failed" and "database connection lost" in batch["error"]
+    subs = {s["_id"]: s for s in await db["submissions"].find({"batch_id": bid}).to_list(None)}
+    assert subs[done["_id"]]["status"] == "evaluated"                       # finished work is kept
+    assert [s["status"] for i, s in subs.items() if i != done["_id"]] == ["error"]
+    assert (await client.get(f"/api/papers/{paper['id']}/evaluation", headers=h)).json()["waiting"] == 1
+
+
+
+# Why: user report (17 Nov) — one sheet took 62 s because the MLflow call (60 s of retries when MLflow is down) ran
+# on the server's main thread and froze it; it must run in a worker thread so nothing else waits for it
+@pytest.mark.asyncio
+async def test_mlflow_logging_does_not_block_the_server(client, physics_teacher_token, student_token, monkeypatch):
+    import threading
+    log, seen = [], {}
+    _stub_pipeline(monkeypatch, log)
+    main = threading.get_ident()
+    monkeypatch.setattr(evaluator, "_log_mlflow", lambda *a, **k: seen.setdefault("thread", threading.get_ident()))
+    paper = await make_paper(client, physics_teacher_token)
+    await _upload(client, student_token, paper["id"])
+    bid = (await client.post(f"/api/papers/{paper['id']}/evaluate", headers=auth_headers(physics_teacher_token))).json()["id"]
+    await batch_runner.run_batch(bid)
+    assert "thread" in seen and seen["thread"] != main

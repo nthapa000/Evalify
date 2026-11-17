@@ -138,9 +138,9 @@ Create **one paper per folder below**. For OMR, create one paper per layout you 
 | Wizard step | What to do |
 |---|---|
 | 1 Paper type | **MCQ only** |
-| 2 Details | Name e.g. `Basic Science OMR - layout 1`; MCQ questions **20**, **1 mark** each; upload `question_paper.pdf` |
+| 2 Details | Name e.g. `Basic Science OMR - layout 1`; MCQ questions **20**, **1 mark** each; upload `question_paper.pdf` (the question count is filled in from it); "Answer sheet students will use": **OMR bubble sheet** |
 | 3 Answer key | Either "Upload PDF and extract": upload `answer_key.pdf`, click **Extract Answers from PDF** (expect 20/20, including multi-answer keys like `A, C`), or enter them by hand from the table below |
-| 3 Blank OMR sheet | Upload `blank_omr_sheet_layout1.png` (or 2 / 3). Check the labelled preview, then tick **Every bubble is labelled with the right question** |
+| 3 Blank OMR sheet (required) | Upload `blank_omr_sheet_layout1.png` (or 2 / 3). Check the labelled preview, then tick **Every bubble is labelled with the right question**; Next stays disabled until you do |
 | 4 Configuration | Negative marking off |
 | 5 Review | Create |
 
@@ -154,8 +154,8 @@ Key (20 questions; several have more than one correct option, a student must fil
 | Wizard step | What to do |
 |---|---|
 | 1 Paper type | **MCQ only** |
-| 2 Details | Name e.g. `Basic Science MCQ (handwritten)`; MCQ questions **10**, **1 mark** each; upload `question_paper.pdf` |
-| 3 Answer key | Upload `answer_key.pdf` and extract, or type from the table; do **not** upload a blank OMR sheet |
+| 2 Details | Name e.g. `Basic Science MCQ (handwritten)`; MCQ questions **10**, **1 mark** each; upload `question_paper.pdf`; "Answer sheet students will use": **Handwritten** |
+| 3 Answer key | Upload `answer_key.pdf` and extract, or type from the table; no blank OMR sheet is asked for with Handwritten |
 | 4, 5 | Negative marking off; Create |
 
 Students in `../Student/Handwritten/` upload their photo and choose **Handwritten**.
@@ -239,6 +239,34 @@ for a key of 2500 m gets 0).
 
 # ── Pattern 3: MCQ + subjective (Data Science exam) ──────────────────────────
 
+def reference_material(t: Path, qs: list) -> None:
+    """Study notes for the answer-key assistant (written answers only): two text PDFs, a revision sheet, one scanned
+    page (no text layer, to see the "skipped" message) and the question list to paste (text: reference_material_text.py)."""
+    import reference_material_text as R
+    d = t / "reference_material"
+    d.mkdir(parents=True, exist_ok=True)
+    for name, (title, entries) in (("lecture_notes_part1_data_basics.pdf", R.NOTES_PART1),
+                                   ("lecture_notes_part2_models.pdf", R.NOTES_PART2)):
+        lines = []
+        for head, body in entries:
+            lines += [head, body, ""]
+        text_pdf(d / name, title, lines, size=10.5)
+    write(d / "revision_sheet.txt", R.REVISION)
+    # Scanned page: render a text page to an image and put only the image in a new PDF
+    tmp = d / "_tmp.pdf"
+    text_pdf(tmp, R.SCANNED[0], R.SCANNED[1], size=13)
+    with fitz.open(tmp) as src:
+        pix = src[0].get_pixmap(dpi=110)
+    scan = fitz.open()
+    scan.new_page(width=595, height=842).insert_image(fitz.Rect(0, 0, 595, 842), stream=pix.tobytes("png"))
+    scan.save(d / "scanned_notes_page.pdf")
+    tmp.unlink()
+    write(d / "questions_for_assistant.txt",
+          "Written questions of the Data Science exam, 2 marks each. In wizard step 4 paste them into the answer-key\n"
+          "assistant (S1 ... S15), upload the files of this folder as reference, then click Draft answer key.\n\n"
+          + "\n".join(f"S{i}. {q}" for i, q in enumerate(qs, 1)))
+
+
 def pattern3() -> None:
     base = KIT / "Pattern3"
     paper = json.loads((DATA / "mendeley/papers/ds_exam.json").read_text())
@@ -263,6 +291,7 @@ def pattern3() -> None:
     # Optional reference material for the answer-key assistant (the dataset's own answer key, as text)
     ref = [f"Question {21 + i}: {q}\nAnswer: {r['model_answer']}\n" for i, (q, r) in enumerate(zip(qs, rubrics))]
     write(t / "reference_notes.txt", "Data Science - reference answers (from the dataset's answer key)\n\n" + "\n".join(ref))
+    reference_material(t, qs)
 
     # Students: 6 sheets across the marks range, with the real teacher's marks
     by_id = {s.sheet_id: s for s in dataset.load(str(DATA / "mendeley"))}
@@ -304,7 +333,7 @@ Data: "A Dataset of Digitized Student Examination Papers ..." (Mendeley Data sf3
 | 2 Details | Name e.g. `Data Science exam`; MCQ **20** x **1 mark**; Numerical **0**; Subjective **15** x **2 marks** (total 50); upload `question_paper.pdf`. Written-answer numbering: choose **Q21, Q22, ... (numbers continue)**, because the students wrote 21-35 |
 | 3 Answer key | "Upload PDF and extract" with `answer_key_mcq.pdf` (20/20), or type from the table below |
 | 4 Rubric | Upload `detailed_answer.pdf` (Detailed Answer) and `grade_rubric.pdf` (Grade Rubric), click **Extract Rubric from PDFs**: 15 questions, 2 points each at 1 mark |
-| 4 (optional) | Try the answer-key assistant: upload `reference_notes.txt` as reference, type a question, **Draft answer key** |
+| 4 (optional) | Answer-key assistant (written answers only): paste the questions from `reference_material/questions_for_assistant.txt`, upload the files of `reference_material/` as reference, **Draft answer key**. `reference_notes.txt` (the answers themselves) is the easy case |
 | 5 Review | Check "Written answers numbered: Q21 onwards"; Create |
 
 After the students upload: TAs (`ta.ds1@evalify.local`) clear flagged answers, then on the results page

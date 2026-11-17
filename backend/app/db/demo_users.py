@@ -2,7 +2,7 @@
 #
 # There is no admin UI for users yet (user decision, 15 Nov): teachers with their subject, the TAs of each
 # subject and the enrolled demo students all come from one file. Format, one entry per line:
-#   TEACHER_<n>=<email>|<password>|<name>|<subject>
+#   TEACHER_<n>=<email>|<password>|<name>|<subject>[;<subject>…]    (a teacher can teach two subjects)
 #   TA_<n>=<email>|<password>|<name>|<subject>[;<subject>…]        (same email again = one TA, more subjects)
 #   STUDENT_<n>=<roll no>|<password>|<name>|<subject>[;<subject>…]
 #   STUDENTS_<n>=<subject>|<roll prefix>|<count>|<password>         (generates <prefix>001 … with demo names)
@@ -65,8 +65,9 @@ def parse_demo_env(text: str) -> dict:
         key = key.strip()
         kind = re.sub(r"_\d+$", "", key)
         if kind == "TEACHER":
-            email, pw, name, subject = _fields(key, value, 4)
-            teachers[email] = {"email": email, "password": pw, "name": name, "subject": subject}
+            email, pw, name, subj = _fields(key, value, 4)
+            subs = _subjects(subj)               # "subject" (the first) is kept for code that expects one
+            teachers[email] = {"email": email, "password": pw, "name": name, "subject": subs[0], "subjects": subs}
         elif kind == "TA":
             email, pw, name, subj = _fields(key, value, 4)
             ta = tas.setdefault(email, {"email": email, "password": pw, "name": name, "subjects": []})

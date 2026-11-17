@@ -1,7 +1,7 @@
 // teacher/CreatePaper.jsx — 5-step wizard to create an exam paper.
 // Step 1: type
 // Step 2: details + marks (uniform default, per-Q optional) + question paper PDF upload
-// Step 3: answer key (manual or PDF extract) + answer sheet reference PDF upload
+// Step 3: answer key (manual or PDF extract) + detailed solution reference PDF upload
 // Step 4: configuration — negative marking with whole-paper or per-question scope
 // Step 5: review
 
@@ -16,8 +16,11 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
 import NumberingChoice from "../../components/forms/NumberingChoice";
-import { useCreatePaper, useUploadPaperFile, useExtractAnswers, useExtractRubric, useBuildOmrTemplate } from "../../hooks/usePapers";
+import SubjectField from "../../components/forms/SubjectField";
+import AnswerSheetFormat from "../../components/forms/AnswerSheetFormat";
+import { useCreatePaper, useUploadPaperFile, useExtractAnswers, useExtractRubric, useBuildOmrTemplate, detectQuestionCount } from "../../hooks/usePapers";
 import { paperTypeLabel } from "../../utils/formatters";
+import { omrTemplateIncomplete } from "../../utils/validators";
 
 const STEPS = ["Paper Type", "Details", "Answer Key", "Configuration", "Review"];
 
@@ -132,7 +135,7 @@ function OmrTemplateCard({ form, setForm, uploadFn }) {
   return (
     <div className="space-y-2">
       <PdfUploadZone
-        label="Blank OMR sheet (optional — for bubble sheets)"
+        label="Blank OMR sheet (required — the bubble sheet students will use)"
         hint="PNG/JPG of your unfilled bubble sheet; any layout works"
         currentUrl={tpl?.blank_url}
         uploadFn={uploadFn}
@@ -140,6 +143,12 @@ function OmrTemplateCard({ form, setForm, uploadFn }) {
         onFile={onBlank}
       />
       {building && <p className="text-xs text-green-500 animate-pulse">Detecting bubbles and question numbers…</p>}
+      {!tpl && !building && (
+        <p className="text-xs text-amber-700" data-testid="omr-required-hint">
+          Required: upload the blank bubble sheet (PNG or JPG) to continue. The answers are read at the bubble
+          positions found on it.
+        </p>
+      )}
 
       {/* Summary + labelled preview; teacher confirms before saving */}
       {tpl && !building && (
@@ -162,6 +171,11 @@ function OmrTemplateCard({ form, setForm, uploadFn }) {
             />
             Every bubble is labelled with the right question (Q12 etc.)
           </label>
+          {!tpl.confirmed && (
+            <p className="text-xs text-amber-700" data-testid="omr-confirm-hint">
+              Required: tick this box to continue. The blank sheet is used for marking only after you confirm it.
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -317,7 +331,17 @@ function MarksSection({ form, setForm, uniformKey, defaultMarksKey, countKey, qu
 
 // ── Step 2: Paper Details ─────────────────────────────────────────────────────
 
-function Step2({ form, setForm, uploadFn }) {
+function Step2({ form, setForm, uploadFn, subjects }) {
+  const [found, setFound] = useState(undefined);     // questions counted in the uploaded PDF (undefined = not checked yet)
+
+  // Store the question paper, count its questions and, for MCQ-only papers, use the count for the MCQ questions
+  const handleQuestionPaper = async (url) => {
+    setForm((f) => ({ ...f, questionPaperUrl: url }));
+    const n = await detectQuestionCount(url);
+    setFound(n);
+    if (n && form.type === "mcq") setForm((f) => ({ ...f, mcqCount: n }));
+  };
+
   const isType2 = form.type === "mcq_numerical" || form.type === "mcq_numerical_subjective";
   const isType3 = form.type === "mcq_numerical_subjective";
 
@@ -347,22 +371,31 @@ function Step2({ form, setForm, uploadFn }) {
   return (
     <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
       <Field label="Paper Name" name="name" placeholder="e.g. CS101 Midterm 2026" form={form} setForm={setForm} />
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-        <div className="flex items-center gap-2 border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-600">
-          <span className="font-medium text-gray-800">{form.subject || "—"}</span>
-          <span className="text-xs text-gray-400">(fixed to your assigned subject)</span>
-        </div>
-      </div>
+      {/* Fixed for one subject; a teacher with two subjects chooses */}
+      <SubjectField value={form.subject} subjects={subjects} onChange={(v) => setForm({ ...form, subject: v })} />
 
-      {/* Question Paper PDF — uploaded to server for persistent reference */}
+      {/* Question Paper PDF — uploaded to server for persistent reference; its numbered questions are counted */}
       <PdfUploadZone
         label="Question Paper PDF (Reference)"
         hint="Optional — stored on server, viewable from paper page"
         currentUrl={form.questionPaperUrl}
         uploadFn={uploadFn}
-        onFile={(url) => setForm({ ...form, questionPaperUrl: url })}
+        onFile={handleQuestionPaper}
       />
+      {form.questionPaperUrl && found !== undefined && (
+        <p className="text-xs text-gray-500 -mt-2" data-testid="question-count-hint">
+          {found === null
+            ? "The questions in this PDF could not be counted (it may be a scan). Set the numbers below yourself."
+            : form.type === "mcq"
+              ? `Found ${found} numbered question${found === 1 ? "" : "s"} in the PDF; the MCQ count below is set to ${found}. Change it if that is wrong.`
+              : `Found ${found} numbered questions in the PDF. The MCQ, numerical and written questions below should add up to ${found}.`}
+        </p>
+      )}
+
+      {/* MCQ-only papers: OMR or handwritten sheets (decides what the student can upload, and the OMR template step) */}
+      {form.type === "mcq" && (
+        <AnswerSheetFormat value={form.answerSheetFormat} onChange={(v) => setForm({ ...form, answerSheetFormat: v })} />
+      )}
 
       {/* MCQ count + marks */}
       <div>
@@ -535,12 +568,13 @@ function Step3({ form, setForm, uploadFn, extractFn, extracting }) {
         />
 
         {/* Blank bubble sheet → learned OMR template (MCQ papers) */}
-        {form.mcqCount > 0 && <OmrTemplateCard form={form} setForm={setForm} uploadFn={uploadFn} />}
+        {form.type === "mcq" && form.answerSheetFormat === "omr" && form.mcqCount > 0 &&
+          <OmrTemplateCard form={form} setForm={setForm} uploadFn={uploadFn} />}
 
-        {/* Physical Answer Sheet Reference — the teacher's filled sheet */}
+        {/* Detailed solution — the teacher's worked solution of the paper, kept for reference */}
         <PdfUploadZone
-          label="Answer Sheet Reference PDF (optional)"
-          hint="Upload your completed answer sheet for future reference"
+          label="Detailed Solution PDF (optional)"
+          hint="Upload your worked solution of the paper for future reference"
           currentUrl={form.answerSheetRefUrl}
           uploadFn={uploadFn}
           onFile={(url) => setForm({ ...form, answerSheetRefUrl: url })}
@@ -1044,9 +1078,13 @@ function Step5({ form }) {
             value={`${Object.values(form.numericalAnswers).filter(a => (a.values ?? []).some(v => v.trim())).length} / ${form.numericalCount}`}
           />
         )}
+        {form.type === "mcq" && (
+          <Row label="Student answer sheet"
+               value={form.answerSheetFormat === "omr" ? (form.omrTemplate ? "OMR bubble sheet (blank sheet added)" : "OMR bubble sheet") : "Handwritten"} />
+        )}
         <Row label="Question Paper PDF" value={form.questionPaperUrl ? "Uploaded" : "Not uploaded"} />
         <Row label="Answer Key PDF" value={(form.answerKeyPdfUrl || form.answerKeyRefUrl) ? "Uploaded" : "Not uploaded"} />
-        <Row label="Answer Sheet PDF" value={form.answerSheetRefUrl ? "Uploaded" : "Not uploaded"} />
+        <Row label="Detailed Solution PDF" value={form.answerSheetRefUrl ? "Uploaded" : "Not uploaded"} />
       </div>
 
       {/* Quick links to review uploaded PDFs before saving */}
@@ -1066,7 +1104,7 @@ function Step5({ form }) {
         {form.answerSheetRefUrl && (
           <button type="button" onClick={() => window.open(form.answerSheetRefUrl, "_blank")}
             className="flex-1 text-xs text-green-600 border border-green-200 rounded-lg py-2 hover:bg-green-50">
-            View answer sheet
+            View detailed solution
           </button>
         )}
       </div>
@@ -1119,6 +1157,7 @@ const INITIAL = {
   answerKeyRefUrl: null,
   answerSheetRefUrl: null,
   omrTemplate: null,          // learned bubble map from a blank OMR sheet
+  answerSheetFormat: "omr",   // MCQ-only papers: "omr" or "handwritten" (other types are always handwritten)
   // Type 3 rubric source PDFs
   detailedAnswerPdfUrl: null,
   gradeRubricPdfUrl: null,
@@ -1128,7 +1167,9 @@ const INITIAL = {
 
 export default function CreatePaper() {
   const { user } = useAuthStore();
-  const teacherSubject = user?.subject ?? "";
+  // One subject, or two (the teacher picks one per paper)
+  const subjects = user?.subjects?.length ? user.subjects : (user?.subject ? [user.subject] : []);
+  const teacherSubject = user?.subject || subjects[0] || "";
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({ ...INITIAL, subject: teacherSubject });
@@ -1146,6 +1187,7 @@ export default function CreatePaper() {
       if (form.type === "mcq_numerical_subjective") return form.subjectiveCount > 0;
       return form.mcqCount > 0;
     }
+    if (step === 3) return !omrTemplateIncomplete(form);      // OMR paper: blank sheet uploaded and confirmed
     return true;
   };
 
@@ -1197,6 +1239,7 @@ export default function CreatePaper() {
       numericalAnswers,
       subjectiveQuestionMarks,
       totalMarks,
+      answerSheetFormat: form.type === "mcq" ? form.answerSheetFormat : "handwritten",
       typeLabel: paperTypeLabel(form.type),
     });
 
@@ -1215,7 +1258,7 @@ export default function CreatePaper() {
           </Card.Header>
           <Card.Body>
             {step === 1 && <Step1 value={form.type} onChange={(t) => setForm({ ...form, type: t })} />}
-            {step === 2 && <Step2 form={form} setForm={setForm} uploadFn={uploadFn} />}
+            {step === 2 && <Step2 form={form} setForm={setForm} uploadFn={uploadFn} subjects={subjects} />}
             {step === 3 && <Step3 form={form} setForm={setForm} uploadFn={uploadFn} extractFn={extractFn} extracting={extracting} />}
             {step === 4 && <Step4 form={form} setForm={setForm} uploadFn={uploadFn} extractRubricFn={extractRubric} extractingRubric={extractingRubric} />}
             {step === 5 && <Step5 form={form} />}

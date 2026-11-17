@@ -69,3 +69,11 @@ async def test_ta_cannot_create_paper(client, ta_token):
 async def test_missing_or_bad_token(client):
     assert (await client.get("/api/papers")).status_code in (401, 403)
     assert (await client.get("/api/papers", headers=auth_headers("not.a.token"))).status_code == 401
+
+
+# Why: the UI shows every subject of a teacher who teaches two, so the login must return the full list
+@pytest.mark.asyncio
+async def test_teacher_with_two_subjects_login(client):
+    r = await client.post("/api/auth/teacher/login", json={"email": "science@evalify.local", "password": "Teacher@123"})
+    user = r.json()["user"]
+    assert user["subjects"] == ["Physics", "Mathematics"] and user["subject"] == "Physics"

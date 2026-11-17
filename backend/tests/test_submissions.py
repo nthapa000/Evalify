@@ -6,6 +6,7 @@ from tests.conftest import auth_headers
 from tests.helpers import add_evaluated_submission, make_paper
 
 PNG = b"\x89PNG\r\n\x1a\n" + b"0" * 32
+TEMPLATE = {"bubbles": [{}], "confirmed": True, "questions": 1}      # a confirmed blank-sheet template
 
 
 @pytest.fixture(autouse=True)
@@ -122,3 +123,24 @@ async def test_status_poll(client, db, teacher_token, student_token):
     sid = await add_evaluated_submission(db, paper)
     resp = await client.get(f"/api/submissions/{sid}/status", headers=auth_headers(student_token))
     assert resp.status_code == 200 and resp.json()["status"] == "evaluated"
+
+
+# Why: user request (17 Nov) — the teacher says whether the student's sheet is OMR or handwritten; the other is refused
+@pytest.mark.asyncio
+@pytest.mark.parametrize("fmt,sent,ok", [("omr", "omr", True), ("omr", "handwritten", False),
+                                         ("handwritten", "handwritten", True), ("handwritten", "omr", False)])
+async def test_answer_sheet_format_is_enforced(client, teacher_token, student_token, fmt, sent, ok):
+    paper = await make_paper(client, teacher_token, type="mcq", answerSheetFormat=fmt, omrTemplate=TEMPLATE)
+    resp = await client.post(f"/api/submissions?paper_id={paper['id']}&sheet_type={sent}",
+                             headers=auth_headers(student_token), files=[("files", ("p1.png", PNG, "image/png"))])
+    assert (resp.status_code == 200) is ok, resp.text
+    assert ok or fmt in resp.json()["detail"]
+
+
+# Why: papers made before this setting existed (no format stored) must still accept either kind of sheet
+@pytest.mark.asyncio
+async def test_no_format_accepts_both(client, teacher_token, student_token):
+    paper = await make_paper(client, teacher_token, type="mcq")
+    resp = await client.post(f"/api/submissions?paper_id={paper['id']}&sheet_type=omr",
+                             headers=auth_headers(student_token), files=[("files", ("p1.png", PNG, "image/png"))])
+    assert resp.status_code == 200

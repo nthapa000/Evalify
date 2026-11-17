@@ -46,6 +46,16 @@ export default function PaperView() {
     const isType2 = paper.type === "mcq_numerical" || paper.type === "mcq_numerical_subjective";
     const isType3 = paper.type === "mcq_numerical_subjective";
 
+    // PDFs the teacher uploaded; the answer key is either the one used for extraction or the reference copy
+    const docs = [
+        { url: paper.questionPaperUrl, tag: "PDF", title: "Question Paper (Reference)", note: "PDF reference for this exam paper" },
+        { url: paper.answerKeyRefUrl || paper.answerKeyPdfUrl, tag: "KEY", title: "Answer Key (Reference)", note: "Uploaded answer key PDF for reference" },
+        { url: paper.answerSheetRefUrl, tag: "SOL", title: "Detailed Solution (Reference)", note: "Teacher's worked solution for reference" },
+        { url: paper.detailedAnswerPdfUrl, tag: "KEY", title: "Detailed Answers", note: "Model answers for the written questions" },
+        { url: paper.gradeRubricPdfUrl, tag: "PDF", title: "Grading Rubric", note: "Marking scheme with key concepts and marks" },
+        { url: paper.omrTemplate?.blank_url, tag: "OMR", title: "OMR Layout (Blank Sheet)", note: "Blank bubble sheet the students fill in", action: "View sheet" },
+    ].filter((d) => d.url);
+
     return (
         <PageWrapper>
             <Link to="/teacher/dashboard" className="text-sm text-green-600 hover:underline mb-4 inline-block">
@@ -104,64 +114,30 @@ export default function PaperView() {
                     </Card.Body>
                 </Card>
 
-                {/* Uploaded Documents */}
-                {(paper.questionPaperUrl || paper.answerKeyRefUrl || paper.answerSheetRefUrl) && (
+                {/* Uploaded Documents: every PDF the teacher gave in the wizard (answer key: extraction PDF or reference PDF) */}
+                {docs.length > 0 && (
                     <Card>
                         <Card.Header>
                             <h2 className="text-base font-semibold text-gray-700">Uploaded documents</h2>
                         </Card.Header>
                         <Card.Body className="space-y-3">
-                            {paper.questionPaperUrl && (
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+                            {docs.map((d) => (
+                                <div key={d.title} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
                                     <div className="flex items-center gap-3">
-                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">PDF</span>
+                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">{d.tag}</span>
                                         <div>
-                                            <p className="text-sm font-medium text-gray-700">Question Paper (Reference)</p>
-                                            <p className="text-xs text-gray-400">PDF reference for this exam paper</p>
+                                            <p className="text-sm font-medium text-gray-700">{d.title}</p>
+                                            <p className="text-xs text-gray-400">{d.note}</p>
                                         </div>
                                     </div>
                                     <button
-                                        onClick={() => window.open(paper.questionPaperUrl, "_blank")}
+                                        onClick={() => window.open(d.url, "_blank")}
                                         className="text-sm text-green-600 hover:underline font-medium"
                                     >
-                                        View PDF
+                                        {d.action || "View PDF"}
                                     </button>
                                 </div>
-                            )}
-                            {paper.answerKeyRefUrl && (
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">KEY</span>
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-700">Answer Key (Reference)</p>
-                                            <p className="text-xs text-gray-400">Uploaded answer key PDF for reference</p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={() => window.open(paper.answerKeyRefUrl, "_blank")}
-                                        className="text-sm text-green-600 hover:underline font-medium"
-                                    >
-                                        View PDF
-                                    </button>
-                                </div>
-                            )}
-                            {paper.answerSheetRefUrl && (
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-mono text-[11px] uppercase text-gray-500 w-10">SHEET</span>
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-700">Answer Sheet (Reference)</p>
-                                            <p className="text-xs text-gray-400">Teacher's completed answer sheet for reference</p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={() => window.open(paper.answerSheetRefUrl, "_blank")}
-                                        className="text-sm text-green-600 hover:underline font-medium"
-                                    >
-                                        View PDF
-                                    </button>
-                                </div>
-                            )}
+                            ))}
                         </Card.Body>
                     </Card>
                 )}
@@ -173,13 +149,13 @@ export default function PaperView() {
                             <h2 className="text-base font-semibold text-gray-700">MCQ answer key</h2>
                         </Card.Header>
                         <Card.Body>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                            <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-2">
                                 {Array.from({ length: paper.mcqCount }, (_, i) => {
                                     const qid = `Q${i + 1}`;
-                                    const answer = paper.mcqAnswers[qid];
+                                    const correct = String(paper.mcqAnswers[qid] ?? "").split(",").map((a) => a.trim());   // "A,C" = two correct options
                                     const marks = paper.mcqQuestionMarks?.[qid] ?? paper.mcqMarks;
                                     return (
-                                        <div key={qid} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                                        <div key={qid} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 min-w-0">
                                             <span className="text-xs font-medium text-gray-500 w-8">{qid}</span>
                                             <span className="text-xs text-gray-400 w-8">[{marks}m]</span>
                                             <div className="flex gap-1">
@@ -187,7 +163,7 @@ export default function PaperView() {
                                                     <span
                                                         key={opt}
                                                         className={`w-7 h-7 rounded-lg text-xs font-semibold flex items-center justify-center
-                              ${answer === opt
+                              ${correct.includes(opt)
                                                                 ? "bg-green-600 text-white"
                                                                 : "bg-white border border-gray-200 text-gray-300"}`}
                                                     >

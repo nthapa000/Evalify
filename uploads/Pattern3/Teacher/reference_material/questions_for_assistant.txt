@@ -1,0 +1,18 @@
+Written questions of the Data Science exam, 2 marks each. In wizard step 4 paste them into the answer-key
+assistant (S1 ... S15), upload the files of this folder as reference, then click Draft answer key.
+
+S1. Define Supervised Learning.
+S2. Evaluation Case Study: A model (M1) achieves 99% accuracy on the training set but only 30% accuracy on the testing set. What is happening to this model?
+S3. What is Regression Analysis?
+S4. List and elucidate two major challenges in Machine Learning.
+S5. List any two major real-world applications of Data Science.
+S6. Distinguish between Structured and Semi-structured data.
+S7. Describe methods used to detect and handle outliers in a dataset.
+S8. What is Data Pre-processing?
+S9. Why is Data Normalization required for the K-Nearest Neighbors (K-NN) algorithm?
+S10. How are continuous attributes discretized? Give an example.
+S11. What does the 'K' represent in the K-Means clustering algorithm?
+S12. Name three common Hyperparameters in Machine Learning algorithms.
+S13. Define Gradient Descent.
+S14. Classifier Comparison: Compare three SVM classifiers based on their margins and boundaries.
+S15. Explain how the Radial Basis Function (RBF) Kernel works in SVM.

@@ -1,0 +1,15 @@
+Data Science revision sheet (quick points, not complete answers)
+
+- Supervised = labeled data; unsupervised = no labels. Clustering is unsupervised.
+- Train 99% / test 30% means the model memorized the training data (overfitting). Use more data or regularization.
+- Regression predicts a number from one or more independent variables; classification predicts a category.
+- Missing values, noise and small datasets are the usual data problems; training time grows with data size.
+- Fraud detection (finance), disease prediction (healthcare), recommendations (e-commerce).
+- JSON and XML are semi-structured; a SQL table is structured; images and free text are unstructured.
+- Outlier rules: |z| > 3, or outside Q1 - 1.5 IQR to Q3 + 1.5 IQR. Cap, trim or impute.
+- Always scale features before K-NN or K-Means because both use distances.
+- Hyperparameters are set by you (K, learning rate, depth, trees, batch size); parameters are learned.
+- SVM: maximize the margin; support vectors sit on the margin; C trades margin width against errors.
+- RBF kernel: similarity decays with distance; gamma controls the width; equivalent to an infinite-dimensional mapping.
+- Principal component analysis (PCA) reduces the number of features while keeping most of the variance.
+- The bias-variance trade-off: simple models have high bias, complex models have high variance.

@@ -9,7 +9,7 @@ Data: "A Dataset of Digitized Student Examination Papers ..." (Mendeley Data sf3
 | 2 Details | Name e.g. `Data Science exam`; MCQ **20** x **1 mark**; Numerical **0**; Subjective **15** x **2 marks** (total 50); upload `question_paper.pdf`. Written-answer numbering: choose **Q21, Q22, ... (numbers continue)**, because the students wrote 21-35 |
 | 3 Answer key | "Upload PDF and extract" with `answer_key_mcq.pdf` (20/20), or type from the table below |
 | 4 Rubric | Upload `detailed_answer.pdf` (Detailed Answer) and `grade_rubric.pdf` (Grade Rubric), click **Extract Rubric from PDFs**: 15 questions, 2 points each at 1 mark |
-| 4 (optional) | Try the answer-key assistant: upload `reference_notes.txt` as reference, type a question, **Draft answer key** |
+| 4 (optional) | Answer-key assistant (written answers only): paste the questions from `reference_material/questions_for_assistant.txt`, upload the files of `reference_material/` as reference, **Draft answer key**. `reference_notes.txt` (the answers themselves) is the easy case |
 | 5 Review | Check "Written answers numbered: Q21 onwards"; Create |
 
 After the students upload: TAs (`ta.ds1@evalify.local`) clear flagged answers, then on the results page

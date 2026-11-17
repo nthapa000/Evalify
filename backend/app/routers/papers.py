@@ -27,6 +27,10 @@ class ExtractRequest(BaseModel):
     mcq_count: int
 
 
+class DetectQuestionsRequest(BaseModel):
+    file_url: str     # question paper PDF from /papers/files/upload
+
+
 class OmrTemplateRequest(BaseModel):
     blank_url: str               # blank OMR sheet image from /papers/files/upload
     mcq_count: int
@@ -61,9 +65,15 @@ def _valid_id(paper_id: str) -> ObjectId:
 
 @router.post("", response_model=PaperOut)
 async def create_paper(body: PaperCreate, user: dict = Depends(require_teacher)):
-    """Create a paper; subject is forced to the teacher's own subject."""
+    """Create a paper; the subject must be one the teacher teaches (their first subject if none or another is given)."""
     doc = body.model_dump()
-    doc.update(teacher_id=user["sub"], subject=user.get("subject", doc.get("subject", "")),
+    # An OMR paper needs its blank sheet with the bubble map confirmed (an ignored template once scored a sheet 0)
+    tpl = doc.get("omrTemplate") or {}
+    if doc.get("type") == "mcq" and doc.get("answerSheetFormat") == "omr" and not (tpl.get("bubbles") and tpl.get("confirmed")):
+        raise HTTPException(status_code=400, detail="An OMR paper needs its blank OMR sheet, with the detected bubbles confirmed.")
+    mine = await user_subjects(user) or [user.get("subject", "")]
+    subject = doc.get("subject") if doc.get("subject") in mine else mine[0]      # a teacher with two subjects picks one
+    doc.update(teacher_id=user["sub"], subject=subject,
                createdAt=datetime.now(timezone.utc).isoformat(), resultCount=0,
                resultsReleased=False, releasedAt=None)          # students see marks only after release
     doc["_id"] = (await papers_col().insert_one(doc)).inserted_id
@@ -141,6 +151,18 @@ async def extract_answers(body: ExtractRequest, user: dict = Depends(require_tea
     answers, confidence, raw = extract_mcq_answers_from_pdf(path, body.mcq_count)
     return {"answers": answers, "confidence": round(confidence, 3),
             "extracted_count": len(answers), "raw_text_preview": raw[:500]}
+
+
+@router.post("/detect-questions")
+async def detect_questions(body: DetectQuestionsRequest, user: dict = Depends(require_teacher)):
+    """Number of numbered questions in an uploaded question paper PDF (null when none are found, e.g. a scan)."""
+    path = _upload_path(body.file_url)
+    if not path.endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Invalid file URL.")
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="File not found — upload the PDF first.")
+    from app.services.pdf_utils import count_questions, pdf_extract_text
+    return {"count": count_questions(pdf_extract_text(path)) or None}
 
 
 @router.post("/extract-rubric")

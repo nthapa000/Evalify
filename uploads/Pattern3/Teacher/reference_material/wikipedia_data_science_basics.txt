@@ -1,0 +1,829 @@
+Reference material downloaded from English Wikipedia (text under CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/).
+Articles: Supervised learning, Overfitting, Regression analysis, Outlier, Data pre-processing, Semi-structured data, Feature scaling, Discretization of continuous features, Data science.
+
+
+##### Supervised learning  (https://en.wikipedia.org/wiki/Supervised_learning)
+
+In machine learning, supervised learning (SL) is a type of machine learning paradigm where an algorithm learns to map input data to a specific output based on example input-output pairs. This process involves training a statistical model using labeled data, meaning each piece of input data is provided with the correct output. The term "supervised" refers to the role of a teacher or supervisor who provides this training data, guiding the algorithm towards correct predictions. For instance, if you want a model to identify cats in images, supervised learning would involve feeding it many images of cats (inputs) that are explicitly labeled "cat" (outputs).
+The goal of supervised learning is for the trained model to accurately predict the output for new, unseen data. This requires the algorithm to effectively generalize from the training examples, a quality measured by its generalization error. Supervised learning is commonly used for tasks such as classification (predicting a category, e.g., spam or not spam), regression (predicting a numerical value, e.g., a house price), and conditional density estimation (predicting the probability distribution of the output given an input, denoted by p(y∣x)).
+
+
+== Steps to follow ==
+To solve a given problem of supervised learning, the following steps must be performed:
+
+Determine the type of training samples. Before doing anything else, the user should decide what kind of data is to be used as a training set. In the case of handwriting analysis, for example, this might be a single handwritten character, an entire handwritten word, an entire sentence of handwriting, or a full paragraph of handwriting.
+Gather a training set. The training set needs to be representative of the real-world use of the function. Thus, a set of input objects is gathered together with corresponding outputs, either from human experts or from measurements.
+Determine the input feature representation of the learned function. The accuracy of the learned function depends strongly on how the input object is represented. Typically, the input object is transformed into a feature vector, which contains a number of features that are descriptive of the object. The number of features should not be too large, because of the curse of dimensionality; but should contain enough information to accurately predict the output.
+Determine the structure of the learned function and corresponding learning algorithm. For example, one may choose to use support-vector machines or decision trees.
+Complete the design. Run the learning algorithm on the gathered training set. Some supervised learning algorithms require the user to determine certain control parameters. These parameters may be adjusted by optimizing performance on a subset (called a validation set) of the training set, or via cross-validation.
+Evaluate the accuracy of the learned function. After parameter adjustment and learning, the performance of the resulting function should be measured on a test set that is separate from the training set.
+
+
+== Algorithm choice ==
+A wide range of supervised learning algorithms are available, each with its strengths and weaknesses. There is no single learning algorithm that works best on all supervised learning problems (see the No free lunch theorem).
+There are four major issues to consider in supervised learning:
+
+
+=== Bias–variance tradeoff ===
+
+A first issue is the tradeoff between bias and variance. Imagine that we have available several different, but equally good, training data sets. A learning algorithm is biased for a particular input x if, when trained on each of these data sets, it is systematically incorrect when predicting the correct output for x. A learning algorithm has high variance for a particular input x if it predicts different output values when trained on different training sets. The prediction error of a learned classifier is related to the sum of the bias and the variance of the learning algorithm. Generally, there is a tradeoff between bias and variance. A learning algorithm with low bias must be "flexible" so that it can fit the data well. But if the learning algorithm is too flexible, it will fit each training data set differently, and hence have high variance. A key aspect of many supervised learning methods is that they are able to adjust this tradeoff between bias and variance (either automatically or by providing a bias/variance parameter that the user can adjust).
+
+
+=== Function complexity and amount of training data ===
+The second issue is of the amount of training data available relative to the complexity of the "true" function (classifier or regression function). If the true function is simple, then an "inflexible" learning algorithm with high bias and low variance will be able to learn it from a small amount of data. But if the true function is highly complex (e.g., because it involves complex interactions among many different input features and behaves differently in different parts of the input space), then the function will only be able to learn with a large amount of training data paired with a "flexible" learning algorithm with low bias and high variance.
+
+
+=== Dimensionality of the input space ===
+A third issue is the dimensionality of the input space. If the input feature vectors have large dimensions, learning the function can be difficult even if the true function only depends on a small number of those features. This is because the many "extra" dimensions can confuse the learning algorithm and cause it to have high variance. Hence, input data of large dimensions typically requires tuning the classifier to have low variance and high bias. In practice, if the engineer can manually remove irrelevant features from the input data, it will likely improve the accuracy of the learned function. In addition, there are many algorithms for feature selection that seek to identify the relevant features and discard the irrelevant ones. This is an instance of the more general strategy of dimensionality reduction, which seeks to map the input data into a lower-dimensional space prior to running the supervised learning algorithm.
+
+
+=== Noise in the output values ===
+A fourth issue is the degree of noise in the desired output values (the supervisory target variables). If the desired output values are often incorrect (because of human error or sensor errors), then the learning algorithm should not attempt to find a function that exactly matches the training examples. Attempting to fit the data too carefully leads to overfitting. You can overfit even when there are no measurement errors (stochastic noise) if the function you are trying to learn is too complex for your learning model. In such a situation, the part of the target function that cannot be modeled "corrupts" your training data – this phenomenon has been called deterministic noise. When either type of noise is present, it is better to go with a higher bias, lower variance estimator.
+In practice, there are several approaches to alleviate noise in the output values such as early stopping to prevent overfitting as well as detecting and removing the noisy training examples prior to training the supervised learning algorithm. There are several algorithms that identify noisy training examples and removing the suspected noisy training examples prior to training has decreased generalization error with statistical significance.
+
+
+=== Other factors to consider ===
+Other factors to consider when choosing and applying a learning algorithm include the following:
+
+Heterogeneity of the data. If the feature vectors include features of many different kinds (discrete, discrete ordered, counts, continuous values), some algorithms are easier to apply than others. Many algorithms, including support-vector machines, linear regression, logistic regression, neural networks, and nearest neighbor methods, require that the input features be numerical and scaled to similar ranges (e.g., to the [-1,1] interval). Methods that employ a distance function, such as nearest neighbor methods and support-vector machines with Gaussian kernels, are particularly sensitive to this. An advantage of decision trees is that they easily handle heterogeneous data.
+Redundancy in the data. If the input features contain redundant information (e.g., highly correlated features), some learning algorithms (e.g., linear regression, logistic regression, and  distance-based methods) will perform poorly because of numerical instabilities. These problems can often be solved by imposing some form of regularization.
+Presence of interactions and non-linearities. If each of the features makes an independent contribution to the output, then algorithms based on linear functions (e.g., linear regression, logistic regression, support-vector machines, naive Bayes) and distance functions (e.g., nearest neighbor methods, support-vector machines with Gaussian kernels) generally perform well. However, if there are complex interactions among features, then algorithms such as decision trees and neural networks work better, because they are specifically designed to discover these interactions. Linear methods can also be applied, but the engineer must manually specify the interactions when using them.
+When considering a new application, the engineer can compare multiple learning algorithms and experimentally determine which one works best on the problem at hand (see  cross-validation). Tuning the performance of a learning algorithm can be very time-consuming. Given fixed resources, it is often better to spend more time collecting additional training data and more informative features than it is to spend extra time tuning the learning algorithms.
+
+
+=== Algorithms ===
+The most widely used learning algorithms are: 
+
+Support-vector machines
+Linear regression
+Logistic regression
+Naive Bayes
+Linear discriminant analysis
+Decision trees
+k-nearest neighbors algorithm
+Neural networks (e.g., Multilayer perceptron)
+Similarity learning
+
+
+== How supervised learning algorithms work ==
+Given a set of N training examples of the form {(x1,y1),...,(xN,yN)} such that xi is the feature vector of the i-th example and yi is its label (i.e., class), a learning algorithm seeks a function g:X→Y, where X is the input space and Y is the output space. The function g is an element of some space of possible functions G, usually called the hypothesis space. It is sometimes convenient to represent g using a scoring function f:X×Y→ℝ such that g is defined as returning the y value that gives the highest score: g(x)=arg⁡maxyf(x,y). Let F denote the space of scoring functions.
+Although G and F can be any space of functions, many learning algorithms are probabilistic models where g takes the form of a conditional probability model g(x)=arg⁡maxyP(y|x), or f takes the form of a joint probability model f(x,y)=P(x,y). For example, naive Bayes and linear discriminant analysis are joint probability models, whereas logistic regression is a conditional probability model.
+There are two basic approaches to choosing f or g: empirical risk minimization and structural risk minimization. Empirical risk minimization seeks the function that best fits the training data. Structural risk minimization includes a penalty function that controls the bias/variance tradeoff.
+In both cases, it is assumed that the training set consists of a sample of independent and identically distributed pairs, (xi,yi). In order to measure how well a function fits the training data, a loss function L:Y×Y→ℝ≥0 is defined. For training example (xi,yi), the loss of predicting the value ŷ is L(yi,ŷ).
+The risk R(g) of function g is defined as the expected loss of g. This can be estimated from the training data as
+
+Remp(g)=1N∑iL(yi,g(xi)).
+
+
+=== Empirical risk minimization ===
+
+In empirical risk minimization, the supervised learning algorithm seeks the function g that minimizes R(g). Hence, a supervised learning algorithm can be constructed by applying an optimization algorithm to find g.
+When g is a conditional probability distribution P(y|x) and the loss function is the negative log likelihood: L(y,ŷ)=−log⁡P(y|x), then empirical risk minimization is equivalent to maximum likelihood estimation.
+When G contains many candidate functions or the training set is not sufficiently large, empirical risk minimization leads to high variance and poor generalization. The learning algorithm is able to memorize the training examples without generalizing well (overfitting).
+
+
+=== Structural risk minimization ===
+Structural risk minimization seeks to prevent overfitting by incorporating a regularization penalty into the optimization. The regularization penalty can be viewed as implementing a form of Occam's razor that prefers simpler functions over more complex ones.
+A wide variety of penalties have been employed that correspond to different definitions of complexity. For example, consider the case where the function g is a linear function of the form
+
+g(x)=∑j=1dβjxj.
+A popular regularization penalty is ∑jβj2, which is the squared Euclidean norm of the weights, also known as the L2 norm. Other norms include the L1 norm, ∑j|βj|, and the L0 "norm", which is the number of non-zero βjs. The penalty will be denoted by C(g).
+The supervised learning optimization problem is to find the function g that minimizes
+
+J(g)=Remp(g)+λC(g).
+The parameter λ controls the bias-variance tradeoff. When λ=0, this gives empirical risk minimization with low bias and high variance. When λ is large, the learning algorithm will have high bias and low variance. The value of λ can be chosen empirically via  cross-validation.
+The complexity penalty has a Bayesian interpretation as the negative log prior probability of g, −log⁡P(g), in which case J(g) is the posterior probability of g.
+
+
+== Generative training ==
+The training methods described above are discriminative training methods, because they seek to find a function g that discriminates well between the different output values (see discriminative model). For the special case where f(x,y)=P(x,y) is a joint probability distribution and the loss function is the negative log likelihood −∑ilog⁡P(xi,yi), a risk minimization algorithm is said to perform generative training, because f can be regarded as a generative model that explains how the data were generated. Generative training algorithms are often simpler and more computationally efficient than discriminative training algorithms. In some cases, the solution can be computed in closed form as in naive Bayes and linear discriminant analysis.
+
+
+== Generalizations ==
+There are several ways in which the standard supervised learning problem can be generalized:
+Semi-supervised learning or weak supervision: the desired output values are provided only for a subset of the training data. The remaining data is unlabeled or imprecisely labeled.
+Active learning: Instead of assuming that all of the training examples are given at the start, active learning algorithms interactively collect new examples, typically by making queries to a human user. Often, the queries are based on unlabeled data, which is a scenario that combines semi-supervised learning with active learning.
+Structured prediction: When the desired output value is a complex object, such as a parse tree or a labeled graph, then standard methods must be extended.
+Learning to rank: When the input is a set of objects and the desired output is a ranking of those objects, then again the standard methods must be extended.
+
+
+== Approaches and algorithms ==
+Analytical learning
+Artificial neural network
+Backpropagation
+Boosting (meta-algorithm)
+Bayesian statistics
+Case-based reasoning
+Decision tree learning
+Inductive logic programming
+Gaussian process regression
+Genetic programming
+Group method of data handling
+Kernel estimators
+Learning automata
+Learning classifier systems
+Learning vector quantization
+Minimum message length (decision trees, decision graphs, etc.)
+Multilinear subspace learning
+Naive Bayes classifier
+Maximum entropy classifier
+Conditional random field
+Nearest neighbor algorithm
+Probably approximately correct learning (PAC) learning
+Ripple down rules, a knowledge acquisition methodology
+Symbolic machine learning algorithms
+Subsymbolic machine learning algorithms
+Support vector machines
+Minimum complexity machines (MCM)
+Random forests
+Ensembles of classifiers
+Ordinal classification
+Data pre-processing
+Handling imbalanced datasets
+Statistical relational learning
+Proaftn, a multicriteria classification algorithm
+
+
+== Applications ==
+Bioinformatics
+Cheminformatics
+Quantitative structure–activity relationship
+Database marketing
+Handwriting recognition
+Information retrieval
+Learning to rank
+Information extraction
+Object recognition in computer vision
+Optical character recognition
+Spam detection
+Pattern recognition
+Speech recognition
+Supervised learning is a special case of downward causation in biological systems
+Landform classification using satellite imagery
+Spend classification in procurement processes
+
+
+== General issues ==
+Computational learning theory
+Inductive bias
+Overfitting
+(Uncalibrated) class membership probabilities
+Version spaces
+
+
+##### Overfitting  (https://en.wikipedia.org/wiki/Overfitting)
+
+In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations reliably. An overfitted model is a mathematical model that contains more parameters than can be justified by the data. In the special case of a model that consists of a polynomial function, these parameters represent the degree of a polynomial. The essence of overfitting is to unknowingly extract some of the residual variation (i.e., noise) as if that variation represents the underlying model structure.
+Underfitting occurs when a mathematical model cannot adequately capture the underlying structure of the data. An under-fitted model is a model that is missing some parameters or terms that would appear in a correctly specified model. Underfitting would occur, for example, when fitting a linear model to nonlinear data. Such a model will tend to have poor predictive performance.
+The possibility of over-fitting exists when the criterion used for selecting the model is not the same as the criterion used to judge the suitability of a model. For example, a model might be selected by maximizing its performance on some set of training data, yet its suitability might be determined by its ability to perform well on unseen data; overfitting occurs when a model begins to "memorize" training data rather than "learning" to generalize from a trend.
+As an extreme example, if the number of parameters is the same as or greater than the number of observations, then a model can perfectly predict the training data simply by memorizing the data in its entirety. (For an illustration, see Figure 2.) Such a model will typically fail severely when making predictions.
+Overfitting is related to both the complexity of the chosen model and how well it is optimized during training. A function class that is too large, in a suitable sense, relative to the dataset size is likely to overfit. Even when the fitted model does not have an excessive number of parameters, it is to be expected that the fitted relationship will appear to perform less well on a new dataset than on the dataset used for fitting (a phenomenon sometimes known as shrinkage). In particular, the value of the coefficient of determination will shrink relative to the original data.
+To lessen the chance or amount of overfitting, several techniques are available (e.g., model comparison, cross-validation, regularization, early stopping, pruning, Bayesian priors, or dropout). The basis of some techniques is to either (1) explicitly penalize overly complex models or (2) test the model's ability to generalize by evaluating its performance on a set of data not used for training, which is assumed to approximate the typical unseen data that a model will encounter.
+
+
+== Statistical inference ==
+
+In statistics, an inference is drawn from a statistical model, which has been selected via some procedure. Burnham & Anderson, in their much-cited text on model selection, argue that to avoid overfitting, one should adhere to the "Principle of Parsimony". The authors also state the following.
+
+Overfitted models ... are often free of bias in the parameter estimators, but have estimated (and actual) sampling variances that are needlessly large (the precision of the estimators is poor, relative to what could have been accomplished with a more parsimonious model). False treatment effects tend to be identified, and false variables are included with overfitted models. ... A best approximating model is achieved by properly balancing the errors of underfitting and overfitting.
+Overfitting is more likely to be a serious concern when there is little theory available to guide the analysis, in part because then there tend to be a large number of models to select from. The book Model Selection and Model Averaging (2008) puts it this way.
+
+Given a data set, you can fit thousands of models at the push of a button, but how do you choose the best? With so many candidate models, overfitting is a real danger. Is the monkey who typed Hamlet actually a good writer?
+
+
+=== Regression ===
+In regression analysis, overfitting occurs frequently. As an extreme example, if there are p variables in a linear regression with p data points, the fitted line can go exactly through every point. For logistic regression or Cox proportional hazards models, there are a variety of rules of thumb (e.g. 5–9, 10 and 10–15 — the guideline of 10 observations per independent variable is known as the "one in ten rule"). In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function. The bias–variance tradeoff is often used to overcome overfit models.
+With a large set of explanatory variables that actually have no relation to the dependent variable being predicted, some variables will in general be falsely found to be statistically significant and the researcher may thus retain them in the model, thereby overfitting the model. This is known as Freedman's paradox.
+
+
+== Machine learning ==
+
+Usually, a learning algorithm is trained using some set of "training data": exemplary situations for which the desired output is known. The goal is that the algorithm will also perform well on predicting the output when fed "validation data" that was not encountered during its training.
+The term overfitting has been used in machine learning at least since 1980's to describe models or procedures that violate Occam's razor, for example by including more adjustable parameters than are ultimately optimal, or by using a more complicated approach than is ultimately optimal. For an example where there are too many adjustable parameters, consider a dataset where training data for y can be adequately predicted by a linear function of two independent variables. Such a function requires only three parameters (the intercept and two slopes). Replacing this simple function with a new, more complex quadratic function, or with a new, more complex linear function on more than two independent variables, carries a risk: Occam's razor implies that any given complex function is a priori less probable than any given simple function. If the new, more complicated function is selected instead of the simple function, and if there was not a large enough gain in training data fit to offset the complexity increase, then the new complex function "overfits" the data and the complex overfitted function will likely perform worse than the simpler function on validation data outside the training dataset, even though the complex function performed as well, or perhaps even better, on the training dataset.
+When comparing different types of models, complexity cannot be measured solely by counting how many parameters exist in each model; the expressivity of each parameter must be considered as well. For example, it is nontrivial to directly compare the complexity of a neural net (which can track curvilinear relationships) with m parameters to a regression model with n parameters.
+Overfitting is especially likely in cases where learning was performed too long or where training examples are rare, causing the learner to adjust to very specific random features of the training data that have no causal relation to the target function. In this process of overfitting, the performance on the training examples still increases while the performance on unseen data becomes worse. Thus, early stopping has been suggested as a solution.
+As a simple example, consider a database of retail purchases that includes the item bought, the purchaser, and the date and time of purchase. It's easy to construct a model that will fit the training set perfectly by using the date and time of purchase to predict the other attributes, but this model will not generalize at all to new data because those past times will never occur again.
+Generally, a learning algorithm is said to overfit relative to a simpler one if it is more accurate in fitting known data (hindsight) but less accurate in predicting new data (foresight). One can intuitively understand overfitting from the fact that information from all past experience can be divided into two groups: information that is relevant for the future, and irrelevant information ("noise"). Everything else being equal, the more difficult a criterion is to predict (i.e., the higher its uncertainty), the more noise exists in past information that needs to be ignored. The problem is determining which part to ignore. A learning algorithm that can reduce the risk of fitting noise is called "robust."
+
+
+=== Consequences ===
+
+The most obvious consequence of overfitting is poor performance on the validation dataset. Other negative consequences include:
+
+A function that is overfitted is likely to request more information about each item in the validation dataset than does the optimal function; gathering this additional unneeded data can be expensive or error-prone, especially if each individual piece of information must be gathered by human observation and manual data entry.
+A more complex, overfitted function is likely to be less portable than a simple one. At one extreme, a one-variable linear regression is so portable that, if necessary, it could even be done by hand. At the other extreme are models that can be reproduced only by exactly duplicating the original modeler's entire setup, making reuse or scientific reproduction difficult.
+It may be possible to reconstruct details of individual training instances from an overfitted machine learning model's training set. This may be undesirable if, for example, the training data includes sensitive personally identifiable information (PII). This phenomenon also presents problems in the area of artificial intelligence and copyright, with the developers of some generative deep learning models such as Stable Diffusion and GitHub Copilot being sued for copyright infringement because these models have been found to be capable of reproducing certain copyrighted items from their training data.
+
+
+=== Remedy ===
+The optimal function usually needs verification on bigger or completely new datasets.  There are, however, methods like minimum spanning tree or life-time of correlation that applies the dependence between correlation coefficients and time-series (window width). Whenever the window width is big enough, the correlation coefficients are stable and don't depend on the window width size anymore. Therefore, a correlation matrix can be created by calculating a coefficient of correlation between investigated variables. This matrix can be represented topologically as a complex network where direct and indirect influences between variables are visualized.
+Dropout regularisation (random removal of training set data) can also improve robustness and therefore reduce over-fitting by probabilistically removing inputs to a layer. Pruning is another technique that mitigates overfitting and enhances generalization by identifying a sparse, optimal neural network structure, while simultaneously reducing the computational cost of both training and inference.
+
+
+== Underfitting ==
+
+Underfitting is the inverse of overfitting, meaning that the statistical model or machine learning algorithm is too simplistic to accurately capture the patterns in the data. A sign of underfitting is that there is a high bias and low variance detected in the current model  or algorithm used (the inverse of overfitting: low bias and high variance). This can be gathered from the Bias-variance tradeoff, which is the method of analyzing a model or algorithm for bias error, variance error, and irreducible error. With a high bias and low variance, the result of the model is that it will inaccurately represent the data points and thus insufficiently be able to predict future data results (see Generalization error). As shown in Figure 5, the linear line could not represent all the given data points due to the line not resembling the curvature of the points. One would expect to see a parabola-shaped line as shown in Figure 6 and Figure 1. If Figure 5 were to be used for analysis, false predictive results would be given contrary to the results if Figure 6 was analyzed.
+Burnham & Anderson state the following.
+
+... an underfitted model would ignore some important replicable (i.e., conceptually replicable in most other samples) structure in the data and thus fail to identify effects that were actually supported by the data. In this case, bias in the parameter estimators is often substantial, and the sampling variance is underestimated, both factors resulting in poor confidence interval coverage. Underfitted models tend to miss important treatment effects in experimental settings.
+
+
+=== Resolving underfitting ===
+There are multiple ways to deal with underfitting:
+
+Increase the complexity of the model: If the model is too simple, it may be necessary to increase its complexity by adding more features, increasing the number of parameters, or using a more flexible model. However, this should be done carefully to avoid overfitting.
+Use a different algorithm: If the current algorithm is not able to capture the patterns in the data, it may be necessary to try a different one. For example, a neural network may be more effective than a linear regression model for some types of data.
+Increase the amount of training data: If the model is underfitting due to a lack of data, increasing the amount of training data may help. This will allow the model to better capture the underlying patterns in the data.
+Regularization: Regularization is a technique used to prevent overfitting by adding a penalty term to the loss function that discourages large parameter values. It can also be used to prevent underfitting by controlling the complexity of the model.
+Ensemble Methods: Ensemble methods combine multiple models to create a more accurate prediction. This can help reduce underfitting by allowing multiple models to work together to capture the underlying patterns in the data.
+Feature engineering: Feature engineering involves creating new model features from the existing ones that may be more relevant to the problem at hand. This can help improve the accuracy of the model and prevent underfitting.
+
+
+== Benign overfitting ==
+Benign overfitting describes the phenomenon of a statistical model that seems to generalize well to unseen data, even when it has been fit perfectly on noisy training data (i.e., obtains perfect predictive accuracy on the training set). The phenomenon is of particular interest in deep neural networks, but is studied from a theoretical perspective in the context of much simpler models, such as linear regression. In particular, it has been shown that overparameterization is essential for benign overfitting in this setting. In other words, the number of directions in parameter space that are unimportant for prediction must significantly exceed the sample size.
+
+
+##### Regression analysis  (https://en.wikipedia.org/wiki/Regression_analysis)
+
+In statistical modeling, regression analysis is a statistical method for estimating the relationship between a dependent variable (often called the outcome or response variable, or a label in machine learning parlance) and one or more independent variables (often called regressors, predictors, covariates, explanatory variables or features).
+The most common form of regression analysis is linear regression, in which one finds the line or hyperplane that most closely fits the data according to a specific mathematical criterion. For example, the method of ordinary least squares computes the unique line (or hyperplane) that minimizes the sum of squared differences between the true data and that line (or hyperplane). For specific mathematical reasons (see linear regression), this allows the researcher to estimate the conditional expectation (or population average value) of the dependent variable when the independent variables take on a given set of values. Less common forms of regression use slightly different procedures to estimate alternative location parameters (e.g., quantile regression or Necessary Condition Analysis) or estimate the conditional expectation across a broader collection of non-linear models (e.g., nonparametric regression).
+Linear regression can model curved relationships. The "linear" refers to linearity in the parameters: by including transformed predictors, for example using polynomials, the fitted line or hyperplane can take a variety of non-linear shapes. Linear regression can also model interactions between variables by including products of predictors, allowing the effect of one variable to depend on the value of another.
+Regression analysis is primarily used for two conceptually distinct purposes. First, regression analysis is widely used for prediction and forecasting, where its use has substantial overlap with the field of machine learning. Second, in some situations regression analysis can be used to infer causal relationships between the independent and dependent variables. Importantly, regressions by themselves only reveal relationships between a dependent variable and a collection of independent variables in a fixed dataset. To use regressions for prediction or to infer causal relationships, respectively, a researcher must carefully justify why existing relationships have predictive power for a new context or why a relationship between two variables has a causal interpretation. The latter is especially important when researchers hope to estimate causal relationships using observational data.
+
+
+== History ==
+The earliest regression form was seen in Isaac Newton's work in 1700 while studying equinoxes, being credited with introducing "an embryonic linear regression analysis" as "not only did he perform the averaging of a set of data, 50 years before Tobias Mayer, but by summing the residuals to zero he forced the regression line to pass through the average point. He also distinguished between two inhomogeneous sets of data and might have thought of an optimal solution in terms of bias, though not in terms of effectiveness." He previously used an averaging method in his 1671 work on Newton's rings, which was unprecedented at the time. 
+The method of least squares was published by Legendre in 1805, and by Gauss in 1809. Legendre and Gauss both applied the method to the problem of determining, from astronomical observations, the orbits of bodies about the Sun (mostly comets, but also later the then newly discovered minor planets). Gauss published a further development of the theory of least squares in 1821, including a version of the Gauss–Markov theorem.
+The term "regression" was coined by Francis Galton in the 19th century to describe a biological phenomenon. The phenomenon was that the heights of descendants of tall ancestors tend to regress down towards a normal average (a phenomenon also known as regression toward the mean).
+For Galton, regression had only this biological meaning, but his work was later extended by Udny Yule and Karl Pearson to a more general statistical context. In the work of Yule and Pearson, the joint distribution of the response and explanatory variables is assumed to be Gaussian. This assumption was weakened by R.A. Fisher in his works of 1922 and 1925. Fisher assumed that the conditional distribution of the response variable is Gaussian, but the joint distribution need not be. In this respect, Fisher's assumption is closer to Gauss's formulation of 1821.
+In the 1950s and 1960s, economists used electromechanical desk calculators to calculate regressions. Before 1970, it sometimes took up to 24 hours to receive the result from one regression. 
+Regression methods continue to be an area of active research. In recent decades, new methods have been developed for robust regression, regression involving correlated responses such as time series and growth curves, regression in which the predictor (independent variable) or response variables are curves, images, graphs, or other complex data objects, regression methods accommodating various types of missing data, nonparametric regression, Bayesian methods for regression, regression in which the predictor variables are measured with error, regression with more predictor variables than observations, and causal inference with regression. Modern regression analysis is typically done with statistical and spreadsheet software packages on computers as well as on handheld scientific and graphing calculators.
+
+
+== Regression model ==
+In practice, researchers first select a model they would like to estimate and then use their chosen method (e.g., ordinary least squares) to estimate the parameters of that model. Regression models involve the following components:
+
+The unknown parameters, often denoted as a scalar or vector β.
+The independent variables, which are observed in data and are often denoted as a vector Xi (where i denotes a row of data).
+The dependent variable, which are observed in data and often denoted using the scalar Yi.
+The error terms, which are not directly observed in data and are often denoted using the scalar ei.
+In various fields of application, different terminologies are used in place of dependent and independent variables.
+Most regression models propose that Yi is a function (regression function) of Xi and β, with ei representing an additive error term that may stand in for un-modeled determinants of Yi or random statistical noise:
+
+Yi=f(Xi,β)+ei
+In the standard regression model, the independent variables Xi are assumed to be free of error. The errors-in-variables model can be used if the independent variables are assumed to contain errors. Other modifications to the standard regression model can be made to account for various scenarios, such as situations involving omitted variables, confounding variables or endogeneity. 
+The researchers' goal is to estimate the function f(Xi,β) that most closely fits the data. To carry out regression analysis, the form of the function f must be specified. Sometimes the form of this function is based on knowledge about the relationship between Yi and Xi that does not rely on the data. If no such knowledge is available, a flexible or convenient form for f is chosen. For example, a simple univariate regression may propose f(Xi,β)=β0+β1Xi, suggesting that the researcher believes Yi=β0+β1Xi+ei to be a reasonable approximation for the statistical process generating the data.
+Once researchers determine their preferred statistical model, different forms of regression analysis provide tools to estimate the parameters β. For example, least squares (including its most common variant, ordinary least squares) finds the value of β that minimizes the sum of squared errors ∑i(Yi−f(Xi,β))2. A given regression method will ultimately provide an estimate of β, usually denoted β̂ to distinguish the estimate from the true (unknown) parameter value that generated the data. Using this estimate, the researcher can then use the fitted value Yî=f(Xi,β̂) for prediction or to assess the accuracy of the model in explaining the data. Whether the researcher is intrinsically interested in the estimate β̂ or the predicted value Yî will depend on context and their goals. As described in ordinary least squares, least squares is widely used because the estimated function f(Xi,β̂) approximates the conditional expectation E(Yi|Xi). However, alternative variants (e.g., least absolute deviations or quantile regression) are useful when researchers want to model other functions f(Xi,β).
+There must be sufficient data to estimate a regression model. For example, suppose that a researcher has access to N rows of data with one dependent and two independent variables: (Yi,X1i,X2i). Suppose further that the researcher wants to estimate a bivariate linear model via least squares: Yi=β0+β1X1i+β2X2i+ei. If the researcher only has access to N=2 data points, then they could find infinitely many combinations (β̂0,β̂1,β̂2) that explain the data equally well: any combination can be chosen that satisfies Ŷi=β̂0+β̂1X1i+β̂2X2i, all of which lead to ∑iêi2=∑i(Ŷi−(β̂0+β̂1X1i+β̂2X2i))2=0 and are therefore valid solutions that minimize the sum of squared residuals. To understand why there are infinitely many options, note that the system of N=2 equations is to be solved for 3 unknowns, which makes the system underdetermined. Alternatively, one can visualize infinitely many 3-dimensional planes that go through N=2 fixed points.
+More generally, to estimate a least squares model with k distinct parameters, one must have N≥k distinct data points. If N>k, then there does not generally exist a set of parameters that will perfectly fit the data. The quantity N−k appears often in regression analysis, and is referred to as the degrees of freedom in the model. Moreover, to estimate a least squares model, the independent variables (X1i,X2i,...,Xki) must be linearly independent: one must not be able to reconstruct any of the independent variables by adding and multiplying the remaining independent variables. As discussed in ordinary least squares, this condition ensures that XTX is an invertible matrix and therefore that a unique solution β̂ exists.
+
+
+== Underlying assumptions ==
+
+By itself, a regression is just a computation performed on a set of data. In order to interpret the resultant regression as a meaningful statistical model that quantifies real-world relationships, researchers often rely on a number of classical assumptions. These assumptions often include:
+
+The sample is representative of the population at large.
+The independent variables are measured without error.
+Deviations from the model have an expected value of zero, conditional on covariates: E(ei|Xi)=0
+The variance of the residuals ei is constant across observations (homoscedasticity).
+The residuals ei are uncorrelated with one another. Mathematically, the variance–covariance matrix of the errors is diagonal.
+A handful of conditions are sufficient for the least-squares estimator to possess desirable properties: in particular, the Gauss–Markov assumptions imply that the parameter estimates will be unbiased, consistent, and efficient in the class of linear unbiased estimators. Practitioners have developed a variety of methods to maintain some or all of these desirable properties in real-world settings, because these classical assumptions are unlikely to hold exactly. For example, modeling errors-in-variables can lead to reasonable estimates independent variables are measured with errors. Heteroscedasticity-consistent standard errors allow the variance of ei to change across values of Xi. Correlated errors that exist within subsets of the data or follow specific patterns can be handled using clustered standard errors, geographic weighted regression, or Newey–West standard errors, among other techniques. When rows of data correspond to locations in space, the choice of how to model ei within geographic units can have important consequences. The subfield of econometrics is largely focused on developing techniques that allow researchers to make reasonable real-world conclusions in real-world settings, where classical assumptions do not hold exactly.
+
+
+== Linear regression ==
+
+In linear regression, the model specification is that the dependent variable, yi is a linear combination of the parameters (but need not be linear in the independent variables). For example, in simple linear regression for modeling n data points there is one independent variable: xi, and two parameters, β0 and β1:
+
+straight line: yi=β0+β1xi+εi,i=1,…,n.
+In multiple linear regression, there are several independent variables or functions of independent variables.
+Adding a term in xi2 to the preceding regression gives:
+
+parabola: yi=β0+β1xi+β2xi2+εi, i=1,…,n.
+This is still linear regression; although the expression on the right hand side is quadratic in the independent variable xi, it is linear in the parameters β0, β1 and β2.
+In both cases, εi is an error term and the subscript i indexes a particular observation.
+
+
+=== Simple linear regression ===
+
+In the straight line case, given a random sample from the population, we estimate the population parameters and obtain the sample linear regression model:
+
+y^i=β^0+β^1xi.
+The residual, ei=yi−y^i, is the difference between the value of the dependent variable predicted by the model, y^i, and the true value of the dependent variable, yi. One method of estimation is ordinary least squares. This method obtains parameter estimates that minimize the sum of squared residuals, SSR:
+
+SSR=∑i=1nei2
+Minimization of this function results in a set of normal equations, a set of simultaneous linear equations in the parameters, which are solved to yield the parameter estimators, β^0,β^1.
+
+In the case of simple regression, the formulas for the least squares estimates are
+
+β^1=∑(xi−x¯)(yi−y¯)∑(xi−x¯)2
+β^0=y¯−β^1x¯
+where x¯ is the mean (average) of the x values and y¯ is the mean of the y values.
+Under the assumption that the population error term has a constant variance, the estimate of that variance is given by:
+
+σ̂ε2=SSRn−2
+This is called the mean square error (MSE) of the regression. The denominator is the sample size reduced by the number of model parameters estimated from the same data, (n−p) for p regressors or (n−p−1) if an intercept is used. In this case, p=1 so the denominator is n−2.
+The standard errors of the parameter estimates are given by
+
+σ̂β1=σ̂ε1∑(xi−x¯)2
+σ̂β0=σ̂ε1n+x¯2∑(xi−x¯)2=σ̂β1∑xi2n.
+Under the further assumption that the population error term is normally distributed, the researcher can use these estimated standard errors to create confidence intervals and conduct hypothesis tests about the population parameters.
+
+
+=== Multiple linear regression ===
+
+In the more general multiple linear regression model, there are p independent variables:
+
+yi=β1xi1+β2xi2+⋯+βpxip+εi,
+where xij is the i-th observation on the j-th independent variable.
+If the first independent variable takes the value 1 for all i, xi1=1, then β1 is called the regression intercept.
+The least squares parameter estimates are obtained from p normal equations. The residual can be written as
+
+εi=yi−β̂1xi1−⋯−β̂pxip.
+The normal equations are
+
+∑i=1n∑k=1pxijxikβ̂k=∑i=1nxijyi, j=1,…,p.
+In matrix notation, the normal equations are written as
+
+(𝐗⊤𝐗)𝜷̂=𝐗⊤𝐘,
+where the ij element of 𝐗 is xij, the i element of the column vector Y is yi, and the j element of 𝜷̂ is β̂j. Thus 𝐗 is n×p, Y is n×1, and 𝜷̂ is p×1. The solution is
+
+𝜷̂=(𝐗⊤𝐗)−𝟏𝐗⊤𝐘.
+
+
+=== Diagnostics ===
+
+Once a regression model has been constructed, it may be important to confirm the goodness of fit of the model and the statistical significance of the estimated parameters. Commonly used checks of goodness of fit include the R-squared, analyses of the pattern of residuals and hypothesis testing. Statistical significance can be checked by an F-test of the overall fit, followed by t-tests of individual parameters.
+Interpretations of these diagnostic tests rest heavily on the model's assumptions. Although examination of the residuals can be used to invalidate a model, the results of a t-test or F-test are sometimes more difficult to interpret if the model's assumptions are violated. For example, if the error term does not have a normal distribution, in small samples the estimated parameters will not follow normal distributions and complicate inference. With relatively large samples, however, a central limit theorem can be invoked such that hypothesis testing may proceed using asymptotic approximations.
+
+
+=== Limited dependent variables ===
+Limited dependent variables, which are response variables that are categorical or constrained to fall only in a certain range, often arise in econometrics.
+The response variable may be non-continuous ("limited" to lie on some subset of the real line). For binary (zero or one) variables, if analysis proceeds with least-squares linear regression, the model is called the linear probability model. Nonlinear models for binary dependent variables include the probit and logit model. The multivariate probit model is a standard method of estimating a joint relationship between several binary dependent variables and some independent variables. For categorical variables with more than two values there is the multinomial logit. For ordinal variables with more than two values, there are the ordered logit and ordered probit models. Censored regression models may be used when the dependent variable is only sometimes observed, and Heckman correction type models may be used when the sample is not randomly selected from the population of interest. 
+An alternative to such procedures is linear regression based on polychoric correlation (or polyserial correlations) between the categorical variables. Such procedures differ in the assumptions made about the distribution of the variables in the population. If the variable is positive with low values and represents the repetition of the occurrence of an event, then count models like the Poisson regression or the negative binomial model may be used.
+
+
+== Nonlinear regression ==
+
+When the model function is not linear in the parameters, the sum of squares must be minimized by an iterative procedure. This introduces many complications which are summarized in Differences between linear and non-linear least squares.
+
+
+== Prediction (interpolation and extrapolation) ==
+
+Regression models predict a value of the Y variable given known values of the X variables. Prediction within the range of values in the dataset used for model-fitting is known informally as interpolation. Prediction outside this range of the data is known as extrapolation. Performing extrapolation relies strongly on the regression assumptions. The further the extrapolation goes outside the data, the more room there is for the model to fail due to differences between the assumptions and the sample data or the true values.
+A prediction interval that represents the uncertainty may accompany the point prediction. Such intervals tend to expand rapidly as the values of the independent variable(s) moved outside the range covered by the observed data.
+For such reasons and others, some tend to say that it might be unwise to undertake extrapolation.
+
+
+== Model selection ==
+
+The assumption of a particular form for the relation between Y and X is another source of uncertainty. A properly conducted regression analysis will include an assessment of how well the assumed form is matched by the observed data, but it can only do so within the range of values of the independent variables actually available. This means that any extrapolation is particularly reliant on the assumptions being made about the structural form of the regression relationship. If this knowledge includes the fact that the dependent variable cannot go outside a certain range of values, this can be made use of in selecting the model – even if the observed dataset has no values particularly near such bounds. The implications of this step of choosing an appropriate functional form for the regression can be great when extrapolation is considered. At a minimum, it can ensure that any extrapolation arising from a fitted model is "realistic" (or in accord with what is known).
+
+
+== Power and sample size calculations ==
+There are no generally agreed methods for relating the number of observations versus the number of independent variables in the model. One method conjectured by Good and Hardin is N=mn, where N is the sample size, n is the number of independent variables and m is the number of observations needed to reach the desired precision if the model had only one independent variable. For example, a researcher is building a linear regression model using a dataset that contains 1000 patients (N). If the researcher decides that five observations are needed to precisely define a straight line (m), then the maximum number of independent variables (n) the model can support is 4, because
+
+log⁡1000log⁡5≈4.29.
+
+
+== Other methods ==
+Although the parameters of a regression model are usually estimated using the method of least squares, other methods which have been used include:
+
+Bayesian methods, e.g. Bayesian linear regression
+Percentage regression, for situations where reducing percentage errors is deemed more appropriate.
+Least absolute deviations, which is more robust in the presence of outliers, leading to quantile regression
+Nonparametric regression, requires a large number of observations and is computationally intensive
+Scenario optimization, leading to interval predictor models
+
+
+== Software ==
+
+All major statistical software packages perform least squares regression analysis and inference. Simple linear regression and multiple regression using least squares can be done in some spreadsheet applications and on some calculators. While many statistical software packages can perform various types of nonparametric and robust regression, these methods are less standardized. Different software packages implement different methods, and a method with a given name may be implemented differently in different packages. Specialized regression software has been developed for use in fields such as survey analysis and neuroimaging.
+
+
+##### Outlier  (https://en.wikipedia.org/wiki/Outlier)
+
+In statistics, an outlier is a data point that differs significantly from other observations. An outlier may be due to a variability in the measurement, an indication of novel data, or it may be the result of experimental error; the latter are sometimes excluded from the data set.  An outlier can be an indication of exciting possibility, but can also cause serious problems in statistical analyses.
+Outliers can occur by chance in any distribution, but they can indicate novel behaviour or structures in the data-set, measurement error, or that the population has a heavy-tailed distribution. In the case of measurement error, one wishes to discard them or use statistics that are robust to outliers, while in the case of heavy-tailed distributions, they indicate that the distribution has high skewness and that one should be very cautious in using tools or intuitions that assume a normal distribution. A frequent cause of outliers is a mixture of two distributions, which may be two distinct sub-populations, or may indicate 'correct trial' versus 'measurement error'; this is modeled by a mixture model.
+In most larger samplings of data, some data points will be further away from the sample mean than what is deemed reasonable. This can be due to incidental systematic error or flaws in the theory that generated an assumed family of probability distributions, or it may be that some observations are far from the center of the data. Outlier points can therefore indicate faulty data, erroneous procedures, or areas where a certain theory might not be valid. However, in large samples, a small number of outliers is to be expected (and not due to any anomalous condition).
+Outliers, being the most extreme observations, may include the sample maximum or sample minimum, or both, depending on whether they are extremely high or low. However, the sample maximum and minimum are not always outliers because they may not be unusually far from other observations.
+Naive interpretation of statistics derived from data sets that include outliers may be misleading. For example, if one is calculating the average temperature of 10 objects in a room, and nine of them are between 20 and 25 degrees Celsius, but an oven is at 175 °C, the median of the data will be between 20 and 25 °C but the mean temperature will be between 35.5 and 40 °C. In this case, the median better reflects the temperature of a randomly sampled object (but not the temperature in the room) than the mean; naively interpreting the mean as "a typical sample", equivalent to the median, is incorrect. As illustrated in this case, outliers may indicate data points that belong to a different population than the rest of the sample set.
+Estimators capable of coping with outliers are said to be robust: the median is a robust statistic of central tendency, while the mean is not.
+
+
+== Occurrence and causes ==
+
+In the case of normally distributed data, the three sigma rule means that roughly 1 in 22 observations will differ by twice the standard deviation or more from the mean, and 1 in 370 will deviate by three times the standard deviation. In a sample of 1000 observations, the presence of up to five observations deviating from the mean by more than three times the standard deviation is within the range of what can be expected, being less than twice the expected number and hence within 1 standard deviation of the expected number – see Poisson distribution – and not indicate an anomaly. If the sample size is only 100, however, just three such outliers are already reason for concern, being more than 11 times the expected number.
+In general, if the nature of the population distribution is known a priori, it is possible to test if the number of outliers deviate significantly from what can be expected: for a given cutoff (so samples fall beyond the cutoff with probability p) of a given distribution, the number of outliers will follow a binomial distribution with parameter p, which can generally be well-approximated by the Poisson distribution with λ = pn. Thus if one takes a normal distribution with cutoff 3 standard deviations from the mean, p is approximately 0.3%, and thus for 1000 trials one can approximate the number of samples whose deviation exceeds 3 sigmas by a Poisson distribution with λ = 3.
+
+
+=== Causes ===
+Outliers can have many anomalous causes. A physical apparatus for taking measurements may have suffered a transient malfunction. There may have been an error in data transmission or transcription. Outliers arise due to changes in system behaviour, fraudulent behaviour, human error, instrument error or simply through natural deviations in populations. A sample may have been contaminated with elements from outside the population being examined. Alternatively, an outlier could be the result of a flaw in the assumed theory, calling for further investigation by the researcher.  Additionally, the pathological appearance of outliers of a certain form appears in a variety of datasets, indicating that the causative mechanism for the data might differ at the extreme end (King effect).
+
+
+== Definitions and detection ==
+There is no rigid mathematical definition of what constitutes an outlier; determining whether or not an observation is an outlier is ultimately a subjective exercise.
+There are various methods of outlier detection, some of which are treated as synonymous with novelty detection. Some are graphical such as normal probability plots.  Others are model-based. Box plots are a hybrid.
+Model-based methods which are commonly used for identification assume that the data are from a normal distribution, and identify observations which are deemed "unlikely" based on mean and standard deviation:
+
+Chauvenet's criterion
+Grubbs's test for outliers
+Dixon's Q test
+ASTM E178: Standard Practice for Dealing With Outlying Observations
+Mahalanobis distance and leverage are often used to detect outliers, especially in the development of linear regression models.
+Subspace and correlation based techniques for high-dimensional numerical data
+
+
+=== Peirce's criterion ===
+
+It is proposed to determine in a series of m observations the limit of error, beyond which all observations involving so great an error may be rejected, provided there are as many as n such observations. The principle upon which it is proposed to solve this problem is, that the proposed observations should be rejected when the probability of the system of errors obtained by retaining them is less than that of the system of errors obtained by their rejection multiplied by the probability of making so many, and no more, abnormal observations. (Quoted in the editorial note on page 516 to Peirce (1982 edition) from A Manual of Astronomy 2:558 by Chauvenet.)
+
+
+=== Tukey's fences ===
+Other methods flag observations based on measures such as the interquartile range. For example, if Q1 and Q3 are the lower and upper quartiles respectively, then one could define an outlier to be any observation outside the range:
+
+[Q1−k(Q3−Q1),Q3+k(Q3−Q1)]
+for some nonnegative constant k.
+John Tukey proposed this test, where k=1.5 indicates an "outlier", and k=3 indicates data that is "far out".
+
+
+=== In anomaly detection ===
+
+In various domains such as, but not limited to, statistics, signal processing, finance, econometrics, manufacturing, networking and data mining, the task of anomaly detection may take other approaches. Some of these may be distance-based and density-based such as Local Outlier Factor (LOF). Some approaches may use the distance to the k-nearest neighbors to label observations as outliers or non-outliers.
+
+
+=== Modified Thompson Tau test ===
+
+The modified Thompson Tau test is a method used to determine if an outlier exists in a data set. The strength of this method lies in the fact that it takes into account a data set's standard deviation, average and provides a statistically determined rejection zone; thus providing an objective method to determine if a data point is an outlier.
+How it works:
+First, a data set's average is determined. Next the absolute deviation between each data point and the average are determined. Thirdly, a rejection region is determined using the formula: 
+
+Rejection Region=tα/2(n−1)nn−2+tα/22;
+where tα/2 is the critical value from the Student t distribution with n-2 degrees of freedom, n is the sample size, and s is the sample standard deviation.
+To determine if a value is an outlier:
+Calculate δ=|(X−mean(X))/s|.
+If δ > Rejection Region, the data point is an outlier.
+If δ ≤ Rejection Region, the data point is not an outlier.
+The modified Thompson Tau test is used to find one outlier at a time (largest value of δ is removed if it is an outlier). Meaning, if a data point is found to be an outlier, it is removed from the data set and the test is applied again with a new average and rejection region. This process is continued until no outliers remain in a data set.
+Some work has also examined outliers for nominal (or categorical) data. In the context of a set of examples (or instances) in a data set, instance hardness measures the probability that an instance will be misclassified ( 1−p(y|x) where y is the assigned class label and x represent the input attribute value for an instance in the training set t). Ideally, instance hardness would be calculated by summing over the set of all possible hypotheses H:
+
+IH(⟨x,y⟩)=∑H(1−p(y,x,h))p(h|t)=∑Hp(h|t)−p(y,x,h)p(h|t)=1−∑Hp(y,x,h)p(h|t).
+Practically, this formulation is unfeasible as H is potentially infinite and calculating p(h|t) is unknown for many algorithms. Thus, instance hardness can be approximated using a diverse subset L⊂H:
+
+IHL(⟨x,y⟩)=1−1|L|∑j=1|L|p(y|x,gj(t,α))
+where gj(t,α) is the hypothesis induced by learning algorithm gj trained on training set t with hyperparameters α. Instance hardness provides a continuous value for determining if an instance is an outlier instance.
+
+
+== Working with outliers ==
+The choice of how to deal with an outlier should depend on the cause. Some estimators are highly sensitive to outliers, notably estimation of covariance matrices.
+
+
+=== Retention ===
+Even when a normal distribution model is appropriate to the data being analyzed, outliers are expected for large sample sizes and should not automatically be discarded if that is the case.  Instead, one should use a method that is robust to outliers to model or analyze data with naturally occurring outliers.
+
+
+=== Exclusion ===
+When deciding whether to remove an outlier, the cause has to be considered.  As mentioned earlier, if the outlier's origin can be attributed to an experimental error, or if it can be otherwise determined that the outlying data point is erroneous, it is generally recommended to remove it. However, it is more desirable to correct the erroneous value, if possible.
+Removing a data point solely because it is an outlier, on the other hand,  is a controversial practice, often frowned upon by many scientists and science instructors, as it typically invalidates statistical results. While mathematical criteria provide an objective and quantitative method for data rejection, they do not make the practice more scientifically or methodologically sound, especially in small sets or where a normal distribution cannot be assumed. Rejection of outliers is more acceptable in areas of practice where the underlying model of the process being measured and the usual distribution of measurement error are confidently known.
+The two common approaches to exclude outliers are truncation (or trimming) and Winsorising. Trimming discards the outliers whereas Winsorising replaces the outliers with the nearest "nonsuspect" data. Exclusion can also be a consequence of the measurement process, such as when an experiment is not entirely capable of measuring such extreme values, resulting in censored data.
+In regression problems, an alternative approach may be to only exclude points which exhibit a large degree of influence on the estimated coefficients, using a measure such as Cook's distance.
+If a data point (or points) is excluded from the data analysis, this should be clearly stated on any subsequent report.
+
+
+=== Non-normal distributions ===
+The possibility should be considered that the underlying distribution of the data is not approximately normal, having "fat tails". For instance, when sampling from a Cauchy distribution, the sample variance increases with the sample size, the sample mean fails to converge as the sample size increases, and outliers are expected at far larger rates than for a normal distribution. Even a slight difference in the fatness of the tails can make a large difference in the expected number of extreme values.
+
+
+=== Set-membership uncertainties ===
+A set membership approach considers that the uncertainty corresponding to the ith measurement of an unknown random vector x is represented by a set Xi (instead of a probability density function). If no outliers occur, x should belong to the intersection of all Xi's. When outliers occur, this intersection could be empty, and we should relax a small number of the sets Xi (as small as possible) in order to avoid any inconsistency. This can be done using the notion of q-relaxed intersection. As illustrated by the figure, the q-relaxed intersection corresponds to the set of all x which belong to all sets except q of them. Sets Xi that do not intersect the  q-relaxed intersection could be suspected to be outliers.
+
+
+=== Alternative models ===
+In cases where the cause of the outliers is known, it may be possible to incorporate this effect into the model structure, for example by using a hierarchical Bayes model, or a mixture model.
+
+
+=== Choice of distance metrics ===
+In cluster analysis, outliers can greatly distort the results. Thus, the handling of outliers has been an issue of much discussion.
+Cluster analysis relies heavily on distance measures. It has been suggested that Manhattan distance, due to the lack of squaring disproportionately large difference values, is likely to handle outliers better than Euclidean distance.
+
+
+##### Data preprocessing  (https://en.wikipedia.org/wiki/Data_preprocessing)
+
+Data preprocessing can refer to manipulation, filtration or augmentation of data before it is analyzed, and is often an important step in the data mining process. Data collection methods are often loosely controlled, resulting in out-of-range values, impossible data combinations, and missing values, amongst other issues.
+Preprocessing is the process by which unstructured data is transformed into intelligible representations suitable for machine-learning models. This phase of model deals with noise in order to arrive at better and improved results from the original data set which was noisy. This dataset also has some level of missing value present in it. 
+
+The preprocessing pipeline used can often have large effects on the conclusions drawn from the downstream analysis. Thus, representation and quality of data is necessary before running any analysis. If there is a high proportion of irrelevant and redundant information present or noisy and unreliable data, then knowledge discovery during the training phase may be more difficult. Data preparation and filtering steps can take a considerable amount of processing time. Examples of methods used in data preprocessing include cleaning, instance selection, normalization, one-hot encoding, data transformation, feature extraction and feature selection.
+
+
+== Applications ==
+
+
+=== Data mining ===
+
+Data preprocessing allows for the removal of unwanted data with the use of data cleaning, this allows the user to have a dataset to contain more valuable information after the preprocessing stage for data manipulation later in the data mining process. Editing such dataset to either correct data corruption or human error is a crucial step to get accurate quantifiers like true positives, true negatives, false positives and false negatives found in a confusion matrix that are commonly used for a medical diagnosis. Users are able to join data files together and use preprocessing to filter any unnecessary noise from the data which can allow for higher accuracy. Users use Python programming scripts accompanied by the pandas library which gives them the ability to import data from a comma-separated values as a data-frame. The data-frame is then used to manipulate data that can be challenging otherwise to do in Excel. Pandas (software) which is a powerful tool that allows for data analysis and manipulation; which makes data visualizations, statistical operations and much more, a lot easier. Many also use the R programming language to do such tasks as well. 
+The reason why a user transforms existing files into a new one is because of many reasons. Aspects of data preprocessing may include imputing missing values, aggregating numerical quantities and transforming continuous data into categories (data binning). More advanced techniques like principal component analysis and feature selection are working with statistical formulas and are applied to complex datasets which are recorded by GPS trackers and motion capture devices.
+
+
+=== Semantic data preprocessing ===
+Semantic data mining is a subset of data mining that specifically seeks to incorporate domain knowledge, such as formal semantics, into the data mining process. Domain knowledge is the knowledge of the environment the data was processed in. Domain knowledge can have a positive influence on many aspects of data mining, such as filtering out redundant or inconsistent data during the preprocessing phase. Domain knowledge also works as constraint. It does this by using working as set of prior knowledge to reduce the space required for searching and acting as a guide to the data. Simply put, semantic preprocessing seeks to filter data using the original environment of said data more correctly and efficiently.
+There are increasingly complex problems which are asking to be solved by more elaborate techniques to better analyze existing information. Instead of creating a simple script for aggregating different numerical values into a single value, it make sense to focus on semantic based data preprocessing. The idea is to build a dedicated ontology, which explains on a higher level what the problem is about. In regards to semantic data mining and semantic pre-processing, ontologies are a way to conceptualize and formally define semantic knowledge and data. The Protégé (software) is the standard tool for constructing an ontology. In general, the use of ontologies bridges the gaps between data, applications, algorithms, and results that occur from semantic mismatches. As a result, semantic data mining combined with ontology has many applications where semantic ambiguity can impact the usefulness and efficiency of data systems. Applications include the medical field, language processing, banking, and even tutoring, among many more.
+There are various strengths to using a semantic data mining and ontological based approach. As previously mentioned, these tools can help during the per-processing phase by filtering out non-desirable data from the data set. Additionally, well-structured formal semantics integrated into well designed ontologies can return powerful data that can be easily read and processed by machines. A specifically useful example of this exists in the medical use of semantic data processing. As an example, a patient is having a medical emergency and is being rushed to hospital. The emergency responders are trying to figure out the best medicine to administer to help the patient. Under normal data processing, scouring all the patient’s medical data to ensure they are getting the best treatment could take too long and risk the patients’ health or even life. However, using semantically processed ontologies, the first responders could save the patient’s life. Tools like a semantic reasoner can use ontology to infer the what best medicine to administer to the patient is based on their medical history, such as if they have a certain cancer or other conditions, simply by examining the natural language used in the patient's medical records. This would allow the first responders to quickly and efficiently search for medicine without having worry about the patient’s medical history themselves, as the semantic reasoner would already have analyzed this data and found solutions. In general, this illustrates the incredible strength of using semantic data mining and ontologies. They allow for quicker and more efficient data extraction on the user side, as the user has fewer variables to account for, since the semantically pre-processed data and ontology built for the data have already accounted for many of these variables. However, there are some drawbacks to this approach. Namely, it requires a high amount of computational power and complexity, even with relatively small data sets. This could result in higher costs and increased difficulties in building and maintaining semantic data processing systems. This can be mitigated somewhat if the data set is already well organized and formatted, but even then, the complexity is still higher when compared to standard data processing.
+Below is a simple a diagram combining some of the processes, in particular semantic data mining and their use in ontology.
+
+The diagram depicts a data set being broken up into two parts: the characteristics of its domain, or domain knowledge, and then the actual acquired data. The domain characteristics are then processed to become user understood domain knowledge that can be applied to the data. Meanwhile, the data set is processed and stored so that the domain knowledge can applied to it, so that the process may continue. This application forms the ontology. From there, the ontology can be used to analyze data and process results.
+Fuzzy preprocessing is another, more advanced technique for solving complex problems. Fuzzy preprocessing and fuzzy data mining make use of fuzzy sets. These data sets are composed of two elements: a set and a membership function for the set which comprises 0 and 1. Fuzzy preprocessing uses this fuzzy data set to ground numerical values with linguistic information. Raw data is then transformed into natural language. Ultimately, fuzzy data mining's goal is to help deal with inexact information, such as an incomplete database. Currently fuzzy preprocessing, as well as other fuzzy based data mining techniques see frequent use with neural networks and artificial intelligence.
+
+
+##### Semi-structured data  (https://en.wikipedia.org/wiki/Semi-structured_data)
+
+Semi-structured data is a form of structured data that is not rigidly structured. The data model associated with semi-structured data is interpreted when the data is read from a data storage medium or accessed in memory. The data model need not conform to a predefined database schema and is not optimized for succinct, low-overhead streaming or persistent storage as is normal with a relational database, graph database, data table, or graph. Instead, semi-structured data includes delimiter characters or tags to separate semantic elements or to describe relationships among records and fields within the data. The data is said to have a self-describing structure.
+Semi-structured data may be human-generated or machine-generated. It may be part of an unstructured document such as narrative text or may encompass unstructured data such as free-form comments. It may be intended to be read by humans, to be shared between software services or applications whose data models are not fully consistent, or to be transmitted from sensors or other devices to computers. Optical character recognition in combination with intelligent document processing can convert semi-structured data appearing on printed pages into machine-ready formats such as JSON. Electronic data interchange uses standard segments, elements, and delimiters to transfer business transaction data between computers owned by different organizations. Metrics from an array of various sensors can be combined, as heterogeneous data without predefined schemas, in JSON format.
+
+
+== Human-generated sources ==
+Human-generated semi-structured data includes text and information organized with tags, markers, or flexible layouts (such as forms or tables) created by people rather than by automated systems. Examples include medical charts, real property records, pay records, and structural metadata within publications.
+
+
+=== Medical records ===
+Clinical notes containing standardized dropdown selections can be mixed with free-text physician narratives. The Fast Healthcare Interoperability Resources (FHIR) standard is used for exchanging health care information electronically.
+Patient intake forms featuring labeled fields (e.g., age, symptoms) and handwritten or typed comments can be digitally stored using JSON or FHIR standards.
+Electronic health record logs can be formatted via standards like HL7 that group data into segments.
+
+
+=== Real estate ===
+Real estate records such as deed, mortgage, and lien documents can be processed as JSON objects.
+Scanned or digital property lease documents often include irregular tables, hierarchical headers, and customized clauses that can be treated as semi-structured data.
+Property listing descriptions represented via listing services include such information as square footage and room count along with free-form descriptive text.
+Human-annotated zoning and appraisal filings also combine numeric values with descriptive text.
+
+
+=== Pay records ===
+Employee pay stubs feature fixed field labels (gross pay, deductions) along with descriptive text.
+Human-entered spreadsheet logs track contractor hours and commission adjustments.
+Corporate compensation disclosures are managed through tracking schemas like the Open Payments Search Tool associated with the Physician Payments Sunshine Act of 2010.
+
+
+=== Publications ===
+A book or periodical has structural metadata such as its table of contents, chapters, parts, and an index. These can be represented in JSON.
+Bibliographical references conform to a structure, typically defined by the MLA Handbook, the APA, or the Chicago Manual of Style, that can be parsed based on sets of delimiters or using wildcards.
+
+
+== Machine-generated sources ==
+Machine-generated semi-structured data sources are automated systems and devices that output information organized with tags, keys, or markers rather than rigid tabular schemas. Examples include server log files, IoT sensor metrics, event streams, NoSQL database engines, email systems, mapping, and geographic information systems.
+
+
+=== System and server logs ===
+Application outputs, error logs, and security audit trails can use text patterns or key-value pairs without a strict schema.
+
+
+=== IoT and telemetry streams ===
+Many smart devices, industrial sensors, and interconnected hardware components generate periodic metrics packaged in JSON or XML.
+
+
+=== Web and API activity ===
+Automated webhooks, clickstream tracking data, and web API response payloads are typically packaged in JSON.
+
+
+=== Network & monitoring data ===
+Packet inspection summaries, router statistics, and application performance management (APM) metrics provide semi-structured data in various formats.
+
+
+=== NoSQL database engines ===
+A NoSQL database management system, often used in big data and real-time applications, is designed to handle semi-structured data models, including key-value, document, column family, and graph formats
+
+
+=== Email headers ===
+An email consists of headers and a body. An email header conforms to a standard key-value format that includes a field name followed by a colon that serves as a delimiter.
+
+
+=== Mapping and geographic information systems ===
+GeoJSON is a standard for encoding geographic data structures, such as points, lines, and polygons, into a JSON-based format used to represent geographic features, such as locations, roads, boundaries, and their names. OpenStreetMap stores semi-structured data using a flexible tag-based data model built on elements such as nodes, ways, and relations.
+
+
+== Formats for machine-generated semi-structured data ==
+
+
+=== Application-specific or domain-specific formats ===
+Domain-specific datasets are collections of data specific to a particular field. These datasets focus on specific types of information relevant to a domain such as health care or finance. The data model or format used for domain-specific data may be tailored for use cases within that domain.
+An application program or a database management system may work with semi-structured data without regard to its interoperability with other software, but a semi-structured data model that exists for its own sake may be unnecessarily cumbersome. Such systems have been designed so that data associated with object-oriented software is serialized into a semi-structured format, allowing for the concept that objects of a class may have varying attributes. The data associated with the objects of a class may be grouped, and the attributes' order is not important. In some object-oriented database management systems, such as ObjectStore, the format for semi-structured data storage is specific to the system.
+Database management systems that lack interoperability have fallen out of vogue. Standardized formats for semi-structured data have arisen to serve as a basis for interoperability, for scalability, and for adaptability to schema evolution.
+
+
+=== XML and OEM ===
+In the 1990s, XML, and the Object Exchange Model (OEM) were created as generalized formats for semi-structured data. XML has been popularized by web services developed utilizing SOAP principles of decentralization, transport independence, and XML-based structured messaging. XML suffered from the impression that it lacked structural rigor at the same functional level as relational schemas. Once JSON became popular, its compatibility with JavaScript and its relatively human-readable format handicapped the widespread use of XML. Nevertheless, an XML document can be as rigorously structured as a database schema and processed by both commercial and custom software programs. XML data can have a reasonably human-readable flow and hierarchy as well as rigorous relational structure and data typing.
+The concept of XML as human-readable, however, can only be taken so far. Some implementations, such as the XML representation of the contents of a Microsoft Word document, as implemented in Office 2007 and later versions, utilize dozens or even hundreds of different kinds of tags that reflect a particular problem domain - in Word's case, formatting at the character and paragraph and document level, definitions of styles, inclusion of citations, etc. - which are nested within each other in complex ways. Understanding even a portion of such an XML document by reading it, let alone catching errors in its structure, is impossible without a deep prior understanding of the specific XML implementation, along with assistance by software that understands the XML schema that has been employed. Such text is not "human-understandable" any more than a book written in Swahili, which uses the Latin alphabet, would be to a reader who does not know a word of that language but recognizes only its alphabet. Because XML tags express shared vocabularies, they are symbols that are meaningless to a person unfamiliar with the domain in which they apply.
+
+
+=== YAML ===
+YAML (YAML Ain't Markup Language) is a human-readable data serialization format designed for data exchange between differing programming languages. It is used for configuration files and for representing complex nested data structures.
+
+
+=== TOML ===
+TOML is designed as a configuration file format for mapping file elements to a hash table. Implementations are available for over thirty programming lanauges.
+
+
+=== INI ===
+The INI format arranges key-value pairs in named sections. It is used in configuration files for applications that run on Windows and other operating systems.
+
+
+=== Log file formats ===
+Log files are used for a range of purposes such as performance monitoring and debugging. They may include semi-structured data. Various log formats are in common use.
+
+
+=== Apache Avro, Parquet, and ORC ===
+The Apache Software Foundation provides open source file formats for data storage and retrieval. Each format is designed for a specific data orientation. Apache Avro is a row-based format used for streaming data and append-only logs. Apache Parquet is a column-based format used for data lake repositories. Apache ORC is an alternate columnar data format used for data warehouses.
+
+
+=== Delimiter-separated values ===
+Files containing text delimited by newlines, commas (as in a format known as CSV), semicolons, tabs, or other separators are used in data exchange, analytics, and integration.
+
+
+=== JSON ===
+JSON (JavaScript Object Notation) is an open standard format that uses human-readable text to represent and stream data objects. JSON has been popularized by web services developed using REST principles. Databases such as MongoDB and Apache CouchDB work natively with data stored in JSON format.
+
+
+== Pros and cons of semi-structured data formats ==
+A database or standalone application may store or stream data in a succinct machine-readable format, or it may use a semi-structured format. Compared to a succinct format, a semi-structured format has certain advantages and disadvantages.
+
+
+=== Advantages ===
+Developers persisting objects from their application to a database do not need to worry about object-relational impedance mismatch, but can often serialize objects via a light-weight library.
+The data representation has flexible schemas, self-describing tags or delimiters, and nested hierarchies, rather than any rigid format, which may simplify data models.
+Support for lists of objects, as needed for object-relational mapping, simplifies data models by avoiding messy translations of lists into a relational or graph data model.
+Choosing a commonly-used human-readable format over a succinct format may aid software debugging and maintenance, interoperability, and schema evolution.
+A semi-structured data format promotes rapid application development via the schema-on-read paradigm by letting applications store data without first modifying a database schema, offering flexibility, fast iteration, and ease of changing the data model.
+
+
+=== Disadvantages ===
+The traditional relational data model and the graph data model have expressive, popular declarative query languages including SQL and Cypher, are built on database engines that rely on binary storage and streaming formats such as Apache Arrow for performance, transactional consistency, and secure access control. Semi-structured data must be transformed for effective use with a relational or graph data model.
+The schema-on-read paradigm raises data quality management and performance overhead concerns.
+Reliance on a semi-structured data format such as JSON, which provides no guarantees about structure, is prone to "garbage in, garbage out"; by removing restraints from the data model, there is often less forethought than is necessary for software profitability.
+Ingesting semi-structured data into a strictly structured relational or graph database can create a clash of architectures unless steps are taken to merge data models.
+
+
+== Query processing for semi-structured data ==
+
+
+=== Merged data model ===
+Some relational databases provide data models in which structured and semi-structured data can be queried at once, typically by incorporating the semi-structured data via data extraction techniques. For example, Microsoft SQL Server has a native JSON type backed by string manipulation, and it can create a B-tree index for nested keys. The Snowflake data platform has methods for loading semi-structured data elements in a columnar format for use with queries. PostgreSQL and AWS Glue support semi-structured data via upstream SQL views, which act as virtual tables used to extract and standardize the data before it reaches the core relational data model.
+
+
+=== Semi-structured data model ===
+When semi-structured data is not merged into a structured data model, a query method directly targeting it can be selected depending on the data's expected use. Some database management systems are designed to work primarily with a semi-structured data model. Pattern recognition methods can be applied to semi-structured data via machine learning systems or as declarative programming functionality developed in the context of imperative programming.
+The semi-structured data model or schema-less data model used by NoSQL databases entails no separation between the data and the schema, because each record has a self-describing structure. The amount of structure used within a specific data model depends on its purpose, and structural validation may be shifted from the database engine to the application logic.
+The advantages of this data model are the following:
+
+It can represent the information of data sources that cannot be constrained by schemas
+It provides a flexible format for parallel computing involving different types of databases.
+It can be helpful for visual data representation, for example in a web browser.
+It accommodates change, allowing for dynamic or evolving data structures.
+The data transfer format may be portable, allowing for data structures be shared between differing systems and programming languages.
+The primary trade-off associated with a semi-structured data model is that queries cannot be made as efficiently as in a more constrained structure, such as in the relational model. Navigational methods for a semi-structured database, such as methods using the XPath expression language, may rely on storing elements with unique IDs. These methods allow for reasonably efficient simple navigational or path-based queries, but for complex searches over many records (as is typical in SQL) they are quite inefficient because they must seek repeatedly through the records.
+Shifting aspects of query processing from a database engine to application logic can have drawbacks. Application logic based entirely on imperative programming may not be suitable for the challenges presented by semi-structured data. These drawbacks can be mitigated if the application logic invokes methods suitable for the data.
+
+
+=== Deep learning models trained on semi-structured data ===
+Deep learning models can be trained to recognize relationships, metadata, and sequences stored as semi-structured data, in such a way that schemas need not be rebuilt as new signals arrive or as data sources evolve. Human-generated data can be ingested into a machine learning system, such as a deep learning system or semantic search system, via intelligent document processing techniques. Mixed formats that may involve machine-generated data can be combined so that different types of content, structures, encoding schemes, or media types can act as a single file or stream or as a join of records that have a matching key.
+Intelligent document processing is a deep learning technique for capturing and processing data from documents such as email, text, word processing, PDF, or scanned documents. Using technologies such as computer vision, optical character recognition (OCR), and natural language processing (NLP), the extracted data can be analyzed, categorized, transformed, and exported to external systems. Deterministic layout-parsing tools like OCR can be combined with generative AI or large language models (LLMs) to process semi-structured documents.
+Intelligent document processing for semi-structured data is typically a multi-stage process. The stages may include the following:
+
+Ingestion and pre-processing collects files (PDFs, scans, images) and cleans visual noise, skewing, or low-resolution artifacts.
+Classification relies on learning or layout models to identify document types, such as by distinguishing a purchase order from an invoice.
+Parsing converts documents into machine-readable data.
+Document layout analysis identifies structural elements of a document, such as text blocks, paragraphs, headings, images, tables, and mathematical expressions, along with their spatial coordinates and order. Layout analysis can involve convolutional neural networks, transformer-based methods, graph-based methods, grid-based methods, and semantic integration.
+Data extraction relies on vision-language models or natural language processing to map key-value pairs, nested tables, and line items into queryable formats. Extracted data can be exported in commonly used formats such as JSON or CSV.
+Data validation evaluates confidence scores on parsed fields, routing low-confidence data to human reviewers for correction and model retraining.
+A confidence interval in the context of data extraction is a statistical range that quantifies how confident a system or model is in the accuracy of extracted data. A confidence interval does not guarantee that any individual extraction result is correct, but instead reflects the reliability and precision of the extraction process itself, measured across repeated use.
+Intelligent document processing systems rely on the integration of multiple deep learning modules, which can lead to challenges in modular coordination, standardization of outputs, and handling of irregular reading orders in complex layouts. They typically require extensive pre-processing, intricate post-processing, and specialized training for each module to achieve accurate results. They typically depend on rule-based methods, which can be inadequate for documents with complex layouts such as multi-column or nested structures. They often process documents page by page, limiting their efficiency and scalability.
+Deep learning models can be applied to interpret formatted semi-structured data, such as JSON or CSV file content from human or machine-generated sources, by automating schema discovery, handling missing values and anomalies, and extracting semantic insights. The methods replace hard-coded rules with learning-based pattern recognition.
+To enable schema discovery, deep learning models scan raw text values, for example in JSON fields or CSV columns, to infer whether a given value is a number, date, or text, and to discover whether formatting is inconsistent. Named entity recognition methods and other natural language processing methods can match inconsistently named JSON keys (like "last_name" vs. "surname") to a standard data schema. Regression or classification models can infer missing values based on surrounding data rows or nested JSON attributes. Nearest neighbor search algorithms such as DBSCAN can be used to flag anomalies such as outliers, corrupted rows, or injection attacks within log files or nested API payloads. Large language models can be used to extract named entities and sentiment from text embedded within JSON data.
+Software applications and services can utilize the extracted data via any of several methods. Data manipulation toolkits such as the Pandas library can be used to convert JSON data into a tabular format. The resulting data can be stored in a relational database via additional tools such as SQLAlchemy, or it can be accessed directly via imperative program code written in C++ or other programming languages.
+The development process for an application that relies on deep learning involves training relevant models on relevant data then integrating the models into user-facing applications. A range of challenges can occur during the process. For example, poor data can undermine machine learning models, and to correct it, developer effort may be directed toward cleaning and validating data. A deep learning model that performs well during training may perform poorly in real-world situations, and to correct this, developer effort may be directed toward cross-validation, regularization, and retesting. The training process can be computationally expensive. Because machine learning models are not static, developer effort may be directed toward building an automated pipeline that collects new data, retrains models based on the new data, evaluates performance, and deploys the retrained models. If an application's developers successfully address these challenges, they can enhance the user experience.
+Some deep learning deployments are unsuccessful. Certain datasets are not amenable to deep learning or other machine learning techniques. Insufficent infrastructure readiness can lead to project failure. Data bias, or distortions in datasets that cause machine learning models to develop skewed understanding of patterns and relationships, can create fundamental flaws in how models interpret information. Successful deployment depends on selecting hardware resources based on the machine learning models' computational needs as well as budget constraints. Invalid findings from machine learning systems can be presumed valid, leading to poorly-made decisions on the part of a system's users.
+
+
+=== Semantic search on semi-structured data ===
+Semantic search is a machine learning technique applied to concepts and the words that describe them. The concepts are represented in a vector space model trained to recognize similarities and differences between words in a given context. Unlike deep learning models, which can be trained to recognize relationships, metadata, and sequences stored as semi-structured data, semantic search focuses on extracting meaning from data by analyzing search query context, enhancing the relevance of search results. Semantic search applied to JSON data can interpret relationships between fields and entities without requiring extensive training data.
+Software applications and services written in imperative programming languages can invoke semantic search methods by generating a vector embedding for a search query and by querying a vector similarity library or database. Typical steps involve preparing a corpus of searchable documents, generating vectors that capture semantic meanings within the documents, building a searchable index, and running semantic queries. An application can invoke semantic search methods to become more robust to paraphrasing or mixed vocabulary compared to relying on simple keyword search techniques, and it may be relatively forgiving of user mistakes.
+The computational expense of semantic search methods involves generating vector embeddings for each document and query. When third-party infrastructure is used for semantic search, query costs can scale with database size, and the overall costs can include hidden fees. Maintaining data privacy may require further overhead such as encryption, regulatory adherence, access controls, and monitoring tools.
+
+
+=== Declarative functionality within imperative code ===
+Heuristics applied to semi-structured data are practical strategies used to infer implicit structure, to parse data represented in formats like JSON, XML, or CSV, and to accelerate search or extraction without heavy computational expenses. Information extraction from natural language documents involves extracting structured information from unstructured or semi-structured text data. Methods used include string search, full-text search, regular expression methods, delimiter search, and wildcard search.
+String search, or searching a text document for a specified string, involves opening the text document file, reading its contents, applying a string-searching function, and closing the file. Many programming languages have built-in string search functionality. The Knuth-Morris-Pratt algorithm is an efficient string-searching method that finds a search term or substring inside a main text by using precomputed prefix information to avoid redundant character comparisons. Any of several alternative pattern matching algorithms can be applied based on data set size or other factors. Finding a string in a text document via a function call is declarative, because the developer or user specifies a pattern to locate rather than how the computer should traverse the document, so that the calling code can avoid complex loops.
+Full-text search indexing is a technique for making large volumes of text searchable quickly and accurately. Applying the technnique in imperative programming relies on data structures such as inverted indexes. Imperative code can use a hash table lookup to find index entries that match search terms and can use sharding, partitioning, and normalization techniques to handle large sets of terms. Creating and maintaining an inverted index can require significant computational workload and careful consideration of design tradeoffs.
+Regular expressions can be used to extract specific information from text, based on specific patterns of interest. Software applications use them for programmatic pattern search, for input validation, and for extraction of information relevant to users. Though regular expressions allow for relatively complex pattern matching compared to a simple string search, such as a search using the Knuth-Morris-Pratt algorithm, the performance of a simple string search is significantly better than the performance of a regular expression search. Because regular expressions must be carefully designed based on a relatively sophisticated pattern format, code that uses simple string search is relatively easy to comprehend and maintain. Regular expressions applied to nested semi-structured data, such as JSON data, can be subject to subtle bugs. Furthermore, improperly designed regular expressions can be subject to catastrophic backtracking, a performance bug that occurs when a regular expression engine spends exponential time trying to evaluate a string that does not match a given pattern. Avoiding catastrophic backtracking requires careful attention to the regular expression pattern itself.
+Delimiter search, or tokenization, is a technique for splitting text strings into segments or words using designated delimiters, such as punctuation marks or newline characters, as boundaries. One or more delimiters, such as commas, hyphens, or spaces, may be used in a single search through a text string. A greedy algorithm can be used to split a text string at every character present in a delimiter set.
+Wildcard search is a technique used to search text for a pattern that contains wildcard characters, which can match zero or more characters in a text string. The Krauss wildcard-matching algorithm incorporated in declarative wildcard search functionality can be used, in the context of imperative programming, for semi-structured data extraction from text. The search provides a way for software to find a line, paragraph, or other portion of a text that contains a particular word or phrase. In a case-insensitive comparison that accepts a book title and selects its author's name from a sample of bibliographical citations, a wildcard search and delimiter search are coded with no loops, significantly outperforming simple string methods for a similar search.
+
+
+##### Feature scaling  (https://en.wikipedia.org/wiki/Feature_scaling)
+
+Feature scaling is a method used to normalize the range of independent variables or features of data. In data processing, it is also known as data normalization and is generally performed during the data preprocessing step.
+
+
+== Motivation ==
+Since the range of values of raw data varies widely, in some machine learning algorithms, objective functions will not work properly without normalization. For example, many classifiers calculate the distance between two points by the Euclidean distance. If one of the features has a broad range of values, the distance will be governed by this particular feature. Therefore, the range of all features should be normalized so that each feature contributes approximately proportionately to the final distance.
+Another reason why feature scaling is applied is that gradient descent converges much faster with feature scaling than without it.
+It's also important to apply feature scaling if regularization is used as part of the loss function (so that coefficients are penalized appropriately).
+Empirically, feature scaling can improve the convergence speed of stochastic gradient descent. In support vector machines, it can reduce the time to find support vectors. Feature scaling is also often used in applications involving distances and similarities between data points, such as clustering and similarity search. As an example, the K-means clustering algorithm is sensitive to feature scales.
+
+
+== Methods ==
+
+
+=== Rescaling (min-max normalization) ===
+Also known as min-max scaling or min-max normalization, rescaling is the simplest method and consists in rescaling the range of features to scale the range in [0, 1] or [−1, 1]. Selecting the target range depends on the nature of the data. The general formula for a min-max of [0, 1] is given as:
+
+x′=x−min(x)max(x)−min(x)
+where x is an original value, x′ is the normalized value. For example, suppose that we have the students' weight data, and the students' weights span [160 pounds, 200 pounds]. To rescale this data, we first subtract 160 from each student's weight and divide the result by 40 (the difference between the maximum and minimum weights).
+To rescale a range between an arbitrary set of values [a, b], the formula becomes:
+
+x′=a+(x−min(x))(b−a)max(x)−min(x)
+where a,b are the min-max values.
+
+
+=== Mean normalization ===
+x′=x−x¯max(x)−min(x)
+where x is an original value, x′ is the normalized value, x¯=average(x) is the mean of that feature vector. There is another form of the means normalization which divides by the standard deviation which is also called standardization.
+
+
+=== Standardization (Z-score Normalization) ===
+
+In machine learning, we can handle various types of data, e.g. audio signals and pixel values for image data, and this data can include multiple dimensions. Feature standardization makes the values of each feature in the data have zero-mean (when subtracting the mean in the numerator) and unit-variance. This method is widely used for normalization in many machine learning algorithms (e.g., support vector machines, logistic regression, and artificial neural networks). The general method of calculation is to determine the distribution mean and standard deviation for each feature. Next we subtract the mean from each feature. Then we divide the values (mean is already subtracted) of each feature by its standard deviation.
+
+x′=x−x¯σ
+Where x is the original feature vector, x¯=average(x) is the mean of that feature vector, and σ is its standard deviation.
+
+
+=== Robust Scaling ===
+Robust scaling, also known as standardization using median and interquartile range (IQR), is designed to be robust to outliers. It scales features using the median and IQR as reference points instead of the mean and standard deviation:x′=x−Q2(x)Q3(x)−Q1(x)where Q1(x),Q2(x),Q3(x) are the three quartiles (25th, 50th, 75th percentile) of the feature.
+
+
+=== Unit vector normalization ===
+Unit vector normalization regards each individual data point as a vector, and divide each by its vector norm, to obtain x′=x/‖x‖. Any vector norm can be used, but the most common ones are the L1 norm and the L2 norm.
+For example, if x=(v1,v2,v3), then its Lp-normalized version is:(v1(|v1|p+|v2|p+|v3|p)1/p,v2(|v1|p+|v2|p+|v3|p)1/p,v3(|v1|p+|v2|p+|v3|p)1/p)
+
+
+##### Discretization of continuous features  (https://en.wikipedia.org/wiki/Discretization_of_continuous_features)
+
+In statistics and machine learning, discretization refers to the process of converting or partitioning continuous attributes, features or variables to discretized or nominal attributes/features/variables/intervals. This can be useful when creating probability mass functions – formally, in density estimation. It is a form of discretization in general and also of binning, as in making a histogram. Whenever continuous data is discretized, there is always some amount of discretization error. The goal is to reduce the amount to a level considered negligible for the modeling purposes at hand.
+Typically data is discretized into partitions of K equal lengths/width (equal intervals) or K% of the total data (equal frequencies).
+Mechanisms for discretizing continuous data include Fayyad & Irani's MDL method, which uses mutual information to recursively define the best bins, CAIM, CACC, Ameva, and many others
+Many machine learning algorithms are known to produce better models by discretizing continuous attributes.
+
+
+== Software ==
+This is a partial list of software that implement MDL algorithm.
+
+discretize4crf tool designed to work with popular CRF implementations (C++)
+mdlp in the R package discretization
+Discretize in the R package RWeka
+
+
+##### Data science  (https://en.wikipedia.org/wiki/Data_science)
+
+Data science is an interdisciplinary academic field that uses statistics, scientific computing, scientific methods, processing, scientific visualization, algorithms, coding (like Python, SQL, and R), and systems to extract or extrapolate knowledge from potentially noisy, structured, or unstructured data. A data scientist is a professional who creates programming code and combines it with statistical knowledge to summarize data.
+
+
+== Scope of data science ==
+Data science plays a critical role in modern decision-making by enabling organizations to extract actionable insights from large and complex datasets.
+Data science also integrates domain knowledge from the underlying application domain (e.g., natural sciences, information technology, and medicine). Data science is multifaceted and can be described as a science, a research paradigm, a research method, a discipline, a workflow, and a profession.
+Data science is "a concept to unify statistics, data analysis, informatics, and their related methods" to "understand and analyze actual phenomena" with data. It uses techniques and theories drawn from many fields within the context of mathematics, statistics, computer science, information science, and domain knowledge. However, data science is distinct from computer science and information science. Turing Award winner Jim Gray imagined data science as a "fourth paradigm" of science (empirical, theoretical, computational, and now data-driven) and asserted that "everything about science is changing because of the impact of information technology" and the data deluge.
+Data science is often described as a multidisciplinary and rapidly evolving field because it draws on techniques from diverse areas, such as computer science, statistics, information science, and other subject-specific disciplines. Some researchers argue that the combination of the different fields resembles how information science was decades ago. These similarities help clarify how data science gradually became its own field of study.
+
+
+== Foundations ==
+Data science is an interdisciplinary field focused on extracting knowledge from typically large data sets and applying the knowledge from that data to solve problems in other application domains. The field encompasses preparing data for analysis, formulating data science problems, analyzing data, and summarizing these findings. As such, it incorporates skills from computer science, mathematics, data visualization, graphic design, communication, and business.
+Vasant Dhar writes that statistics emphasizes quantitative data and description. In contrast, data science deals with quantitative and qualitative data (e.g., from images, text, sensors, transactions, customer information, etc.) and emphasizes prediction and action. Andrew Gelman of Columbia University has described statistics as a non-essential part of data science. Stanford professor David Donoho writes that data science is not distinguished from statistics by the size of datasets or use of computing and that many graduate programs misleadingly advertise their analytics and statistics training as the essence of a data-science program. He describes data science as an applied field growing out of traditional statistics.
+
+
+== Etymology ==
+
+
+=== Early usage ===
+In 1962, John Tukey described a field he called "data analysis", which resembles modern data science. In 1985, in a lecture given to the Chinese Academy of Sciences in Beijing, C. F. Jeff Wu used the term "data science" for the first time as an alternative name for statistics. Later, attendees at a 1992 statistics symposium at the University of Montpellier  II acknowledged the emergence of a new discipline focused on data of various origins and forms, combining established concepts and principles of statistics and data analysis with computing.
+The term "data science" has been traced back to 1974, when Peter Naur proposed it as an alternative name to computer science. In his 1974 book Concise Survey of Computer Methods, Peter Naur proposed using the term ‘data science’ rather than ‘computer science’ to reflect the growing emphasis on data-driven methods In 1996, the International Federation of Classification Societies became the first conference to specifically feature data science as a topic. However, the definition was still in flux. After the 1985 lecture at the Chinese Academy of Sciences in Beijing, in 1997 C. F. Jeff Wu again suggested that statistics should be renamed data science. He reasoned that a new name would help statistics shed inaccurate stereotypes, such as being synonymous with accounting or limited to describing data. In 1998, Hayashi Chikio argued for data science as a new, interdisciplinary concept, with three aspects: data design, collection, and analysis.
+
+
+=== Modern usage ===
+In 2012, technologists Thomas H. Davenport and DJ Patil declared "Data Scientist: The Sexiest Job of the 21st Century", a catchphrase that was picked up even by major-city newspapers like the New York Times and the Boston Globe. A decade later, they reaffirmed it, stating that "the job is more in demand than ever with employers".
+The modern conception of data science as an independent discipline is sometimes attributed to William S. Cleveland. In 2014, the American Statistical Association's Section on Statistical Learning and Data Mining changed its name to the Section on Statistical Learning and Data Science, reflecting the ascendant popularity of data science.
+The professional title of "data scientist" has been attributed to DJ Patil and Jeff Hammerbacher in 2008. Though it was used by the National Science Board in their 2005 report "Long-Lived Digital Data Collections: Enabling Research and Education in the 21st Century", it referred broadly to any key role in managing a digital data collection.
+
+
+== Data science and data analysis ==
+
+Data analysis typically involves working with structured datasets to answer specific questions or solve specific problems. This can involve tasks such as data cleaning and data visualization to summarize data and develop hypotheses about relationships between variables. Data analysts typically use statistical methods to test these hypotheses and draw conclusions from the data.
+Data science involves working with larger datasets that often require advanced computational and statistical methods to analyze. Data scientists often work with unstructured data such as text or images and use machine learning algorithms to build predictive models. Data science often uses statistical analysis, data preprocessing, and supervised learning.
+The machine learning generated predictive models support forcasting, risk assessment, and decision-making, for example by estimating customer demand or credit risk. In scientific research, computational models trained on data can generate predictions that are compared to behavioral or experimental data to evaluate hypotheses. In neuroscience, task trained neural networks are used to investigate how cognitive functions may arise from computational architectures although predictive accuracy alone does not establish that a model captures the underlying causal mechanism. Conversely, neuroscience informs machine-learning architectures and learning methods through insights into prediction and attention, enriching the modeling approaches used in data science. 
+
+
+== Cloud computing for data science ==
+
+Cloud computing can offer access to large amounts of computational power and storage. In big data, where volumes of information are continually generated and processed, these platforms can be used to handle complex and resource-intensive analytical tasks.
+Some distributed computing frameworks are designed to handle big data workloads. These frameworks can enable data scientists to process and analyze large datasets in parallel, which can reduce processing times.
+
+
+== Ethical consideration in data science ==
+Data science involves collecting, processing, and analyzing data which often includes personal and sensitive information. Ethical concerns include potential privacy violations, bias perpetuation, and negative societal impacts.
+Machine learning models can amplify existing biases present in training data, leading to discriminatory or unfair outcomes.

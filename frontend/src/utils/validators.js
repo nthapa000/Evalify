@@ -24,3 +24,8 @@ export function validateStudentLogin({ roll_no, password }) {
   if (!isNonEmpty(password)) return "Password is required.";
   return "";
 }
+
+// MCQ-only OMR paper: the blank OMR sheet is compulsory and its bubbles must be confirmed (the template is only used
+// for marking once confirmed), so the wizard holds the teacher at step 3 until both are done
+export const omrTemplateIncomplete = (form) =>
+  form.type === "mcq" && form.answerSheetFormat === "omr" && !(form.omrTemplate?.bubbles?.length && form.omrTemplate.confirmed);

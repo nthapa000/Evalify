@@ -52,6 +52,10 @@ async def submit_paper(paper_id: str = Query(..., description="MongoDB _id of th
     paper = await papers_col().find_one({"_id": ObjectId(paper_id)})
     if not paper:
         raise HTTPException(status_code=404, detail="Paper not found.")
+    # The teacher's choice of answer sheet (OMR or handwritten) for the paper; older papers have none
+    fmt = paper.get("answerSheetFormat")
+    if fmt in ("omr", "handwritten") and sheet_type != fmt:
+        raise HTTPException(status_code=400, detail=f"This paper needs a {fmt} answer sheet.")
     # Only students enrolled in the paper's subject may submit (enrolment from demo.env)
     subjects = await user_subjects(current_user)
     if subjects and paper.get("subject") not in subjects:

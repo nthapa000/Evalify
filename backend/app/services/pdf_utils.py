@@ -29,6 +29,17 @@ def pdf_extract_text(pdf_path: str) -> str:
         return "\n".join(page.get_text() for page in doc).strip()
 
 
+def count_questions(text: str) -> int:
+    """Number of questions in a question paper's text: the longest run 1, 2, 3 ... of numbers that start a line
+    ("1.", "2)", "Q3", "Question 4:"). Page numbers, marks and stray numbers do not break or add to the run."""
+    expected = 1
+    for line in text.splitlines():
+        m = re.match(r"\s*(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):\-]", line, flags=re.I)
+        if m and int(m.group(1)) == expected:
+            expected += 1
+    return expected - 1
+
+
 def parse_mcq_text(text: str, mcq_count: int = 0) -> Dict[str, str]:
     """Parse lines like '1. A', 'Q2: B', '3) c', '4. A, C' into {'Q1': 'A', ..., 'Q4': 'A,C'}."""
     answers = {}

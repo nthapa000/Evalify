@@ -42,6 +42,7 @@ wherever it runs) and Qwen servers during the batch. Steps and decisions: `INFER
 | opt-gemma2-fp8 | one-page | 32 | 30 | 47 s | **2284** | 2,979 | 80% / 0 | 99% / 18 | 0 |
 | opt-gemma2-fp8 | data-science | 16 | 48 | 839 s | **206** | 2,392 | 100% / 18 | 100% / 43 | 0 |
 | opt-gemma2-fp8 | data-science | 32 | 48 | 795 s | **217** | 2,524 | 100% / 46 | 100% / 98 | 0 |
+| numbering-either | data-science | 32 | 48 | 792 s | **218** | 2,534 | 100% / 46 | 100% / 93 | 0 |
 
 ## Accuracy
 
@@ -85,3 +86,4 @@ workload and concurrency (the baseline against itself at another concurrency is 
 | opt-gemma2-fp8 | one-page | 32 | 206/225 (91.6%) | - | 6 | 166/166 (100.0%) |
 | opt-gemma2-fp8 | data-science | 16 | 938/960 (97.7%) | 0.646 | 7 | 2081/2216 (93.9%) |
 | opt-gemma2-fp8 | data-science | 32 | 937/960 (97.6%) | 0.639 | 15 | 2098/2207 (95.1%) |
+| numbering-either | data-science | 32 | 938/960 (97.7%) | 0.648 | 20 | 2063/2209 (93.4%) |

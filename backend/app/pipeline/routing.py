@@ -42,6 +42,11 @@ def omr_reasons(margin: Optional[float]) -> List[str]:
     return [f"thin OMR margin ({margin:.2f})"] if margin is not None and margin < t["omr_min_margin"] else []
 
 
+def omr_all_filled(answer: str, n_options: int) -> bool:
+    """Every option of a question read as filled: not a real answer, usually the sheet was misread (skewed photo)."""
+    return n_options >= 3 and len([a for a in answer.split(",") if a]) >= n_options
+
+
 def reader_reasons(kind: str, a, b, agreed: Optional[bool], similarity: Optional[float] = None) -> List[str]:
     """Reader disagreement, unreadable answers, low confidence, missing second reader."""
     t, out = thresholds(), []

@@ -143,6 +143,16 @@ export function useExtractAnswers() {
   return { extract, extracting };
 }
 
+// Count the numbered questions in an uploaded question paper PDF (null when none are found or the call fails)
+export async function detectQuestionCount(fileUrl) {
+  try {
+    const res = await api.post("/papers/detect-questions", { file_url: fileUrl });
+    return res.data.count ?? null;
+  } catch (e) {
+    return null;
+  }
+}
+
 // Learn the OMR bubble map from an uploaded blank sheet image (layout-independent OMR)
 export function useBuildOmrTemplate() {
   const [building, setBuilding] = useState(false);

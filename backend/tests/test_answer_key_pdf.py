@@ -22,3 +22,13 @@ def test_answers_do_not_run_into_the_next_line():
 # Why: questions beyond the paper's MCQ count are ignored (e.g. subjective numbering after the MCQs)
 def test_count_limit():
     assert parse_mcq_text("1. A\n2. B\n21. C", 2) == {"Q1": "A", "Q2": "B"}
+
+
+# Why: the wizard fills in the question count from the uploaded paper, so numbered questions must be counted
+# in the usual styles and page numbers / option letters must not add extra questions
+def test_count_questions():
+    from app.services.pdf_utils import count_questions
+    assert count_questions("Quiz\n1. What is 2+2?\nA. 3\nB. 4\n2) Capital of France?\nA. Paris\nB. Rome") == 2
+    assert count_questions("Q1. one\nQ2. two\nQuestion 3: three\nPage 7") == 3
+    assert count_questions("Instructions: answer all.\nNo numbered questions here.") == 0
+    assert count_questions("1. a\n2. b\n5. stray number\n3. c") == 3          # counts the run 1, 2, 3

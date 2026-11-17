@@ -135,3 +135,31 @@ def test_decide_blank_vote_with_one_answer_goes_to_ta():
     assert final is None and "only one reader" in reason
     final, reason = pr.decide("numerical", r(), r(), r("0.056"))
     assert final is None and "only one reader" in reason
+
+
+# ── Either numbering for written answers (user request 17 Nov) ──────────────
+
+# Why: "S1" used to be normalised to "Q1" (the MCQ label), so S-numbered written answers were never found
+def test_norm_label_keeps_s_labels():
+    assert pr.norm_label("S1") == "S1" and pr.norm_label("s 12") == "S12"
+    assert pr.norm_label("21") == "Q21" and pr.norm_label("Q.21") == "Q21" and pr.norm_label("CONTINUED x") == "CONTINUED"
+
+
+# Why: Gemma's plain transcript may mark an answer [[S2]]; it must be split like [[Q5]]
+def test_split_marked_accepts_s_labels():
+    items, last = pr.split_marked("[[S2]] answer two\n[[S1 CROSSED]] old", last_label=None)
+    assert items == [("S2", False, "answer two"), ("S1", True, "old")] and last == "S1"
+
+
+SEPARATE = [Question("Q1", "Q1", "mcq"), Question("S1", "S1", "subjective", "Q2"), Question("S2", "S2", "subjective", "Q3")]
+
+
+# Why: a paper set to S1, S2 must still find answers the student numbered 2, 3 (continuing after the MCQ)
+def test_written_answers_found_under_either_numbering():
+    subj = pr.subjective_texts({"Q1": "B", "Q2": "first answer"}, {"S2": "second answer"}, SEPARATE)
+    assert subj == {"S1": ("first answer", ""), "S2": ("", "second answer")}
+
+
+# Why: the transcribers must be told both labels of a written answer, or they drop the other numbering
+def test_transcription_labels_include_alternates():
+    assert pr.transcription_labels(SEPARATE) == ["Q1", "S1", "S2", "Q2", "Q3"]

@@ -203,7 +203,11 @@ Qwen 38 GB, GLM-OCR 8 GB, second Gemma 41 GB (Qwen used at most 85 % of 632k tok
 queue more, which `opt-gemma2-fp8` offsets with FP8 KV).
 
 Second try (23:37): all four servers placed, but Gemma#2 failed at 23:42: at 41 GB only 6.25 GiB is left for
-KV after the weights, and a 16,384-token request needs 13.76 GiB (Gemma's KV is large: ~0.86 MB per token).
+KV after the weights, and a 16,384-token request needs 13.76 GiB (Gemma's KV is large). Correction 17 Nov: the
+per-token cost is not a constant for Gemma (it mixes full and sliding-window attention layers; vLLM also reported
+15.79 GiB for a 32,768-token request), so "~0.86 MB per token" is not a fixed figure. Like-for-like from the logs:
+with the whole PRO 6000 (76 GB) Gemma holds 170,666 KV tokens and Qwen 632,149, i.e. Gemma needs ~3.7x more memory
+per token.
 `opt-gemma2` (BF16 KV) therefore cannot run usefully next to Qwen. `opt-gemma2-fp8` changed to request limit
 8,192 with FP8 KV (Blackwell supports it): about 15k tokens of room, vs 48,200 for the A6000 copy.
 

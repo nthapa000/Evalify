@@ -109,13 +109,16 @@ async def run_batch(bid: str) -> None:
 
 
 async def _guarded(bid: str) -> None:
-    """run_batch in the background; an unexpected failure marks the batch failed (sheets keep their status)."""
+    """run_batch in the background; an unexpected failure marks the batch failed and its unfinished sheets as errors."""
     try:
         await run_batch(bid)
     except Exception as exc:
         traceback.print_exc()
         await batches_col().update_one({"_id": ObjectId(bid)}, {"$set": {"status": "failed", "error": str(exc),
                                                                         "finished_at": _now()}})
+        # Unfinished sheets become errors so the teacher can send them again (finished sheets keep their marks)
+        await submissions_col().update_many({"batch_id": bid, "status": {"$in": ["queued", "reading", "read", "grading"]}},
+                                            {"$set": {"status": "error", "error": f"Evaluation stopped: {exc}"}})
     finally:
         _tasks.pop(bid, None)
 

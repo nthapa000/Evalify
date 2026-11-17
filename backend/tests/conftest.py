@@ -70,6 +70,12 @@ async def physics_teacher_token(client: AsyncClient):
 
 
 @pytest_asyncio.fixture
+async def science_teacher_token(client: AsyncClient):
+    """JWT of the teacher with two subjects (Physics and Mathematics)."""
+    return await _login(client, "/api/auth/teacher/login", {"email": "science@evalify.local", "password": "Teacher@123"})
+
+
+@pytest_asyncio.fixture
 async def student_token(client: AsyncClient):
     """JWT of CS2025001 (enrolled in Computer Science and Physics)."""
     return await _login(client, "/api/auth/student/login", {"roll_no": "CS2025001", "password": "Student@123"})

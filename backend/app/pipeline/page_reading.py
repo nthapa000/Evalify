@@ -23,11 +23,13 @@ ABSTAIN = ("unclear", "error", "missing")
 # ── labels and values ────────────────────────────────────────────────────────
 
 def norm_label(label) -> str:
-    """'12' / 'q12' / 'Q.12' → 'Q12'; 'CONTINUED' stays."""
+    """'12' / 'q12' / 'Q.12' → 'Q12'; 'S1' / 's 1' → 'S1' (written answers, separate numbering); 'CONTINUED' stays."""
     s = str(label or "").strip().upper()
     if s.startswith("CONTINUED"):
         return "CONTINUED"
     digits = re.sub(r"\D", "", s)
+    if digits and s.startswith("S"):          # used to become Q1, the MCQ label, so S-answers were never found
+        return f"S{digits}"
     return f"Q{digits}" if digits else s
 
 
@@ -140,7 +142,7 @@ def split_marked(text: str, last_label: Optional[str]) -> Tuple[list, Optional[s
             out.append((cur, crossed, "\n".join(buf).strip()))
 
     for line in (text or "").splitlines():
-        m = re.match(r"^\s*\[\[\s*(Q?\s*\d+|CONTINUED)\s*(CROSSED)?\s*\]\]\s*(.*)$", line, re.I)
+        m = re.match(r"^\s*\[\[\s*([QS]?\s*\d+|CONTINUED)\s*(CROSSED)?\s*\]\]\s*(.*)$", line, re.I)
         if m:
             flush()
             lab = norm_label(m.group(1))
@@ -175,11 +177,27 @@ def merge_attempts(store: Dict[str, str], items: list) -> None:
         store[lab] = "\n".join(filter(None, [store.get(lab, "")] + keep))
 
 
+def _either(store: Dict[str, str], q: Question) -> str:
+    """A written answer found under its label or its other-numbering label (both joined if both were used)."""
+    return "\n".join(t for t in (store.get(q.label, ""), store.get(q.alt_label, "") if q.alt_label else "") if t)
+
+
 def subjective_texts(store_a: Dict[str, str], store_b: Dict[str, str],
                      questions: List[Question]) -> Dict[str, Tuple[str, str]]:
     """{subjective qid: (transcript A, transcript B)} for answers found by at least one transcriber."""
-    return {q.id: (store_a.get(q.label, ""), store_b.get(q.label, "")) for q in questions
-            if q.kind == "subjective" and (store_a.get(q.label) or store_b.get(q.label))}
+    out = {}
+    for q in questions:
+        if q.kind == "subjective":
+            a, b = _either(store_a, q), _either(store_b, q)
+            if a or b:
+                out[q.id] = (a, b)
+    return out
+
+
+def transcription_labels(questions: List[Question]) -> List[str]:
+    """Labels the transcribers are told about: every question's label, then the written answers' other labels."""
+    labels = [q.label for q in questions]
+    return labels + [q.alt_label for q in questions if q.alt_label and q.alt_label not in labels]
 
 
 # ── model calls ──────────────────────────────────────────────────────────────
@@ -231,7 +249,7 @@ def read_closed_form(pages, questions: List[Question], ep_a, ep_b, ep_c=None, wo
 def transcribe_subjective(pages, questions: List[Question], ep_a, ep_b) -> Tuple[Dict[str, Tuple[str, str]], dict]:
     """Whole-page transcription by label → ({subjective qid: (A, B)}, {"a": seconds, "b": seconds}).
     Every label (MCQ too) is passed so an MCQ line like "7. A" is never taken for Q27."""
-    labels = [q.label for q in questions]
+    labels = transcription_labels(questions)       # written answers under either numbering (S1 or Q21)
 
     def run_a():
         store, last, t = {}, None, 0.0

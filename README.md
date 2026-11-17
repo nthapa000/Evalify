@@ -314,15 +314,16 @@ format).
 
 | Role | Login | Password | Subject |
 |---|---|---|---|
-| Teacher | `teacher@evalify.local` | `Teacher@123` | Computer Science |
+| Teacher (two subjects) | `teacher@evalify.local` | `Teacher@123` | Computer Science and Data Science |
 | Teacher | `physics.teacher@evalify.local` | `Teacher@123` | Physics |
+| Teacher (two subjects) | `science.teacher@evalify.local` | `Teacher@123` | Physics and Mathematics |
 | Teacher | `maths.teacher@evalify.local` | `Teacher@123` | Mathematics |
 | Teacher | `ds.teacher@evalify.local` | `Teacher@123` | Data Science |
 | TA | `ta.physics@evalify.local` (others in `demo.env`) | `Ta@12345` | Physics |
 | Student | `CS2025001` ... `CS2025030` | `Student@123` | Computer Science |
 | Student | `PH2025001` ... `PH2025020` | `Student@123` | Physics |
 | Student | `MA2025001` ... `MA2025015` | `Student@123` | Mathematics |
-| Student | `DS2025001` ... `DS2025049` | `Student@123` | Data Science |
+| Student | `DS2025001` ... `DS2025048` | `Student@123` | Data Science |
 
 ### A typical round
 
@@ -394,6 +395,7 @@ Evalify/
 ├── frontend/                 React web app
 ├── infra/                    model registry and the scripts that run models, database and app
 ├── eval/                     evaluation harness, labelled data and experiment reports
+├── Architecture Diagram/     high level design, Mermaid diagrams and sequence diagrams
 ├── uploads/                  upload kit for testing the app by hand
 ├── testing_data/             sample question paper and answer key PDFs
 ├── k8s/                      Kubernetes namespace (deployment not built yet)
@@ -537,6 +539,8 @@ labelled-set format and how to run it.
 
 | File | Content |
 |---|---|
+| `CODE_MAP.md` | The whole flow and where every feature's code lives (screens, endpoints, backend files, tests) |
+| `Architecture Diagram/` | High level design, Mermaid structure diagrams and sequence diagrams of the whole system |
 | `V2_EVALIFY_PLAN.md` | The current pipeline design (readers, grader, review flags, answer-key assistant) |
 | `EVALIFY_PLAN.md` | Original project plan and roadmap |
 | `evalify_model_plan (1).md` | Model and hardware plan |

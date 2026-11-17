@@ -23,7 +23,7 @@ export default function AuthShell({ role, title, subtitle, children }) {
       </aside>
 
       {/* Form on paper */}
-      <main className="flex items-center justify-center p-8 margin-rule">
+      <main className="flex items-center justify-center p-8">
         <div className="w-full max-w-sm pl-6">
           <p className="kicker mb-1">Sign in</p>
           <h1 className="text-3xl text-paper-900">{title}</h1>

@@ -42,6 +42,7 @@ class PaperCreate(BaseModel):
     subjectiveRubrics: List[Any] = Field(default_factory=list)
     config: Dict[str, Any] = Field(default_factory=dict)
     omrTemplate: Optional[Dict[str, Any]] = None
+    answerSheetFormat: Optional[str] = None      # MCQ-only papers: "omr" or "handwritten"; None = the student chooses
 
 
 class PaperOut(PaperCreate):

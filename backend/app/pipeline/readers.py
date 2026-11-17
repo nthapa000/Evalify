@@ -24,6 +24,7 @@ class Question:
     id: str            # internal id: Q1 (MCQ) / N1 (numerical) / S1 (subjective)
     label: str         # what the student writes on the sheet: Q1..Qm, Q(m+1).., S1..
     kind: str          # mcq | numerical | subjective
+    alt_label: str = ""  # written answers: the label under the other numbering (S1 <-> Q21), also accepted
 
 
 @dataclass
@@ -49,10 +50,13 @@ def questions_for(paper: dict) -> List[Question]:
     # paper["numbering"] == "continuous": subjective answers continue the Q-numbers too
     # (e.g. Q21–Q35 after 20 MCQs) instead of being labelled S1, S2, …
     cont = paper.get("numbering") == "continuous"
+    # Each written answer also accepts the other numbering (students do not always follow the setting)
+    def written(i):
+        s_label, q_label = f"S{i}", f"Q{n_mcq + n_num + i}"
+        return Question(f"S{i}", q_label if cont else s_label, "subjective", s_label if cont else q_label)
     return ([Question(f"Q{i}", f"Q{i}", "mcq") for i in range(1, n_mcq + 1)]
             + [Question(f"N{i}", f"Q{n_mcq + i}", "numerical") for i in range(1, n_num + 1)]
-            + [Question(f"S{i}", f"Q{n_mcq + n_num + i}" if cont else f"S{i}", "subjective")
-               for i in range(1, n_subj + 1)])
+            + [written(i) for i in range(1, n_subj + 1)])
 
 
 # ── Segmentation ─────────────────────────────────────────────────────────────

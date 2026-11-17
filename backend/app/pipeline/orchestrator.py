@@ -108,7 +108,9 @@ def _read(paper: dict, files: List[str], sheet_type: str) -> dict:
     if sheet_type == "omr" and tpl.get("bubbles") and tpl.get("confirmed"):
         reads, models = _read_omr_template(files, paper["omrTemplate"], questions, pages), {"reader_a": "omr_template"}
     elif sheet_type == "omr":
-        reads, models = _read_omr(pages, questions), {"reader_a": "opencv_omr"}
+        # A blank sheet was added but never confirmed: it is ignored, so every question is flagged for a TA
+        note = "the OMR template was not confirmed by the teacher, so the sheet was read without it" if tpl.get("bubbles") else ""
+        reads, models = _read_omr(pages, questions, note), {"reader_a": "opencv_omr"}
     else:
         reads, models = _read_handwritten(pages, questions)
     return {"reads": reads, "models": models, "quality": reports, "sheet_reasons": sheet_reasons,
@@ -161,8 +163,9 @@ def _grade(paper: dict, st: dict) -> dict:
 
 # ── Reading ──────────────────────────────────────────────────────────────────
 
-def _read_omr(pages, questions: List[Question]) -> Dict[str, dict]:
-    """OMR on each page; the first page that has a question wins; margin feeds routing."""
+def _read_omr(pages, questions: List[Question], note: str = "") -> Dict[str, dict]:
+    """OMR on each page; the first page that has a question wins; margin feeds routing.
+    `note` is added to every question's TA reasons (e.g. the teacher's template was not used)."""
     found: Dict[str, dict] = {}
     for page in pages:
         bgr = cv2.cvtColor(np.array(page), cv2.COLOR_RGB2BGR)
@@ -175,6 +178,11 @@ def _read_omr(pages, questions: List[Question]) -> Dict[str, dict]:
         a = Reading("opencv_omr", "omr", "answered" if det.get("answer") else "blank", det.get("answer", ""),
                     raw=str(det.get("ratios", "")))
         reasons = routing.omr_reasons(det.get("margin")) if det else ["question not found on OMR sheet"]
+        # Every option filled is not a real answer: the sheet was most likely misread, so a TA checks it
+        if det and routing.omr_all_filled(det.get("answer", ""), len(det.get("ratios") or []) or 4):
+            reasons.append("every option looks filled (the sheet may not have been read correctly)")
+        if note:
+            reasons.append(note)
         reads[q.id] = {"a": a, "b": Reading(), "reasons": reasons}
     return reads
 
@@ -237,8 +245,21 @@ def _read_handwritten(pages, questions: List[Question]):
             b = Reading(tr_b.name if tr_b else "", tr_b.version if tr_b else "", "answered" if tb else "blank", tb)
             # Both transcribers found nothing → the student did not answer: 0 marks, no TA item (user, 15 Nov)
             reads[q.id] = {"a": a, "b": b, "final": a, "accepted": True, "reasons": []}
+        flag_missing_written(reads, subj)
         models.update(transcriber_a=tr_a.version if tr_a else "none", transcriber_b=tr_b.version if tr_b else "none")
     return reads, models
+
+
+def flag_missing_written(reads: Dict[str, dict], questions: List[Question]) -> None:
+    """No written answer found anywhere on the sheet: most likely the student numbered them differently, so every
+    written question goes to a TA instead of silently scoring 0 (user report 17 Nov)."""
+    subj = [q for q in questions if q.kind == "subjective"]
+    if not subj or any(not abstained(reads[q.id]["a"]) or not abstained(reads[q.id]["b"]) for q in subj if q.id in reads):
+        return
+    names = f"{subj[0].label} to {subj[-1].label}" + (f" or {subj[0].alt_label} to {subj[-1].alt_label}" if subj[0].alt_label else "")
+    for q in subj:
+        if q.id in reads:
+            reads[q.id]["reasons"].append(f"no written answer found under {names}; check the question numbering the student used")
 
 
 def abstained(r: Reading) -> bool:

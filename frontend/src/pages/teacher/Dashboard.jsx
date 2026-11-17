@@ -48,7 +48,8 @@ export default function TeacherDashboard() {
   const { papers, loading } = useTeacherPapers();
   // The teacher's subject comes with the login (demo.env)
   const user = useAuthStore((s) => s.user);
-  const subject = user?.subject || user?.subjects?.[0] || "";
+  const subjects = user?.subjects?.length ? user.subjects : (user?.subject ? [user.subject] : []);
+  const subject = subjects.join(", ");           // two subjects are shown side by side
 
   return (
     <PageWrapper>
@@ -60,7 +61,7 @@ export default function TeacherDashboard() {
           {/* Subject the teacher teaches (all their papers are for it) */}
           {subject && (
             <p className="mt-2 text-sm text-gray-700">
-              Subject: <span data-testid="teacher-subject" className="font-medium text-gray-900">{subject}</span>
+              {subjects.length > 1 ? "Subjects" : "Subject"}: <span data-testid="teacher-subject" className="font-medium text-gray-900">{subject}</span>
             </p>
           )}
           <p className="text-sm text-gray-500 mt-1">Create exam papers and follow every student's result.</p>

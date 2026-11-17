@@ -11,6 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 SAMPLE = """
 # comment lines and blanks are ignored
 TEACHER_1=t1@x.org|Pass@1|Prof. One|Computer Science
+TEACHER_2=t2@x.org|Pass@2|Prof. Two|Physics;Mathematics
 
 TA_1=ta@x.org|Ta@1|TA One|Computer Science
 TA_2=ta@x.org|Ta@1|TA One|Physics
@@ -23,10 +24,16 @@ STUDENTS_2=Computer Science|CS|2|S@3
 # Why: every role must be read with the right fields from the one config file the user maintains
 def test_parse_reads_all_roles():
     d = demo_users.parse_demo_env(SAMPLE)
-    assert d["teachers"] == [{"email": "t1@x.org", "password": "Pass@1", "name": "Prof. One",
-                              "subject": "Computer Science"}]
+    assert d["teachers"][0] == {"email": "t1@x.org", "password": "Pass@1", "name": "Prof. One",
+                                "subject": "Computer Science", "subjects": ["Computer Science"]}
     assert [t["email"] for t in d["tas"]] == ["ta@x.org"]
     assert {s["roll_no"] for s in d["students"]} >= {"CS001", "PH001", "PH002", "PH003", "CS002"}
+
+
+# Why: user request (17 Nov) — a teacher can teach two subjects, written like a TA's: Physics;Mathematics
+def test_parse_teacher_with_two_subjects():
+    t = demo_users.parse_demo_env(SAMPLE)["teachers"][1]
+    assert t["subjects"] == ["Physics", "Mathematics"] and t["subject"] == "Physics"
 
 
 # Why: a TA listed for two subjects is one account that sees both subjects
@@ -55,8 +62,9 @@ def test_parse_rejects_bad_lines(line):
 # 10–50 students per subject)
 def test_repo_demo_env_follows_the_rules():
     d = demo_users.parse_demo_env((REPO_ROOT / "demo.env").read_text())
-    subjects = {t["subject"] for t in d["teachers"]}
+    subjects = {x for t in d["teachers"] for x in t["subjects"]}
     assert subjects
+    assert any(len(t["subjects"]) == 2 for t in d["teachers"]), "no teacher with two subjects"
     for subj in subjects:
         assert any(subj in ta["subjects"] for ta in d["tas"]), f"no TA for {subj}"
         n = sum(subj in s["subjects"] for s in d["students"])
@@ -70,8 +78,10 @@ async def test_seed_is_idempotent(db):
     await seed_users()
     await seed_users()
     users = db["users"]
-    assert await users.count_documents({"role": "teacher"}) == 2
+    assert await users.count_documents({"role": "teacher"}) == 3
     assert await users.count_documents({"role": "ta"}) == 2
     assert await users.count_documents({"role": "student"}) == 3
+    sci = await users.find_one({"email": "science@evalify.local"})
+    assert sci["subjects"] == ["Physics", "Mathematics"] and sci["subject"] == "Physics"
     ta = await users.find_one({"email": "ta.cs@evalify.local"})
     assert ta["subjects"] == ["Computer Science"] and ta["password_hash"].startswith("$2")

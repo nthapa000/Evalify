@@ -18,9 +18,9 @@ export default function Navbar() {
   return (
     <header className="h-14 bg-paper-50 border-b border-paper-900 flex items-center justify-between px-6 flex-shrink-0 z-10">
       {/* Wordmark */}
-      <Link to="/" className="flex items-baseline gap-2">
+      <Link to="/" className="flex items-baseline gap-4">
         <span className="font-serif text-xl font-semibold text-paper-900">Evalify</span>
-        <span className="kicker hidden sm:inline">answer sheets, marked</span>
+        <span className="kicker hidden sm:inline pr-2">answer sheets, marked</span>
       </Link>
 
       {/* User + sign out */}

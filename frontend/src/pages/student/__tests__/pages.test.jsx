@@ -60,4 +60,25 @@ describe("Student pages", () => {
     renderAt(<Submission />, { path: "/student/submit/:paperId", route: "/student/submit/p1" });
     expect((await screen.findAllByText("Upload Answer Sheet")).length).toBeGreaterThan(0);
   });
+
+  // Why: user request (17 Nov) — when the teacher chose OMR only the OMR sheet is offered to the student
+  it("upload page offers only the sheet type the teacher chose", async () => {
+    api.routes["GET /papers/p1"] = { ...PAPERS[0], mcqCount: 10, answerSheetFormat: "omr" };
+    renderAt(<Submission />, { path: "/student/submit/:paperId", route: "/student/submit/p1" });
+    expect(await screen.findByText("This paper uses an OMR bubble sheet.")).toBeInTheDocument();
+    expect(screen.queryByText("Handwritten Answer Sheet")).toBeNull();
+  });
+
+  // Why: a handwritten paper hides the OMR choice, and a paper with no setting (older papers) still shows both
+  it("upload page handles handwritten and unset formats", async () => {
+    api.routes["GET /papers/p1"] = { ...PAPERS[0], mcqCount: 10, answerSheetFormat: "handwritten" };
+    const first = renderAt(<Submission />, { path: "/student/submit/:paperId", route: "/student/submit/p1" });
+    expect(await screen.findByText("This paper requires a handwritten answer sheet.")).toBeInTheDocument();
+    expect(screen.queryByText("OMR Bubble Sheet")).toBeNull();
+    first.unmount();
+    api.routes["GET /papers/p1"] = { ...PAPERS[0], mcqCount: 10 };
+    renderAt(<Submission />, { path: "/student/submit/:paperId", route: "/student/submit/p1" });
+    expect(await screen.findByText("Choose the type of answer sheet you used.")).toBeInTheDocument();
+    expect(screen.getByText("OMR Bubble Sheet")).toBeInTheDocument();
+  });
 });

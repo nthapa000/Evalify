@@ -763,3 +763,114 @@ Decisions made while implementing `evalify_model_plan (1).md` (model + hardware 
     override.
   - "Start evaluation" run on the 4 waiting dummy sheets (MCQ Basic Science 3, 2B 1): all evaluated, 0 errors,
     every mark equal to the gold labels (RESULTS.md row 15).
+- 17 Nov — User: remove the red line between the dark panel and the form on the login pages. Removed the margin-rule class from AuthShell (the same red margin rule stays on the logged-in pages, PageWrapper; not asked).
+- 17 Nov — User: "is there a teacher with two subjects?" (no) then "yes quickly build a teacher which has two subjects".
+  Built: demo.env teacher line takes Physics;Mathematics like a TA's; new demo teacher science.teacher@evalify.local
+  (Dr. Anita Desai, Physics and Mathematics). The login returns both subjects; creating a paper takes the chosen
+  subject if the teacher teaches it, else their first (never another subject); the wizard shows a drop-down for two
+  subjects (fixed text for one, new SubjectField component); the home page header shows "Subjects: Physics,
+  Mathematics". Tests first (backend 275, frontend 92 pass). Backend restarted and checked: Mathematics paper
+  created for Mathematics, Chemistry request fell back to Physics (test papers deleted).
+- 17 Nov — User: give Prof. Ramesh Kumar two subjects. teacher@evalify.local now teaches Computer Science and Data Science (the user did not name the second subject; Data Science chosen as the natural pair, change it in demo.env if another is wanted). README and checklist updated; backend restarted.
+- 17 Nov — User: enrol Aarav Sharma (CS2025001) in Data Science too. demo.env: Computer Science;Mathematics;Data Science. To keep Data Science at the 50-student limit (matches the 50 Mendeley sheets) the generated Data Science students are now DS2025001 to DS2025048 (was 049); 48 + Aarav + Priya = 50.
+- 17 Nov — User: add reference material to the uploads folder for teachers to generate answer keys (the RAG
+  assistant is for subjective papers only). Added uploads/Pattern3/Teacher/reference_material/: two original
+  lecture-note PDFs (15 topics of the Data Science paper in full paragraphs plus 2 extra topics), a revision sheet,
+  a scanned page without text layer (tests the "skipped" message) and questions_for_assistant.txt (S1-S15). Not for
+  Pattern 1 and 2 (no written answers). Built by eval/make_upload_kit.py (reference_material(), text in
+  eval/reference_material_text.py); only this folder was generated, the rest of the kit was left as it was.
+  Tests first (backend/tests/test_reference_material.py, 18): files readable, scan skipped, search puts the right
+  passage in the top 3 for each of the 15 questions. Tried with the live models: drafts cite the right file and
+  page. The old reference_notes.txt (the answers themselves) is kept as the easy case.
+- 17 Nov — User: do not write tests for everything; only a few reference documents are needed to try the RAG answer-key
+  feature, and it must be shown only for type C papers. Checked: the assistant is already inside the type C block of
+  wizard step 4 (isType3), nothing to change. Downloaded one real file, wikipedia_data_science_basics.txt (9 Wikipedia
+  articles, CC BY-SA 4.0, 120 KB); a second download was rate limited (HTTP 429), and since few files are enough it was
+  not repeated. Shrunk the scanned test page from 3.5 MB to 54 KB. No new tests for this (the 18 from the earlier step
+  stay). The kit script empties uploads/ when run, so the downloaded file is not rebuilt by it (noted in uploads/README.md).
+- 17 Nov — User's review notes (System design discussion.pdf), five items, fixed:
+  1. Top bar: more space between "Evalify" and "ANSWER SHEETS, MARKED" (gap 8 -> 16 px). My reading of the note; the
+     user may mean another spacing.
+  2. Red line removed from the logged-in pages too (login pages done earlier); the unused margin-rule style is deleted
+     and the page padding reduced (was made room for the rule).
+  3. Question count: the wizard asks the server (POST /papers/detect-questions) to count the numbered questions in the
+     uploaded question paper PDF. MCQ-only papers get the MCQ count set to it; other types only get a hint that the
+     sections should add up to it; a scan gets "could not be counted". Checked on real papers: Data Science paper 35
+     (20 + 15), MCQ paper 10. Best effort, the teacher can always change the number.
+  4. MCQ-only papers now ask "OMR bubble sheet or Handwritten" (wizard step 2, new paper field answerSheetFormat,
+     default OMR). The blank OMR sheet upload shows only for OMR (it used to show for every paper type). The student's
+     upload page offers only that sheet type and the server refuses the other one; papers without the field accept both.
+  5. Paper page: the answer key PDF uploaded in step 3 for extraction (answerKeyPdfUrl) was not listed, only the
+     separate reference copy; both are listed now, plus the detailed answers and grading rubric PDFs of type C papers.
+  Tests: backend 300, frontend 100 pass. MANUAL_CHECKLIST.md updated.
+- 17 Nov — User: delete the "Quiz" paper (Computer Science, MCQ only, no submissions) to create it again. Deleted through the API as its owner, and its two uploaded PDFs (question paper, answer key) removed from backend/uploads/papers.
+- 17 Nov — User started "Start evaluation" on their new Quiz paper (Prof. Kumar, MCQ-only, OMR): the sheet scored 0/20
+  with no TA flag. Cause: the paper's blank OMR sheet was added but its bubbles were never confirmed, so the pipeline
+  (by design, a wrong map would mis-grade everyone) ignored it and the layout-free reader read nearly every question as
+  "A,B,C,D all filled". With the template confirmed the same sheet scores 20/20 (checked by re-running the pipeline).
+  Fixes: (1) wizard step 3 cannot continue until the template is confirmed (hint shown), and a note appears when no
+  blank sheet is added; (2) a question read as every option filled is flagged for the TA; (3) when a template exists but
+  was not confirmed every question is flagged with that reason. Tests first (backend 303, frontend 102). The user's
+  existing Quiz sheet keeps its stored 0 and needs re-creating the paper with the box ticked (the user said they
+  would create it again), or re-running the evaluation after confirming.
+- 17 Nov — User's second review notes (System design discussion (1).pdf) and a follow-up message:
+  1. "Answer Sheet PDF" (the teacher's worked solution upload) renamed "Detailed Solution" in the wizard (upload label,
+     review row and button) and on the paper page.
+  2. Paper page MCQ answer key overflowed the card: grid now uses columns of at least 15 rem that fit the width.
+     Found while checking the screenshot: keys with two correct options ("A,C") lit no option at all; both light now.
+  3. Uploaded documents of the paper page also list the OMR layout (the blank OMR sheet) of an OMR paper.
+  4. The blank OMR sheet is compulsory for OMR papers: the wizard cannot leave step 3 until it is uploaded and its
+     bubbles are confirmed, and the server refuses an OMR paper without a confirmed template (400), so no client can
+     create one. Handwritten and other paper types are unaffected. Replaces the earlier "recommended" wording.
+  Tests first (backend 307, frontend 105 pass). Pattern 1 kit instructions and MANUAL_CHECKLIST.md updated.
+- 17 Nov — User: for the Quiz paper (Prof. Kumar, OMR) select the OMR layout and delete the Aarav submission so it can be resubmitted. Set omrTemplate.confirmed = true on that paper (the 80 detected bubbles unchanged), deleted Aarav Sharma (CS2025001) submission (score 0.0), its page image and its finished batch record. The paper now has 0 sheets; Aarav can upload again, then Start evaluation.
+- 17 Nov — User: the evaluation panel looked static while running ("0 / 1") and asked "is the accuracy correct" (meaning
+  Aarav's Quiz sheet). Panel: now says "Evaluation is running" with a pulsing dot, the stage, "running for N min",
+  that the teacher can leave the page, a pulsing bar for the active stage, a "taking longer than usual" warning after
+  10 minutes with no finished sheet, and a clear "Evaluation did not finish" state with the reason for a failed batch.
+  Robustness fix found on the way: when a batch crashed its unfinished sheets stayed "reading"/"grading" forever and
+  Start evaluation stayed disabled; they now become errors (finished sheets keep their marks) and are picked up
+  again by the next Start evaluation. Tests first (backend 308, frontend 108).
+  Aarav's sheet (omr_L1_s01 of the user's labelled set): 20/20 is correct, gold labels equal the paper key.
+  OPEN: a quick re-measurement of the template OMR on the user's 15 labelled sheets (blank sheets of the upload kit,
+  template built without the wizard's confirm step) gave layout 1 and 2: 10/10 sheets perfect; layout 3: 3 of 5 sheets
+  badly wrong and NOT flagged (alignment looks fine, bubbles read wrong). RESULTS.md row 3 says 99.7 % on these. To be
+  investigated: is the kit's layout-3 blank the one the photos were made from, or a regression.
+- 17 Nov — User: "how much time did it take to evaluate Aarav's sheet?" Answer 66 s (reading 5 s, grading 62 s), but
+  only ~5 s was real work. Cause: MLflow is not running on the cluster (localhost:5005 unreachable) and each evaluated
+  sheet waited ~60 s for its retries; worse, the call ran on the server's main thread, so it froze the whole backend
+  (API and page loads too) and the waits would add up one sheet after another in a class batch. Fixes: MLflow calls
+  run in a worker thread (evaluator), no retries and a 5 s timeout, and after one failed call MLflow is skipped for
+  60 s before trying again (tracking resumes by itself once MLflow is started). Tests first (backend 312 pass).
+  MLflow itself is still not installed or started on the cluster, so nothing is tracked; start it if tracking is wanted.
+- 17 Nov — User asked what MLflow is for and how to use it here; MLflow package is installed (2.13.0) but no server runs and no data folder exists on the cluster. Setting it up (start under /scratch, add to infra/cluster/app.sh, forward port 5005) is postponed: "we will do it later". The app works without it (logging now fails fast).
+- 17 Nov — User: create a detailed high level design, Mermaid diagrams and sequence diagrams in a folder called
+  "Architecture Diagram". Added Architecture Diagram/ with README.md (index), 01_High_Level_Design.md (14 sections),
+  02_Mermaid_Diagrams.md (11 diagrams: context, layers, backend modules, frontend routes, pipeline, ER model, sheet and
+  batch life cycles, cluster deployment, GPU layout, access map) and 03_Sequence_Diagrams.md (13 flows). Written from
+  the code as it is today (tier1 layout with two Gemma copies, two-stage batch, confirmed OMR template rule). All 29
+  diagrams checked with the Mermaid 10.9 parser, 0 errors. Linked from the main README. No tests (documentation only).
+- 17 Nov — User: make the Mermaid and sequence diagrams "simple but effective". Replaced the 11 + 13 detailed
+  diagrams with 5 architecture diagrams (system architecture, marking pipeline, data model, answer sheet life cycle,
+  deployment) and 4 sequence diagrams (exam round end to end, evaluation batch, TA review and re-evaluation,
+  answer-key assistant). Short labels, one message per diagram, the same colour key everywhere (people grey,
+  application blue, data yellow, models green), stages shaded in the sequences. All 14 diagrams (with the 5 in the
+  design document) parse with Mermaid 10.9. The detailed design document is unchanged.
+- 17 Nov — User: give the diagrams as JPG inside the Architecture Diagram folder. Rendered all 9 diagrams with the Mermaid CLI 10.9.1 (Chrome cached under /scratch) at 3x scale and converted to JPG in Architecture Diagram/images/ (01 to 09). Checked each picture; reworked the layout of the system architecture and deployment diagrams (group boxes neutral instead of the default yellow, one arrow per group, no crossing lines) and styled the decision diamonds. Listed the images in the folder README.
+- 17 Nov — User: make diagrams 06 and 07 simpler and more accurate. 06 (exam round): 11 steps, no shaded phases; says only handwritten reading and written grading use the AI models (MCQ, numerical and OMR are marked in code) and no longer implies the release waits for the TA. 07 (start evaluation): the batch and the 5-second progress checks are drawn running at the same time (par), stage 2 shown starting after every sheet is read, third reader mentioned. Re-rendered both JPGs.
+- 17 Nov — User: diagram 06 without the stick-figure people, drawn as if in Excalidraw. Mermaid cannot draw sequence diagrams hand-drawn, so 06 is drawn with roughjs (Excalidraw's sketch library) and the Virgil font: hachured coloured boxes in the usual colour key, dashed lifelines, solid requests, dashed replies, numbered steps, a yellow note. Saved as images/06_sequence_exam_round.jpg; the drawing script is kept in Architecture Diagram/sketch/ with how to re-run it. The Mermaid version of 06 now uses plain boxes (participant) instead of stick figures.
+- 17 Nov — User: check Aarav's current submission. "Subjective" paper (Student_19 of the Mendeley set, kit DS2025001):
+  MCQ 19/20 readings right, Q5 misread (A as B) but flagged for the TA; all 15 written answers 0 with no flag. Cause:
+  paper set to S1.. numbering, student wrote 21-35. Found on the way: norm_label turned "S1" into "Q1" (the MCQ label),
+  so S-numbered written answers could never be found at all; every evaluation so far used continuous numbering.
+- 17 Nov — User asked to implement (1) the safety net and (2) "accept either numbering", and to draw hand-drawn RAG
+  diagrams. (1) orchestrator.flag_missing_written: when no written answer is found anywhere on a sheet, every written
+  question goes to the TA with "no written answer found under S1 to S15 or Q21 to Q35; check the question numbering".
+  (2) each written question has an alternate label (S1 <-> Q21); the transcribers are told both, either is accepted
+  (both joined if both used); norm_label keeps S-labels; [[S2]] markers are split. Tests first (backend 318).
+  Diagrams: Architecture Diagram/images/10_rag_architecture.jpg and 11_rag_sequence.jpg, drawn with
+  sketch/sketch_lib.mjs, rag_architecture.mjs, rag_sequence.mjs.
+- 17 Nov — User: remove the shading from the boxes in the two RAG diagrams. sketch_lib.mjs got a flat style (one light fill colour per kind, same colour key, no hachure lines); 10_rag_architecture.jpg and 11_rag_sequence.jpg redrawn with it, including the yellow note.
+- 17 Nov — Re-measured "either numbering" on the Data Science set (48 sheets, c32, production layout): 218 sheets/h, MCQ 97.7 %, written MAE 0.648 vs 0.639 before (baseline 0.650), 0 errors; extra TA items are on MCQ questions the change does not touch (noise). Kept. Report eval/reports/numbering_either/README.md, RESULTS.md row 16. Backend restarted with the change.
+- 17 Nov — Correction while explaining the bottleneck: "Gemma ~0.86 MB KV per token" (from the 13.76 GiB / 16,384-token error) is not a constant; another error gave 15.79 GiB for 32,768 tokens (Gemma mixes full and sliding-window layers). Reliable like-for-like from the server logs: whole PRO 6000 (76 GB) holds 170,666 Gemma tokens vs 632,149 Qwen tokens, so Gemma needs ~3.7x more memory per token. INFERENCE_OPTIMIZATION.md note corrected. Calls per Data Science sheet (3-page sheet): Gemma 21 (3 read, 3 transcribe, 15 grade), Qwen 6, GLM-OCR 0; tokens Gemma ~15.3k, Qwen ~21.1k.
+- 17 Nov — User: make a file explaining the whole system flow and where every feature's code lives, exploring all features and directories. Added CODE_MAP.md (flow table, directory tree, feature map with screen / endpoint / backend / tests per feature, pipeline file by file, data, cluster scripts, eval harness, tests, documents, where to change things). Linked from README.

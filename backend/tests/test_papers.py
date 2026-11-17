@@ -101,3 +101,69 @@ async def test_paper_keeps_written_answer_numbering(client, teacher_token):
     got = (await client.get(f"/api/papers/{paper['id']}", headers=auth_headers(teacher_token))).json()
     assert got["numbering"] == "continuous"
     assert [q.label for q in questions_for(got) if q.kind == "subjective"] == ["Q4", "Q5"]
+
+
+# Why: a teacher with two subjects chooses which one a paper is for; the choice must be kept
+@pytest.mark.asyncio
+async def test_two_subject_teacher_picks_subject(client, science_teacher_token):
+    maths = await make_paper(client, science_teacher_token, name="Maths test", subject="Mathematics")
+    physics = await make_paper(client, science_teacher_token, name="Physics test", subject="Physics")
+    assert maths["subject"] == "Mathematics" and physics["subject"] == "Physics"
+
+
+# Why: a subject the teacher does not teach must never be accepted (falls back to their first subject)
+@pytest.mark.asyncio
+async def test_two_subject_teacher_cannot_use_other_subject(client, science_teacher_token):
+    paper = await make_paper(client, science_teacher_token, subject="Computer Science")
+    assert paper["subject"] == "Physics"
+
+
+# Why: without a choice the paper takes the teacher's first subject (older clients send no subject)
+@pytest.mark.asyncio
+async def test_two_subject_teacher_default_subject(client, science_teacher_token):
+    assert (await make_paper(client, science_teacher_token, subject=""))["subject"] == "Physics"
+
+
+def _pdf_bytes(lines):
+    """A small text PDF with one line per entry."""
+    import fitz
+    doc = fitz.open()
+    page = doc.new_page()
+    for i, line in enumerate(lines):
+        page.insert_text((40, 60 + 18 * i), line)
+    return doc.tobytes()
+
+
+# Why: user report (17 Nov) — a paper with two questions showed three; the count is now read from the uploaded PDF
+@pytest.mark.asyncio
+async def test_detect_questions_from_uploaded_pdf(client, teacher_token, monkeypatch, tmp_path):
+    from app.routers import papers
+    monkeypatch.setattr(papers, "PAPER_UPLOAD_DIR", str(tmp_path))          # keep test PDFs out of uploads/papers
+    h = auth_headers(teacher_token)
+    up = await client.post("/api/papers/files/upload", headers=h,
+                           files={"file": ("q.pdf", _pdf_bytes(["1. First?", "A. x", "B. y", "2. Second?", "A. x"]), "application/pdf")})
+    r = await client.post("/api/papers/detect-questions", headers=h, json={"file_url": up.json()["url"]})
+    assert r.status_code == 200 and r.json() == {"count": 2}
+    blank = await client.post("/api/papers/files/upload", headers=h,
+                              files={"file": ("b.pdf", _pdf_bytes(["no numbers here"]), "application/pdf")})
+    assert (await client.post("/api/papers/detect-questions", headers=h, json={"file_url": blank.json()["url"]})).json() == {"count": None}
+
+
+# Why: user decision (17 Nov) — an OMR paper must come with its blank sheet and a confirmed bubble map (an ignored
+# template once scored a whole sheet 0); the server refuses it from any client, other papers are not affected
+@pytest.mark.asyncio
+@pytest.mark.parametrize("tpl,ok", [(None, False), ({"bubbles": [{}], "confirmed": False}, False),
+                                    ({"bubbles": [{}], "confirmed": True}, True)])
+async def test_omr_paper_needs_a_confirmed_template(client, teacher_token, tpl, ok):
+    resp = await client.post("/api/papers", headers=auth_headers(teacher_token), json={
+        "name": "OMR quiz", "type": "mcq", "mcqCount": 1, "mcqAnswers": {"Q1": "A"}, "answerSheetFormat": "omr", "omrTemplate": tpl})
+    assert (resp.status_code == 200) is ok, resp.text
+    assert ok or "OMR" in resp.json()["detail"]
+
+
+# Why: handwritten MCQ papers and the other paper types never need an OMR template
+@pytest.mark.asyncio
+async def test_handwritten_paper_needs_no_template(client, teacher_token):
+    resp = await client.post("/api/papers", headers=auth_headers(teacher_token), json={
+        "name": "Hand quiz", "type": "mcq", "mcqCount": 1, "mcqAnswers": {"Q1": "A"}, "answerSheetFormat": "handwritten"})
+    assert resp.status_code == 200

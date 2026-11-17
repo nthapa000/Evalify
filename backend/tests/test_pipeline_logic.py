@@ -19,6 +19,14 @@ def test_questions_for():
         ("Q1", "Q1", "mcq"), ("Q2", "Q2", "mcq"), ("N1", "Q3", "numerical"), ("S1", "S1", "subjective")]
 
 
+# Why: user request (17 Nov) — written answers are found under either numbering, so each has the other label too
+def test_questions_for_alternate_labels():
+    paper = {"type": "mcq_numerical_subjective", "mcqCount": 20, "numericalCount": 0, "subjectiveCount": 2}
+    sep = [(q.label, q.alt_label) for q in readers.questions_for(paper) if q.kind == "subjective"]
+    cont = [(q.label, q.alt_label) for q in readers.questions_for({**paper, "numbering": "continuous"}) if q.kind == "subjective"]
+    assert sep == [("S1", "Q21"), ("S2", "Q22")] and cont == [("Q21", "S1"), ("Q22", "S2")]
+
+
 # OCR-specialist output cleaning and parsing
 # Why: letters and final numbers must be pulled out of free OCR text
 def test_ocr_parsing():
@@ -144,3 +152,46 @@ def test_find_page_ignores_printed_frame():
     photo = np.full((1000, 700, 3), 90, np.uint8)                          # dark desk
     cv2.rectangle(photo, (60, 50), (640, 960), (250, 250, 250), -1)        # white paper on it
     assert quality.find_page(photo) is not None
+
+
+# Why: user report (17 Nov) — a sheet read as "every option filled" scored 0 with no TA flag; that reading is implausible
+def test_all_options_filled_is_flagged():
+    assert routing.omr_all_filled("A,B,C,D", 4) and routing.omr_all_filled("A,B,C", 3)
+    assert not routing.omr_all_filled("A,C", 4) and not routing.omr_all_filled("B", 4) and not routing.omr_all_filled("", 4)
+
+
+def _omr_pages_with(monkeypatch, det):
+    """Pages + questions for _read_omr with the bubble detector replaced by `det`."""
+    from app.pipeline import orchestrator
+    monkeypatch.setattr(orchestrator._omr, "detect", lambda bgr, n: det)
+    return orchestrator, [Image.new("RGB", (40, 40), "white")], [Question(id="Q1", kind="mcq", label="Q1"), Question(id="Q2", kind="mcq", label="Q2")]
+
+
+# Why: every question read as fully filled must go to a TA instead of silently scoring 0
+def test_overfilled_omr_reading_goes_to_ta(monkeypatch):
+    o, pages, qs = _omr_pages_with(monkeypatch, {"Q1": {"answer": "A,B,C,D", "ratios": [.9, .9, .9, .9], "margin": .5},
+                                                  "Q2": {"answer": "C", "ratios": [.1, .1, .9, .1], "margin": .5}})
+    reads = o._read_omr(pages, qs)
+    assert any("every option" in r for r in reads["Q1"]["reasons"]) and reads["Q2"]["reasons"] == []
+
+
+# Why: a template the teacher never confirmed is ignored; sheets read without it must say so, so the TA checks them
+def test_unconfirmed_template_is_flagged(monkeypatch):
+    o, pages, qs = _omr_pages_with(monkeypatch, {"Q1": {"answer": "A", "ratios": [.9, .1, .1, .1], "margin": .5}})
+    reads = o._read_omr(pages, qs, note="the OMR template was not confirmed")
+    assert "the OMR template was not confirmed" in reads["Q1"]["reasons"]
+
+
+# Why: user report (17 Nov) — a numbering mix-up gave 0 for every written answer with no TA flag; when no written
+# answer is found on the whole sheet, each must go to the TA with a reason that points at the numbering
+def test_no_written_answers_on_sheet_goes_to_ta():
+    from app.pipeline import orchestrator
+    qs = [Question("Q1", "Q1", "mcq"), Question("S1", "S1", "subjective", "Q2"), Question("S2", "S2", "subjective", "Q3")]
+    blank = lambda: {"a": Reading(status="blank"), "b": Reading(status="blank"), "reasons": []}
+    reads = {"S1": blank(), "S2": blank()}
+    orchestrator.flag_missing_written(reads, qs)
+    assert all("numbering" in reads[q]["reasons"][0] and "S1" in reads[q]["reasons"][0] for q in ("S1", "S2"))
+    # one answered question means the student simply skipped the others: no flag
+    reads = {"S1": {**blank(), "a": Reading(status="answered", value="text")}, "S2": blank()}
+    orchestrator.flag_missing_written(reads, qs)
+    assert reads["S2"]["reasons"] == []

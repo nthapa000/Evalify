@@ -180,20 +180,22 @@ export default function Submission() {
   const { submit, loading }       = useSubmitAnswerSheet();
   const { paper, loading: paperLoading } = usePaperView(paperId);
 
-  // OMR is only available for MCQ-only (Type 1) papers
-  const isOmrAllowed = paper?.type === "mcq";
+  // OMR is only available for MCQ-only (Type 1) papers; the teacher may fix the format to OMR or handwritten
+  const fmt = paper?.type === "mcq" ? paper.answerSheetFormat : "handwritten";
+  const isOmrAllowed = paper?.type === "mcq" && fmt !== "handwritten";
+  const isHandwrittenAllowed = fmt !== "omr";
 
   const [step, setStep]           = useState(1);
   const [sheetType, setSheetType] = useState("omr");
   const [files, setFiles]         = useState([]);
   const [submissionId, setSubmissionId] = useState(null);
 
-  // Force handwritten when paper is not MCQ-only
+  // Force the sheet type when the paper allows only one (not MCQ-only, or the teacher chose one format)
   useEffect(() => {
-    if (paper && paper.type !== "mcq") {
-      setSheetType("handwritten");
-    }
-  }, [paper]);
+    if (!paper) return;
+    if (paper.type !== "mcq" || fmt === "handwritten") setSheetType("handwritten");
+    else if (fmt === "omr") setSheetType("omr");
+  }, [paper, fmt]);
 
   const { status } = useSubmissionStatus(submissionId);
 
@@ -240,9 +242,11 @@ export default function Submission() {
         <div className="max-w-xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-800 mb-1">Upload Answer Sheet</h1>
           <p className="text-sm text-gray-500 mb-6">
-            {isOmrAllowed
+            {isOmrAllowed && isHandwrittenAllowed
               ? "Choose the type of answer sheet you used."
-              : "This paper requires a handwritten answer sheet."}
+              : isOmrAllowed
+                ? "This paper uses an OMR bubble sheet."
+                : "This paper requires a handwritten answer sheet."}
           </p>
 
           {/* Step indicator */}
@@ -261,7 +265,7 @@ export default function Submission() {
               {isOmrAllowed && (
                 <SheetTypeCard type="omr" selected={sheetType} onSelect={setSheetType} />
               )}
-              <SheetTypeCard type="handwritten" selected={sheetType} onSelect={setSheetType} />
+              {isHandwrittenAllowed && <SheetTypeCard type="handwritten" selected={sheetType} onSelect={setSheetType} />}
             </div>
           )}
 
